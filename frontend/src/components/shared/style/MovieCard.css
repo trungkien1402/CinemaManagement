@@ -1,0 +1,82 @@
+
+.movie-card {
+  width: 280px;
+  background-color: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: sans-serif;
+  color: white;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+}
+
+.movie-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.movie-info-overlay {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rating-tag, .duration-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rating-tag span { color: #facc15; } /* Màu vàng sao */
+
+.movie-details {
+  padding: 16px 0;
+}
+
+.movie-title {
+  color: #ff0000;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.movie-genre {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.btn-booking {
+  width: 100%;
+  background-color: #e11d48;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.2s;
+}
+
+.btn-booking:hover {
+  background-color: #be123c;
+}
