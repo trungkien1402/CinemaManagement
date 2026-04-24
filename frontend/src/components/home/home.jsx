@@ -1,40 +1,52 @@
-import React from 'react';
-import MovieCard from '../shared/MovieCard.jsx'; 
-import './Home.css';
+import './stylepage/Home.css';
+import React, { memo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import HeroSlider from './slider/HeroSlider';
+import MovieCard from '../shared/MovieCard';
+import SectionHeader from '../shared/SectionHeader';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchMovie } from '../../store/movieSlice';
+
 
 const Home = () => {
- 
-  const listMovies = [
-    {
-      id: 1,
-      title: "Bóng Đêm Huyền Bí",
-      genre: "Hành động, Phiêu lưu",
-      rating: 8.5,
-      duration: 142,
-      image: "https://tse2.mm.bing.net/th/id/OIP._NO16bHpajT640nmHhgeoAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" 
-    },
-    {
-      id: 2,
-      title: "Kẻ Hủy Diệt",
-      genre: "Khoa học viễn tưởng",
-      rating: 9.0,
-      duration: 120,
-      image: ""
-    }
-  ];
+    const dispatch = useDispatch();
+    
+        const {loading, pagination } = useSelector((state) => state.movieStore);
+        const movieState = useSelector((state) => state.movieData);
+  
+        // Dùng kỹ thuật "Optional Chaining" (?.) để an toàn
+        const listMovies = movieState?.listMovies || [];
+        useEffect(() => {
+            dispatch(fetchMovie());
+        }, [dispatch]);
+
+        if (loading) return <div>Đang tải phim...</div>;
 
   return (
-    <div class=" content">
-        {listMovies.map((item) => (
-            
-            <MovieCard key={item.id} movie={item} />
-        ))}
+    <div className="home-page">
+      <HeroSlider movies={listMovies} />
+      
+      <div className="content-container">
+        <SectionHeader 
+          title="Phim Đang Chiếu" 
+          subtitle="Những bộ phim đang hot nhất hiện nay" 
+          linkTo="/dang-chieu" 
+        />
+
+        <div className="movie-grid">
+          {listMovies.map((movie) => (
+            <MovieCard key={movie.movie_id} movie={movie} />
+          ))}
+        </div>
+
+        <SectionHeader 
+          title="Phim Sắp Chiếu" 
+          subtitle="Những bộ phim đang hot nhất hiện nay" 
+          linkTo="/sap-chieu" 
+        />
+      </div>
     </div>
-        
-    
-    
-    
   );
 };
 
-export default Home;
+export default memo(Home);

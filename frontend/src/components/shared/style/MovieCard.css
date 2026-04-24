@@ -1,82 +1,82 @@
-
 .movie-card {
-  width: 280px;
-  background-color: #000;
-  border-radius: 16px;
-  overflow: hidden;
-  font-family: sans-serif;
-  color: white;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-.movie-card:hover {
-  transform: translateY(-5px);
-}
-
-.image-container {
-  position: relative;
+  background: transparent; 
+  transition: all 0.3s ease;
   width: 100%;
-  aspect-ratio: 2 / 3;
 }
 
-.movie-poster {
+.poster-box {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 2/3;
+  margin-bottom: 12px;
+}
+
+.poster-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 16px;
+  transition: transform 0.5s ease;
 }
 
-.movie-info-overlay {
+
+.poster-info {
   position: absolute;
-  bottom: 15px;
-  left: 15px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 15px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 12px;
+  opacity: 0.8;
 }
 
-.rating-tag, .duration-tag {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 500;
+.movie-info {
+  padding: 0 4px;
 }
 
-.rating-tag span { color: #facc15; } /* Màu vàng sao */
-
-.movie-details {
-  padding: 16px 0;
+.title {
+  color: #fff;
+  font-size: 16px;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
 }
 
-.movie-title {
-  color: #ff0000;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 6px;
-  display: block;
+.movie-card :hover .title{
+  color: red;
 }
 
-.movie-genre {
-  color: #9ca3af;
-  font-size: 14px;
+.genre {
+  color: #888; 
+  font-size: 13px;
+  margin-bottom: 15px;
 }
 
-.btn-booking {
+
+.btn-book {
   width: 100%;
-  background-color: #e11d48;
+  background: #ff3d00;
   color: white;
   border: none;
-  padding: 12px;
+  padding: 10px;
   border-radius: 8px;
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 12px;
-  transition: background 0.2s;
+  transition: opacity 0.2s;
 }
 
-.btn-booking:hover {
-  background-color: #be123c;
+.btn-book:hover {
+  background: #ff5722;
+  box-shadow: 0 4px 12px rgba(255, 61, 0, 0.3);
+}
+
+
+.movie-card:hover .poster-box img {
+  transform: scale(1.3);
 }

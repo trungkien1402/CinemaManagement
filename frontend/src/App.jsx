@@ -4,6 +4,9 @@ import Navbar from './components/shared/Navbar';
 import Footer from './components/shared/Footer';
 import MovieCard from './components/shared/MovieCard';
 import Home from './components/home/Home';
+import NowShowing from './components/home/NowShowing';
+import MovieSchedule from './components/home/MovieSchedule';
+
 
 function App() {
   const listMovies = [
@@ -35,6 +38,8 @@ function App() {
           <Routes>
            
            <Route path="/" element={<Home />} />
+           <Route path="/dang-chieu" element={<NowShowing />} />
+           <Route path="/lich-chieu" element={<MovieSchedule />} />
           </Routes>
         </main>
 

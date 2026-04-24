@@ -1,0 +1,52 @@
+/* Container chính */
+.section-header-nowshowing {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto; 
+    background-color: #121212; 
+}
+
+
+.title-nowshowing {
+    text-align: center;
+    font-size: 2rem;
+    color: #ffff;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+
+.title-nowshowing::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: #ff4d4d; 
+    border-radius: 2px;
+}
+
+
+.movie-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+
+@media (max-width: 600px) {
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+    
+    .title-nowshowing {
+        font-size: 1.5rem;
+    }
+}
