@@ -1,0 +1,125 @@
+.hero-slider-main {
+  position: relative;
+  height: 85vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.hero-slide-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 20%;
+  animation: fadeInEffect 1s ease-in-out;
+}
+
+
+.hero-overlay-cinema {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top, 
+    #000 0%,               
+    rgba(0, 0, 0, 0.6) 30%, 
+    rgba(0, 0, 0, 0) 70%   
+  ),
+  linear-gradient(
+    to right, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    transparent 100%
+  );
+}
+
+.hero-slider-content {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10%;
+}
+
+.hero-tag-status {
+  background: #ff3d00;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.hero-tag-rating {
+  color: #ffb400;
+  font-weight: bold;
+}
+
+.hero-movie-title {
+  font-size: 4rem; 
+  font-weight: 800;
+  color: #fff;
+  margin: 15px 0;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.hero-movie-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #ddd;
+  margin-bottom: 35px;
+}
+
+.hero-separator { color: #ff3d00; }
+
+.hero-btn-red {
+  background: #ff3d00;
+  color: white;
+  border: none;
+  padding: 14px 35px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-right: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hero-btn-outline {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 35px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+
+.hero-slider-dots-container {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+}
+
+.hero-dot-bar {
+  width: 30px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.hero-dot-bar.active {
+  background: #ff3d00;
+  width: 50px; 
+}
+
+@keyframes fadeInEffect {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}

@@ -1,0 +1,79 @@
+/* Container cho bộ lọc ngày */
+.date-group {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto; /* Hỗ trợ vuốt ngang trên thiết bị di động */
+  padding-bottom: 8px;
+  scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
+}
+
+.date-group::-webkit-scrollbar {
+  display: none; /* Ẩn scrollbar trên Chrome/Safari */
+}
+
+/* Thẻ ngày mặc định */
+.date-card {
+  all: unset; /* Xóa style mặc định của button */
+  cursor: pointer;
+  background: #1a1a1c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 70px;
+  height: 80px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hiệu ứng khi di chuột qua thẻ ngày */
+.date-card:hover:not(.active) {
+  background: #252528;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Trạng thái ngày đang được chọn (Active) */
+.date-card.active {
+  background: #e50914; /* Đỏ thương hiệu */
+  border-color: #e50914;
+  box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3);
+}
+
+/* Chữ thứ (Th 2, Th 3...) */
+.day-text {
+  font-size: 0.75rem;
+  color: #a0a0a0;
+  margin-bottom: 4px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+/* Chữ ngày (13/4, 14/4...) */
+.date-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Khi active, chuyển chữ thứ sang màu trắng nhẹ để tăng độ tương phản */
+.date-card.active .day-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.date-card.active .date-text {
+  color: #ffffff;
+}
+
+/* Responsive: Giảm kích thước trên màn hình nhỏ */
+@media (max-width: 480px) {
+  .date-card {
+    min-width: 60px;
+    height: 70px;
+  }
+  
+  .date-text {
+    font-size: 1rem;
+  }
+}
