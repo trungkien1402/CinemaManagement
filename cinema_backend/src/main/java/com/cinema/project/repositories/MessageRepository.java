@@ -1,4 +1,4 @@
-package com.cinema.project.repositories;
-
-public class MessageRepository {
-}
+//package com.cinema.project.repositories;
+//
+////public interface MessageRepository {
+////}
