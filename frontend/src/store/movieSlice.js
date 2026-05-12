@@ -6,10 +6,10 @@ export const fetchMovie = createAsyncThunk(
     'movies/fetchMovie',
     async (_, thunkAPI) => {
         try {
-            const { data } = await api.get('/public/movies');
+            const { data } = await api.get('/movies');
             return data; 
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data);
+            return thunkAPI.rejectWithValue(error.response?.data|| error.message);
         }
     }
 );
@@ -33,13 +33,18 @@ const movieSlice = createSlice({
             })
             .addCase(fetchMovie.fulfilled, (state, action) => {
                 state.loading = false;
-                state.listMovies = action.payload.content; 
-                state.pagination = {
-                    pageNumber: action.payload.pageNumber,
-                    pageSize: action.payload.pageSize,
-                    totalElements: action.payload.totalElements,
-                    totalPages: action.payload.totalPages,
-                };
+                console.log("Payload nhận được thực tế:", action.payload);
+                state.listMovies = action.payload.listMovies || [];
+                if (action.payload.pageNumber !== undefined){
+                    state.pagination = {
+                        pageNumber: action.payload.pageNumber,
+                        pageSize: action.payload.pageSize,
+                        totalElements: action.payload.totalElements,
+                        totalPages: action.payload.totalPages,
+                    };
+                }
+                
+                
             })
             .addCase(fetchMovie.rejected, (state, action) => {
                 state.loading = false;

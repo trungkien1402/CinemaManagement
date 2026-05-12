@@ -1,0 +1,107 @@
+/* Phải dùng fixed và z-index cực cao */
+.auth-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 999999 !important; /* Số cực lớn */
+}
+
+.auth-modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    color: #333;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.auth-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #666;
+}
+
+.auth-tab-header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+}
+
+.auth-tab-header button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #999;
+}
+
+.auth-tab-header button.active {
+    color: #e50914;
+    border-bottom: 3px solid #e50914;
+}
+
+.auth-main-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-main-form input, .auth-main-form select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.auth-btn-submit {
+    background: #e50914;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.auth-btn-submit:hover {
+    background: #b20710;
+}
+.otp-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.otp-input {
+    text-align: center;
+    font-size: 24px !important;
+    letter-spacing: 10px;
+    font-weight: bold;
+    border: 2px solid #e50914 !important;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.btn-back:hover {
+    color: #fff;
+}

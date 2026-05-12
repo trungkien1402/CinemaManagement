@@ -10,17 +10,13 @@ import { fetchMovie } from '../../store/movieSlice';
 
 const Home = () => {
     const dispatch = useDispatch();
-    
-        const {loading, pagination } = useSelector((state) => state.movieStore);
-        const movieState = useSelector((state) => state.movieData);
-  
-        // Dùng kỹ thuật "Optional Chaining" (?.) để an toàn
-        const listMovies = movieState?.listMovies || [];
+        const { listMovies, loading } = useSelector((state) => state.movies);
         useEffect(() => {
-            dispatch(fetchMovie());
+            dispatch(fetchMovie()); 
         }, [dispatch]);
 
         if (loading) return <div>Đang tải phim...</div>;
+        console.log("Dữ liệu phim nè:", listMovies);
 
   return (
     <div className="home-page">
@@ -34,8 +30,8 @@ const Home = () => {
         />
 
         <div className="movie-grid">
-          {listMovies.map((movie) => (
-            <MovieCard key={movie.movie_id} movie={movie} />
+          {listMovies?.map((movie) => (
+            <MovieCard key={movie.movieId} movie={movie} />
           ))}
         </div>
 

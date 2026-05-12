@@ -24,7 +24,7 @@ const HeroSlider = ({ movies }) => {
     <div className="hero-slider-main">
   
       <div 
-        key={movie.movie_id} 
+        key={movie.movieId} 
         className="hero-slide-bg" 
         style={{ backgroundImage: `url(${movie.image})` }}
       >
@@ -32,7 +32,7 @@ const HeroSlider = ({ movies }) => {
       </div>
 
       {/* Nội dung chữ gọn gàng */}
-      <div className="hero-slider-content" key={`content-${movie.movie_id}`}>
+      <div className="hero-slider-content" key={`content-${movie.movieId}`}>
         <div className="hero-slider-tags">
           <span className="hero-tag-status">ĐANG CHIẾU</span>
           <span className="hero-tag-rating">★ 8.2</span>
