@@ -14,32 +14,72 @@ import java.time.LocalDate;
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "movie_id")
-    private Long movieId;
+    @Column(
+       name = "movie_id"
+    )
+    private String movieId;
 
-    @Column(nullable = false)
+    @Column(
+       name = "title",
+       nullable = false
+    )
     private String title;
 
-    @Column(nullable = false)
-    private int status;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(
+       name = "description",
+       columnDefinition = "TEXT"
+    )
     private String description;
 
-    @Column(nullable = false)
+    @Column(
+       name = "trailer_url"
+    )
+    private String trailerUrl;
+
+    @Column(
+        name = "movie_format",
+        length = 50
+    )
+    private String movieFormat;
+
+    @Column(
+        name = "status",
+        nullable = false
+    )
+    private int status = 1;
+
+    @Column(
+        name = "duration",
+        nullable= false
+    )
     private int duration;
 
-    @Column(nullable = false)
+    @Column(
+        name = "genre",
+        nullable = false,
+        length = 100
+    )
     private String genre;
 
-    @Column(name = "age_rating")
+    @Column(
+        name = "age_rating",
+        length = 10
+    )
     private String ageRating;
 
-    @Column(name = "release_date", nullable = false)
+    @Column(
+        name = "release_date",
+        nullable = false
+    )
     private LocalDate releaseDate;
 
+    @Column(
+        name = "image"
+    )
     private String image;
 
+    @Column(
+        name = "author"
+    )
     private String author;
 }

@@ -1,22 +1,63 @@
 package com.cinema.project.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(
+        name = "user_id"
+    )
+    private String userId;
 
+    @Column(
+        name = "username",
+        nullable = false,
+        unique = true,
+        length = 50
+    )
     private String username;
-    private String password;
+
+
+    @Column(
+        name = "email",
+        nullable = false,
+        unique = true,
+        length = 100
+    )
     private String email;
+
+    @Column(
+        name = "password",
+        nullable = false
+    )
+    private String password;
+
+    @Column(
+        name = "phone",
+        nullable = false,
+        unique = true,
+        length = 12
+    )
     private String phone;
+
+    @Column(
+        name = "gender",
+        length = 10
+    )
     private String gender;
-    private String role = "ROLE_USER";
+
+    @Column(
+        name = "role",
+        nullable = false,
+        length = 20
+    )
+    private String role;
 }

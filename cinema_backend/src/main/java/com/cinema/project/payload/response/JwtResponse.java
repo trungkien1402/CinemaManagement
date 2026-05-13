@@ -7,5 +7,5 @@ import lombok.Data;
 public class JwtResponse {
     private String token;
     private String email;
-    private String role; // Frontend sẽ dựa vào cái này để chuyển trang cái này để chuyển sang trang admin nha ae
+    private String role; // Frontend sẽ dựa vào cái này để chuyển trang cái này để chuyển sang trang admin
 }
