@@ -15,6 +15,8 @@ VALUES
 -- Kiểm tra lại dữ liệu
 SELECT * FROM cinema.movies;
 
+DELETE FROM cinema.users
+WHERE email = 'admin@gmail.com';
 SELECT * FROM cinema.users;
 
 DROP TABLE IF EXISTS cinema.users;

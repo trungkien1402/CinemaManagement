@@ -12,10 +12,7 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    // Sửa tham số truyền vào thành int để khớp với Repository và Entity
     public List<Movie> getMoviesByStatus(int status) {
-        // Vì status là kiểu int (primitive), nó không thể null.
-        // Bạn có thể kiểm tra logic nếu cần (ví dụ: status >= 0)
         return movieRepository.findByStatus(status);
     }
 

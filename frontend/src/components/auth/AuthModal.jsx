@@ -24,13 +24,26 @@ const AuthModal = ({ isOpen, onClose }) => {
         try {
             if (isLogin) {
                 const resultAction = await dispatch(login({ email: formData.email, password: formData.password }));
+                
                 if (login.fulfilled.match(resultAction)) {
+
+                    const user = resultAction.payload; 
+                    console.log("Dữ liệu User nhận được từ Backend:", user); 
+                    console.log("Giá trị role là:", user.role);
+                    
                     alert("Đăng nhập thành công!");
                     onClose();
-                    window.location.reload();
+
+                    const userRole = user.role ? user.role.toUpperCase() : "";
+                    
+                    if (userRole === "ROLE_ADMIN" || userRole === "ADMIN") {
+                        navigate('/admin'); 
+                    } else {
+                        window.location.reload(); 
+                    }
                 } else {
-                    const errorMsg = resultAction.payload || "Email hoặc mật khẩu không đúng!";
-                    alert("Thất bại: " + errorMsg);
+                    const errorMsg = resultAction.payload || "Sai Email hoặc Mật khẩu!";
+                    alert("Thất bại: " + (typeof errorMsg === 'object' ? JSON.stringify(errorMsg) : errorMsg));
                 }
             } else {
                 if (step === 1) {
@@ -40,7 +53,6 @@ const AuthModal = ({ isOpen, onClose }) => {
                 }
             }
         } catch (error) {
-            // Sửa lỗi [object Object]
             const msg = error.response?.data || error.message;
             alert("Lỗi: " + (typeof msg === 'object' ? JSON.stringify(msg) : msg));
         } finally { setLoading(false); }

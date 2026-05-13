@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -60,5 +60,20 @@ public class AuthController {
         userService.registerNewUser(user);
         otpCache.remove(email);
         return ResponseEntity.ok("Đăng ký tài khoản thành công!");
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String password = request.get("password");
+
+        User user = userService.login(email, password);
+
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(401).body("Email hoặc mật khẩu không chính xác!");
+        }
     }
 }

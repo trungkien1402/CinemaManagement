@@ -11,11 +11,10 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-    // Secret key phải đủ dài (ít nhất 64 ký tự cho HS512)
+
     private String jwtSecret = "cinemaSecretKey_Phai_That_Dai_Tren_64_Ky_Tu_Moi_Khong_Bi_Loi_500_Nhe_Ban_Oi_1234567890";
     private int jwtExpirationMs = 86400000;
 
-    // Tạo Key object từ chuỗi secret
     private Key key() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
@@ -32,7 +31,7 @@ public class JwtUtils {
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key()) // Bây giờ hàm key() đã tồn tại bên trên
+                .setSigningKey(key())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()

@@ -9,5 +9,4 @@ export const store = configureStore({
   },
 });
 
-// THÊM DÒNG NÀY VÀO CUỐI FILE
 export default store;

@@ -1,8 +1,8 @@
-/* Container cho bộ lọc ngày */
+
 .date-group {
   display: flex;
   gap: 12px;
-  overflow-x: auto; /* Hỗ trợ vuốt ngang trên thiết bị di động */
+  overflow-x: auto; 
   padding-bottom: 8px;
   scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
 }

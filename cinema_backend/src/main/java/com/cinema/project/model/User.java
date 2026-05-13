@@ -18,5 +18,5 @@ public class User {
     private String email;
     private String phone;
     private String gender;
-    private String role = "USER";
+    private String role = "ROLE_USER";
 }

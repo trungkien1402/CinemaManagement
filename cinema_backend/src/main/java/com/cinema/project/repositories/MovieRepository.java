@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    // SỬA Ở ĐÂY: Đổi String status thành int status
     List<Movie> findByStatus(int status);
 
 }

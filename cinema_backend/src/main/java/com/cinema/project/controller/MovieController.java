@@ -20,11 +20,10 @@ public class MovieController {
     public ResponseEntity<MovieResponse> getAllMovies(@RequestParam(required = false) Integer status) {
         List<Movie> list;
 
-        // Nếu người dùng có truyền status trên URL (ví dụ: ?status=1)
         if (status != null) {
             list = movieService.getMoviesByStatus(status);
         } else {
-            // Nếu không truyền status, mặc định lấy tất cả phim
+
             list = movieService.getAllMovies();
         }
 

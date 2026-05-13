@@ -4,7 +4,6 @@
   padding: 0 4px;
 }
 
-/* Nhãn tiêu đề: Nhỏ, chữ xám, viết hoa nhẹ để tạo sự chuyên nghiệp */
 .filter-label {
   display: flex;
   align-items: center;
@@ -17,16 +16,15 @@
   letter-spacing: 0.05em;
 }
 
-/* Nhóm các nút lọc */
 .pill-group {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap; /* Tự động xuống dòng trên mobile */
+  flex-wrap: wrap; 
 }
 
-/* Nút bấm mặc định: Thiết kế dạng "Ghost Button" hoặc "Flat" */
+
 .pill-btn {
-  background: #1a1a1c; /* Màu nền tối nhưng không đen tuyệt đối */
+  background: #1a1a1c; 
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 10px 22px;
@@ -38,22 +36,22 @@
   white-space: nowrap;
 }
 
-/* Hiệu ứng khi di chuột qua: Chỉ đổi viền và nền nhẹ */
+
 .pill-btn:hover:not(.active) {
   background: #252528;
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Trạng thái được chọn (Active): Sử dụng màu đỏ thương hiệu */
+
 .pill-btn.active {
   background: #e50914;
   border-color: #e50914;
-  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); /* Đổ bóng nhẹ cùng màu đỏ */
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); 
   color: #fff;
-  transform: scale(1.02); /* Phóng to nhẹ để tạo điểm nhấn */
+  transform: scale(1.02); 
 }
 
-/* Responsive: Tối ưu cho màn hình nhỏ */
+
 @media (max-width: 640px) {
   .pill-group {
     gap: 8px;

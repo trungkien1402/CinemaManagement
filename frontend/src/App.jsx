@@ -9,14 +9,10 @@ import ComingSoon from './components/home/ComingSoon';
 import MovieSchedule from './components/home/MovieSchedule';
 import AdminDashboard from './components/admin/AdminDashboard';
 
-/**
- * COMPONENT BẢO VỆ ROUTE
- * Kiểm tra quyền ROLE_ADMIN từ Redux Store
- */
+
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
 
-  // Nếu chưa đăng nhập hoặc không phải Admin, đá về trang chủ
   if (!user || user.role !== 'ROLE_ADMIN') {
     return <Navigate to="/" replace />;
   }
@@ -24,12 +20,10 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-/**
- * Component phụ để ẩn Navbar/Footer khi ở trang Admin
- */
+
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
-  // Nếu đường dẫn bắt đầu bằng /admin, chúng ta sẽ ẩn Navbar và Footer trang chủ
+
   const isAdminPage = location.pathname.startsWith('/admin');
 
   return (

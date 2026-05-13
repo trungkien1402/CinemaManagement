@@ -20,6 +20,7 @@ com\cinema\project\controller\BookingCotroller.class
 com\cinema\project\security\jwt\AuthTokenFilter.class
 com\cinema\project\service\BookingService.class
 com\cinema\project\CinemaBackendApplication.class
+com\cinema\project\config\DataInitializer.class
 com\cinema\project\payload\request\BookingRequest.class
 com\cinema\project\controller\AuthController.class
 com\cinema\project\security\jwt\JwtUtils.class

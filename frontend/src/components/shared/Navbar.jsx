@@ -7,8 +7,19 @@ const Navbar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const dropdownRef = useRef(null);
 
+    // Xử lý hiệu ứng scroll để đổi nền Navbar
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Kiểm tra login từ localStorage
     useEffect(() => {
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
@@ -20,6 +31,7 @@ const Navbar = () => {
         }
     }, []);
 
+    // Click outside để đóng dropdown
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -38,53 +50,65 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar-main">
-            <div className="nav-wrapper">
+        <nav className={`navbar-main ${scrolled ? 'scrolled' : ''}`}>
+            <div className="nav-container">
                 {/* Logo */}
                 <Link to="/" className="nav-brand">
-                    Cinema<span>X</span>
+                    CINEMA<span>X</span>
                 </Link>
 
                 {/* Navigation Links */}
                 <div className="nav-menu">
-                    <NavLink to="/" className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}>Trang Chủ</NavLink>
-                    <NavLink to="/dang-chieu" className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}>Đang Chiếu</NavLink>
-                    <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}>Sắp Chiếu</NavLink>
+                    <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                        Trang Chủ
+                    </NavLink>
+                    <NavLink to="/dang-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                        Phim Đang Chiếu
+                    </NavLink>
+                    <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                        Phim Sắp Chiếu
+                    </NavLink>
                 </div>
 
-                {/* Account Section */}
+                {/* Right Section */}
                 <div className="nav-right" ref={dropdownRef}>
                     {user ? (
-                        <div className="profile-section">
-                            <div 
-                                className={`profile-trigger ${showDropdown ? 'active' : ''}`} 
+                        <div className="user-profile">
+                            <button 
+                                className={`profile-toggle ${showDropdown ? 'active' : ''}`} 
                                 onClick={() => setShowDropdown(!showDropdown)}
                             >
-                                <div className="user-avatar">
+                                <div className="avatar-wrapper">
                                     {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
                                 </div>
-                                <span className="user-name">{user.username}</span>
-                                <i className={`fa-solid fa-chevron-down arrow ${showDropdown ? 'up' : ''}`}></i>
-                            </div>
+                                <span className="username-text">{user.username}</span>
+                                <i className="fa-solid fa-chevron-down arrow-icon"></i>
+                            </button>
 
                             {showDropdown && (
-                                <div className="custom-dropdown">
-                                    <div className="dropdown-info">
-                                        <span>Xin chào,</span>
-                                        <strong>{user.username}</strong>
+                                <div className="dropdown-menu">
+                                    <div className="dropdown-header">
+                                        <p>Tài khoản cá nhân</p>
+                                        <span>{user.email || 'Thành viên CinemaX'}</span>
                                     </div>
-                                    <div className="divider"></div>
-                                    <button className="dropdown-btn logout" onClick={handleLogout}>
-                                        <i className="fa-solid fa-right-from-bracket"></i>
-                                        Đăng xuất
+                                    <div className="dropdown-divider"></div>
+                                    <Link to="/profile" className="dropdown-item">
+                                        <i className="fa-regular fa-user"></i> Hồ sơ của tôi
+                                    </Link>
+                                    <Link to="/ve-da-dat" className="dropdown-item">
+                                        <i className="fa-solid fa-ticket"></i> Lịch sử đặt vé
+                                    </Link>
+                                    <div className="dropdown-divider"></div>
+                                    <button className="dropdown-item logout" onClick={handleLogout}>
+                                        <i className="fa-solid fa-right-from-bracket"></i> Đăng xuất
                                     </button>
                                 </div>
                             )}
                         </div>
                     ) : (
-                        <button className="account-btn-modern" onClick={() => setIsModalOpen(true)}>
+                        <button className="login-button" onClick={() => setIsModalOpen(true)}>
                             <i className="fa-regular fa-circle-user"></i>
-                            <span>Tài Khoản</span>
+                            <span>Đăng Nhập</span>
                         </button>
                     )}
                 </div>
