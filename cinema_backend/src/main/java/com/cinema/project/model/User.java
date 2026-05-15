@@ -4,61 +4,39 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(
-        name = "user_id"
-    )
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(
-        name = "username",
-        nullable = false,
-        unique = true,
-        length = 50
-    )
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
 
-
-    @Column(
-        name = "email",
-        nullable = false,
-        unique = true,
-        length = 100
-    )
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-    @Column(
-        name = "password",
-        nullable = false
-    )
+    @Column(nullable = false, length = 255)
     private String password;
 
-    @Column(
-        name = "phone",
-        nullable = false,
-        unique = true,
-        length = 12
-    )
+    @Column(unique = true, nullable = false, length = 20)
     private String phone;
 
-    @Column(
-        name = "gender",
-        length = 10
-    )
+    @Column(length = 10)
     private String gender;
 
-    @Column(
-        name = "role",
-        nullable = false,
-        length = 20
-    )
+    @Column(nullable = false, length = 20)
     private String role;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Ticket> tickets;
 }

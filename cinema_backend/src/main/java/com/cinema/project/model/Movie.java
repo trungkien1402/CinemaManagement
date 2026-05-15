@@ -12,75 +12,38 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(
-       name = "movie_id"
-    )
+    @Column(name = "movie_id")
     private Long movieId;
 
-    @Column(
-       name = "title",
-       nullable = false
-    )
+    @Column(nullable = false, length = 200)
     private String title;
 
-    @Column(
-       name = "description",
-       columnDefinition = "TEXT"
-    )
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(
-       name = "trailer_url"
-    )
+    @Column(name = "trailer_url", length = 500)
     private String trailerUrl;
 
-    @Column(
-        name = "movie_format",
-        length = 50
-    )
+    @Column(name = "movie_format", length = 50)
     private String movieFormat;
 
-    @Column(
-        name = "status",
-        nullable = false
-    )
-    private int status = 1;
+    private Integer status;
+    private Integer duration;
 
-    @Column(
-        name = "duration",
-        nullable= false
-    )
-    private int duration;
-
-    @Column(
-        name = "genre",
-        nullable = false,
-        length = 100
-    )
+    @Column(length = 100)
     private String genre;
 
-    @Column(
-        name = "age_rating",
-        length = 10
-    )
+    @Column(name = "age_rating", length = 10)
     private String ageRating;
 
-    @Column(
-        name = "release_date",
-        nullable = false
-    )
+    @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @Column(
-        name = "image"
-    )
+    @Column(length = 500)
     private String image;
 
-    @Column(
-        name = "author"
-    )
+    @Column(length = 100)
     private String author;
 }

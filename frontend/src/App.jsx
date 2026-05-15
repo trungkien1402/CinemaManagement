@@ -8,6 +8,7 @@ import NowShowing from './components/home/NowShowing';
 import ComingSoon from './components/home/ComingSoon';
 import MovieSchedule from './components/home/MovieSchedule';
 import AdminDashboard from './components/admin/AdminDashboard';
+import SeatSelection from './components/seat/seat';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -61,6 +62,15 @@ function App() {
 
           {/* --- CATCH ALL --- */}
           <Route path="*" element={<Navigate to="/" replace />} />
+          {/* --- PUBLIC ROUTES --- */}
+
+          <Route path="/" element={<Home />} />
+          <Route path="/dang-chieu" element={<NowShowing />} />
+          <Route path="/sap-chieu" element={<ComingSoon />} />
+          <Route path="/lich-chieu" element={<MovieSchedule />} />
+
+          {/* Route mới cho trang đặt vé */}
+          <Route path="/dat-ve/:showtimeId/:roomId" element={<SeatSelection />} />
         </Routes>
       </LayoutWrapper>
     </Router>
