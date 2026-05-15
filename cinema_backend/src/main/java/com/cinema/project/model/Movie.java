@@ -14,10 +14,11 @@ import java.time.LocalDate;
 public class Movie {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
        name = "movie_id"
     )
-    private String movieId;
+    private Long movieId;
 
     @Column(
        name = "title",

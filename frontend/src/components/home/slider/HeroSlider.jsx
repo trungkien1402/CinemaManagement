@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './HeroSlider.css';
+import '../../style/HeroSlider.css';
 
 const HeroSlider = ({ movies }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

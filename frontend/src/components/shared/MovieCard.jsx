@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import './style/MovieCard.css';
+import '../style/MovieCard.css';
 
 const MovieCard = ({ movie }) => {
   const { title, image, duration, genre, release_date } = movie;

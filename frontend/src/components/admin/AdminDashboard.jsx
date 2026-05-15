@@ -1,17 +1,55 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/authSlice';
-import './Admin.css';
+import api from '../../api/axiosClient'; 
+import '../style/Admin.css';
 
 const AdminDashboard = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate('/');
+    const [activeTab, setActiveTab] = useState('dashboard');
+    const [movies, setMovies] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [stats, setStats] = useState({ totalMovies: 0, activeMovies: 0 });
+    const [loading, setLoading] = useState(false);
+
+    // Load dữ liệu Dashboard
+    const fetchDashboardData = useCallback(async () => {
+        try {
+            setLoading(true);
+            const [mRes, sRes] = await Promise.all([
+                api.get('/movies/admin/all'),
+                api.get('/movies/admin/stats')
+            ]);
+            setMovies(mRes.data);
+            setStats(sRes.data);
+        } catch (err) { console.error(err); }
+        finally { setLoading(false); }
+    }, []);
+
+    // Load dữ liệu Người dùng
+    const fetchUsers = async () => {
+        try {
+            setLoading(true);
+            const res = await api.get('/admin/users/all');
+            setUsers(res.data);
+        } catch (err) { console.error(err); }
+        finally { setLoading(false); }
+    };
+
+    useEffect(() => {
+        if (activeTab === 'dashboard') fetchDashboardData();
+        if (activeTab === 'users') fetchUsers();
+    }, [activeTab, fetchDashboardData]);
+
+    const deleteUser = async (id) => {
+        if (window.confirm("Xóa người dùng này?")) {
+            await api.delete(`/admin/users/delete/${id}`);
+            fetchUsers();
+        }
     };
 
     return (
@@ -19,69 +57,54 @@ const AdminDashboard = () => {
             <div className="admin-sidebar">
                 <div className="admin-logo">CINEMA ADMIN</div>
                 <nav className="admin-nav">
-                    <button className="nav-item active">Dashboard</button>
-                    <button className="nav-item">Quản lý Phim</button>
-                    <button className="nav-item">Lịch Chiếu</button>
-                    <button className="nav-item">Quản lý Vé</button>
-                    <button className="nav-item">Người dùng</button>
+                    <button className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+                    <button className={`nav-item ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>Người dùng</button>
+                    <button className="nav-item" onClick={() => navigate('/')}>Về trang chủ</button>
                 </nav>
-                <button className="btn-logout-admin" onClick={handleLogout}>Đăng xuất</button>
+                <button className="btn-logout-admin" onClick={() => { dispatch(logout()); navigate('/'); }}>Đăng xuất</button>
             </div>
 
             <div className="admin-main-content">
                 <header className="admin-header">
-                    <h2>Tổng quan hệ thống</h2>
-                    <div className="admin-user-info">
-                        Chào, <strong>{user?.email}</strong>
-                    </div>
+                    <h2>{activeTab === 'dashboard' ? 'Tổng quan' : 'Quản lý người dùng'}</h2>
+                    <div>Chào, <strong>{user?.username}</strong></div>
                 </header>
 
-                <div className="admin-stats-grid">
-                    <div className="stat-card">
-                        <h3>Tổng Phim</h3>
-                        <p>24</p>
-                    </div>
-                    <div className="stat-card">
-                        <h3>Vé Đã Bán</h3>
-                        <p>1,250</p>
-                    </div>
-                    <div className="stat-card">
-                        <h3>Doanh Thu</h3>
-                        <p>150.000.000đ</p>
-                    </div>
-                    <div className="stat-card">
-                        <h3>Người Dùng</h3>
-                        <p>450</p>
-                    </div>
-                </div>
+                {activeTab === 'dashboard' && (
+                    <>
+                        <div className="admin-stats-grid">
+                            <div className="stat-card"><h3>Tổng Phim</h3><p>{stats.totalMovies}</p></div>
+                            <div className="stat-card"><h3>Đang Chiếu</h3><p>{stats.activeMovies}</p></div>
+                        </div>
+                        <div className="admin-recent-table">
+                            <h3>Phim mới cập nhật</h3>
+                            <table>
+                                <thead><tr><th>ID</th><th>Tên</th><th>Thể loại</th></tr></thead>
+                                <tbody>
+                                    {movies.map(m => <tr key={m.movieId}><td>{m.movieId}</td><td>{m.title}</td><td>{m.genre}</td></tr>)}
+                                </tbody>
+                            </table>
+                        </div>
+                    </>
+                )}
 
-                <div className="admin-recent-table">
-                    <h3>Phim đang chiếu</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên Phim</th>
-                                <th>Thời lượng</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#001</td>
-                                <td>Avengers: End Game</td>
-                                <td>180 phút</td>
-                                <td><span className="status-on">Đang chiếu</span></td>
-                            </tr>
-                            <tr>
-                                <td>#002</td>
-                                <td>Doraemon</td>
-                                <td>90 phút</td>
-                                <td><span className="status-on">Đang chiếu</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                {activeTab === 'users' && (
+                    <div className="admin-recent-table">
+                        <table>
+                            <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Hành động</th></tr></thead>
+                            <tbody>
+                                {users.map(u => (
+                                    <tr key={u.userId}>
+                                        <td>{u.userId}</td>
+                                        <td>{u.username}</td>
+                                        <td>{u.email}</td>
+                                        <td><button onClick={() => deleteUser(u.userId)} className="btn-delete">Xóa</button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
         </div>
     );

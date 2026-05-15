@@ -48,15 +48,16 @@ function App() {
           <Route path="/sap-chieu" element={<ComingSoon />} />
           <Route path="/lich-chieu" element={<MovieSchedule />} />
 
+
           {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
           <Route 
-            path="/admin" 
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } 
-          />
+              path="/admin/*"  // Thêm dấu /* để nhận các route con như /admin/movies
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
 
           {/* --- CATCH ALL --- */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
 import api from '../../api/api';
-import './AuthModal.css';
+import '../style/AuthModal.css';
 
 const AuthModal = ({ isOpen, onClose }) => {
     const navigate = useNavigate();

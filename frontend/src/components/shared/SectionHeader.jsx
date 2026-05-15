@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './style/SectionHeader.css';
+import '../style/SectionHeader.css';
 
 const SectionHeader = ({ title, subtitle, linkTo }) => {
   return (

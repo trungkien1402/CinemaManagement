@@ -1,5 +1,5 @@
 import React from 'react';
-import './style/CinemaFilter.css'
+import '../style/CinemaFilter.css'
 const CinemaFilter = ({ theaters, activeId, onSelect }) => {
   return (
     <section className="filter-section">

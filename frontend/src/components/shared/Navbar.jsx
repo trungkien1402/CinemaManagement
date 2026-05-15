@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AuthModal from '../auth/AuthModal'; 
-import './style/Navbar.css';
+import '../style/Navbar.css';
 
 const Navbar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,6 +67,15 @@ const Navbar = () => {
                     </NavLink>
                     <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                         Phim Sắp Chiếu
+                    </NavLink>
+                    <NavLink to="/lich-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                        Lịch Chiếu
+                    </NavLink>
+                    <NavLink to="/rap" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                        Rạp
+                    </NavLink>
+                    <NavLink to="/tin-tuc" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                        Tin Tức
                     </NavLink>
                 </div>
 

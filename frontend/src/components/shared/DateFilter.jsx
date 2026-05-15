@@ -1,5 +1,5 @@
 import React from 'react';
-import './style/DateFilter.css'
+import '../style/DateFilter.css'
 const DateFilter = ({ dates, activeDate, onSelect }) => {
   return (
     <section className="filter-section">

@@ -1,4 +1,4 @@
-import './stylepage/Home.css';
+import '../style/Home.css';
 import React, { memo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import HeroSlider from './slider/HeroSlider';

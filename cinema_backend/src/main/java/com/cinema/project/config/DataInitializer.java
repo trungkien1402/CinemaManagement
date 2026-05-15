@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
@@ -15,19 +16,28 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        String adminEmail = "admin@gmail.com";
+        try {
+            String adminEmail = "admin@gmail.com";
 
-        userRepository.findByEmail(adminEmail).ifPresent(userRepository::delete);
 
-        User admin = new User();
-        admin.setUsername("Quản Trị Viên");
-        admin.setEmail(adminEmail);
-        admin.setPhone("0999999999");
-        admin.setGender("Nam");
-        admin.setRole("ROLE_ADMIN");
-        admin.setPassword(passwordEncoder.encode("admin123"));
+            userRepository.findAll().stream()
+                    .filter(u -> adminEmail.equalsIgnoreCase(u.getEmail()))
+                    .findFirst()
+                    .ifPresent(user -> userRepository.delete(user));
 
-        userRepository.save(admin);
-        System.out.println(">>> ĐÃ TẠO ADMIN MỚI: admin@gmail.com / admin123");
+
+            User admin = new User();
+            admin.setUsername("Administrator");
+            admin.setEmail(adminEmail);
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setRole("ROLE_ADMIN");
+            admin.setPhone("0999999999");
+            admin.setGender("Nam");
+
+            userRepository.save(admin);
+            System.out.println(">>> [SUCCESS] Khoi tao Admin voi ID tu dong!");
+        } catch (Exception e) {
+            System.err.println(">>> [INFO] Co the Admin da ton tai: " + e.getMessage());
+        }
     }
 }

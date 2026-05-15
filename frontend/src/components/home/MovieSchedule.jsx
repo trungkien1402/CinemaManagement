@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import './stylepage/MovieSchedule.css';
+import '../style/MovieSchedule.css';
 import CinemaFilter from '../shared/CinemaFilter';
 import DateFilter from '../shared/DateFilter';
 import MovieScheduleCard from '../shared/MovieScheduleCard';

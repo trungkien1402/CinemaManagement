@@ -1,5 +1,5 @@
 import React from 'react';
-import  './style/MovieScheduleCard.css';
+import  '../style/MovieScheduleCard.css';
 
 const MovieScheduleCard = ({ movie, showtimes }) => {
   return (

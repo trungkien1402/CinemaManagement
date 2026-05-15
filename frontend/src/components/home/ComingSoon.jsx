@@ -1,5 +1,5 @@
 import MovieCard from '../shared/MovieCard';
-import './stylepage/NowShowing.css';
+import '../style/NowShowing.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovie } from '../../store/movieSlice';
 import React, { memo, useEffect } from 'react';
