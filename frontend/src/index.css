@@ -17,3 +17,7 @@ a {
   text-decoration: none;
   color: inherit;
 }
+#tawkchat-container,
+iframe[title="chat widget"] {
+    z-index: 999999 !important;
+}

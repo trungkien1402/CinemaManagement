@@ -9,6 +9,7 @@ import ComingSoon from './components/home/ComingSoon';
 import MovieSchedule from './components/home/MovieSchedule';
 import AdminDashboard from './components/admin/AdminDashboard';
 import NewsPage from './components/home/NewsPage';
+import ChatBox from './components/chatbox/ChatBox';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -41,6 +42,7 @@ const LayoutWrapper = ({ children }) => {
 function App() {
   return (
     <Router>
+       <ChatBox />
       <LayoutWrapper>
         <Routes>
           {/* --- PUBLIC ROUTES --- */}
