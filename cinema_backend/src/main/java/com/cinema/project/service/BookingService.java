@@ -31,28 +31,38 @@ public class BookingService {
 
         List<Ticket> savedTickets = new ArrayList<>();
 
+        // 1. Lấy danh sách các ghế ĐÃ BÁN của riêng suất chiếu này để kiểm tra
+        List<String> bookedSeatIds = ticketRepository.findBookedSeatIdsByShowtime(request.getShowtimeId());
 
         for (String seatId : request.getSeatIds()) {
+
+            // 2. Chặn ngay nếu phát hiện ghế đã có người đặt trong suất chiếu này
+            if (bookedSeatIds.contains(seatId)) {
+                throw new RuntimeException("Rất tiếc, một trong các ghế bạn chọn đã có người đặt!");
+            }
+
             Seat seat = seatRepository.findById(seatId)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy Ghế"));
 
+            // KHÔNG CÒN GỌI seat.setIsOccupied() Ở ĐÂY NỮA
 
-            if (seat.getIsOccupied() != null && seat.getIsOccupied()) {
-                throw new RuntimeException("Ghế " + seat.getSeatNumber() + " đã có người đặt!");
+            // 3. Backend tự tính giá an toàn dựa trên loại ghế
+            double ticketPrice = 30000; // Mặc định ghế THUONG
+            if ("VIP".equalsIgnoreCase(seat.getSeatType())) {
+                ticketPrice = 50000;
+            } else if ("DOI".equalsIgnoreCase(seat.getSeatType())) {
+                ticketPrice = 100000;
             }
 
-            seat.setIsOccupied(true);
-            seatRepository.save(seat);
-
+            // 4. Tạo vé mới
             Ticket ticket = new Ticket();
-
             String randomTicketId = "TK-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
 
             ticket.setTicketId(randomTicketId);
             ticket.setUser(user);
             ticket.setShowtime(showtime);
             ticket.setSeat(seat);
-            ticket.setTotalPrice(request.getPricePerSeat());
+            ticket.setTotalPrice(ticketPrice); // Giá thực tế của từng vé
             ticket.setStatus("SUCCESS");
             ticket.setBookingDate(LocalDateTime.now());
 

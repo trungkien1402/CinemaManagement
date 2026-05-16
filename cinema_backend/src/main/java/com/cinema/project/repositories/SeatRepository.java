@@ -8,5 +8,8 @@ import java.util.List;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, String> {
+
+    // GIỮ LẠI ĐÚNG HÀM NÀY, XÓA HÀM CŨ ĐI
     List<Seat> findByRoom_RoomId(String roomId);
+
 }

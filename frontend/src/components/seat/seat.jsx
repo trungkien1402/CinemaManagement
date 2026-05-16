@@ -4,23 +4,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../style/Seat.css';
 
 const SeatSelection = () => {
-    // 1. Lấy tham số từ URL (Ví dụ: /dat-ve/ST01/R01)
-    const { showtimeId, roomId } = useParams();
+    const { showtimeId } = useParams();
     const navigate = useNavigate();
 
     const [seats, setSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Tạm thời fix giá vé, sau này bạn có thể gọi API lấy giá từ Showtime
-    const pricePerSeat = 85000;
-
-    // 2. Tải sơ đồ ghế từ Backend dựa trên roomId lấy từ URL
     useEffect(() => {
-        if (!roomId) return;
+        if (!showtimeId) return;
 
+        setSelectedSeats([]); // XÓA TRÍ NHỚ GHẾ KHI ĐỔI PHIM
         setLoading(true);
-        axios.get(`http://localhost:8080/api/seats/room/${roomId}`)
+
+        axios.get(`http://localhost:8080/api/showtimes/${showtimeId}/seats`)
             .then(res => {
                 setSeats(res.data);
                 setLoading(false);
@@ -29,42 +26,46 @@ const SeatSelection = () => {
                 console.error("Lỗi tải ghế:", err);
                 setLoading(false);
             });
-    }, [roomId]);
+    }, [showtimeId]);
 
-    // 3. Logic chọn/bỏ chọn ghế
     const toggleSeat = (seat) => {
-        if (seat.isOccupied) return;
+        if (seat.occupied || seat.isOccupied) return;
 
-        if (selectedSeats.includes(seat.seatId)) {
-            setSelectedSeats(selectedSeats.filter(id => id !== seat.seatId));
+        const isAlreadySelected = selectedSeats.find(s => s.seatId === seat.seatId);
+        if (isAlreadySelected) {
+            setSelectedSeats(selectedSeats.filter(s => s.seatId !== seat.seatId));
         } else {
-            setSelectedSeats([...selectedSeats, seat.seatId]);
+            setSelectedSeats([...selectedSeats, seat]);
         }
     };
 
-    // 4. Gửi yêu cầu đặt vé về Backend
+    const calculateTotal = () => {
+        return selectedSeats.reduce((total, seat) => {
+            if (seat.seatType === 'VIP') return total + 50000;
+            if (seat.seatType === 'DOI') return total + 100000;
+            return total + 30000;
+        }, 0);
+    };
+
     const handlePayment = () => {
         if (selectedSeats.length === 0) return alert("Vui lòng chọn ít nhất 1 ghế!");
 
         const bookingData = {
-            userId: 2, // Tạm thời để ID mặc định, sau này lấy từ Auth state
+            userId: 2,
             showtimeId: showtimeId,
-            seatIds: selectedSeats,
-            pricePerSeat: pricePerSeat
+            seatIds: selectedSeats.map(s => s.seatId),
+            totalPrice: calculateTotal()
         };
 
         axios.post('http://localhost:8080/api/bookings/create', bookingData)
             .then(() => {
-                alert("Đặt vé thành công! Hệ thống sẽ đưa bạn về trang chủ.");
-                navigate('/'); // Đặt xong cho về trang chủ hoặc trang lịch sử
+                alert("Đặt vé thành công!");
+                navigate('/');
             })
-            .catch(err => {
-                const errorMsg = err.response?.data || "Không thể đặt vé, vui lòng thử lại!";
-                alert("Lỗi: " + errorMsg);
-            });
+            .catch(err => alert("Lỗi: " + (err.response?.data || "Vui lòng thử lại!")));
     };
 
-    if (loading) return <div className="loading-container">Đang chuẩn bị sơ đồ phòng chiếu...</div>;
+    if (loading) return <div className="loading-container">Đang tải sơ đồ phòng chiếu...</div>;
 
     return (
         <div className="booking-wrapper">
@@ -72,40 +73,42 @@ const SeatSelection = () => {
                 <div className="screen">MÀN HÌNH CHÍNH</div>
             </div>
 
-            {/* Hiển thị lưới ghế */}
             <div className="seat-grid">
-                {seats.map(seat => (
-                    <div
-                        key={seat.seatId}
-                        className={`seat-box ${seat.isOccupied ? 'occupied' :
-                                   selectedSeats.includes(seat.seatId) ? 'selected' : 'available'}`}
-                        onClick={() => toggleSeat(seat)}
-                    >
-                        {seat.seatNumber}
-                    </div>
-                ))}
+                {seats.map(seat => {
+                    const isSelected = selectedSeats.some(s => s.seatId === seat.seatId);
+                    const isOccupied = seat.occupied || seat.isOccupied;
+                    let seatClass = "seat-box";
+
+                    if (isOccupied) seatClass += " occupied";
+                    else if (isSelected) seatClass += " selected";
+                    else seatClass += ` ${seat.seatType?.toLowerCase() || 'thuong'}`;
+
+                    return (
+                        <div key={seat.seatId} className={seatClass} onClick={() => toggleSeat(seat)}>
+                            {seat.seatNumber}
+                        </div>
+                    );
+                })}
             </div>
 
-            {/* Chú thích màu sắc */}
             <div className="legend-area">
-                <div className="legend-item"><span className="box available"></span> Ghế trống</div>
+                <div className="legend-item"><span className="box thuong"></span> Thường (30K)</div>
+                <div className="legend-item"><span className="box vip"></span> VIP (50K)</div>
+                <div className="legend-item"><span className="box doi"></span> Đôi (100K)</div>
                 <div className="legend-item"><span className="box selected"></span> Đang chọn</div>
                 <div className="legend-item"><span className="box occupied"></span> Đã bán</div>
             </div>
 
-            {/* Thông tin thanh toán tạm tính */}
             <div className="info-section">
                 <div className="ticket-info">
                     <p>Mã suất chiếu: <strong>{showtimeId}</strong></p>
-                    <p>Ghế đã chọn: <strong>{selectedSeats.join(', ') || 'Chưa chọn'}</strong></p>
+                    <p>Ghế đã chọn: <strong>{selectedSeats.map(s => s.seatNumber).join(', ') || 'Chưa chọn'}</strong></p>
                 </div>
                 <div className="total-price-area">
-                    <span>Tổng tiền thanh toán:</span>
-                    <h3 className="price">{(selectedSeats.length * pricePerSeat).toLocaleString()} VNĐ</h3>
+                    <span>Tổng tiền:</span>
+                    <h3 className="price">{calculateTotal().toLocaleString()} VNĐ</h3>
                 </div>
-                <button className="confirm-btn" onClick={handlePayment}>
-                    XÁC NHẬN ĐẶT VÉ
-                </button>
+                <button className="confirm-btn" onClick={handlePayment}>XÁC NHẬN ĐẶT VÉ</button>
             </div>
         </div>
     );

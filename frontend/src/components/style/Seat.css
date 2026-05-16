@@ -3,12 +3,22 @@
     padding: 40px;
     border-radius: 15px;
     color: #ffffff;
-    max-width: 600px;
+    max-width: 650px;
     margin: 20px auto;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.screen-container { perspective: 500px; margin-bottom: 40px; }
+.loading-container {
+    color: white;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.2rem;
+}
+
+.screen-container { perspective: 500px; margin-bottom: 40px; width: 100%; }
 .screen {
     height: 12px; background: #e5e5e5; width: 90%; margin: 0 auto;
     transform: rotateX(-30deg); box-shadow: 0 3px 15px rgba(255,255,255,0.4);
@@ -16,71 +26,103 @@
 }
 
 .seat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-    gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 450px; /* Điều chỉnh phù hợp cho 8 ghế 1 hàng tự rớt dòng */
+    gap: 10px;
+    justify-content: center;
     margin-bottom: 30px;
 }
 
 .seat-box {
-    aspect-ratio: 1/1;
+    width: 42px;
+    height: 42px;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: bold;
     transition: all 0.2s ease;
 }
 
-.available { background: #3a3a3a; border: 1px solid #555; }
-.available:hover { background: #555; transform: scale(1.1); }
+/* CÁC LOẠI GHẾ */
+.thuong { background: #3a3a3a; border: 1px solid #555; color: white; }
+.thuong:hover { background: #555; transform: scale(1.1); }
 
+.vip { background: #f1c40f; border: 1px solid #d4ac0d; color: #000; box-shadow: 0 0 5px rgba(241,196,15,0.4); }
+.vip:hover { background: #f39c12; transform: scale(1.1); }
+
+.doi { background: #e74c3c; border: 1px solid #c0392b; color: white; width: 94px; } /* Ghế đôi dài gấp đôi width+gap */
+.doi:hover { background: #c0392b; transform: scale(1.1); }
+
+/* TRẠNG THÁI GHẾ */
 .selected {
-    background: #ff4d4d;
-    border: 1px solid #fff;
-    box-shadow: 0 0 10px #ff4d4d;
+    background: #2ecc71 !important;
+    border: 1px solid #27ae60 !important;
+    color: white !important;
+    box-shadow: 0 0 10px #2ecc71;
+    transform: scale(1.1);
 }
 
 .occupied {
-    background: #000;
-    color: #222;
+    background: #000 !important;
+    color: #444 !important;
+    border: 1px solid #222 !important;
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.7;
 }
+.occupied:hover { transform: none; }
 
 .legend-area {
     display: flex;
     justify-content: center;
-    gap: 25px;
-    padding: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px 25px;
     background: #1e1e1e;
     border-radius: 8px;
+    width: 100%;
 }
 
-.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
 .legend-item .box { width: 16px; height: 16px; border-radius: 3px; }
 
 .info-section {
     margin-top: 30px;
     border-top: 2px solid #222;
     padding-top: 20px;
+    width: 100%;
 }
 
-.price { color: #ff4d4d; font-size: 1.2rem; }
+.ticket-info p { margin: 5px 0; color: #ccc; }
+.ticket-info strong { color: white; }
+
+.total-price-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    background: #1a1a1a;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+.price { color: #ff4d4d; font-size: 1.4rem; margin: 0; font-weight: bold;}
 
 .confirm-btn {
     background: #ff4d4d;
     color: white;
     border: none;
-    padding: 12px 40px;
+    padding: 15px;
     font-weight: bold;
-    border-radius: 30px;
+    border-radius: 8px;
     cursor: pointer;
     margin-top: 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: 0.3s;
+    width: 100%;
 }
 
 .confirm-btn:hover { background: #ff1a1a; transform: translateY(-2px); }

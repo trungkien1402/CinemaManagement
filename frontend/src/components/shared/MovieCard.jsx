@@ -1,20 +1,18 @@
 import React, { memo } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Thêm dòng này
+import { useNavigate } from 'react-router-dom';
 import '../style/MovieCard.css';
 
 const MovieCard = ({ movie }) => {
-  const navigate = useNavigate(); // 2. Khai báo cái "vô lăng" để chuyển trang
+  const navigate = useNavigate();
   const { title, image, duration, genre, release_date } = movie;
   const year = release_date ? new Date(release_date).getFullYear() : "";
 
-  // 3. Hàm xử lý khi bấm nút
   const handleBooking = () => {
-    // Vì trang chủ chưa có phần chọn suất chiếu, mình truyền tạm ST01 và R01 để test sơ đồ ghế
-    // Sau này Triển có thể sửa lại để dẫn vào trang Chi tiết phim trước
-    const demoShowtimeId = "ST01";
-    const demoRoomId = "R01";
+    // Tự động sinh mã suất chiếu khớp với ID phim (ST01, ST02, ST03, ST04)
+    const showtimeId = movie.showtimeId || `ST0${movie.movieId}`;
 
-    navigate(`/dat-ve/${demoShowtimeId}/${demoRoomId}`);
+    // SỬA Ở ĐÂY: Thêm lại /R01 ở cuối để khớp khít với khai báo Route cũ trong App.jsx (/:showtimeId/:roomId)
+    navigate(`/dat-ve/${showtimeId}/R01`);
   };
 
   return (
@@ -30,7 +28,6 @@ const MovieCard = ({ movie }) => {
       <div className="movie-info">
         <h3 className="title">{title}</h3>
         <p className="genre">{genre}</p>
-        {/* 4. Gắn hàm vào đây */}
         <button className="btn-book" onClick={handleBooking}>
           Đặt vé
         </button>

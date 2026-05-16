@@ -9,17 +9,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SeatService {
+
     private final SeatRepository seatRepository;
 
-
+    // Lấy danh sách ghế theo phòng (Cách gọi của Triển rất chuẩn)
     public List<Seat> getSeatsByRoom(String roomId) {
         return seatRepository.findByRoom_RoomId(roomId);
     }
 
-    // Hàm cập nhật trạng thái ghế khi có người đặt thành công
-    public void updateSeatStatus(String seatId, boolean status) {
-        Seat seat = seatRepository.findById(seatId).orElseThrow();
-        seat.setIsOccupied(status);
-        seatRepository.save(seat);
-    }
 }
