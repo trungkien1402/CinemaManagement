@@ -8,6 +8,8 @@ import NowShowing from './components/home/NowShowing';
 import ComingSoon from './components/home/ComingSoon';
 import MovieSchedule from './components/home/MovieSchedule';
 import AdminDashboard from './components/admin/AdminDashboard';
+import NewsPage from './components/home/NewsPage';
+import ChatBox from './components/chatbox/ChatBox';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -40,6 +42,7 @@ const LayoutWrapper = ({ children }) => {
 function App() {
   return (
     <Router>
+       <ChatBox />
       <LayoutWrapper>
         <Routes>
           {/* --- PUBLIC ROUTES --- */}
@@ -47,7 +50,7 @@ function App() {
           <Route path="/dang-chieu" element={<NowShowing />} />
           <Route path="/sap-chieu" element={<ComingSoon />} />
           <Route path="/lich-chieu" element={<MovieSchedule />} />
-
+          <Route path="/tin-tuc" element={<NewsPage></NewsPage>}/>
 
           {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
           <Route 
