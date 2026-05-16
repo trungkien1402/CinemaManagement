@@ -4,17 +4,13 @@ import '../style/MovieCard.css';
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
-  const { title, image, duration, genre, release_date } = movie;
+  // Lấy thêm thuộc tính status từ dữ liệu movie gửi sang
+  const { title, image, duration, genre, release_date, status } = movie;
   const year = release_date ? new Date(release_date).getFullYear() : "";
 
   const handleBooking = () => {
-    // Lấy ID động của phim (Dù là phim gốc hay phim mới thêm)
     const rawId = movie.movieId || movie.id;
-
-    // 💡 SỬA TẠI ĐÂY: Tự động chuẩn hóa chuỗi ID (Ví dụ: ID là 2 -> ST02, ID là 11 -> ST11)
     const showtimeId = movie.showtimeId || `ST${String(rawId).padStart(2, '0')}`;
-
-    // Điều hướng chuẩn sang trang sơ đồ ghế
     navigate(`/dat-ve/${showtimeId}`);
   };
 
@@ -31,9 +27,13 @@ const MovieCard = ({ movie }) => {
       <div className="movie-info">
         <h3 className="title">{title}</h3>
         <p className="genre">{genre}</p>
-        <button className="btn-book" onClick={handleBooking}>
-          Đặt vé
-        </button>
+
+        {/* 💡 XỬ LÝ ĐIỀU KIỆN: Nếu status !== 2 (Không phải phim sắp chiếu) thì mới hiện nút Đặt vé */}
+        {status !== 2 && (
+          <button className="btn-book" onClick={handleBooking}>
+            Đặt vé
+          </button>
+        )}
       </div>
     </div>
   );
