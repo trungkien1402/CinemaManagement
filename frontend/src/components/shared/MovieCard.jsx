@@ -24,10 +24,12 @@ const MovieCard = ({ movie }) => {
         <h3 className="title">{title}</h3>
         <p className="genre">{genre}</p>
 
-        {/* Nút Đặt Vé gọi Modal Toàn Cầu */}
-        <button className="btn-book" onClick={handleOpenModal}>
-          Đặt vé
-        </button>
+        {/* 💡 ĐÃ SỬA: Chỉ hiển thị nút Đặt Vé nếu bộ phim đó KHÔNG PHẢI là phim sắp chiếu (status !== 2) */}
+        {movie.status !== 2 && (
+          <button className="btn-book" onClick={handleOpenModal}>
+            Đặt vé
+          </button>
+        )}
       </div>
     </div>
   );
