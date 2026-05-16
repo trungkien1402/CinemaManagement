@@ -8,7 +8,11 @@ import NowShowing from './components/home/NowShowing';
 import ComingSoon from './components/home/ComingSoon';
 import MovieSchedule from './components/home/MovieSchedule';
 import AdminDashboard from './components/admin/AdminDashboard';
+
 import SeatSelection from './components/seat/seat';
+import NewsPage from './components/home/NewsPage';
+import ChatBox from './components/chatbox/ChatBox';
+
 
 // 💡 1. IMPORT MODAL TOÀN CẦU VÀO ĐÂY
 import GlobalBookingModal from './components/shared/GlobalBookingModal';
@@ -43,16 +47,22 @@ const LayoutWrapper = ({ children }) => {
 function App() {
   return (
     <Router>
+       <ChatBox />
       <LayoutWrapper>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dang-chieu" element={<NowShowing />} />
           <Route path="/sap-chieu" element={<ComingSoon />} />
           <Route path="/lich-chieu" element={<MovieSchedule />} />
+
           <Route path="/dat-ve/:showtimeId" element={<SeatSelection />} />
 
-          <Route
-              path="/admin/*"
+          <Route path="/tin-tuc" element={<NewsPage></NewsPage>}/>
+
+          {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
+          <Route 
+              path="/admin/*"  // Thêm dấu /* để nhận các route con như /admin/movies
+
               element={
                 <ProtectedRoute>
                   <AdminDashboard />

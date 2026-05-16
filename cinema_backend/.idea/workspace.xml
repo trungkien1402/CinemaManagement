@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c65d965e-7968-4d2e-8378-4f66bdc0a535" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/config/AppConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/NewsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/payload/request/NewsRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/NewsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend/src/components/chatbox/ChatBox.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend/src/components/home/NewsPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend/src/components/style/News.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminMovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminMovieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/MovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/MovieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Movie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/MovieService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/MovieService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/CinemaBackendApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/config/DataInitializer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/config/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminMovieController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/BookingController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/MovieController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/SeatController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/ShowtimeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/exceptions/GlobalExceptionHendler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Booking.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Movie.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Report.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Room.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Seat.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Showtime.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Theater.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Ticket.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/BookingRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/LoginRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/JwtResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/MessageResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/MovieResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/SeatResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/MovieRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/ReportRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/RoomRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/SeatRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/ShowtimeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TheaterRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/security/jwt/AuthTokenFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/security/jwt/JwtUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/security/services/UserDetailsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/BookingService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/EmailService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/MovieService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/ReportService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/RoomService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/SeatService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/ShowtimeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/TheaterService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/TicketService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/util/AppConstants.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/util/DateUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/cinema/project/CinemaBackendApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/api/axiosClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/api/axiosClient.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/auth/AuthModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/auth/AuthModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/Admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/Admin.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/store/authSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/store/authSlice.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="jdkForImporter" value="ms-17" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="delegateBuildToMaven" value="true" />
+    <option name="jreName" value="ms-17" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3CnQ86dxY2xWoHp0xWoGnJeUm9r" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.cinema_backend [clean].executor": "Run",
+    "Maven.cinema_backend [compile].executor": "Run",
+    "Maven.cinema_backend [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.CinemaBackendApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "Merging be",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/BTL_JAVA/CinemaManagement/cinema_backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.CinemaBackendApplication">
+    <configuration name="database.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/src/main/java/database.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
+    <configuration name="CinemaBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="ms-17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="cinema_backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.cinema.project.CinemaBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Database Script.database.sql" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c65d965e-7968-4d2e-8378-4f66bdc0a535" name="Changes" comment="" />
+      <created>1777018693813</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1777018693813</updated>
+      <workItem from="1777018697056" duration="681000" />
+      <workItem from="1777019512174" duration="4041000" />
+      <workItem from="1777652573525" duration="154000" />
+      <workItem from="1777659303193" duration="5442000" />
+      <workItem from="1778008914797" duration="4316000" />
+      <workItem from="1778028013217" duration="791000" />
+      <workItem from="1778153663385" duration="129000" />
+      <workItem from="1778552580930" duration="17032000" />
+      <workItem from="1778571717680" duration="4000" />
+      <workItem from="1778571747713" duration="11013000" />
+      <workItem from="1778652822236" duration="1932000" />
+      <workItem from="1778655913019" duration="3314000" />
+      <workItem from="1778725485569" duration="8707000" />
+      <workItem from="1778807018592" duration="376000" />
+      <workItem from="1778813105903" duration="77000" />
+      <workItem from="1778832539240" duration="7922000" />
+      <workItem from="1778842233702" duration="69000" />
+      <workItem from="1778924805031" duration="3882000" />
+      <workItem from="1778945551755" duration="2150000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
