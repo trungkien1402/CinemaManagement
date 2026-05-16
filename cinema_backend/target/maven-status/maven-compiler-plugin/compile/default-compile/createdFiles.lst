@@ -1,5 +1,6 @@
 com\cinema\project\payload\response\MovieResponse.class
 com\cinema\project\util\AppConstants.class
+com\cinema\project\controller\NewsController.class
 com\cinema\project\repositories\MovieRepository.class
 com\cinema\project\service\UserService.class
 com\cinema\project\payload\response\MessageResponse.class
@@ -7,8 +8,10 @@ com\cinema\project\util\DateUtils.class
 com\cinema\project\controller\MovieController.class
 com\cinema\project\payload\request\LoginRequest.class
 com\cinema\project\controller\AdminMovieController.class
+com\cinema\project\payload\request\NewsRequest.class
 com\cinema\project\config\SecurityConfig.class
 com\cinema\project\repositories\UserRepository.class
+com\cinema\project\service\NewsService.class
 com\cinema\project\payload\response\JwtResponse.class
 com\cinema\project\security\services\UserDetailsServiceImpl.class
 com\cinema\project\model\Movie.class
@@ -24,6 +27,7 @@ com\cinema\project\service\BookingService.class
 com\cinema\project\CinemaBackendApplication.class
 com\cinema\project\config\DataInitializer.class
 com\cinema\project\payload\request\BookingRequest.class
+com\cinema\project\config\AppConfig.class
 com\cinema\project\controller\AuthController.class
 com\cinema\project\security\jwt\JwtUtils.class
 com\cinema\project\service\EmailService.class

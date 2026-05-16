@@ -8,13 +8,17 @@ D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\sec
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\LoginRequest.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MovieController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\UserService.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\AppConfig.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\MessageRepository.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\NewsRequest.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\SecurityConfig.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AuthController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminMovieController.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\NewsController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\User.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\UserController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MessageResponse.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NewsService.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\DateUtils.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MovieResponse.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\DataInitializer.java

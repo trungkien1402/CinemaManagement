@@ -38,7 +38,6 @@
     margin-bottom: 2.5rem;
     text-align: center;
     background: linear-gradient(to right, #818cf8, #fb7185);
-    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -89,7 +88,7 @@
 }
 
 /* CARDS & FORMS */
-.movie-card {
+.movie-card-admin {
     background: var(--white);
     padding: 2rem;
     border-radius: 20px;

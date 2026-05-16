@@ -120,7 +120,7 @@ const AdminDashboard = () => {
                         <h1 className="page-header">Quản lý kho phim</h1>
                         
                         {/* FORM */}
-                        <form className="movie-card movie-form" onSubmit={handleSubmit}>
+                        <form className="movie-card-admin movie-form" onSubmit={handleSubmit}>
                             <h3 className="card-title">{editingMovieId ? 'Chỉnh sửa phim' : 'Thêm phim mới'}</h3>
                             <div className="form-grid">
                                 <div className="form-group">

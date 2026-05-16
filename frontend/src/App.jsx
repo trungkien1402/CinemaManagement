@@ -8,6 +8,7 @@ import NowShowing from './components/home/NowShowing';
 import ComingSoon from './components/home/ComingSoon';
 import MovieSchedule from './components/home/MovieSchedule';
 import AdminDashboard from './components/admin/AdminDashboard';
+import NewsPage from './components/home/NewsPage';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -47,7 +48,7 @@ function App() {
           <Route path="/dang-chieu" element={<NowShowing />} />
           <Route path="/sap-chieu" element={<ComingSoon />} />
           <Route path="/lich-chieu" element={<MovieSchedule />} />
-
+          <Route path="/tin-tuc" element={<NewsPage></NewsPage>}/>
 
           {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
           <Route 
