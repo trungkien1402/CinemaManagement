@@ -14,8 +14,11 @@ import NewsPage from './components/home/NewsPage';
 import ChatBox from './components/chatbox/ChatBox';
 
 
-// 💡 1. IMPORT MODAL TOÀN CẦU VÀO ĐÂY
+// 💡 IMPORT MODAL TOÀN CẦU
 import GlobalBookingModal from './components/shared/GlobalBookingModal';
+
+// 💡 IMPORT TRANG HỆ THỐNG RẠP MỚI VÀO ĐÂY
+import Theaters from './components/theater/Theaters';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
@@ -33,7 +36,7 @@ const LayoutWrapper = ({ children }) => {
     <div className="app-container">
       {!isAdminPage && <Navbar />}
 
-      {/* 💡 2. ĐẶT MODAL Ở ĐÂY ĐỂ NÓ SỐNG TRƯỜNG SINH BẤT LÃO */}
+      {/* ĐẶT MODAL Ở ĐÂY ĐỂ NÓ SỐNG TRƯỜNG SINH BẤT LÃO */}
       <GlobalBookingModal />
 
       <main className={isAdminPage ? "admin-content-full" : "main-content"}>
@@ -50,6 +53,7 @@ function App() {
        <ChatBox />
       <LayoutWrapper>
         <Routes>
+          {/* --- CÁC TRANG DÀNH CHO KHÁCH HÀNG --- */}
           <Route path="/" element={<Home />} />
           <Route path="/dang-chieu" element={<NowShowing />} />
           <Route path="/sap-chieu" element={<ComingSoon />} />
@@ -57,18 +61,24 @@ function App() {
 
           <Route path="/dat-ve/:showtimeId" element={<SeatSelection />} />
 
+
           <Route path="/tin-tuc" element={<NewsPage></NewsPage>}/>
 
           {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
-          <Route 
-              path="/admin/*"  // Thêm dấu /* để nhận các route con như /admin/movies
+         
+          {/* 💡 THÊM ĐƯỜNG DẪN ĐẾN TRANG RẠP TẠI ĐÂY */}
+          <Route path="/rap" element={<Theaters />} />
 
+          {/* --- TRANG QUẢN TRỊ ADMIN --- */}
+          <Route
+              path="/admin/*"
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
                 </ProtectedRoute>
               }
             />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </LayoutWrapper>

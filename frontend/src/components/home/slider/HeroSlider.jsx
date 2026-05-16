@@ -16,16 +16,23 @@ const HeroSlider = ({ movies }) => {
     return () => clearInterval(timer);
   }, [nextSlide, movies]);
 
+  // 💡 THÊM HÀM BẮN TÍN HIỆU ĐỂ KÍCH HOẠT POPUP TOÀN CỤC
+  const handleQuickBooking = (movieItem) => {
+    if (!movieItem) return;
+    const event = new CustomEvent('open-booking-modal', { detail: movieItem });
+    window.dispatchEvent(event);
+  };
+
   if (!movies || movies.length === 0) return null;
 
   const movie = movies[currentIndex];
 
   return (
     <div className="hero-slider-main">
-  
-      <div 
-        key={movie.movieId} 
-        className="hero-slide-bg" 
+
+      <div
+        key={movie.movieId}
+        className="hero-slide-bg"
         style={{ backgroundImage: `url(${movie.image})` }}
       >
         <div className="hero-overlay-cinema"></div>
@@ -39,7 +46,7 @@ const HeroSlider = ({ movies }) => {
         </div>
 
         <h1 className="hero-movie-title">{movie.title}</h1>
-        
+
         <div className="hero-movie-meta">
           <span className="meta-item"><i className="far fa-clock"></i> {movie.duration} phút</span>
           <span className="hero-separator">|</span>
@@ -51,7 +58,13 @@ const HeroSlider = ({ movies }) => {
         </div>
 
         <div className="hero-slider-actions">
-          <button className="hero-btn-red">Đặt Vé Ngay</button>
+          {/* 💡 ĐÃ THÊM SỰ KIỆN onClick để mở Popup Đặt Vé Nhanh */}
+          <button
+            className="hero-btn-red"
+            onClick={() => handleQuickBooking(movie)}
+          >
+            Đặt Vé Ngay
+          </button>
           <button className="hero-btn-outline">Chi Tiết</button>
         </div>
       </div>

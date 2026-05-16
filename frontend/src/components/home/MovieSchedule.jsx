@@ -1,31 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../style/MovieSchedule.css';
 
 const MovieSchedule = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const theatersData = [
-    { theater_id: 'all', name: 'Tất Cả Rạp' },
-    { theater_id: 'T01', name: 'Vincom Đồng Khởi' },
-    { theater_id: 'T02', name: 'Landmark 81' },
-    { theater_id: 'T03', name: 'Thảo Điền' },
-    { theater_id: 'T04', name: 'Times City Hà Nội' },
-  ];
+  // 💡 ĐÃ SỬA: Vòng lặp i < 7 để hiển thị FULL 1 TUẦN
+  const datesData = useMemo(() => {
+    const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const list = [];
+    const today = new Date();
 
-  const datesData = [
-    { day: 'Thứ 2', date: '2026-04-13', label: '13/4' },
-    { day: 'Thứ 3', date: '2026-04-14', label: '14/4' },
-    { day: 'Thứ 4', date: '2026-04-15', label: '15/4' },
-    { day: 'Thứ 5', date: '2026-04-16', label: '16/4' },
-    { day: 'Thứ 6', date: '2026-04-17', label: '17/4' },
-  ];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
 
-  const [selectedTheater, setSelectedTheater] = useState('all');
-  const [selectedDate, setSelectedDate] = useState('2026-04-13');
+      list.push({
+        day: i === 0 ? 'Hôm nay' : daysOfWeek[d.getDay()],
+        date: `${yyyy}-${mm}-${dd}`,
+        label: `${d.getDate()}/${d.getMonth() + 1}`
+      });
+    }
+    return list;
+  }, []);
+
+  const initialTheater = location.state?.selectedTheaterId || 'all';
+
+  const [theaters, setTheaters] = useState([]);
+  const [selectedTheater, setSelectedTheater] = useState(initialTheater);
+  const [selectedDate, setSelectedDate] = useState(datesData[0].date);
   const [showtimes, setShowtimes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/theaters')
+      .then(res => {
+        const dbTheaters = Array.isArray(res.data) ? res.data : [];
+        setTheaters([{ theaterId: 'all', name: 'Tất Cả Rạp' }, ...dbTheaters]);
+      })
+      .catch(err => {
+        console.error("Lỗi lấy danh sách rạp làm bộ lọc:", err);
+        setTheaters([{ theaterId: 'all', name: 'Tất Cả Rạp' }]);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (location.state?.selectedTheaterId) {
+      setSelectedTheater(location.state.selectedTheaterId);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     setLoading(true);
@@ -86,23 +114,24 @@ const MovieSchedule = () => {
         <h1 className="figma-main-title">Lịch Chiếu</h1>
         <p className="figma-sub-title">Chọn rạp và ngày để xem lịch chiếu</p>
 
-        {/* FILTER RẠP */}
         <div className="figma-filter-group">
           <span className="figma-filter-label">📍 Chọn Rạp</span>
           <div className="figma-cinema-row">
-            {theatersData.map((theater) => (
-              <button
-                key={theater.theater_id}
-                className={`figma-cinema-btn ${selectedTheater === theater.theater_id ? 'active' : ''}`}
-                onClick={() => setSelectedTheater(theater.theater_id)}
-              >
-                {theater.name}
-              </button>
-            ))}
+            {theaters.map((theater) => {
+              const tId = theater.theaterId || theater.theater_id || 'all';
+              return (
+                <button
+                  key={tId}
+                  className={`figma-cinema-btn ${selectedTheater === tId ? 'active' : ''}`}
+                  onClick={() => setSelectedTheater(tId)}
+                >
+                  {theater.name.startsWith('CinemaX') ? theater.name : `${theater.name}`}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* FILTER NGÀY */}
         <div className="figma-filter-group" style={{ marginTop: '24px' }}>
           <span className="figma-filter-label">📅 Chọn Ngày</span>
           <div className="figma-date-row">
@@ -119,7 +148,6 @@ const MovieSchedule = () => {
           </div>
         </div>
 
-        {/* DANH SÁCH LỊCH CHIẾU REAL-TIME */}
         <div className="figma-schedule-list">
           {processedMoviesList.length > 0 ? (
             processedMoviesList.map(({ movie, theaters }) => (
@@ -141,20 +169,18 @@ const MovieSchedule = () => {
                   {Object.values(theaters).map((tData, idx) => (
                     <div key={idx} className="theater-schedule-block" style={{ marginTop: '16px' }}>
                       <div className="figma-cinema-location" style={{ marginBottom: '8px', color: '#ff4d4d', fontWeight: '500' }}>
-                        📍 CinemaX {tData.theaterName}
+                        📍 {tData.theaterName.startsWith('CinemaX') ? tData.theaterName : `CinemaX ${tData.theaterName}`}
                       </div>
 
                       <div className="figma-showtime-grid">
                         {tData.slots
                           .slice()
-                          // 💡 XỬ LÝ SORT CHUẨN XÁC, KHÔNG BAO GIỜ CRASH
                           .sort((a, b) => {
                             const tA = String(a.startTime || a.start_time || "00:00");
                             const tB = String(b.startTime || b.start_time || "00:00");
                             return tA.localeCompare(tB);
                           })
                           .map((slot) => {
-                            // 💡 LẤY THỜI GIAN THEO ĐÚNG BIẾN CỦA SPRING BOOT (startTime)
                             let rawTime = slot.startTime || slot.start_time;
                             let formattedTime = "00:00";
 

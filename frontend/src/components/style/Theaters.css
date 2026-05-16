@@ -1,0 +1,182 @@
+/* ================= TRANG HỆ THỐNG RẠP ================= */
+.theaters-wrapper {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #ffffff;
+}
+
+.theaters-header {
+  margin-bottom: 40px;
+}
+
+.theaters-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.theaters-header p {
+  color: #88888f;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Lưới Grid chứa các Rạp */
+.theaters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 30px;
+}
+
+/* Thẻ Rạp (Card) */
+.theater-card {
+  background: #1c1c20;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #2d2d35;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theater-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border-color: #3a3a45;
+}
+
+/* Khung ảnh rạp */
+.theater-img-box {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.theater-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.theater-card:hover .theater-img-box img {
+  transform: scale(1.05);
+}
+
+/* Nhãn IMAX góc trái */
+.theater-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #e50914;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Khu vực thông tin */
+.theater-info {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.theater-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+}
+
+.theater-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.theater-detail-row i {
+  color: #e50914;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+/* Tiện ích (Amenities) */
+.amenities-section {
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+.amenities-title {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.amenities-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.amenity-tag {
+  background: #2a2a32;
+  color: #ccc;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.amenity-tag .star {
+  color: #f5c518;
+}
+
+/* Khu vực Nút bấm */
+.theater-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.btn-primary-theater {
+  flex: 2;
+  background: #e50914;
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary-theater:hover {
+  background: #b81d24;
+}
+
+.btn-secondary-theater {
+  flex: 1;
+  background: #2a2a32;
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary-theater:hover {
+  background: #3a3a45;
+}

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TheaterRepository extends JpaRepository<Theater, String> {
+    // Kế thừa sẵn các hàm tìm kiếm từ JpaRepository nên không cần viết gì thêm
 }

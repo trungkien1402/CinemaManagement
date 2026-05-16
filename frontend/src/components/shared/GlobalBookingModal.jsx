@@ -1,46 +1,65 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate as useNav } from 'react-router-dom';
 import axios from 'axios';
-import '../style/MovieCard.css'; // Dùng chung CSS của thẻ phim luôn
+import '../style/MovieCard.css';
 
 const GlobalBookingModal = () => {
-  const navigate = useNavigate();
+  const navigate = useNav();
   const [isOpen, setIsOpen] = useState(false);
-  const [movie, setMovie] = useState(null); // Lưu thông tin phim được chọn
+  const [movie, setMovie] = useState(null);
 
+  // 💡 ĐÃ SỬA: Vòng lặp i < 7 để hiển thị FULL 1 TUẦN
+  const datesData = useMemo(() => {
+    const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const list = [];
+    const today = new Date();
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+
+      list.push({
+        day: i === 0 ? 'Hôm nay' : daysOfWeek[d.getDay()],
+        date: `${yyyy}-${mm}-${dd}`,
+        label: `${d.getDate()}/${d.getMonth() + 1}`
+      });
+    }
+    return list;
+  }, []);
+
+  const [theaters, setTheaters] = useState([]);
   const [selectedTheater, setSelectedTheater] = useState('all');
-  const [selectedDate, setSelectedDate] = useState('2026-04-13');
+  const [selectedDate, setSelectedDate] = useState(datesData[0].date);
   const [slots, setSlots] = useState([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
 
-  const theatersData = [
-    { theater_id: 'all', name: 'Tất Cả Rạp' },
-    { theater_id: 'T01', name: 'Vincom Đồng Khởi' },
-    { theater_id: 'T02', name: 'Landmark 81' },
-    { theater_id: 'T03', name: 'Thảo Điền' },
-    { theater_id: 'T04', name: 'Times City Hà Nội' },
-  ];
-
-  const datesData = [
-    { day: 'Thứ 2', date: '2026-04-13', label: '13/4' },
-    { day: 'Thứ 3', date: '2026-04-14', label: '14/4' },
-    { day: 'Thứ 4', date: '2026-04-15', label: '15/4' },
-    { day: 'Thứ 5', date: '2026-04-16', label: '16/4' },
-    { day: 'Thứ 6', date: '2026-04-17', label: '17/4' },
-  ];
-
-  // 💡 LẮNG NGHE TÍN HIỆU TỪ MOVIE CARD GỬI TỚI
   useEffect(() => {
     const handleOpenModal = (event) => {
-      setMovie(event.detail); // Nhận data phim
-      setIsOpen(true);        // Mở popup
+      setMovie(event.detail);
+      setIsOpen(true);
     };
 
     window.addEventListener('open-booking-modal', handleOpenModal);
     return () => window.removeEventListener('open-booking-modal', handleOpenModal);
   }, []);
 
-  // Gọi API lấy giờ chiếu mỗi khi thay đổi rạp/ngày
+  useEffect(() => {
+    if (!isOpen) return;
+
+    axios.get('http://localhost:8080/api/theaters')
+      .then(res => {
+        const dbTheaters = Array.isArray(res.data) ? res.data : [];
+        setTheaters([{ theaterId: 'all', name: 'Tất Cả Rạp' }, ...dbTheaters]);
+      })
+      .catch(err => {
+        console.error("Lỗi lấy danh sách rạp:", err);
+        setTheaters([{ theaterId: 'all', name: 'Tất Cả Rạp' }]);
+      });
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen || !movie) return;
 
@@ -80,23 +99,24 @@ const GlobalBookingModal = () => {
           Đặt Vé Nhanh: <span style={{color: '#ff4d4d'}}>{movie.title}</span>
         </h2>
 
-        {/* CHỌN RẠP */}
         <div style={{marginBottom: '20px'}}>
           <p className="quick-modal-label">📍 Chọn rạp chiếu:</p>
           <div className="quick-modal-flex-row">
-            {theatersData.map(t => (
-              <button
-                key={t.theater_id}
-                className={`quick-modal-chip-btn ${selectedTheater === t.theater_id ? 'active' : ''}`}
-                onClick={() => setSelectedTheater(t.theater_id)}
-              >
-                {t.name}
-              </button>
-            ))}
+            {theaters.map(t => {
+              const tId = t.theaterId || t.theater_id || 'all';
+              return (
+                <button
+                  key={tId}
+                  className={`quick-modal-chip-btn ${selectedTheater === tId ? 'active' : ''}`}
+                  onClick={() => setSelectedTheater(tId)}
+                >
+                  {t.name}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* CHỌN NGÀY */}
         <div style={{marginBottom: '20px'}}>
           <p className="quick-modal-label">📅 Chọn ngày chiếu:</p>
           <div className="quick-modal-flex-row">
@@ -113,7 +133,6 @@ const GlobalBookingModal = () => {
           </div>
         </div>
 
-        {/* XỔ GIỜ CHIẾU */}
         <div>
           <p className="quick-modal-label">🕒 Khung giờ trống thực tế:</p>
           {loadingSlots ? (
