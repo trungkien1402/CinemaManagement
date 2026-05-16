@@ -8,11 +8,14 @@ const MovieCard = ({ movie }) => {
   const year = release_date ? new Date(release_date).getFullYear() : "";
 
   const handleBooking = () => {
-    // Tự động sinh mã suất chiếu khớp với ID phim (ST01, ST02, ST03, ST04)
-    const showtimeId = movie.showtimeId || `ST0${movie.movieId}`;
+    // Lấy ID động của phim (Dù là phim gốc hay phim mới thêm)
+    const rawId = movie.movieId || movie.id;
 
-    // SỬA Ở ĐÂY: Thêm lại /R01 ở cuối để khớp khít với khai báo Route cũ trong App.jsx (/:showtimeId/:roomId)
-    navigate(`/dat-ve/${showtimeId}/R01`);
+    // 💡 SỬA TẠI ĐÂY: Tự động chuẩn hóa chuỗi ID (Ví dụ: ID là 2 -> ST02, ID là 11 -> ST11)
+    const showtimeId = movie.showtimeId || `ST${String(rawId).padStart(2, '0')}`;
+
+    // Điều hướng chuẩn sang trang sơ đồ ghế
+    navigate(`/dat-ve/${showtimeId}`);
   };
 
   return (

@@ -21,10 +21,8 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
-
   const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
@@ -49,28 +47,21 @@ function App() {
           <Route path="/sap-chieu" element={<ComingSoon />} />
           <Route path="/lich-chieu" element={<MovieSchedule />} />
 
+          {/* Route cho trang đặt vé (Đã tối ưu, bỏ /:roomId thừa) */}
+          <Route path="/dat-ve/:showtimeId" element={<SeatSelection />} />
 
           {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
-          <Route 
-              path="/admin/*"  // Thêm dấu /* để nhận các route con như /admin/movies
+          <Route
+              path="/admin/*"
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
 
           {/* --- CATCH ALL --- */}
           <Route path="*" element={<Navigate to="/" replace />} />
-          {/* --- PUBLIC ROUTES --- */}
-
-          <Route path="/" element={<Home />} />
-          <Route path="/dang-chieu" element={<NowShowing />} />
-          <Route path="/sap-chieu" element={<ComingSoon />} />
-          <Route path="/lich-chieu" element={<MovieSchedule />} />
-
-          {/* Route mới cho trang đặt vé */}
-          <Route path="/dat-ve/:showtimeId/:roomId" element={<SeatSelection />} />
         </Routes>
       </LayoutWrapper>
     </Router>
