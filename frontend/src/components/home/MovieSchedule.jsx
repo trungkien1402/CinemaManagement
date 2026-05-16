@@ -1,111 +1,196 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../style/MovieSchedule.css';
-import CinemaFilter from '../shared/CinemaFilter';
-import DateFilter from '../shared/DateFilter';
-import MovieScheduleCard from '../shared/MovieScheduleCard';
 
 const MovieSchedule = () => {
-  const [selectedTheater, setSelectedTheater] = useState('all');
-  const [selectedDate, setSelectedDate] = useState('13/4');
+  const navigate = useNavigate();
 
-  // 1. Dữ liệu Rạp
   const theatersData = [
     { theater_id: 'all', name: 'Tất Cả Rạp' },
-    { theater_id: 'T001', name: 'Vincom Đồng Khởi', city: 'Hồ Chí Minh' },
-    { theater_id: 'T002', name: 'Landmark 81', city: 'Hồ Chí Minh' },
-    { theater_id: 'T003', name: 'Thảo Điền', city: 'Hồ Chí Minh' },
-    { theater_id: 'T004', name: 'Times City Hà Nội', city: 'Hà Nội' },
+    { theater_id: 'T01', name: 'Vincom Đồng Khởi' },
+    { theater_id: 'T02', name: 'Landmark 81' },
+    { theater_id: 'T03', name: 'Thảo Điền' },
+    { theater_id: 'T04', name: 'Times City Hà Nội' },
   ];
 
-  // 2. Dữ liệu Ngày
   const datesData = [
-    { day: 'Th 2', date: '13/4' },
-    { day: 'Th 3', date: '14/4' },
-    { day: 'Th 4', date: '15/4' },
-    { day: 'Th 5', date: '16/4' },
-    { day: 'Th 6', date: '17/4' },
+    { day: 'Thứ 2', date: '2026-04-13', label: '13/4' },
+    { day: 'Thứ 3', date: '2026-04-14', label: '14/4' },
+    { day: 'Thứ 4', date: '2026-04-15', label: '15/4' },
+    { day: 'Thứ 5', date: '2026-04-16', label: '16/4' },
+    { day: 'Thứ 6', date: '2026-04-17', label: '17/4' },
   ];
 
-  // 3. Dữ liệu mẫu (Giả lập dữ liệu từ API có đầy đủ liên kết)
-  const allSchedules = [
-    {
-      movie: {
-        movie_id: 'M001',
-        title: 'Bóng Đêm Huyền Bí',
-        rating: '8.5',
-        duration: 142,
-        genre: 'Hành động, Phiêu lưu',
-        image: 'https://image.tmdb.org/t/p/original/mBaXZ95O2vS7AyvO6FLPb6GZp4F.jpg',
-        author: 'Christopher Nolan'
-      },
-      theater_id: 'T001', // Thuộc Vincom Đồng Khởi
-      date: '13/4',
-      showtimes: [
-        { time: '10:30', format: '2D', room_number: 1, available_seats: 45, total_seats: 100 },
-        { time: '13:15', format: 'IMAX', room_number: 5, available_seats: 32, total_seats: 50 }
-      ]
-    },
-    {
-      movie: {
-        movie_id: 'M002',
-        title: 'Thành Phố Mất Tích',
-        rating: '7.2',
-        duration: 110,
-        genre: 'Hài, Phiêu lưu',
-        image: 'https://image.tmdb.org/t/p/original/6S9877YGEp3pS9Z8f6S9.jpg', 
-        author: 'Adam Nee'
-      },
-      theater_id: 'T002', // Thuộc Landmark 81
-      date: '14/4',
-      showtimes: [
-        { time: '16:00', format: '2D', room_number: 2, available_seats: 58, total_seats: 120 }
-      ]
-    }
-    // Bạn có thể thêm nhiều object phim ở các rạp và ngày khác nhau vào đây
-  ];
+  const [selectedTheater, setSelectedTheater] = useState('all');
+  const [selectedDate, setSelectedDate] = useState('2026-04-13');
+  const [showtimes, setShowtimes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // 4. Logic Lọc dữ liệu
-  // Sử dụng useMemo để tối ưu hiệu năng, chỉ lọc lại khi rạp hoặc ngày thay đổi
-  const filteredSchedules = useMemo(() => {
-    return allSchedules.filter(item => {
-      const matchTheater = selectedTheater === 'all' || item.theater_id === selectedTheater;
-      const matchDate = item.date === selectedDate;
-      return matchTheater && matchDate;
+  useEffect(() => {
+    setLoading(true);
+    axios.get(`http://localhost:8080/api/showtimes/filter`, {
+      params: { theaterId: selectedTheater, date: selectedDate }
+    })
+    .then(res => {
+      setShowtimes(Array.isArray(res.data) ? res.data : []);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error("Lỗi lấy danh sách lịch chiếu động:", err);
+      setShowtimes([]);
+      setLoading(false);
     });
   }, [selectedTheater, selectedDate]);
 
+  const handleTimeSlotClick = (showtimeId) => {
+    if (showtimeId) navigate(`/dat-ve/${showtimeId}`);
+  };
+
+  if (loading) return <div className="loading-text">Đang tải lịch chiếu từ hệ thống...</div>;
+
+  const safeShowtimes = Array.isArray(showtimes) ? showtimes : [];
+  const groupSchedules = {};
+
+  safeShowtimes.forEach(st => {
+    if (!st || !st.movie || st.movie.status !== 1) return;
+
+    const mId = st.movie.movieId || st.movie.id;
+    if (!mId) return;
+
+    if (!groupSchedules[mId]) {
+      groupSchedules[mId] = {
+        movie: st.movie,
+        theaters: {}
+      };
+    }
+
+    const tId = st.room?.theater?.theaterId || "T01";
+    const tName = st.room?.theater?.name || "Vincom Đồng Khởi";
+
+    if (!groupSchedules[mId].theaters[tId]) {
+      groupSchedules[mId].theaters[tId] = {
+        theaterName: tName,
+        slots: []
+      };
+    }
+    groupSchedules[mId].theaters[tId].slots.push(st);
+  });
+
+  const processedMoviesList = Object.values(groupSchedules);
+
   return (
-    <div className="booking-wrapper">
-      <div className="container">
-        <h1 className="main-title">Lịch Chiếu</h1>
-        
-        <CinemaFilter 
-          theaters={theatersData} 
-          activeId={selectedTheater} 
-          onSelect={setSelectedTheater} 
-        />
+    <div className="figma-booking-wrapper">
+      <div className="figma-container">
 
-        <DateFilter 
-          dates={datesData} 
-          activeDate={selectedDate} 
-          onSelect={setSelectedDate} 
-        />
+        <h1 className="figma-main-title">Lịch Chiếu</h1>
+        <p className="figma-sub-title">Chọn rạp và ngày để xem lịch chiếu</p>
 
-        <div className="schedule-list">
-          {filteredSchedules.length > 0 ? (
-            filteredSchedules.map((item, index) => (
-              <MovieScheduleCard 
-                key={`${item.movie.movie_id}-${index}`}
-                movie={item.movie} 
-                showtimes={item.showtimes} 
-              />
+        {/* FILTER RẠP */}
+        <div className="figma-filter-group">
+          <span className="figma-filter-label">📍 Chọn Rạp</span>
+          <div className="figma-cinema-row">
+            {theatersData.map((theater) => (
+              <button
+                key={theater.theater_id}
+                className={`figma-cinema-btn ${selectedTheater === theater.theater_id ? 'active' : ''}`}
+                onClick={() => setSelectedTheater(theater.theater_id)}
+              >
+                {theater.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* FILTER NGÀY */}
+        <div className="figma-filter-group" style={{ marginTop: '24px' }}>
+          <span className="figma-filter-label">📅 Chọn Ngày</span>
+          <div className="figma-date-row">
+            {datesData.map((dateItem) => (
+              <div
+                key={dateItem.date}
+                className={`figma-date-box ${selectedDate === dateItem.date ? 'active' : ''}`}
+                onClick={() => setSelectedDate(dateItem.date)}
+              >
+                <span className="figma-day-text">{dateItem.day}</span>
+                <span className="figma-date-text">{dateItem.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* DANH SÁCH LỊCH CHIẾU REAL-TIME */}
+        <div className="figma-schedule-list">
+          {processedMoviesList.length > 0 ? (
+            processedMoviesList.map(({ movie, theaters }) => (
+              <div className="figma-movie-card-horizontal" key={movie.movieId}>
+
+                <div className="poster-area" style={{ width: '140px', minWidth: '140px' }}>
+                  <img src={movie.image} alt={movie.title} style={{ width: '100%', height: '195px', objectFit: 'cover', borderRadius: '6px' }} />
+                </div>
+
+                <div className="figma-info-area">
+                  <h2 className="figma-movie-title">{movie.title}</h2>
+
+                  <div className="figma-movie-meta">
+                    <span className="figma-star">⭐ 8.5</span>
+                    <span>{movie.duration} phút</span>
+                    <span>{movie.genre}</span>
+                  </div>
+
+                  {Object.values(theaters).map((tData, idx) => (
+                    <div key={idx} className="theater-schedule-block" style={{ marginTop: '16px' }}>
+                      <div className="figma-cinema-location" style={{ marginBottom: '8px', color: '#ff4d4d', fontWeight: '500' }}>
+                        📍 CinemaX {tData.theaterName}
+                      </div>
+
+                      <div className="figma-showtime-grid">
+                        {tData.slots
+                          .slice()
+                          // 💡 XỬ LÝ SORT CHUẨN XÁC, KHÔNG BAO GIỜ CRASH
+                          .sort((a, b) => {
+                            const tA = String(a.startTime || a.start_time || "00:00");
+                            const tB = String(b.startTime || b.start_time || "00:00");
+                            return tA.localeCompare(tB);
+                          })
+                          .map((slot) => {
+                            // 💡 LẤY THỜI GIAN THEO ĐÚNG BIẾN CỦA SPRING BOOT (startTime)
+                            let rawTime = slot.startTime || slot.start_time;
+                            let formattedTime = "00:00";
+
+                            if (rawTime) {
+                              if (typeof rawTime === 'string') {
+                                formattedTime = rawTime.substring(0, 5);
+                              } else if (Array.isArray(rawTime) && rawTime.length >= 2) {
+                                formattedTime = `${String(rawTime[0]).padStart(2, '0')}:${String(rawTime[1]).padStart(2, '0')}`;
+                              }
+                            }
+
+                            return (
+                              <button
+                                key={slot.showtimeId || Math.random()}
+                                className="figma-time-slot"
+                                onClick={() => handleTimeSlotClick(slot.showtimeId)}
+                              >
+                                <span className="figma-time-val">{formattedTime}</span>
+                                <span className="figma-type-val">2D • Live</span>
+                              </button>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
             ))
           ) : (
-            <div className="no-schedule">
-              <p>Rất tiếc, không có suất chiếu nào phù hợp với lựa chọn của bạn.</p>
+            <div className="figma-no-data" style={{ textAlign: 'center', padding: '40px', color: '#6c6c73' }}>
+              <p>Rất tiếc, không có lịch chiếu nào phù hợp cho ngày này.</p>
             </div>
           )}
         </div>
+
       </div>
     </div>
   );

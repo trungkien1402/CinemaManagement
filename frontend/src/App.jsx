@@ -10,14 +10,14 @@ import MovieSchedule from './components/home/MovieSchedule';
 import AdminDashboard from './components/admin/AdminDashboard';
 import SeatSelection from './components/seat/seat';
 
+// 💡 1. IMPORT MODAL TOÀN CẦU VÀO ĐÂY
+import GlobalBookingModal from './components/shared/GlobalBookingModal';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
-
   if (!user || user.role !== 'ROLE_ADMIN') {
     return <Navigate to="/" replace />;
   }
-
   return children;
 };
 
@@ -28,6 +28,10 @@ const LayoutWrapper = ({ children }) => {
   return (
     <div className="app-container">
       {!isAdminPage && <Navbar />}
+
+      {/* 💡 2. ĐẶT MODAL Ở ĐÂY ĐỂ NÓ SỐNG TRƯỜNG SINH BẤT LÃO */}
+      <GlobalBookingModal />
+
       <main className={isAdminPage ? "admin-content-full" : "main-content"}>
         {children}
       </main>
@@ -41,16 +45,12 @@ function App() {
     <Router>
       <LayoutWrapper>
         <Routes>
-          {/* --- PUBLIC ROUTES --- */}
           <Route path="/" element={<Home />} />
           <Route path="/dang-chieu" element={<NowShowing />} />
           <Route path="/sap-chieu" element={<ComingSoon />} />
           <Route path="/lich-chieu" element={<MovieSchedule />} />
-
-          {/* Route cho trang đặt vé (Đã tối ưu, bỏ /:roomId thừa) */}
           <Route path="/dat-ve/:showtimeId" element={<SeatSelection />} />
 
-          {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
           <Route
               path="/admin/*"
               element={
@@ -59,8 +59,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-          {/* --- CATCH ALL --- */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </LayoutWrapper>

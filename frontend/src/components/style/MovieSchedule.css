@@ -1,74 +1,233 @@
-/* Layout tổng thể */
-.booking-wrapper {
-  padding: 40px 0;
-  background-color: #f9f9f9; /* Màu nền nhẹ để nổi bật các card */
+/* Tone màu tổng thể đen huyền bí */
+.figma-booking-wrapper {
+  padding: 60px 0;
+  background-color: #000000;
   min-height: 100vh;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-.container {
-  max-width: 1200px;
+.figma-container {
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 24px;
 }
 
-.main-title {
-  font-size: 2rem;
+/* Tiêu đề thuần khiết chuẩn Figma */
+.figma-main-title {
+  font-size: 2.4rem;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  border-left: 5px solid #ff0000; /* Tạo điểm nhấn bên cạnh tiêu đề */
-  padding-left: 15px;
+  color: #ffffff;
+  margin: 0 0 6px 0;
 }
 
-/* Khoảng cách giữa các bộ lọc và danh sách */
-.schedule-list {
-  margin-top: 30px;
+.figma-sub-title {
+  color: #6c6c73;
+  font-size: 0.95rem;
+  margin-bottom: 45px;
+}
+
+/* Các bộ lọc phía trên */
+.figma-filter-group {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Khoảng cách giữa các MovieScheduleCard */
+  gap: 10px;
 }
 
-/* Hiệu ứng mượt mà khi lọc (Optional) */
-.schedule-list > * {
-  animation: fadeIn 0.4s ease-in-out;
+.figma-filter-label {
+  font-size: 0.85rem;
+  color: #6c6c73;
+  font-weight: 500;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Hàng nút bấm chọn Rạp */
+.figma-cinema-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-/* CSS cho trường hợp không tìm thấy lịch chiếu */
-.no-schedule {
+.figma-cinema-btn {
+  background: #161619;
+  border: 1px solid #232329;
+  color: #9da0a6;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.figma-cinema-btn:hover, .figma-cinema-btn.active {
+  background: #e50914; /* Màu đỏ rạp phim rực rỡ */
+  border-color: #e50914;
+  color: #ffffff;
+}
+
+/* Ô chọn Ngày */
+.figma-date-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.figma-date-box {
+  background: #161619;
+  border: 1px solid #232329;
+  border-radius: 8px;
+  width: 68px;
+  padding: 14px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.figma-day-text {
+  font-size: 0.75rem;
+  color: #6c6c73;
+  margin-bottom: 4px;
+}
+
+.figma-date-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.figma-date-box:hover, .figma-date-box.active {
+  background: #e50914;
+  border-color: #e50914;
+}
+
+.figma-date-box:hover .figma-day-text, .figma-date-box.active .figma-day-text {
+  color: #fce8e8;
+}
+
+/* ================= PANEL CARD PHIM NẰM NGANG FIGMA ================= */
+.figma-schedule-list {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.figma-movie-card-horizontal {
+  display: flex;
+  background-color: #121214; /* Màu xám đen nền card mượt mà */
+  border: 1px solid #1a1a1f;
+  padding: 24px;
+  border-radius: 12px;
+  gap: 28px;
+}
+
+/* Cột Poster trái */
+.figma-poster-area {
+  width: 140px;
+  min-width: 140px;
+}
+
+.figma-poster-area img {
+  width: 100%;
+  height: 195px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Cột thông tin phải */
+.figma-info-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* 💡 SỬA ĐỔI QUAN TRỌNG: Đổi tên phim sang màu đỏ cam chuẩn Figma */
+.figma-movie-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #ff4d4d; /* Đỏ cam rực rỡ */
+}
+
+.figma-movie-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.88rem;
+  color: #8c8c93;
+  margin-bottom: 12px;
+}
+
+.figma-star {
+  color: #ffb400;
+  font-weight: 700;
+}
+
+.figma-cinema-location {
+  font-size: 0.85rem;
+  color: #5c5c63;
+  margin-bottom: 20px;
+}
+
+/* Lưới ô nút Giờ Chiếu */
+.figma-showtime-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.figma-time-slot {
+  background: #1c1c20;
+  border: 1px solid #282830;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.figma-time-slot:hover {
+  background: #e50914;
+  border-color: #e50914;
+}
+
+.figma-time-val {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.figma-type-val {
+  font-size: 0.68rem;
+  color: #6c6c73;
+  margin-top: 2px;
+}
+
+.figma-time-slot:hover .figma-type-val {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+/* Box rỗng */
+.figma-no-data {
   text-align: center;
   padding: 60px 20px;
-  background: #fff;
+  background: #121214;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border: 1px dashed #ccc;
+  color: #5c5c63;
 }
 
-.no-schedule p {
+.loading-text {
+  color: white;
+  text-align: center;
+  margin-top: 100px;
   font-size: 1.1rem;
-  color: #666;
-  margin: 0;
-}
-
-/* Responsive cho mobile */
-@media (max-width: 768px) {
-  .main-title {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .booking-wrapper {
-    padding: 20px 0;
-  }
 }

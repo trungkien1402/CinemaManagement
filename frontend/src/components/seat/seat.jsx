@@ -14,22 +14,24 @@ const SeatSelection = () => {
     useEffect(() => {
         if (!showtimeId) return;
 
-        setSelectedSeats([]); // XÓA TRÍ NHỚ GHẾ KHI ĐỔI PHIM
+        setSelectedSeats([]); // XÓA TRÍ NHỚ GHẾ ĐANG CHỌN KHI ĐỔI PHIM/SUẤT CHIẾU
         setLoading(true);
 
-        axios.get(`http://localhost:8080/api/showtimes/${showtimeId}/seats`)
+        // 💡 ĐÃ SỬA: Gọi đúng Endpoint API lấy trạng thái ghế phân tách riêng biệt theo showtimeId
+        axios.get(`http://localhost:8080/api/seats/showtime/${showtimeId}`)
             .then(res => {
                 setSeats(res.data);
                 setLoading(false);
             })
             .catch(err => {
-                console.error("Lỗi tải ghế:", err);
+                console.error("Lỗi tải ghế theo suất chiếu:", err);
                 setLoading(false);
             });
     }, [showtimeId]);
 
     const toggleSeat = (seat) => {
-        if (seat.occupied || seat.isOccupied) return;
+        // 💡 ĐÃ SỬA: Kiểm tra đúng tên trường biến 'isBooked' từ Backend trả về để khóa không cho click
+        if (seat.isBooked) return;
 
         const isAlreadySelected = selectedSeats.find(s => s.seatId === seat.seatId);
         if (isAlreadySelected) {
@@ -76,7 +78,9 @@ const SeatSelection = () => {
             <div className="seat-grid">
                 {seats.map(seat => {
                     const isSelected = selectedSeats.some(s => s.seatId === seat.seatId);
-                    const isOccupied = seat.occupied || seat.isOccupied;
+
+                    // 💡 ĐÃ SỬA: Đồng bộ kiểm tra biến seat.isBooked chuẩn mã JSON Backend gán trạng thái
+                    const isOccupied = seat.isBooked;
                     let seatClass = "seat-box";
 
                     if (isOccupied) seatClass += " occupied";
