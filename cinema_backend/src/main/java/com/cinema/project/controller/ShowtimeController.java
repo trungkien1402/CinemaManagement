@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/showtimes")
-@CrossOrigin(origins = "*", maxAge = 3600) // Bắt buộc để React ở port 5173 gọi không bị lỗi CORS
+@CrossOrigin(origins = "*", maxAge = 3600) 
 public class ShowtimeController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class ShowtimeController {
     @Autowired
     private ShowtimeRepository showtimeRepository;
 
-    // 💡 API MỚI: Phục vụ bộ lọc lịch chiếu biến thiên theo Ngày và Rạp cho cả Trang chủ và Lịch chiếu
+
     @GetMapping("/filter")
     public ResponseEntity<?> getShowtimesByFilter(
             @RequestParam String theaterId,
@@ -39,12 +39,12 @@ public class ShowtimeController {
             List<Showtime> filteredList;
 
             if ("all".equalsIgnoreCase(theaterId)) {
-                // Nếu chọn Tất Cả Rạp -> Chỉ lọc theo Ngày
+                
                 filteredList = allShowtimes.stream()
                         .filter(st -> st.getShowDate() != null && st.getShowDate().equals(date))
                         .collect(Collectors.toList());
             } else {
-                // Nếu chọn rạp cụ thể -> Lọc khít theo cả Mã Rạp và Ngày
+
                 filteredList = allShowtimes.stream()
                         .filter(st -> st.getShowDate() != null && st.getShowDate().equals(date)
                                 && st.getRoom() != null && st.getRoom().getTheater() != null
@@ -59,17 +59,17 @@ public class ShowtimeController {
 
     @GetMapping("/{showtimeId}/seats")
     public ResponseEntity<List<SeatResponse>> getSeatsForShowtime(@PathVariable String showtimeId) {
-        // 1. Tìm suất chiếu để biết phim chiếu ở phòng nào
+
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy suất chiếu"));
 
-        // 2. Lấy toàn bộ 50 ghế vật lý của phòng đó
+
         List<Seat> allSeats = seatRepository.findByRoom_RoomId(showtime.getRoom().getRoomId());
 
-        // 3. Lấy danh sách ID các ghế đã bị mua TRONG ĐÚNG SUẤT CHIẾU NÀY
+
         List<String> bookedSeatIds = ticketRepository.findBookedSeatIdsByShowtime(showtimeId);
 
-        // 4. Lắp ráp lại trả về cho React (Kiểm tra xem seatId có nằm trong danh sách bị mua chưa)
+
         List<SeatResponse> response = allSeats.stream().map(seat -> {
             boolean isOccupied = bookedSeatIds.contains(seat.getSeatId());
             return new SeatResponse(
