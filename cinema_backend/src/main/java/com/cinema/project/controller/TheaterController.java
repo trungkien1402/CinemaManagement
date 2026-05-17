@@ -11,12 +11,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/theaters")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // 💡 Bắt buộc phải có dòng này để React không bị chặn CORS
+@CrossOrigin(origins = "*") 
 public class TheaterController {
 
     private final TheaterRepository theaterRepository;
 
-    // API trả về toàn bộ danh sách rạp chiếu phim cho Frontend làm bộ lọc
     @GetMapping
     public ResponseEntity<?> getAllTheaters() {
         try {
