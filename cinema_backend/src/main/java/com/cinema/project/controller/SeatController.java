@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/seats")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // Mở cửa cho React cổng 5173 truy cập
+@CrossOrigin(origins = "*")
 public class SeatController {
 
     private final SeatService seatService;
 
-    // Giữ lại API cũ của Triển để hệ thống không bị lỗi cấu trúc liên kết
+   
     @GetMapping("/room/{roomId}")
     public ResponseEntity<?> getSeatsByRoom(@PathVariable String roomId) {
         try {
@@ -23,7 +23,7 @@ public class SeatController {
         }
     }
 
-    // 💡 API MỚI TOÀN DIỆN: React sẽ gọi: GET http://localhost:8080/api/seats/showtime/ST01
+
     @GetMapping("/showtime/{showtimeId}")
     public ResponseEntity<?> getSeatsByShowtime(@PathVariable String showtimeId) {
         try {
