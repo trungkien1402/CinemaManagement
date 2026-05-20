@@ -12,7 +12,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class MovieController {
 
     private final MovieService movieService;

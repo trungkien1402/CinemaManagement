@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/showtimes")
-@CrossOrigin(origins = "*", maxAge = 3600) 
+
 public class ShowtimeController {
 
     @Autowired

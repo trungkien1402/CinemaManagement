@@ -5,80 +5,65 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c65d965e-7968-4d2e-8378-4f66bdc0a535" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/config/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/NewsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/payload/request/NewsRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/NewsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/components/chatbox/ChatBox.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/components/home/NewsPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/components/style/News.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/config/VnpayConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/VnpayController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/BookingSeat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Payment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/BookingRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/BookingSeatRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/PaymentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d2319d84-0028-483e-ad11-215a716902f5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d2319d84-0028-483e-ad11-215a716902f5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminMovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminMovieController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/BookingController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/MovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/MovieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/NewsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/NewsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/SeatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/SeatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/ShowtimeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/ShowtimeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/TheaterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/TheaterController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/MovieService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/MovieService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Booking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/payload/request/BookingRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/payload/request/BookingRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/TicketRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/BookingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/CinemaBackendApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/config/DataInitializer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/config/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminMovieController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/BookingController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/MovieController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/SeatController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/ShowtimeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/exceptions/GlobalExceptionHendler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Booking.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Movie.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Report.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Room.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Seat.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Showtime.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Theater.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Ticket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/BookingRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/LoginRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/JwtResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/MessageResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/MovieResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/response/SeatResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/MovieRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/ReportRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/RoomRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/SeatRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/ShowtimeRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TheaterRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/security/jwt/AuthTokenFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/security/jwt/JwtUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/security/services/UserDetailsServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/BookingService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/EmailService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/MovieService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/ReportService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/RoomService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/SeatService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/ShowtimeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/TheaterService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/TicketService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/util/AppConstants.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/util/DateUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/cinema/project/CinemaBackendApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminMovieController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminMovieController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/BookingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/BookingController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/MovieController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/MovieController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/NewsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/NewsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/SeatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/SeatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/ShowtimeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/ShowtimeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/TheaterController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/TheaterController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Booking.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Booking.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Theater.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Theater.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/BookingRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/BookingRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/security/services/UserDetailsServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/security/services/UserDetailsServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/BookingService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/service/BookingService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/service/SeatService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/service/SeatService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-16T22-50-31_103.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-16T22-51-45_982.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-16T22-54-31_787.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-16T23-05-26_702.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-16T23-06-31_510.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-16T23-07-47_828.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/api/axiosClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/api/axiosClient.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/auth/AuthModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/auth/AuthModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/Admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/Admin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/store/authSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/store/authSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/payment/payment.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/seat/seat.jsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,6 +110,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.cinema_backend [clean,install...].executor": "Run",
     "Maven.cinema_backend [clean].executor": "Run",
     "Maven.cinema_backend [compile].executor": "Run",
     "Maven.cinema_backend [install].executor": "Run",
@@ -139,7 +125,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.CinemaBackendApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Merging be",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/BTL_JAVA/CinemaManagement/cinema_backend",
@@ -213,6 +199,11 @@
       <workItem from="1778842233702" duration="69000" />
       <workItem from="1778924805031" duration="3882000" />
       <workItem from="1778945551755" duration="2150000" />
+      <workItem from="1778948737129" duration="57000" />
+      <workItem from="1779150867733" duration="64000" />
+      <workItem from="1779246891329" duration="209000" />
+      <workItem from="1779257667666" duration="14433000" />
+      <workItem from="1779285062561" duration="7215000" />
     </task>
     <servers />
   </component>

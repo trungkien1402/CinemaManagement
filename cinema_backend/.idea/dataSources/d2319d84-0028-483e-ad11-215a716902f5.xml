@@ -1001,7 +1001,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <schema id="289" parent="1" name="cinema">
       <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
       <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2026-05-16.16:06:06</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2026-05-20.14:02:29</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="290" parent="1" name="conveniencestorexyz">
@@ -1340,149 +1340,158 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Position>4</Position>
       <StoredType>varchar(100)|0s</StoredType>
     </column>
-    <index id="367" parent="306" name="PRIMARY">
+    <column id="367" parent="306" name="operating_hours">
+      <Position>5</Position>
+      <StoredType>varchar(100)|0s</StoredType>
+      <CollationName>utf8mb3_general_ci</CollationName>
+    </column>
+    <column id="368" parent="306" name="phone">
+      <Position>6</Position>
+      <StoredType>varchar(20)|0s</StoredType>
+    </column>
+    <index id="369" parent="306" name="PRIMARY">
       <ColNames>theater_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="368" parent="306" name="PRIMARY">
+    <key id="370" parent="306" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="369" parent="307" name="ticket_id">
+    <column id="371" parent="307" name="ticket_id">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(10)|0s</StoredType>
     </column>
-    <column id="370" parent="307" name="booking_date">
+    <column id="372" parent="307" name="booking_date">
       <Position>2</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="371" parent="307" name="status">
+    <column id="373" parent="307" name="status">
       <Position>3</Position>
       <StoredType>varchar(20)|0s</StoredType>
     </column>
-    <column id="372" parent="307" name="total_price">
+    <column id="374" parent="307" name="total_price">
       <Position>4</Position>
       <StoredType>double|0s</StoredType>
     </column>
-    <column id="373" parent="307" name="seat_id">
+    <column id="375" parent="307" name="seat_id">
       <Position>5</Position>
       <StoredType>varchar(10)|0s</StoredType>
     </column>
-    <column id="374" parent="307" name="showtime_id">
+    <column id="376" parent="307" name="showtime_id">
       <Position>6</Position>
       <StoredType>varchar(10)|0s</StoredType>
     </column>
-    <column id="375" parent="307" name="user_id">
+    <column id="377" parent="307" name="user_id">
       <Position>7</Position>
       <StoredType>bigint|0s</StoredType>
     </column>
-    <foreign-key id="376" parent="307" name="FK1f6n3pv4b80wl6gj4ra32ctxk">
+    <foreign-key id="378" parent="307" name="FK1f6n3pv4b80wl6gj4ra32ctxk">
       <ColNames>seat_id</ColNames>
       <RefColNames>seat_id</RefColNames>
       <RefTableName>seats</RefTableName>
     </foreign-key>
-    <foreign-key id="377" parent="307" name="FKo0u22315eoxdv59tn6wsdn8b1">
+    <foreign-key id="379" parent="307" name="FKo0u22315eoxdv59tn6wsdn8b1">
       <ColNames>showtime_id</ColNames>
       <RefColNames>showtime_id</RefColNames>
       <RefTableName>showtimes</RefTableName>
     </foreign-key>
-    <foreign-key id="378" parent="307" name="FK4eqsebpimnjen0q46ja6fl2hl">
+    <foreign-key id="380" parent="307" name="FK4eqsebpimnjen0q46ja6fl2hl">
       <ColNames>user_id</ColNames>
       <RefColNames>user_id</RefColNames>
       <RefTableName>users</RefTableName>
     </foreign-key>
-    <index id="379" parent="307" name="PRIMARY">
+    <index id="381" parent="307" name="PRIMARY">
       <ColNames>ticket_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="380" parent="307" name="FK1f6n3pv4b80wl6gj4ra32ctxk">
+    <index id="382" parent="307" name="FK1f6n3pv4b80wl6gj4ra32ctxk">
       <ColNames>seat_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="381" parent="307" name="FKo0u22315eoxdv59tn6wsdn8b1">
+    <index id="383" parent="307" name="FKo0u22315eoxdv59tn6wsdn8b1">
       <ColNames>showtime_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="382" parent="307" name="FK4eqsebpimnjen0q46ja6fl2hl">
+    <index id="384" parent="307" name="FK4eqsebpimnjen0q46ja6fl2hl">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="383" parent="307" name="PRIMARY">
+    <key id="385" parent="307" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="384" parent="308" name="user_id">
-      <AutoIncrement>204</AutoIncrement>
+    <column id="386" parent="308" name="user_id">
+      <AutoIncrement>214</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>bigint|0s</StoredType>
     </column>
-    <column id="385" parent="308" name="email">
+    <column id="387" parent="308" name="email">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(100)|0s</StoredType>
     </column>
-    <column id="386" parent="308" name="gender">
+    <column id="388" parent="308" name="gender">
       <Position>3</Position>
       <StoredType>varchar(10)|0s</StoredType>
     </column>
-    <column id="387" parent="308" name="password">
+    <column id="389" parent="308" name="password">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="388" parent="308" name="phone">
+    <column id="390" parent="308" name="phone">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>varchar(12)|0s</StoredType>
     </column>
-    <column id="389" parent="308" name="role">
+    <column id="391" parent="308" name="role">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>varchar(20)|0s</StoredType>
     </column>
-    <column id="390" parent="308" name="username">
+    <column id="392" parent="308" name="username">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>varchar(50)|0s</StoredType>
     </column>
-    <index id="391" parent="308" name="PRIMARY">
+    <index id="393" parent="308" name="PRIMARY">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="392" parent="308" name="UK_6dotkott2kjsp8vw4d0m25fb7">
+    <index id="394" parent="308" name="UK_6dotkott2kjsp8vw4d0m25fb7">
       <ColNames>email</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="393" parent="308" name="UK_du5v5sr43g5bfnji4vb8hg5s3">
+    <index id="395" parent="308" name="UK_du5v5sr43g5bfnji4vb8hg5s3">
       <ColNames>phone</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="394" parent="308" name="UK_r43af9ap4edm43mmtq01oddj6">
+    <index id="396" parent="308" name="UK_r43af9ap4edm43mmtq01oddj6">
       <ColNames>username</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="395" parent="308" name="PRIMARY">
+    <key id="397" parent="308" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="396" parent="308" name="UK_6dotkott2kjsp8vw4d0m25fb7">
+    <key id="398" parent="308" name="UK_6dotkott2kjsp8vw4d0m25fb7">
       <UnderlyingIndexName>UK_6dotkott2kjsp8vw4d0m25fb7</UnderlyingIndexName>
     </key>
-    <key id="397" parent="308" name="UK_du5v5sr43g5bfnji4vb8hg5s3">
+    <key id="399" parent="308" name="UK_du5v5sr43g5bfnji4vb8hg5s3">
       <UnderlyingIndexName>UK_du5v5sr43g5bfnji4vb8hg5s3</UnderlyingIndexName>
     </key>
-    <key id="398" parent="308" name="UK_r43af9ap4edm43mmtq01oddj6">
+    <key id="400" parent="308" name="UK_r43af9ap4edm43mmtq01oddj6">
       <UnderlyingIndexName>UK_r43af9ap4edm43mmtq01oddj6</UnderlyingIndexName>
     </key>
   </database-model>

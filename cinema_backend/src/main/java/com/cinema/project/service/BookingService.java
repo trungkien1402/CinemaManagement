@@ -3,7 +3,9 @@ package com.cinema.project.service;
 import com.cinema.project.payload.request.BookingRequest;
 import com.cinema.project.model.*;
 import com.cinema.project.repositories.*;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,49 +26,92 @@ public class BookingService {
     @Transactional
     public List<Ticket> processBooking(BookingRequest request) {
 
+        // tìm user
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy User"));
-        Showtime showtime = showtimeRepository.findById(request.getShowtimeId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy Suất chiếu"));
+                .orElseThrow(() ->
+                        new RuntimeException("Không tìm thấy User"));
+
+        // tìm suất chiếu
+        Showtime showtime =
+                showtimeRepository.findById(request.getShowtimeId())
+                        .orElseThrow(() ->
+                                new RuntimeException("Không tìm thấy Suất chiếu"));
 
         List<Ticket> savedTickets = new ArrayList<>();
 
-        //  Lấy danh sách các ghế ĐÃ BÁN của riêng suất chiếu này để kiểm tra
-        List<String> bookedSeatIds = ticketRepository.findBookedSeatIdsByShowtime(request.getShowtimeId());
-
+        // duyệt từng ghế
         for (String seatId : request.getSeatIds()) {
 
-            //  Chặn ngay nếu phát hiện ghế đã có người đặt trong suất chiếu này
-            if (bookedSeatIds.contains(seatId)) {
-                throw new RuntimeException("Rất tiếc, một trong các ghế bạn chọn đã có người đặt!");
-            }
-
             Seat seat = seatRepository.findById(seatId)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy Ghế"));
+                    .orElseThrow(() ->
+                            new RuntimeException("Không tìm thấy Ghế"));
 
-            //  Backend tự tính giá an toàn dựa trên loại ghế
-            double ticketPrice = 30000; // Mặc định lấy giá ghế THƯỜNG
-            if ("VIP".equalsIgnoreCase(seat.getSeatType())) {
-                ticketPrice = 50000;
-            } else if ("DOI".equalsIgnoreCase(seat.getSeatType())) {
-                ticketPrice = 100000;
+            // kiểm tra ghế đã được đặt chưa
+            boolean exists =
+                    ticketRepository.existsByShowtimeAndSeat(
+                            showtime,
+                            seat
+                    );
+
+            if (exists) {
+                throw new RuntimeException(
+                        "Ghế " + seat.getSeatNumber()
+                                + " đã được đặt!"
+                );
             }
 
-        
+            // tính giá ghế
+            double ticketPrice = calculateSeatPrice(seat);
+
+            // tạo ticket
             Ticket ticket = new Ticket();
-            String randomTicketId = "TK-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+
+            String randomTicketId =
+                    "TK-" +
+                            UUID.randomUUID()
+                                    .toString()
+                                    .substring(0, 8)
+                                    .toUpperCase();
 
             ticket.setTicketId(randomTicketId);
+
             ticket.setUser(user);
+
             ticket.setShowtime(showtime);
+
             ticket.setSeat(seat);
-            ticket.setTotalPrice(ticketPrice); 
-            ticket.setStatus("SUCCESS");
+
+            ticket.setTotalPrice(ticketPrice);
+
+            ticket.setStatus("BOOKED");
+
             ticket.setBookingDate(LocalDateTime.now());
 
-            savedTickets.add(ticketRepository.save(ticket));
+            savedTickets.add(
+                    ticketRepository.save(ticket)
+            );
         }
 
         return savedTickets;
+    }
+
+    // tính giá theo loại ghế
+    private double calculateSeatPrice(Seat seat) {
+
+        if (seat.getSeatType() == null) {
+            return 30000;
+        }
+
+        switch (seat.getSeatType().toUpperCase()) {
+
+            case "VIP":
+                return 50000;
+
+            case "DOI":
+                return 100000;
+
+            default:
+                return 30000;
+        }
     }
 }

@@ -93,6 +93,7 @@
       <schema-mapping>
         <introspection-scope>
           <node kind="schema">
+            <name qname="databasecnm" />
             <name qname="@" />
             <name qname="cinema" />
           </node>

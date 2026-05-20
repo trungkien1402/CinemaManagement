@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/movies/admin")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
 public class AdminMovieController {
 
     private final MovieRepository movieRepository;

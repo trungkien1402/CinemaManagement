@@ -1,87 +1,159 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation
+} from 'react-router-dom';
+
 import { useSelector } from 'react-redux';
+
 import Navbar from './components/shared/Navbar';
 import Footer from './components/shared/Footer';
+
 import Home from './components/home/Home';
 import NowShowing from './components/home/NowShowing';
 import ComingSoon from './components/home/ComingSoon';
 import MovieSchedule from './components/home/MovieSchedule';
+import NewsPage from './components/home/NewsPage';
+
 import AdminDashboard from './components/admin/AdminDashboard';
 
-import SeatSelection from './components/seat/seat';
-import NewsPage from './components/home/NewsPage';
+import SeatSelection from './components/seat/SeatSelection';
+
 import ChatBox from './components/chatbox/ChatBox';
-
-
-// 💡 IMPORT MODAL TOÀN CẦU
 import GlobalBookingModal from './components/shared/GlobalBookingModal';
 
-// 💡 IMPORT TRANG HỆ THỐNG RẠP MỚI VÀO ĐÂY
 import Theaters from './components/theater/Theaters';
 
+import PaymentSuccess from './components/payment/PaymentSuccess';
+
+
+// ================= PROTECTED ROUTE =================
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
+
   if (!user || user.role !== 'ROLE_ADMIN') {
     return <Navigate to="/" replace />;
   }
+
   return children;
 };
 
+
+// ================= LAYOUT =================
 const LayoutWrapper = ({ children }) => {
+
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith('/admin');
+
+  const isAdminPage =
+    location.pathname.startsWith('/admin');
 
   return (
     <div className="app-container">
+
+      {/* NAVBAR */}
       {!isAdminPage && <Navbar />}
 
-      {/* ĐẶT MODAL Ở ĐÂY ĐỂ NÓ SỐNG TRƯỜNG SINH BẤT LÃO */}
+      {/* CHATBOX */}
+      <ChatBox />
+
+      {/* MODAL */}
       <GlobalBookingModal />
 
-      <main className={isAdminPage ? "admin-content-full" : "main-content"}>
+      {/* CONTENT */}
+      <main
+        className={
+          isAdminPage
+            ? "admin-content-full"
+            : "main-content"
+        }
+      >
         {children}
       </main>
+
+      {/* FOOTER */}
       {!isAdminPage && <Footer />}
+
     </div>
   );
 };
 
+
+// ================= APP =================
 function App() {
+
   return (
     <Router>
-       <ChatBox />
+
       <LayoutWrapper>
+
         <Routes>
-          {/* --- CÁC TRANG DÀNH CHO KHÁCH HÀNG --- */}
+
+          {/* ================= USER ================= */}
+
           <Route path="/" element={<Home />} />
-          <Route path="/dang-chieu" element={<NowShowing />} />
-          <Route path="/sap-chieu" element={<ComingSoon />} />
-          <Route path="/lich-chieu" element={<MovieSchedule />} />
 
-          <Route path="/dat-ve/:showtimeId" element={<SeatSelection />} />
-
-
-          <Route path="/tin-tuc" element={<NewsPage></NewsPage>}/>
-
-          {/* --- ADMIN ROUTES (Riêng biệt hoàn toàn) --- */}
-         
-          {/* 💡 THÊM ĐƯỜNG DẪN ĐẾN TRANG RẠP TẠI ĐÂY */}
-          <Route path="/rap" element={<Theaters />} />
-
-          {/* --- TRANG QUẢN TRỊ ADMIN --- */}
           <Route
-              path="/admin/*"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
+            path="/dang-chieu"
+            element={<NowShowing />}
+          />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/sap-chieu"
+            element={<ComingSoon />}
+          />
+
+          <Route
+            path="/lich-chieu"
+            element={<MovieSchedule />}
+          />
+
+          <Route
+            path="/dat-ve/:showtimeId"
+            element={<SeatSelection />}
+          />
+
+          <Route
+            path="/tin-tuc"
+            element={<NewsPage />}
+          />
+
+          <Route
+            path="/rap"
+            element={<Theaters />}
+          />
+
+          {/* ================= PAYMENT ================= */}
+
+          <Route
+            path="/payment-success"
+            element={<PaymentSuccess />}
+          />
+
+          {/* ================= ADMIN ================= */}
+
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ================= NOT FOUND ================= */}
+
+          <Route
+            path="*"
+            element={<Navigate to="/" replace />}
+          />
+
         </Routes>
+
       </LayoutWrapper>
+
     </Router>
   );
 }

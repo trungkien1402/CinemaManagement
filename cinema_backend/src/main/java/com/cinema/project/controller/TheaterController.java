@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/theaters")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") 
+
 public class TheaterController {
 
     private final TheaterRepository theaterRepository;

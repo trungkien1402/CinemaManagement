@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/seats")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+
 public class SeatController {
 
     private final SeatService seatService;

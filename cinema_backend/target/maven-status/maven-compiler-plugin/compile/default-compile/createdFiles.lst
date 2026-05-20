@@ -13,7 +13,9 @@ com\cinema\project\repositories\UserRepository.class
 com\cinema\project\payload\response\JwtResponse.class
 com\cinema\project\security\services\UserDetailsServiceImpl.class
 com\cinema\project\service\RoomService.class
+com\cinema\project\controller\TheaterController.class
 com\cinema\project\model\Report.class
+com\cinema\project\model\Payment.class
 com\cinema\project\service\ReportService.class
 com\cinema\project\service\MovieService.class
 com\cinema\project\repositories\TheaterRepository.class
@@ -22,9 +24,12 @@ com\cinema\project\exceptions\GlobalExceptionHendler.class
 com\cinema\project\model\User.class
 com\cinema\project\service\TheaterService.class
 com\cinema\project\controller\SeatController.class
+com\cinema\project\controller\VnpayController.class
+com\cinema\project\model\BookingSeat.class
 com\cinema\project\model\Ticket.class
 com\cinema\project\model\Room.class
 com\cinema\project\repositories\RoomRepository.class
+com\cinema\project\repositories\PaymentRepository.class
 com\cinema\project\controller\NewsController.class
 com\cinema\project\model\Theater.class
 com\cinema\project\payload\response\MessageResponse.class
@@ -34,7 +39,9 @@ com\cinema\project\payload\request\NewsRequest.class
 com\cinema\project\config\SecurityConfig.class
 com\cinema\project\service\NewsService.class
 com\cinema\project\model\Movie.class
+com\cinema\project\config\VnpayConfig.class
 com\cinema\project\repositories\SeatRepository.class
+com\cinema\project\repositories\BookingRepository.class
 com\cinema\project\repositories\TicketRepository.class
 com\cinema\project\controller\UserController.class
 com\cinema\project\repositories\ReportRepository.class
@@ -46,6 +53,7 @@ com\cinema\project\controller\BookingController.class
 com\cinema\project\payload\request\BookingRequest.class
 com\cinema\project\config\AppConfig.class
 com\cinema\project\controller\AuthController.class
+com\cinema\project\repositories\BookingSeatRepository.class
 com\cinema\project\security\jwt\JwtUtils.class
 com\cinema\project\service\EmailService.class
 com\cinema\project\model\Seat.class

@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+
 public class UserController {
 
     private final UserRepository userRepository;

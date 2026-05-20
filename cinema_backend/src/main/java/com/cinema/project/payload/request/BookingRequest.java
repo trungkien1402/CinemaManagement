@@ -8,5 +8,6 @@ public class BookingRequest {
     private Long userId;
     private String showtimeId;
     private List<String> seatIds;
-    private Double pricePerSeat;
+    private Long pricePerSeat; // Đổi sang Long để quản lý tiền tệ chính xác
+    private Long totalPrice;   // Đổi sang Long để không bao giờ bị dính đuôi ".0"
 }
