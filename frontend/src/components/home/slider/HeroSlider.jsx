@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom'; // 💡 1. IMPORT HOOK ĐIỀU HƯỚNG
 import '../../style/HeroSlider.css';
 
 const HeroSlider = ({ movies }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate(); // 💡 2. KHỞI TẠO HOOK NAVIGATE
 
   const nextSlide = useCallback(() => {
     if (movies && movies.length > 0) {
@@ -16,11 +18,20 @@ const HeroSlider = ({ movies }) => {
     return () => clearInterval(timer);
   }, [nextSlide, movies]);
 
-  // 💡 THÊM HÀM BẮN TÍN HIỆU ĐỂ KÍCH HOẠT POPUP TOÀN CỤC
+  // Hàm phát tín hiệu mở Popup Đặt Vé Nhanh
   const handleQuickBooking = (movieItem) => {
     if (!movieItem) return;
     const event = new CustomEvent('open-booking-modal', { detail: movieItem });
     window.dispatchEvent(event);
+  };
+
+  // 💡 3. HÀM CHUYỂN SANG TRANG CHI TIẾT PHIM TỪ BANNER TOP
+  const handleGoToDetail = (movieItem) => {
+    if (!movieItem) return;
+    const id = movieItem.movieId || movieItem.id;
+    if (id) {
+      navigate(`/phim/${id}`);
+    }
   };
 
   if (!movies || movies.length === 0) return null;
@@ -58,18 +69,24 @@ const HeroSlider = ({ movies }) => {
         </div>
 
         <div className="hero-slider-actions">
-          {/* 💡 ĐÃ THÊM SỰ KIỆN onClick để mở Popup Đặt Vé Nhanh */}
+          {/* Nút Đặt Vé Ngay giữ nguyên tính năng bật Popup */}
           <button
             className="hero-btn-red"
             onClick={() => handleQuickBooking(movie)}
           >
             Đặt Vé Ngay
           </button>
-          <button className="hero-btn-outline">Chi Tiết</button>
+
+          {/* 💡 4. ĐÃ GẮN SỰ KIỆN CLICK VÀO NÚT CHI TIẾT */}
+          <button
+            className="hero-btn-outline"
+            onClick={() => handleGoToDetail(movie)}
+          >
+            Chi Tiết
+          </button>
         </div>
       </div>
 
-  
       <div className="hero-slider-dots-container">
         {movies.map((_, index) => (
           <div 
