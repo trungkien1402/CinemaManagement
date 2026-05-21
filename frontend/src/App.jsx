@@ -28,6 +28,7 @@ import GlobalBookingModal from './components/shared/GlobalBookingModal';
 import Theaters from './components/theater/Theaters';
 
 import PaymentSuccess from './components/payment/PaymentSuccess';
+import BookingHistory from './components/ticket/BookingHistory';
 
 
 // ================= PROTECTED ROUTE =================
@@ -131,7 +132,8 @@ function App() {
             path="/payment-success"
             element={<PaymentSuccess />}
           />
-
+          
+          <Route path="/ve-da-dat" element={<BookingHistory/>} />
           {/* ================= ADMIN ================= */}
 
           <Route
