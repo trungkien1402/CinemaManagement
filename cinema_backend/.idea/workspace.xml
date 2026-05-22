@@ -5,46 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c65d965e-7968-4d2e-8378-4f66bdc0a535" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d2319d84-0028-483e-ad11-215a716902f5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d2319d84-0028-483e-ad11-215a716902f5.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/BookingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Booking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Showtime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Showtime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/TicketRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/BookingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/BookingController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Booking.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Booking.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Showtime.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Showtime.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Ticket.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Ticket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T21-55-25_550.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T21-56-23_080.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T21-57-00_949.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-05-37_163.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-06-27_266.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-18-15_548.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-19-03_551.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-19-29_584.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-19-49_444.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-20-28_614.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-20-36_141.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-22-00_515.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-35-06_679.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-35-37_014.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-36-18_051.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-37-56_424.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-38-09_834.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-39-16_932.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-20T22-44-16_535.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/NewsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/NewsPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/News.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/News.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/BookingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,44 +53,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.cinema_backend [clean,install...].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cinema_backend [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cinema_backend [compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cinema_backend [install].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.CinemaBackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/BTL_JAVA/CinemaManagement/cinema_backend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.cinema_backend [clean,install...].executor": "Run",
+    "Maven.cinema_backend [clean].executor": "Run",
+    "Maven.cinema_backend [compile].executor": "Run",
+    "Maven.cinema_backend [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.CinemaBackendApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "lichsudatve",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/BTL_JAVA/CinemaManagement/cinema_backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java" />
@@ -188,6 +152,7 @@
       <workItem from="1779342085391" duration="6853000" />
       <workItem from="1779352951173" duration="133000" />
       <workItem from="1779361561215" duration="35000" />
+      <workItem from="1779424088679" duration="1831000" />
     </task>
     <servers />
   </component>
