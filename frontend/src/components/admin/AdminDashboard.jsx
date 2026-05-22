@@ -4,6 +4,12 @@ import { useSelector } from 'react-redux';
 import api from '../../api/axiosClient';
 import '../style/Admin.css';
 
+// Thêm thư viện vẽ biểu đồ
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
@@ -11,6 +17,9 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('movies');
     const [movies, setMovies] = useState([]);
     const [users, setUsers] = useState([]);
+    // Thêm state lưu thống kê
+    const [analytics, setAnalytics] = useState({ totalRevenue: 0, totalTickets: 0 });
+    
     const [loading, setLoading] = useState(false);
     const [editingMovieId, setEditingMovieId] = useState(null);
 
@@ -43,10 +52,21 @@ const AdminDashboard = () => {
         finally { setLoading(false); }
     }, []);
 
+    // Hàm lấy dữ liệu thống kê
+    const fetchAnalytics = useCallback(async () => {
+        setLoading(true);
+        try {
+            const res = await api.get('/admin/reports/summary');
+            setAnalytics(res.data);
+        } catch (err) { console.error("Lỗi fetch thống kê:", err); }
+        finally { setLoading(false); }
+    }, []);
+
     useEffect(() => {
         if (activeTab === 'movies') fetchMovies();
         if (activeTab === 'users') fetchUsers();
-    }, [activeTab, fetchMovies, fetchUsers]);
+        if (activeTab === 'analytics') fetchAnalytics(); // Gọi khi chọn tab thống kê
+    }, [activeTab, fetchMovies, fetchUsers, fetchAnalytics]);
 
     // ================= HANDLERS =================
     const handleMovieChange = (e) => {
@@ -96,11 +116,20 @@ const AdminDashboard = () => {
         <div className="admin-container">
             {/* SIDEBAR */}
             <aside className="admin-sidebar">
-                <div className="sidebar-logo">CINEMA ADMIN</div>
+                <div className="sidebar-logo"
+                onClick={() => setActiveTab('movies')} 
+        style={{ cursor: 'pointer' }}
+        >CINEMA ADMIN</div>
                 <nav className="sidebar-nav">
                     <button className={activeTab === 'movies' ? 'active' : ''} onClick={() => setActiveTab('movies')}>
                         <span className="icon">🎬</span> Quản lý phim
                     </button>
+
+                    {/* NÚT THỐNG KÊ MỚI THÊM */}
+                    <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => setActiveTab('analytics')}>
+                        <span className="icon">📊</span> Thống kê doanh thu
+                    </button>
+
                     <button className={activeTab === 'users' ? 'active' : ''} onClick={() => setActiveTab('users')}>
                         <span className="icon">👥</span> Người dùng
                     </button>
@@ -115,6 +144,7 @@ const AdminDashboard = () => {
             <main className="admin-content">
                 {loading && <div className="loading-spinner">Đang tải dữ liệu...</div>}
 
+                {/* TAB PHIM - GIỮ NGUYÊN 100% CỦA ÔNG */}
                 {activeTab === 'movies' && (
                     <div className="fade-in">
                         <h1 className="page-header">Quản lý kho phim</h1>
@@ -186,6 +216,49 @@ const AdminDashboard = () => {
                     </div>
                 )}
 
+                {/* TAB THỐNG KÊ (MỚI THÊM) */}
+                {activeTab === 'analytics' && (
+                    <div className="fade-in">
+                        <h1 className="page-header">Dashboard Doanh Thu</h1>
+                        
+                        <div className="analytics-grid">
+                            <div className="stat-card">
+                                <span className="stat-icon">💰</span>
+                                <div className="stat-info">
+                                    <h3>Tổng doanh thu</h3>
+                                    <p>{analytics.totalRevenue?.toLocaleString('vi-VN')} VND</p>
+                                </div>
+                            </div>
+                            <div className="stat-card">
+                                <span className="stat-icon">🎟️</span>
+                                <div className="stat-info">
+                                    <h3>Tổng vé đã bán</h3>
+                                    <p>{analytics.totalTickets} vé</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Biểu đồ cũng được bọc bằng class movie-card-admin để đồng bộ khung trắng */}
+                        <div className="movie-card-admin" style={{ marginTop: '2rem' }}>
+                            <h3 className="card-title">Biểu đồ doanh thu</h3>
+                            <div style={{ height: '300px' }}>
+                                <Bar 
+                                    data={{ 
+                                        labels: ['Doanh thu', 'Vé bán'], 
+                                        datasets: [{ 
+                                            label: 'Số liệu hệ thống', 
+                                            data: [analytics.totalRevenue, analytics.totalTickets * 10000], 
+                                            backgroundColor: ['#6366f1', '#a855f7'] 
+                                        }] 
+                                    }} 
+                                    options={{ maintainAspectRatio: false }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* TAB NGƯỜI DÙNG - GIỮ NGUYÊN 100% CỦA ÔNG */}
                 {activeTab === 'users' && (
                     <div className="fade-in">
                         <h1 className="page-header">Danh sách người dùng</h1>
