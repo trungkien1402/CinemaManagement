@@ -16,7 +16,7 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    // CLIENT API
+    // CLIENT API - Lấy danh sách phim (Đang chiếu / Sắp chiếu hoặc Tất cả)
     @GetMapping
     public ResponseEntity<MovieResponse> getAllMovies(
             @RequestParam(required = false) Integer status
@@ -29,13 +29,16 @@ public class MovieController {
         return ResponseEntity.ok(new MovieResponse(true, list));
     }
 
+    // CLIENT API - Lấy chi tiết 1 bộ phim theo mã ID truyền từ Frontend
     @GetMapping("/{id}")
-    public ResponseEntity<?> getMovieById(@PathVariable Long id) {
+    public ResponseEntity<?> getMovieById(@PathVariable Integer id) {
 
-        return movieService.getMovieById(id)
+        // 💡 GIẢI PHÁP: Chuyển đổi an toàn từ Integer sang Long trước khi truyền vào tầng Service
+        Long idInLongFormat = id.longValue();
+
+        return movieService.getMovieById(idInLongFormat)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
 
 }

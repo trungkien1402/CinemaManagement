@@ -1,52 +1,39 @@
-/* Container chính */
+/* Khung bọc lớn bên ngoài */
 .section-header-nowshowing {
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto; 
-    background-color: #121212; 
+    width: 100%;
+    max-width: 100%;
+    background-color: #0a0a0c;
+    min-height: 100vh;
+    padding: 40px 8%;
+    box-sizing: border-box;
 }
 
-
+/* Tiêu đề mục */
 .title-nowshowing {
-    text-align: center;
-    font-size: 2rem;
-    color: #ffff;
+    color: white;
     margin-bottom: 30px;
-    text-transform: uppercase;
-    position: relative;
-    padding-bottom: 10px;
+    border-left: 4px solid #ff3333;
+    padding-left: 15px;
+    font-size: 1.8rem;
 }
 
-
-.title-nowshowing::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background-color: #ff4d4d; 
-    border-radius: 2px;
+/* 💡 LỚP LƯỚI MỚI: Cưỡng ép luôn hiển thị đủ 4 phim đều nhau trên hàng rộng rãi */
+.movie-grid-layout {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 30px !important;
+    width: 100% !important;
+    box-sizing: border-box;
 }
 
-
-.movie-grid {
-    display: grid;
-
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 30px;
-    padding: 20px 0;
-}
-
-
-@media (max-width: 600px) {
-    .movie-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 15px;
+/* Tự động thu gọn số lượng cột khi co màn hình nhỏ lại */
+@media (max-width: 1200px) {
+    .movie-grid-layout {
+        grid-template-columns: repeat(3, 1fr) !important;
     }
-    
-    .title-nowshowing {
-        font-size: 1.5rem;
+}
+@media (max-width: 768px) {
+    .movie-grid-layout {
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 }

@@ -23,6 +23,12 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import SeatSelection from './components/seat/SeatSelection';
 
 import ChatBox from './components/chatbox/ChatBox';
+
+
+// 💡 IMPORT TRANG CHI TIẾT PHIM MỚI VÀO ĐÂY
+import MovieDetail from './components/movie/MovieDetail';
+
+
 import GlobalBookingModal from './components/shared/GlobalBookingModal';
 
 import Theaters from './components/theater/Theaters';
@@ -34,6 +40,7 @@ import BookingHistory from './components/ticket/BookingHistory';
 // ================= PROTECTED ROUTE =================
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
+
 
   if (!user || user.role !== 'ROLE_ADMIN') {
     return <Navigate to="/" replace />;
@@ -96,6 +103,7 @@ function App() {
 
           <Route path="/" element={<Home />} />
 
+
           <Route
             path="/dang-chieu"
             element={<NowShowing />}
@@ -151,6 +159,24 @@ function App() {
             path="*"
             element={<Navigate to="/" replace />}
           />
+
+          {/* 💡 TUYẾN ĐƯỜNG XEM CHI TIẾT PHIM THEO ID PHIM */}
+          <Route path="/phim/:id" element={<MovieDetail />} />
+
+          <Route path="/dat-ve/:showtimeId" element={<SeatSelection />} />
+
+          <Route path="/tin-tuc" element={<NewsPage />} />
+
+          {/* 💡 THÊM ĐƯỜNG DẪN ĐẾN TRANG RẠP TẠI ĐÂY */}
+          <Route path="/rap" element={<Theaters />} />
+
+          {/* --- TRANG QUẢN TRỊ ADMIN --- */}
+          <Route path="/admin/*" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+
 
         </Routes>
 
