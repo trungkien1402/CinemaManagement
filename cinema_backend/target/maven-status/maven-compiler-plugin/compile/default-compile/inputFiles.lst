@@ -37,6 +37,7 @@ D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\pay
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ShowtimeService.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\SeatResponse.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\EmailService.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\ReportController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Ticket.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\UserRepository.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\SeatService.java

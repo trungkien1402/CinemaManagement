@@ -56,6 +56,7 @@ com\cinema\project\controller\AuthController.class
 com\cinema\project\repositories\BookingSeatRepository.class
 com\cinema\project\security\jwt\JwtUtils.class
 com\cinema\project\service\EmailService.class
+com\cinema\project\controller\ReportController.class
 com\cinema\project\model\Seat.class
 com\cinema\project\service\SeatService.class
 com\cinema\project\service\TicketService.class
