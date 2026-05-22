@@ -53,4 +53,17 @@ public class BookingController {
                 )
         );
     }
+    @GetMapping("/history/{userId}")
+    public ResponseEntity<?> getBookingHistory(@PathVariable Long userId) {
+        try {
+            // 1. Lấy danh sách vé từ database dựa vào userId (kiểu Long)
+            List<Ticket> tickets = ticketRepository.findByUserId(userId);
+
+            // 2. SỬA TẠI ĐÂY: Trả về biến 'tickets' thay vì 'history'
+            return ResponseEntity.ok(tickets);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi khi lấy lịch sử đặt vé: " + e.getMessage());
+        }
+    }
 }

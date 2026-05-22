@@ -2,35 +2,38 @@ package com.cinema.project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "bookings")
+// 1. SỬA TÊN BẢNG THÀNH TICKET (Vì DB của bạn thực tế dùng bảng tickets)
+@Table(name = "tickets")
 @Data
 public class Booking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bookingId;
+    @Column(name = "ticket_id", length = 50) // Đồng bộ độ dài 50 ký tự tránh lỗi Truncated lúc trước
+    private String ticketId;
 
-    @Column(name = "user_id")
-    private Long userId;
-
-    @ManyToOne
-    @JoinColumn(name = "showtime_id")
-    private Showtime showtime;
+    // 2. Kiểm tra tên cột, đổi từ "created_at" thành "booking_date" cho khớp với DB thực tế
+    @Column(name = "booking_date")
+    private LocalDateTime bookingDate;
 
     @Column(name = "total_price")
     private Double totalPrice;
 
-    @Column(name = "status")
+    @Column(length = 20)
     private String status;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    // 3. Các mối quan hệ khóa ngoại (Foreign Key) sang bảng khác
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "showtime_id") // Khớp cột showtime_id trong DB
+    private Showtime showtime;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
-    private List<BookingSeat> bookingSeats;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id") // Khớp cột user_id trong DB
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seat_id") // Khớp cột seat_id trong DB
+    private Seat seat;
 }

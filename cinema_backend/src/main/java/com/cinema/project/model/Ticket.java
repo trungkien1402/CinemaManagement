@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class Ticket {
 
     @Id
-    @Column(name = "ticket_id", length = 10)
+    @Column(name = "ticket_id", length = 50)
     private String ticketId;
 
     @Column(name = "total_price")
@@ -22,15 +22,17 @@ public class Ticket {
     @Column(name = "booking_date")
     private LocalDateTime bookingDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "showtime_id")
     private Showtime showtime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seat_id")
     private Seat seat;
+
+
 }

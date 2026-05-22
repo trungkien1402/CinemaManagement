@@ -18,7 +18,7 @@ public class Showtime {
     @Column(name = "showtime_id", length = 10)
     private String showtimeId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id")
     @JsonIgnoreProperties("showtimes")
     private Movie movie;

@@ -67,24 +67,8 @@ const NewsPage = () => {
                         key={index}
                     >
 
-                        <div className="news-image">
-
-                            <img
-                                src={item.image}
-                                alt={item.title}
-                            />
-
-                            <div className="news-date">
-                                {item.pubDate}
-                            </div>
-
-                        </div>
 
                         <div className="news-content">
-
-                            <h2>
-                                {item.title}
-                            </h2>
 
                             <div
                                 className="news-description"
