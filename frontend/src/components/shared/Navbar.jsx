@@ -101,6 +101,17 @@ const Navbar = () => {
                                         <span>{user.email || 'Thành viên CinemaX'}</span>
                                     </div>
                                     <div className="dropdown-divider"></div>
+                                    
+                                    {/* Nút quay lại trang quản trị dành riêng cho ADMIN */}
+                                    {(user.role === 'ROLE_ADMIN' || user.role === 'ADMIN' || user.role === 'admin') && (
+                                        <>
+                                            <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
+                                                <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i> 
+                                                <span style={{fontWeight: 'bold', color: '#ffc107'}}>Trang Quản Trị</span>
+                                            </Link>
+                                            <div className="dropdown-divider"></div>
+                                        </>
+                                    )}
                                     <Link to="/profile" className="dropdown-item">
                                         <i className="fa-regular fa-user"></i> Hồ sơ của tôi
                                     </Link>

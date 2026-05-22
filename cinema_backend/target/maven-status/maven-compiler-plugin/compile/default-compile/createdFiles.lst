@@ -22,13 +22,17 @@ com\cinema\project\repositories\TheaterRepository.class
 com\cinema\project\model\Showtime.class
 com\cinema\project\exceptions\GlobalExceptionHendler.class
 com\cinema\project\model\User.class
+com\cinema\project\repositories\VoucherRepository.class
+com\cinema\project\payload\request\RoomCreationRequest.class
 com\cinema\project\service\TheaterService.class
+com\cinema\project\model\Voucher.class
 com\cinema\project\controller\SeatController.class
 com\cinema\project\controller\VnpayController.class
 com\cinema\project\model\BookingSeat.class
 com\cinema\project\model\Ticket.class
 com\cinema\project\model\Room.class
 com\cinema\project\repositories\RoomRepository.class
+com\cinema\project\controller\AdminCinemaController.class
 com\cinema\project\repositories\PaymentRepository.class
 com\cinema\project\controller\NewsController.class
 com\cinema\project\model\Theater.class
@@ -49,6 +53,7 @@ com\cinema\project\security\jwt\AuthTokenFilter.class
 com\cinema\project\service\BookingService.class
 com\cinema\project\CinemaBackendApplication.class
 com\cinema\project\config\DataInitializer.class
+com\cinema\project\controller\AdminBookingController.class
 com\cinema\project\controller\BookingController.class
 com\cinema\project\payload\request\BookingRequest.class
 com\cinema\project\config\AppConfig.class

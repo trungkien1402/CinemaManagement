@@ -14,24 +14,16 @@ import java.util.List;
 public interface TicketRepository extends JpaRepository<Ticket, String> {
 
     // ==========================================
-    // 1. NHÓM TÍNH NĂNG ĐẶT VÉ & XEM GHẾ
+    // 1. NHÓM TÍNH NĂNG ĐẶT VÉ & XEM GHẾ (CLIENT)
     // ==========================================
 
-    /**
-     * Lấy danh sách mã ghế (seatId) đã được đặt dựa theo mã suất chiếu (showtimeId)
-     * Chỉ lấy những vé có trạng thái là 'BOOKED'
-     */
     @Query("""
         SELECT t.seat.seatId
         FROM Ticket t
         WHERE t.showtime.showtimeId = :showtimeId
-        AND t.status = 'BOOKED'
     """)
     List<String> findBookedSeatIdsByShowtime(@Param("showtimeId") String showtimeId);
 
-    /**
-     * Kiểm tra xem ghế đã được đặt cho suất chiếu này hay chưa (Tránh đặt trùng)
-     */
     @Query("""
         SELECT CASE
             WHEN COUNT(t) > 0 THEN true
@@ -40,41 +32,64 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
         FROM Ticket t
         WHERE t.showtime = :showtime
         AND t.seat = :seat
-        AND t.status = 'BOOKED'
     """)
     boolean existsByShowtimeAndSeat(@Param("showtime") Showtime showtime, @Param("seat") Seat seat);
 
 
     // ==========================================
-    // 2. NHÓM TÍNH NĂNG LỊCH SỬ ĐẶT VÉ (Khách hàng)
+    // 2. NHÓM TÍNH NĂNG LỊCH SỬ ĐẶT VÉ (CLIENT)
     // ==========================================
 
-    /**
-     * Lấy danh sách lịch sử đặt vé của một User (Sắp xếp vé mới nhất lên đầu)
-     * Sử dụng LEFT JOIN FETCH để tối ưu hiệu năng, tránh lỗi N+1 Query
-     */
     @Query("SELECT t FROM Ticket t " +
             "LEFT JOIN FETCH t.seat " +
             "LEFT JOIN FETCH t.showtime s " +
             "LEFT JOIN FETCH s.movie " +
             "WHERE t.user.userId = :userId " +
             "ORDER BY t.bookingDate DESC")
-    List<Ticket> findByUserId(@Param("userId") Long userId);
+    List<Ticket> findByUserId(@Param("userId") String userId);
 
 
     // ==========================================
-    // 3. NHÓM TÍNH NĂNG THỐNG KÊ DOANH THU (Admin)
+    // 3. NHÓM TÍNH NĂNG THỐNG KÊ DOANH THU (ADMIN) - ĐÃ BỎ ĐIỀU KIỆN CỨNG STATUS
     // ==========================================
 
-    /**
-     * Tính tổng doanh thu từ trước đến nay (Nếu chưa có vé nào sẽ trả về 0)
-     */
     @Query("SELECT COALESCE(SUM(t.totalPrice), 0) FROM Ticket t")
     Double calculateTotalRevenue();
 
-    /**
-     * Đếm tổng số lượng vé đã bán ra hệ thống
-     */
     @Query("SELECT COUNT(t) FROM Ticket t")
     Long countAllTickets();
+
+    @Query("""
+        SELECT m.title, COUNT(t) 
+        FROM Ticket t 
+        JOIN t.showtime s 
+        JOIN s.movie m 
+        GROUP BY m.title 
+        ORDER BY COUNT(t) DESC
+    """)
+    List<Object[]> findTopMovies();
+
+    @Query("""
+        SELECT FUNCTION('MONTH', t.bookingDate), SUM(t.totalPrice) 
+        FROM Ticket t 
+        WHERE FUNCTION('YEAR', t.bookingDate) = :year 
+        GROUP BY FUNCTION('MONTH', t.bookingDate)
+        ORDER BY FUNCTION('MONTH', t.bookingDate) ASC
+    """)
+    List<Object[]> findMonthlyRevenue(@Param("year") int year);
+
+
+    // ==========================================
+    // 4. NHÓM QUẢN LÝ ĐẶT VÉ CHO ADMIN (HÓA ĐƠN)
+    // ==========================================
+
+    @Query("""
+        SELECT t FROM Ticket t 
+        LEFT JOIN FETCH t.user 
+        LEFT JOIN FETCH t.seat 
+        LEFT JOIN FETCH t.showtime s 
+        LEFT JOIN FETCH s.movie 
+        ORDER BY t.bookingDate DESC
+    """)
+    List<Ticket> findAllBookingsForAdmin();
 }
