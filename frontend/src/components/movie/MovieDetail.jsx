@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../style/MovieDetail.css';
+import ReviewSection from './ReviewSection'; // 💡 IMPORT COMPONENT BÌNH LUẬN
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -15,12 +16,30 @@ const MovieDetail = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [shareText, setShareText] = useState("🔗 Chia Sẻ");
 
+  // 💡 1. STATE LƯU ĐIỂM ĐÁNH GIÁ TRUNG BÌNH CỦA PHIM VÀ TỔNG SỐ LƯỢT
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalReviewCount, setTotalReviewCount] = useState(0);
+
+  // 💡 2. HÀM NHẬN DỮ LIỆU TỪ REVIEW SECTION VÀ TÍNH TOÁN
+  const handleReviewsUpdate = (reviewsList) => {
+    setTotalReviewCount(reviewsList.length);
+    if (!reviewsList || reviewsList.length === 0) {
+      setAverageRating(0);
+      return;
+    }
+    // Tính tổng số sao (thang 5)
+    const sum = reviewsList.reduce((acc, curr) => acc + curr.rating, 0);
+    // Tính trung bình (trên thang 5)
+    const avg = sum / reviewsList.length;
+    // Nhân 2 để ra thang điểm 10, làm tròn 1 chữ số thập phân
+    setAverageRating((avg * 2).toFixed(1));
+  };
+
   // trailer theo id
   if (movie && !movie.trailer) {
     if (String(id) === '1') movie.trailer = 'M5m4bARNPOw';
     if (String(id) === '2') movie.trailer = 'uYPbbksxFbY';
     if (String(id) === '3') movie.trailer = '6ZfuNTqbHE8';
-
   }
 
   // Thuật toán tự động tính lịch 7 ngày (Full tuần) cho cụm đặt vé
@@ -173,9 +192,21 @@ const MovieDetail = () => {
 
           <div className="detail-right-box">
             <h3>Thông Tin Phim</h3>
-            <div className="right-box-row"><span>Thời lượng</span><strong>{movie.duration} minutes</strong></div>
+            <div className="right-box-row"><span>Thời lượng</span><strong>{movie.duration} phút</strong></div>
             <div className="right-box-row"><span>Khởi Chiếu</span><strong>{movie.releaseDate || "16/05/2026"}</strong></div>
-            <div className="right-box-row"><span>Đánh Giá</span><strong style={{color: '#ffc107'}}>⭐ 8.5/10</strong></div>
+
+            {/* 💡 3. KHU VỰC ĐIỂM ĐÁNH GIÁ ĐÃ ĐƯỢC CẬP NHẬT ĐỘNG */}
+            <div className="right-box-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Đánh Giá</span>
+                    <strong style={{color: '#ffc107'}}>
+                        ⭐ {averageRating > 0 ? `${averageRating}/10` : "Chưa có"}
+                    </strong>
+                </div>
+                {totalReviewCount > 0 && (
+                    <span style={{ fontSize: '0.8rem', color: '#888' }}>({totalReviewCount} lượt đánh giá)</span>
+                )}
+            </div>
           </div>
         </div>
 
@@ -255,6 +286,9 @@ const MovieDetail = () => {
             </div>
           </div>
         )}
+
+        {/* 💡 4. TRUYỀN HÀM XUỐNG COMPONENT CON */}
+        <ReviewSection movieId={id} onReviewsUpdate={handleReviewsUpdate} />
 
       </div>
     </div>
