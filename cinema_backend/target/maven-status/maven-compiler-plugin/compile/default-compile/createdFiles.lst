@@ -2,7 +2,6 @@ com\cinema\project\payload\response\MovieResponse.class
 com\cinema\project\util\AppConstants.class
 com\cinema\project\model\Booking.class
 com\cinema\project\repositories\MovieRepository.class
-com\cinema\project\service\UserService.class
 com\cinema\project\util\DateUtils.class
 com\cinema\project\service\ShowtimeService.class
 com\cinema\project\payload\response\SeatResponse.class
@@ -27,7 +26,6 @@ com\cinema\project\payload\request\RoomCreationRequest.class
 com\cinema\project\service\TheaterService.class
 com\cinema\project\model\Voucher.class
 com\cinema\project\controller\SeatController.class
-com\cinema\project\controller\VnpayController.class
 com\cinema\project\model\BookingSeat.class
 com\cinema\project\model\Ticket.class
 com\cinema\project\model\Room.class
@@ -36,7 +34,6 @@ com\cinema\project\controller\AdminCinemaController.class
 com\cinema\project\repositories\PaymentRepository.class
 com\cinema\project\controller\NewsController.class
 com\cinema\project\model\Theater.class
-com\cinema\project\payload\response\MessageResponse.class
 com\cinema\project\controller\MovieController.class
 com\cinema\project\repositories\ShowtimeRepository.class
 com\cinema\project\payload\request\NewsRequest.class

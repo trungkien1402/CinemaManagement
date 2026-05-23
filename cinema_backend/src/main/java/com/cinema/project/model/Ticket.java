@@ -37,6 +37,5 @@ public class Ticket {
     @Column(name = "status_tk")
     private Integer statusTk = 0;
 
-    // Đã xóa bỏ toàn bộ Getter/Setter viết tay dư thừa.
-    // Lombok @Data sẽ tự động lo phần còn lại một cách hoàn hảo.
+
 }

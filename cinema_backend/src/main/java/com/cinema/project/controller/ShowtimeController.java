@@ -178,7 +178,7 @@ public class ShowtimeController {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy mã vé này!"));
 
-        if (ticket.getStatusTk() == 1) {
+        if (ticket.getStatusTk() != null && ticket.getStatusTk() == 1) {
             return ResponseEntity.badRequest().body("Vé này đã được sử dụng từ trước!");
         }
 
