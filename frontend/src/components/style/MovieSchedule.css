@@ -28,16 +28,24 @@
 }
 
 /* Các bộ lọc phía trên */
-.figma-filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+/* ✅ Dán đoạn này vào file CSS */
 
+/* Định dạng nhãn để icon và chữ nằm cùng 1 hàng */
 .figma-filter-label {
+  display: flex !important;       /* Ép icon và chữ xếp hàng ngang */
+  align-items: center !important; /* Căn giữa icon và chữ theo chiều dọc */
+  gap: 8px !important;            /* Khoảng cách nhỏ giữa icon và chữ */
   font-size: 0.85rem;
   color: #6c6c73;
   font-weight: 500;
+}
+
+/* Ép icon định vị khổng lồ thu nhỏ lại */
+.figma-filter-label img{
+  width: 18px !important;    /* Ép chiều rộng thu nhỏ lại (khoảng cỡ chữ) */
+  height: 18px !important;   /* Ép chiều cao thu nhỏ lại */
+  object-fit: contain !important; /* Giữ nguyên tỉ lệ hình ảnh */
+  display: block !important;
 }
 
 /* Hàng nút bấm chọn Rạp */
@@ -144,7 +152,7 @@
   flex-grow: 1;
 }
 
-/* 💡 SỬA ĐỔI QUAN TRỌNG: Đổi tên phim sang màu đỏ cam chuẩn Figma */
+/* Tên phim màu đỏ cam chuẩn Figma */
 .figma-movie-title {
   font-size: 1.5rem;
   font-weight: 700;

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import cinemaAddressIcon from '../../assets/cinema address.png';
+import calendarIcon from '../../assets/calendar.png';
 import '../style/MovieSchedule.css';
 
 const MovieSchedule = () => {
@@ -115,7 +117,10 @@ const MovieSchedule = () => {
         <p className="figma-sub-title">Chọn rạp và ngày để xem lịch chiếu</p>
 
         <div className="figma-filter-group">
-          <span className="figma-filter-label">📍 Chọn Rạp</span>
+         {/* ✅ SỬA LẠI THÀNH DÒNG NÀY (Nhớ class figma-label-icon) */}
+<span className="figma-filter-label">
+  <img src={cinemaAddressIcon} alt="Cinema Icon" /> Chọn Rạp
+</span>
           <div className="figma-cinema-row">
             {theaters.map((theater) => {
               const tId = theater.theaterId || theater.theater_id || 'all';
@@ -133,20 +138,25 @@ const MovieSchedule = () => {
         </div>
 
         <div className="figma-filter-group" style={{ marginTop: '24px' }}>
-          <span className="figma-filter-label">📅 Chọn Ngày</span>
-          <div className="figma-date-row">
-            {datesData.map((dateItem) => (
-              <div
-                key={dateItem.date}
-                className={`figma-date-box ${selectedDate === dateItem.date ? 'active' : ''}`}
-                onClick={() => setSelectedDate(dateItem.date)}
-              >
-                <span className="figma-day-text">{dateItem.day}</span>
-                <span className="figma-date-text">{dateItem.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+  {/* ✅ SỬA DÒNG NÀY: Thay 📅 bằng thẻ img chứa calendarIcon */}
+  <span className="figma-filter-label">
+    <img src={calendarIcon} alt="Calendar Icon" className="figma-label-icon" /> 
+    Chọn Ngày
+  </span>
+
+  <div className="figma-date-row">
+    {datesData.map((dateItem) => (
+      <div
+        key={dateItem.date}
+        className={`figma-date-box ${selectedDate === dateItem.date ? 'active' : ''}`}
+        onClick={() => setSelectedDate(dateItem.date)}
+      >
+        <span className="figma-day-text">{dateItem.day}</span>
+        <span className="figma-date-text">{dateItem.label}</span>
+      </div>
+    ))}
+  </div>
+</div>
 
         <div className="figma-schedule-list">
           {processedMoviesList.length > 0 ? (
@@ -168,9 +178,30 @@ const MovieSchedule = () => {
 
                   {Object.values(theaters).map((tData, idx) => (
                     <div key={idx} className="theater-schedule-block" style={{ marginTop: '16px' }}>
-                      <div className="figma-cinema-location" style={{ marginBottom: '8px', color: '#ff4d4d', fontWeight: '500' }}>
-                        📍 {tData.theaterName.startsWith('CinemaX') ? tData.theaterName : `CinemaX ${tData.theaterName}`}
-                      </div>
+<div 
+  className="figma-cinema-location" 
+  style={{ 
+    marginBottom: '8px', 
+    color: '#ff4d4d', 
+    fontWeight: '500',
+    display: 'flex',       
+    alignItems: 'center',  
+    gap: '6px'            
+  }}
+>
+  <img 
+    src={cinemaAddressIcon} 
+    alt="Cinema Address" 
+    style={{ 
+      width: '16px',       
+      height: '16px', 
+      objectFit: 'contain' 
+    }} 
+  />
+  <span>
+    {tData.theaterName.startsWith('CinemaX') ? tData.theaterName : `CinemaX ${tData.theaterName}`}
+  </span>
+</div>
 
                       <div className="figma-showtime-grid">
                         {tData.slots
