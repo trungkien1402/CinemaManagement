@@ -1,36 +1,44 @@
 package com.cinema.project.controller;
 
+// 👇 ĐÂY NÀY! Thiếu mấy dòng import này nên nó mới báo đỏ đó!
 import com.cinema.project.model.Review;
-import com.cinema.project.repository.ReviewRepository;
-import lombok.RequiredArgsConstructor;
+import com.cinema.project.repositories.ReviewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reviews")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ReviewController {
 
-    private final ReviewRepository reviewRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
-    // 1. Lấy danh sách bình luận của 1 phim
+    // 1. Kéo bình luận từ SQL Server lên React
     @GetMapping("/movie/{movieId}")
-    public ResponseEntity<List<Review>> getReviewsByMovie(@PathVariable Integer movieId) {
-        List<Review> reviews = reviewRepository.findByMovie_MovieIdOrderByCreatedAtDesc(movieId);
-        return ResponseEntity.ok(reviews);
+    public ResponseEntity<?> getReviewsByMovie(@PathVariable Long movieId) {
+        // Lấy tất cả và lọc ra đúng bình luận của phim đang xem
+        List<Review> movieReviews = reviewRepository.findAll().stream()
+                .filter(r -> r.getMovie() != null && r.getMovie().getMovieId().equals(movieId))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(movieReviews);
     }
 
-    // 2. Lưu bình luận mới từ React gửi xuống
+    // 2. Nhận bình luận từ React và lưu thẳng vào SQL Server
     @PostMapping
     public ResponseEntity<?> addReview(@RequestBody Review review) {
-        try {
-            Review savedReview = reviewRepository.save(review);
-            return ResponseEntity.ok(savedReview);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Lỗi khi thêm bình luận: " + e.getMessage());
-        }
+        // Tự động đóng dấu thời gian lúc gửi bình luận
+        review.setCreatedAt(LocalDateTime.now());
+
+        // Lưu vào DB
+        Review savedReview = reviewRepository.save(review);
+
+        return ResponseEntity.ok(savedReview);
     }
 }

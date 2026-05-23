@@ -12,16 +12,19 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
     const currentUser = JSON.parse(localStorage.getItem('user'));
 
     const fetchReviews = () => {
-        axios.get(`http://localhost:8080/api/reviews/movie/${movieId}`)
-            .then(res => {
-                setReviews(res.data);
-                // 💡 2. GỌI HÀM NÀY ĐỂ BÁO CHO MOVIEDETAIL BIẾT DANH SÁCH BÌNH LUẬN MỚI NHẤT
-                if (onReviewsUpdate) {
-                    onReviewsUpdate(res.data);
-                }
-            })
-            .catch(err => console.error("Lỗi tải bình luận:", err));
-    };
+            axios.get(`http://localhost:8080/api/reviews/movie/${movieId}`)
+                .then(res => {
+                    // 💡 MẸO: Thêm .reverse() để lật ngược mảng, đẩy bài mới nhất lên đầu
+                    const reversedData = res.data.reverse();
+
+                    setReviews(reversedData);
+
+                    if (onReviewsUpdate) {
+                        onReviewsUpdate(reversedData);
+                    }
+                })
+                .catch(err => console.error("Lỗi tải bình luận:", err));
+        };
 
     useEffect(() => {
         if (movieId) {
