@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import cinemaAddressIcon from '../../assets/cinema address.png';
 import phoneIcon from '../../assets/phone-call.png';
 import clockIcon from '../../assets/clock.png';
-import axios from 'axios';
+
 import '../style/Theaters.css';
 
 const Theaters = () => {
@@ -32,13 +34,13 @@ const Theaters = () => {
 
   if (loading) return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Đang tải hệ thống rạp...</div>;
 
-  // 💡 LỌC DANH SÁCH THÀNH PHỐ DUY NHẤT TỪ DATA
-  const cities = ['all', ...new Set(theaters.map(t => t.city).filter(Boolean))];
+  // 💡 LỌC DANH SÁCH THÀNH PHỐ DUY NHẤT TỪ DATA (Ưu tiên cột city hoặc fallback location nếu city trống)
+  const cities = ['all', ...new Set(theaters.map(t => t.city || t.location).filter(Boolean))];
 
   // 💡 LỌC RẠP THEO THÀNH PHỐ ĐƯỢC CHỌN
   const filteredTheaters = selectedCity === 'all'
     ? theaters
-    : theaters.filter(t => t.city === selectedCity);
+    : theaters.filter(t => (t.city === selectedCity || t.location === selectedCity));
 
   return (
     <div className="theaters-wrapper">
@@ -72,6 +74,11 @@ const Theaters = () => {
           const displayImage = theater.image || fallbackImages[index % 4];
           const displayAmenities = theater.amenities || ['IMAX', 'VIP Lounge', 'Dolby Atmos'];
 
+          // Xử lý chuỗi địa chỉ hiển thị an toàn không bị lặp chữ
+          const fullAddress = theater.location 
+            ? (theater.city && !theater.location.includes(theater.city) ? `${theater.location}, ${theater.city}` : theater.location)
+            : (theater.address || "Đang cập nhật địa chỉ");
+
           return (
             <div className="theater-card" key={theater.theaterId || index}>
               <div className="theater-img-box">
@@ -84,46 +91,37 @@ const Theaters = () => {
               <div className="theater-info">
                 <h2 className="theater-name">{theater.name.startsWith('CinemaX') ? theater.name : `CinemaX ${theater.name}`}</h2>
 
-<<<<<<< HEAD
-                <div className="theater-detail-row">
-                  <i>📍</i>
-                  {/* Hiển thị rõ địa chỉ và thành phố */}
-                  <span style={{ whiteSpace: 'pre-line' }}>{theater.address || theater.location}, {theater.city}</span>
+                {/* Địa chỉ với Icon đồng bộ Figma */}
+                <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '12px' }}>
+                  <img 
+                    src={cinemaAddressIcon} 
+                    alt="Address" 
+                    style={{ width: '18px', height: '18px', objectFit: 'contain', marginTop: '2px' }} 
+                  />
+                  <span style={{ whiteSpace: 'pre-line', flex: 1 }}>
+                    {fullAddress}
+                  </span>
                 </div>
-=======
-                {/* 💡 ĐÃ SỬA: Chuyển sang theater.location cho khớp với Entity Java */}
-{/* Địa chỉ */}
-<div className="theater-detail-row" style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '12px' }}>
-  <img 
-    src={cinemaAddressIcon} 
-    alt="Address" 
-    style={{ width: '18px', height: '18px', objectFit: 'contain', marginTop: '2px' }} // marginTop giúp icon đẹp hơn khi text xuống dòng (pre-line)
-  />
-  <span style={{ whiteSpace: 'pre-line', flex: 1 }}>
-    {theater.location || "Đang cập nhật địa chỉ"}
-  </span>
-</div>
->>>>>>> origin/doiIcon
 
-{/* Số điện thoại */}
-<div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-  <img 
-    src={phoneIcon} 
-    alt="Phone" 
-    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
-  />
-  <span>{theater.phone || "1900 xxxx"}</span>
-</div>
+                {/* Số điện thoại */}
+                <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                  <img 
+                    src={phoneIcon} 
+                    alt="Phone" 
+                    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
+                  />
+                  <span>{theater.phone || "1900 xxxx"}</span>
+                </div>
 
-{/* Giờ hoạt động */}
-<div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-  <img 
-    src={clockIcon} 
-    alt="Clock" 
-    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
-  />
-  <span>{theater.operatingHours || "8:00 - 23:30 hàng ngày"}</span>
-</div>
+                {/* Giờ hoạt động */}
+                <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <img 
+                    src={clockIcon} 
+                    alt="Clock" 
+                    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
+                  />
+                  <span>{theater.operatingHours || "8:00 - 23:30 hàng ngày"}</span>
+                </div>
 
                 <div className="amenities-section">
                   <div className="amenities-title">Tiện ích</div>

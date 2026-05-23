@@ -5,46 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c65d965e-7968-4d2e-8378-4f66bdc0a535" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T13-36-39_541-jvmRun1.dump" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T13-36-39_541-jvmRun1.dumpstream" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/calendar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/cinema address.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/cinema seat.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/clock.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/director.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/film.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/movie-ticket.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/phone-call.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/play-button.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/popcorn.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/assets/share.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/components/style/GlobalBookingModal.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d2319d84-0028-483e-ad11-215a716902f5.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
-<<<<<<< HEAD
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" afterDir="false" />
-=======
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/MovieSchedule.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/MovieSchedule.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/movie/MovieDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/movie/MovieDetail.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/GlobalBookingModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/GlobalBookingModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/MovieCard.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/MovieCard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/MovieDetail.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/MovieDetail.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/MovieSchedule.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/MovieSchedule.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ticket/BookingHistory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ticket/BookingHistory.jsx" afterDir="false" />
->>>>>>> origin/doiIcon
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/theater/Theaters.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/theater/Theaters.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +73,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.CinemaBackendApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "doiIcon",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/NGOC DANH/OneDrive/Desktop/CinemaManagement/cinema_backend",

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Room.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\AppConstants.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\services\UserDetailsServiceImpl.java
@@ -64,67 +63,3 @@ D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\rep
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\SeatController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\jwt\JwtUtils.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ReportService.java
-=======
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\JwtResponse.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MessageResponse.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\BookingRequest.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\SecurityConfig.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\User.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\EmailService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminMovieController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\UserController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Ticket.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\AppConfig.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\NewsRequest.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\BookingService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ReportRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\SeatRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\TicketRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\exceptions\GlobalExceptionHendler.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\UserService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Booking.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\jwt\JwtUtils.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Movie.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\RoomService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AuthController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\SeatService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\services\UserDetailsServiceImpl.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ReportService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NewsService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ShowtimeService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\TheaterService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\VnpayController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\UserRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\TheaterController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\LoginRequest.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\ReportController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\VnpayConfig.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\BookingSeat.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\DataInitializer.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\DateUtils.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\TheaterRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\SeatController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\PaymentRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\RoomRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\ShowtimeController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\CinemaBackendApplication.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\BookingController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MovieResponse.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Room.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\TicketService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\BookingSeatRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Theater.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\jwt\AuthTokenFilter.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Report.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\AppConstants.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Showtime.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Payment.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\MovieService.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ShowtimeRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Seat.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\SeatResponse.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\NewsController.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\MovieRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\BookingRepository.java
-C:\Users\NGOC DANH\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MovieController.java
->>>>>>> origin/doiIcon
