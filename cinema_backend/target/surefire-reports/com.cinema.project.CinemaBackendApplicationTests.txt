@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.cinema.project.CinemaBackendApplicationTests
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.88 s -- in com.cinema.project.CinemaBackendApplicationTests
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.392 s -- in com.cinema.project.CinemaBackendApplicationTests
+>>>>>>> origin/doiIcon

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import cinemaAddressIcon from '../../assets/cinema address.png';
+import phoneIcon from '../../assets/phone-call.png';
+import clockIcon from '../../assets/clock.png';
 import axios from 'axios';
 import '../style/Theaters.css';
 
@@ -81,21 +84,46 @@ const Theaters = () => {
               <div className="theater-info">
                 <h2 className="theater-name">{theater.name.startsWith('CinemaX') ? theater.name : `CinemaX ${theater.name}`}</h2>
 
+<<<<<<< HEAD
                 <div className="theater-detail-row">
                   <i>📍</i>
                   {/* Hiển thị rõ địa chỉ và thành phố */}
                   <span style={{ whiteSpace: 'pre-line' }}>{theater.address || theater.location}, {theater.city}</span>
                 </div>
+=======
+                {/* 💡 ĐÃ SỬA: Chuyển sang theater.location cho khớp với Entity Java */}
+{/* Địa chỉ */}
+<div className="theater-detail-row" style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '12px' }}>
+  <img 
+    src={cinemaAddressIcon} 
+    alt="Address" 
+    style={{ width: '18px', height: '18px', objectFit: 'contain', marginTop: '2px' }} // marginTop giúp icon đẹp hơn khi text xuống dòng (pre-line)
+  />
+  <span style={{ whiteSpace: 'pre-line', flex: 1 }}>
+    {theater.location || "Đang cập nhật địa chỉ"}
+  </span>
+</div>
+>>>>>>> origin/doiIcon
 
-                <div className="theater-detail-row">
-                  <i>📞</i>
-                  <span>{theater.phone || "1900 xxxx"}</span>
-                </div>
+{/* Số điện thoại */}
+<div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+  <img 
+    src={phoneIcon} 
+    alt="Phone" 
+    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
+  />
+  <span>{theater.phone || "1900 xxxx"}</span>
+</div>
 
-                <div className="theater-detail-row">
-                  <i>🕒</i>
-                  <span>{theater.operatingHours || "8:00 - 23:30 hàng ngày"}</span>
-                </div>
+{/* Giờ hoạt động */}
+<div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+  <img 
+    src={clockIcon} 
+    alt="Clock" 
+    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
+  />
+  <span>{theater.operatingHours || "8:00 - 23:30 hàng ngày"}</span>
+</div>
 
                 <div className="amenities-section">
                   <div className="amenities-title">Tiện ích</div>

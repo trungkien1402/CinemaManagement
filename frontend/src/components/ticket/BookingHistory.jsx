@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import calendarIcon from '../../assets/calendar.png';
+import suatChieu from '../../assets/popcorn.png';
+import filmIcon from '../../assets/film.png';
+import seatIcon from '../../assets/cinema seat.png';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,9 +40,22 @@ const BookingHistory = () => {
     return (
         <div style={{ background: '#0d0d13', color: '#fff', minHeight: '100vh', padding: '40px 20px', fontFamily: 'Arial, sans-serif' }}>
             <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-                <h2 style={{ borderBottom: '2px solid #ff3333', paddingBottom: '10px', marginBottom: '30px' }}>
-                    🎬 LỊCH SỬ ĐẶT VÉ CỦA BẠN
-                </h2>
+                <h2 style={{ 
+    borderBottom: '2px solid #ff3333', 
+    paddingBottom: '10px', 
+    marginBottom: '30px',
+    display: 'flex',          /* Ép icon và chữ xếp hàng ngang */
+    alignItems: 'center',     /* Căn giữa icon và chữ theo chiều dọc */
+    gap: '10px'               /* Khoảng cách giữa icon và chữ */
+}}>
+    {/* ✅ ĐÃ SỬA: Thay emoji bằng thẻ img chứa filmIcon */}
+    <img 
+        src={filmIcon} 
+        alt="Film Icon" 
+        style={{ width: '24px', height: '24px', objectFit: 'contain' }} 
+    />
+    LỊCH SỬ ĐẶT VÉ CỦA BẠN
+</h2>
 
                 {history.length === 0 ? (
                     <div style={{ textAlign: 'center', color: '#aaa', marginTop: '50px' }}>
@@ -52,24 +69,37 @@ const BookingHistory = () => {
                         {history.map((ticket) => (
                             <div key={ticket.ticketId} style={{ background: '#1a1a24', borderRadius: '10px', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', borderLeft: '5px solid #28a745' }}>
                                 <div>
-                                    <h4 style={{ margin: '0 0 10px 0', color: '#ffcc00', fontSize: '18px' }}>
+                                    <h4 style={{ margin: '0 0 15px 0', color: '#ffcc00', fontSize: '18px' }}>
                                         Mã Vé: {ticket.ticketId}
                                     </h4>
-                                    <p style={{ margin: '5px 0', color: '#ccc' }}>
-                                        🗓️ Ngày đặt: {new Date(ticket.bookingDate).toLocaleString('vi-VN')}
+
+                                    {/* ✅ 1. NGÀY ĐẶT (Thay 🗓️ bằng calendarIcon) */}
+                                    <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <img src={calendarIcon} alt="Calendar" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                        <span>Ngày đặt: {new Date(ticket.bookingDate).toLocaleString('vi-VN')}</span>
                                     </p>
-                                    <p style={{ margin: '5px 0', color: '#ccc' }}>
-                                        🍿 Suất chiếu ID: <strong>{ticket.showtime?.showtimeId}</strong>
+
+                                    {/* ✅ 2. SUẤT CHIẾU (Thay 🍿 bằng suatChieu) */}
+                                    <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <img src={suatChieu} alt="Showtime" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                        <span>Suất chiếu ID: <strong>{ticket.showtime?.showtimeId}</strong></span>
                                     </p>
+
+                                    {/* ✅ 3. PHIM (Thay 🎬 bằng filmIcon) */}
                                     {ticket.showtime?.movie && (
-                                        <p style={{ margin: '5px 0', color: '#ffcc00' }}>
-                                            🎬 Phim: <strong>{ticket.showtime?.movie?.title}</strong> {/* Thay movieName thành title */}
+                                        <p style={{ margin: '8px 0', color: '#ffcc00', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <img src={filmIcon} alt="Movie" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                            <span>Phim: <strong>{ticket.showtime?.movie?.title}</strong></span>
                                         </p>
                                     )}
-                                    <p style={{ margin: '5px 0', color: '#ccc' }}>
-                                        💺 Ghế số: <span style={{ color: '#fff', fontWeight: 'bold' }}>{ticket.seat?.seatNumber || ticket.seat?.seatId}</span>
+
+                                    {/* ✅ 4. GHẾ (Thay 💺 bằng seatIcon) */}
+                                    <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <img src={seatIcon} alt="Seat" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                        <span>Ghế số: <span style={{ color: '#fff', fontWeight: 'bold' }}>{ticket.seat?.seatNumber || ticket.seat?.seatId}</span></span>
                                     </p>
                                 </div>
+
                                 <div style={{ textAlign: 'right' }}>
                                     <span style={{ background: '#28a745', color: '#fff', padding: '5px 12px', borderRadius: '15px', fontSize: '12px', fontWeight: 'bold' }}>
                                         ĐÃ THANH TOÁN

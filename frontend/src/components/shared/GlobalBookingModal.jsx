@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate as useNav } from 'react-router-dom';
+import cinemaAddressIcon from '../../assets/cinema address.png'; 
+import calendarIcon from '../../assets/calendar.png';
+import clockIcon from '../../assets/clock.png';
 import axios from 'axios';
-import '../style/MovieCard.css';
+import '../style/GlobalBookingModal.css';
 
 const GlobalBookingModal = () => {
   const navigate = useNav();
@@ -115,6 +118,7 @@ const GlobalBookingModal = () => {
           Đặt Vé Nhanh: <span style={{color: '#ff4d4d'}}>{movie.title}</span>
         </h2>
 
+<<<<<<< HEAD
         <div style={{marginBottom: '20px'}}>
           <p className="quick-modal-label">📍 Chọn địa điểm:</p>
           <div className="quick-modal-flex-row" style={{ alignItems: 'center' }}>
@@ -158,11 +162,39 @@ const GlobalBookingModal = () => {
                     );
                 })}
             </select>
+=======
+        {/* ================= KHỐI 1: CHỌN RẠP ================= */}
+        <div style={{ marginBottom: '20px' }}>
+          <span className="figma-filter-label" style={{ marginBottom: '10px' }}>
+            <img src={cinemaAddressIcon} alt="Cinema Icon" className="figma-label-icon" /> 
+            Chọn rạp chiếu:
+          </span>
+
+          <div className="quick-modal-flex-row">
+            {theaters.map(t => {
+              const tId = t.theaterId || t.theater_id || 'all';
+              return (
+                <button
+                  key={tId}
+                  className={`quick-modal-chip-btn ${selectedTheater === tId ? 'active' : ''}`}
+                  onClick={() => setSelectedTheater(tId)}
+                >
+                  {t.name}
+                </button>
+              );
+            })}
+>>>>>>> origin/doiIcon
           </div>
         </div>
 
+        {/* ================= KHỐI 2: CHỌN NGÀY ================= */}
         <div style={{marginBottom: '20px'}}>
-          <p className="quick-modal-label">📅 Chọn ngày chiếu:</p>
+          {/* ✅ ĐÃ SỬA: Đổi sang cấu trúc span có chứa icon calendarIcon */}
+          <span className="figma-filter-label" style={{ marginBottom: '10px' }}>
+            <img src={calendarIcon} alt="Calendar Icon" className="figma-label-icon" /> 
+            Chọn ngày chiếu:
+          </span>
+          
           <div className="quick-modal-flex-row">
             {datesData.map(d => (
               <button
@@ -177,6 +209,7 @@ const GlobalBookingModal = () => {
           </div>
         </div>
 
+<<<<<<< HEAD
         <div>
           <p className="quick-modal-label">🕒 Khung giờ trống thực tế:</p>
           {loadingSlots ? (
@@ -216,6 +249,57 @@ const GlobalBookingModal = () => {
             </div>
           )}
         </div>
+=======
+        {/* ================= KHỐI 3: KHUNG GIỜ CHIẾU ================= */}
+<div>
+  {/* ✅ ĐÃ SỬA: Thay thế emoji bằng thẻ img chứa clockIcon */}
+  <span className="figma-filter-label" style={{ marginBottom: '10px' }}>
+    <img src={clockIcon} alt="Clock Icon" className="figma-label-icon" /> 
+    Khung giờ trống thực tế:
+  </span>
+
+  {loadingSlots ? (
+    <div style={{color: '#888', textAlign: 'center', padding: '15px'}}>Đang quét lịch phòng chiếu...</div>
+  ) : slots.length > 0 ? (
+    <div className="quick-modal-slots-grid">
+      {slots
+        .slice()
+        .sort((a, b) => {
+          const tA = String(a.startTime || a.start_time || "00:00");
+          const tB = String(b.startTime || b.start_time || "00:00");
+          return tA.localeCompare(tB);
+        })
+        .map(slot => {
+          let rawTime = slot.startTime || slot.start_time;
+          let timeDisplay = "00:00";
+          if (rawTime) {
+            if (typeof rawTime === 'string') {
+              timeDisplay = rawTime.substring(0, 5);
+            } else if (Array.isArray(rawTime) && rawTime.length >= 2) {
+              timeDisplay = `${String(rawTime[0]).padStart(2, '0')}:${String(rawTime[1]).padStart(2, '0')}`;
+            }
+          }
+          const tName = slot.room?.theater?.name || "Rạp";
+          return (
+            <button
+              key={slot.showtimeId || Math.random()}
+              className="quick-modal-time-slot-btn"
+              onClick={() => handleTimeSlotClick(slot.showtimeId)}
+            >
+              <span style={{fontSize: '1.1rem', fontWeight: 'bold'}}>{timeDisplay}</span>
+              <span style={{fontSize: '0.65rem', color: '#666', marginTop: '2px'}}>{tName.split(' ').pop()}</span>
+            </button>
+          );
+        })}
+    </div>
+  ) : (
+    <div style={{color: '#666', textAlign: 'center', padding: '20px', background: '#1c1c20', borderRadius: '8px', fontSize: '0.9rem'}}>
+      Rất tiếc, phim không có suất chiếu nào vào ngày và rạp đã chọn.
+    </div>
+  )}
+</div>
+
+>>>>>>> origin/doiIcon
       </div>
     </div>
   );
