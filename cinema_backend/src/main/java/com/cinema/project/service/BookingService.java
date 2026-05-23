@@ -67,7 +67,7 @@ public class BookingService {
             ticket.setShowtime(showtime);
             ticket.setSeat(seat);
             ticket.setTotalPrice(ticketPrice);
-            ticket.setStatus("BOOKED");
+            ticket.setStatusTk(0);
             ticket.setBookingDate(LocalDateTime.now());
 
             savedTickets.add(ticketRepository.save(ticket));

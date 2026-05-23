@@ -4,6 +4,8 @@ import axiosClient from '../../api/axiosClient';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import '../style/Seat.css';
+// IMPORT HOOK THANH TOÁN MỚI TÁCH
+import { useVNPayPayment } from '../../hook/useVNPayPayment'; 
 
 const SeatSelection = () => {
 
@@ -17,7 +19,9 @@ const SeatSelection = () => {
     const [seats, setSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [processing, setProcessing] = useState(false);
+
+    // Sử dụng Hook thanh toán đã tách biệt
+    const { handleVNPayPayment, processing } = useVNPayPayment();
 
     // ================= LOAD SEATS =================
     useEffect(() => {
@@ -36,7 +40,7 @@ const SeatSelection = () => {
             })
             .catch((err) => {
                 console.error("Lỗi tải ghế:", err);
-                setLoading(false);
+                Loading(false);
             });
 
     }, [showtimeId]);
@@ -77,84 +81,16 @@ const SeatSelection = () => {
         }, 0);
     };
 
-    // ================= THANH TOÁN VNPAY =================
-    const handlePayment = async () => {
-
-        // CHƯA LOGIN
-        if (!user) {
-            alert("Vui lòng đăng nhập!");
-            navigate('/login');
-            return;
-        }
-
-        // CHƯA CHỌN GHẾ
-        if (selectedSeats.length === 0) {
-            alert("Vui lòng chọn ít nhất 1 ghế!");
-            return;
-        }
-
-        // PHÒNG CHỐNG CLICK ĐÚP 
-        if (processing) return;
-
-        try {
-            setProcessing(true);
-
-            // Ép kiểu số nguyên thuần túy
-            const finalAmount = parseInt(calculateTotal(), 10);
-
-            // DỮ LIỆU BOOKING CHUẨN ĐỒNG BỘ VỚI BACKEND
-            const bookingData = {
-                userId: user.userId,
-                showtimeId: showtimeId,
-                seatIds: selectedSeats.map((s) => s.seatId),
-                totalPrice: finalAmount
-            };
-
-            // LƯU TẠM BOOKING VÀO LOCALSTORAGE
-            localStorage.setItem(
-                "pendingBooking",
-                JSON.stringify(bookingData)
-            );
-
-            console.log("=== ĐANG GỬI DATA QUA AXIOS CLIENT ===", bookingData);
-
-            // ĐÃ SỬA: Gọi qua axiosClient để đính kèm Authorization Token ở Header
-            const response = await axiosClient.post("/payment/create", bookingData);
-
-            // KIỂM TRA VÀ ĐIỀU HƯỚNG AN TOÀN BẰNG THẺ LINK CHÌM
-            if (response.data && response.data.paymentUrl) {
-                const paymentUrl = response.data.paymentUrl;
-                
-                console.log("=== LINK VNPAY HỢP LỆ ===", paymentUrl);
-                
-                // ĐÃ SỬA: Thay thế window.location.href bằng cơ chế thẻ tạo link ảo 
-                // Thêm rel='noopener noreferrer' để Chrome cho phép chuyển giao thức HTTPS -> HTTP localhost mượt mà
-                const triggerLink = document.createElement('a');
-                triggerLink.href = paymentUrl;
-                triggerLink.rel = 'noopener noreferrer';
-                
-                document.body.appendChild(triggerLink);
-                triggerLink.click(); // Kích hoạt lệnh chuyển hướng tự nhiên
-                document.body.removeChild(triggerLink);
-                
-            } else {
-                throw new Error("Không nhận được paymentUrl hợp lệ từ Backend!");
-            }
-
-        } catch (err) {
-            console.error("LỖI XỬ LÝ THANH TOÁN FRONTEND:", err);
-            
-            localStorage.removeItem("pendingBooking");
-
-            alert(
-                err.response?.data?.message ||
-                err.response?.data ||
-                err.message ||
-                "Khởi tạo giao dịch thanh toán thất bại!"
-            );
-        } finally {
-            setProcessing(false);
-        }
+    // ================= KÍCH HOẠT THANH TOÁN =================
+    const handlePayment = () => {
+        // Gọi hàm từ hook và truyền toàn bộ dữ liệu hiện tại vào
+        handleVNPayPayment({
+            user,
+            showtimeId,
+            selectedSeats,
+            totalAmount: calculateTotal(),
+            navigate
+        });
     };
 
     // ================= LOADING =================

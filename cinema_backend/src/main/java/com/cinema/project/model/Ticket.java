@@ -34,5 +34,8 @@ public class Ticket {
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
+    @Column(name = "status_tk")
+    private Integer statusTk = 0;
+
 
 }

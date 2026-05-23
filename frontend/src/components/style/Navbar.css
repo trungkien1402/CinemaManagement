@@ -213,6 +213,30 @@
 .dropdown-item.logout {
   color: var(--primary-color);
 }
+/* Style cho class admin-link đặc biệt */
+.dropdown-menu .dropdown-item.admin-link {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 44, 31, 0.05) 100%);
+    border-left: 3px solid #ffc107; /* Vạch màu vàng cam bên cạnh tạo điểm nhấn */
+    padding-left: 17px; /* Cân lại padding sau khi thêm border-left */
+    transition: var(--transition);
+}
+
+/* Hiệu ứng Hover riêng cho nút Admin */
+.dropdown-menu .dropdown-item.admin-link:hover {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 44, 31, 0.15) 100%);
+    color: #fff !important;
+}
+
+/* Hiệu ứng lắc nhẹ icon bánh răng khi hover vào tạo cảm giác cơ khí/quản trị */
+.dropdown-menu .dropdown-item.admin-link:hover i {
+    animation: rotateGear 1.5s linear infinite;
+    filter: drop-shadow(0 0 5px #ffc107);
+}
+
+@keyframes rotateGear {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
 /* Responsive */
 @media (max-width: 768px) {
