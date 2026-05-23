@@ -1,29 +1,22 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-import calendarIcon from '../../assets/calendar.png';
-import ticketIcon from '../../assets/movie-ticket.png';
-import shareIcon from '../../assets/share.png';
-import directorIcon from '../../assets/director.png';
-import clockIcon from '../../assets/clock.png';
-import cinemaAddressIcon from '../../assets/cinema address.png';
-import playButtonIcon from '../../assets/play-button.png';
 
 import '../style/MovieDetail.css';
 import ReviewSection from './ReviewSection';
+
+// Import các components con mới tách
+import MovieHero from './MovieHero';
+import MovieTrailer from './MovieTrailer';
+import MovieSchedule from './MovieSchedule';
+// Import custom hook
+import { useMovieData } from './useMovieData'; 
 
 const MovieDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [movie, setMovie] = useState(null);
-  const [showtimes, setShowtimes] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const [isFavorite, setIsFavorite] = useState(false);
   const [shareText, setShareText] = useState('Chia Sẻ');
-
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviewCount, setTotalReviewCount] = useState(0);
 
@@ -62,81 +55,20 @@ const MovieDetail = () => {
     return list;
   }, []);
 
-  // =======================================================================
-  // 💡 GỌI DỮ LIỆU RẠP TỪ API THẬT
-  // =======================================================================
-  const [allTheaters, setAllTheaters] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState('');
-  const [selectedTheater, setSelectedTheater] = useState('all');
-  const [selectedDate, setSelectedDate] = useState(datesData[0].date);
-
-  useEffect(() => {
-    axios.get('http://localhost:8080/api/theaters')
-      .then(res => setAllTheaters(Array.isArray(res.data) ? res.data : []))
-      .catch(err => console.error("Lỗi lấy danh sách rạp:", err));
-  }, []);
-
-  const getProvince = (theater) => {
-    return theater.city || theater.location || 'Khác';
-  };
-
-  const uniqueProvinces = useMemo(() => {
-    return [...new Set(allTheaters.map(getProvince))].filter(Boolean);
-  }, [allTheaters]);
-
-  const filteredTheaters = useMemo(() => {
-    return allTheaters.filter(t => getProvince(t) === selectedProvince);
-  }, [selectedProvince, allTheaters]);
-
-  const handleProvinceChange = (e) => {
-    setSelectedProvince(e.target.value);
-    setSelectedTheater('all');
-  };
-
-  // =========================
-  // LẤY CHI TIẾT PHIM
-  // =========================
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`http://localhost:8080/api/movies/${id}`)
-      .then(res => {
-        const movieData = res.data;
-        if (movieData && !movieData.trailer) {
-          if (String(id) === '1') movieData.trailer = 'M5m4bARNPOw';
-          if (String(id) === '2') movieData.trailer = 'uYPbbksxFbY';
-          if (String(id) === '3') movieData.trailer = '6ZfuNTqbHE8';
-        }
-        setMovie(movieData);
-      })
-      .catch(err => console.error("Lỗi lấy chi tiết phim từ Backend:", err));
-  }, [id]);
-
-  // =========================
-  // LẤY LỊCH CHIẾU THEO BỘ LỌC
-  // =========================
-  useEffect(() => {
-    const theaterQuery = selectedTheater === 'all' && filteredTheaters.length > 0
-      ? filteredTheaters.map(t => t.theaterId || t.theater_id || t.id).join(',')
-      : selectedTheater;
-
-    axios.get(`http://localhost:8080/api/showtimes/filter`, {
-      params: { theaterId: theaterQuery || 'all', date: selectedDate }
-    })
-    .then(res => {
-      const safeData = Array.isArray(res.data) ? res.data : [];
-      const currentMovieShowtimes = safeData.filter(st => {
-        const mId = st.movie?.movieId || st.movie?.id;
-        return String(mId) === String(id);
-      });
-      setShowtimes(currentMovieShowtimes);
-      setLoading(false);
-    })
-    .catch(err => {
-      console.error("Lỗi lấy lịch chiếu cho trang chi tiết:", err);
-      setShowtimes([]);
-      setLoading(false);
-    });
-  }, [id, selectedDate, selectedTheater, filteredTheaters]);
+  // Sử dụng Custom Hook để lấy toàn bộ dữ liệu và logic liên quan API
+  const {
+    movie,
+    showtimes,
+    loading,
+    uniqueProvinces,
+    filteredTheaters,
+    selectedProvince,
+    selectedTheater,
+    selectedDate,
+    setSelectedTheater,
+    setSelectedDate,
+    handleProvinceChange
+  } = useMovieData(id, datesData);
 
   // =========================
   // XỬ LÝ SỰ KIỆN
@@ -159,8 +91,7 @@ const MovieDetail = () => {
   if (!movie) return <div className="detail-loading">Không tìm thấy phim yêu cầu.</div>;
 
   // =========================
-  // PHÂN NHÓM RẠP CHUẨN
-  // =========================
+  // PHÂN NHÓM RẠP CHUẨN// =========================
   const theaterGroups = {};
   showtimes.forEach(st => {
     const tId = st.room?.theater?.theaterId || "T01";
@@ -176,52 +107,14 @@ const MovieDetail = () => {
   return (
     <div className="movie-detail-page">
       {/* HERO SECTION */}
-      <div
-        className="detail-hero"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), #0a0a0c), url(${movie.image})`
-        }}
-      >
-        <div className="detail-hero-content">
-          <span className="detail-badge-status">
-            {movie.status === 1 ? 'ĐANG CHIẾU' : 'SẮP CHIẾU'}
-          </span>
-
-          <h1 className="detail-movie-title">{movie.title}</h1>
-          <p className="detail-movie-sub">Mystic Shadows</p>
-
-          {/* QUICK META */}
-          <div className="detail-quick-meta">
-            <span>
-              <img src={clockIcon} alt="" /> {movie.duration} phút
-            </span>
-            <span>
-              <img src={calendarIcon} alt="" /> {movie.releaseDate || '2026'}
-            </span>
-            <span>
-              <img src={directorIcon} alt="" /> Đạo diễn: Nguyễn Minh Tuấn
-            </span>
-          </div>
-
-          {/* ACTION BUTTONS */}
-          <div className="detail-top-actions">
-            {movie.status !== 2 && (
-              <button className="detail-btn-red" onClick={scrollToBooking}>
-                <img src={ticketIcon} alt="" /> Đặt Vé Ngay
-              </button>
-            )}
-
-            <button className="detail-btn-dark" onClick={() => setIsFavorite(!isFavorite)}>
-              {isFavorite ? '❤️ Đã Thích' : '🤍 Yêu Thích'}
-            </button>
-
-            <button className="detail-btn-dark" onClick={handleShareMovie}>
-              {shareText === 'Chia Sẻ' && <img src={shareIcon} alt="" />}
-              {shareText}
-            </button>
-          </div>
-        </div>
-      </div>
+      <MovieHero 
+        movie={movie}
+        isFavorite={isFavorite}
+        setIsFavorite={setIsFavorite}
+        shareText={shareText}
+        handleShareMovie={handleShareMovie}
+        scrollToBooking={scrollToBooking}
+      />
 
       <div className="detail-body-container">
         <div className="detail-main-layout">
@@ -275,126 +168,22 @@ const MovieDetail = () => {
         </div>
 
         {/* TRAILER SECTION */}
-        <div className="detail-trailer-section" style={{ margin: '50px 0' }}>
-          <h2 className="detail-section-title" style={{ marginBottom: '20px' }}>Trailer Phim</h2>
-          {movie.trailer ? (
-            <div className="detail-video-container">
-              <iframe
-                src={`https://www.youtube.com/embed/${movie.trailer}`}
-                title={movie.title}
-                allowFullScreen
-              />
-            </div>
-          ) : (
-            <div className="detail-video-placeholder">
-              <img src={playButtonIcon} alt="" />
-              <span>Trailer đang cập nhật...</span>
-            </div>
-          )}
-        </div>
+        <MovieTrailer movie={movie} />
 
         {/* SCHEDULE SECTION */}
-        {movie.status !== 2 && (
-          <div className="detail-schedule-wrapper" id="detail-schedule-section">
-            <h2 className="detail-main-title">Lịch Chiếu</h2>
-
-            {/* DATE SELECTION ROW */}
-            <div className="detail-date-row">
-              {datesData.map((d) => (
-                <div
-                  key={d.date}
-                  className={`detail-date-box ${selectedDate === d.date ? 'active' : ''}`}
-                  onClick={() => setSelectedDate(d.date)}
-                >
-                  <span className="detail-day-text">{d.day}</span>
-                  <span className="detail-date-text">{d.label}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* FILTER BAR */}
-            <div className="theaters-filter-bar" style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '30px', background: '#1c1c24', padding: '15px 20px', borderRadius: '12px', border: '1px solid #2a2a35' }}>
-              <span className="filter-label" style={{ color: '#fff', fontWeight: 'bold' }}>📍 Lọc rạp chiếu:</span>
-              
-              <select
-                className="filter-select"
-                value={selectedProvince}
-                onChange={handleProvinceChange}
-                style={{ padding: '8px 12px', background: '#222228', color: '#fff', border: '1px solid #33333d', borderRadius: '8px', cursor: 'pointer', outline: 'none' }}
-              >
-                <option value="">-- Chọn Tỉnh Thành --</option>
-                {uniqueProvinces.map((prov, index) => (
-                  <option key={index} value={prov}>{prov}</option>
-                ))}
-              </select>
-
-              <select
-                className="filter-select"
-                value={selectedTheater}
-                onChange={(e) => setSelectedTheater(e.target.value)}
-                disabled={!selectedProvince}
-                style={{
-                  padding: '8px 12px',
-                  background: selectedProvince ? '#222228' : '#111115',
-                  color: selectedProvince ? '#fff' : '#666',
-                  border: '1px solid #33333d',
-                  borderRadius: '8px',
-                  cursor: selectedProvince ? 'pointer' : 'not-allowed',
-                  outline: 'none'
-                }}
-              >
-                {!selectedProvince ? (
-                  <option value="all">Vui lòng chọn tỉnh trước</option>
-                ) : (
-                  <option value="all">-- Tất Cả Rạp --</option>
-                )}
-                {filteredTheaters.map((theater) => {
-                  const tId = theater.theaterId || theater.theater_id || theater.id;
-                  return <option key={tId} value={tId}>{theater.name}</option>;
-                })}
-              </select>
-            </div>
-
-            {/* THEATERS GRID LIST */}
-            <div className="detail-theaters-list">
-              {Object.keys(theaterGroups).length > 0 ? (
-                Object.values(theaterGroups).map((theater, idx) => (
-                  <div key={idx} className="detail-theater-card-block">
-                    <h3 className="detail-theater-name">CinemaX {theater.name}</h3>
-                    <p className="detail-theater-address">
-                      <img src={cinemaAddressIcon} alt="" />
-                      {theater.address}
-                    </p>
-
-                    <div className="detail-slots-grid">
-                      {theater.slots
-                        .slice()
-                        .sort((a, b) => String(a.startTime).localeCompare(String(b.startTime)))
-                        .map((slot) => {
-                          const rawTime = slot.startTime || slot.start_time;
-                          const formattedTime = typeof rawTime === 'string' ? rawTime.substring(0, 5) : '00:00';
-
-                          return (
-                            <button
-                              key={slot.showtimeId}
-                              className="detail-time-slot-btn"
-                              onClick={() => navigate(`/dat-ve/${slot.showtimeId}`)}
-                            >
-                              <span className="slot-time">{formattedTime}</span>
-                              <span className="slot-type">2D • Live</span>
-                            </button>
-                          );
-                        })}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="detail-no-data" style={{ color: '#666', textAlign: 'center', padding: '20px' }}>
-                  Rất tiếc, phim không có suất chiếu nào vào ngày và rạp đã chọn.
-                </div>
-              )}
-            </div>
-          </div>
+        {movie.status !== 2 && (<MovieSchedule 
+            datesData={datesData}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            selectedProvince={selectedProvince}
+            handleProvinceChange={handleProvinceChange}
+            uniqueProvinces={uniqueProvinces}
+            selectedTheater={selectedTheater}
+            setSelectedTheater={setSelectedTheater}
+            filteredTheaters={filteredTheaters}
+            theaterGroups={theaterGroups}
+            navigate={navigate}
+          />
         )}
 
         {/* REVIEW SECTION */}
