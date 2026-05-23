@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../style/MovieDetail.css';
+import ReviewSection from './ReviewSection';
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -10,32 +11,39 @@ const MovieDetail = () => {
   const [movie, setMovie] = useState(null);
   const [showtimes, setShowtimes] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Quản lý trạng thái tương tác nút Yêu Thích & Chia Sẻ
   const [isFavorite, setIsFavorite] = useState(false);
   const [shareText, setShareText] = useState("🔗 Chia Sẻ");
 
-  // trailer theo id
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalReviewCount, setTotalReviewCount] = useState(0);
+
+  const handleReviewsUpdate = (reviewsList) => {
+    setTotalReviewCount(reviewsList.length);
+    if (!reviewsList || reviewsList.length === 0) {
+      setAverageRating(0);
+      return;
+    }
+    const sum = reviewsList.reduce((acc, curr) => acc + curr.rating, 0);
+    const avg = sum / reviewsList.length;
+    setAverageRating((avg * 2).toFixed(1));
+  };
+
   if (movie && !movie.trailer) {
     if (String(id) === '1') movie.trailer = 'M5m4bARNPOw';
     if (String(id) === '2') movie.trailer = 'uYPbbksxFbY';
     if (String(id) === '3') movie.trailer = '6ZfuNTqbHE8';
-
   }
 
-  // Thuật toán tự động tính lịch 7 ngày (Full tuần) cho cụm đặt vé
   const datesData = useMemo(() => {
     const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
     const list = [];
     const today = new Date();
-
     for (let i = 0; i < 7; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
       const yyyy = d.getFullYear();
       const mm = String(d.getMonth() + 1).padStart(2, '0');
       const dd = String(d.getDate()).padStart(2, '0');
-
       list.push({
         day: i === 0 ? 'Hôm nay' : daysOfWeek[d.getDay()],
         date: `${yyyy}-${mm}-${dd}`,
@@ -45,24 +53,54 @@ const MovieDetail = () => {
     return list;
   }, []);
 
+  // =======================================================================
+  // 💡 GỌI DỮ LIỆU RẠP TỪ API THẬT (DATABASE) ĐỂ ĐỒNG BỘ
+  // =======================================================================
+  const [allTheaters, setAllTheaters] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedTheater, setSelectedTheater] = useState('all');
   const [selectedDate, setSelectedDate] = useState(datesData[0].date);
 
-  // Gọi API lấy thông tin chi tiết bộ phim
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/theaters')
+      .then(res => setAllTheaters(Array.isArray(res.data) ? res.data : []))
+      .catch(err => console.error("Lỗi lấy danh sách rạp:", err));
+  }, []);
+
+  // Sửa lại hàm này để bốc đúng cột 'city'
+    const getProvince = (theater) => {
+      // Ưu tiên cột city (Dữ liệu chuẩn), nếu không có mới lấy tạm location
+      return theater.city || theater.location || 'Khác';
+    };
+
+  const uniqueProvinces = useMemo(() => {
+    return [...new Set(allTheaters.map(getProvince))].filter(Boolean);
+  }, [allTheaters]);
+
+  const filteredTheaters = useMemo(() => {
+    return allTheaters.filter(t => getProvince(t) === selectedProvince);
+  }, [selectedProvince, allTheaters]);
+
+  const handleProvinceChange = (e) => {
+    setSelectedProvince(e.target.value);
+    setSelectedTheater('all');
+  };
+  // =======================================================================
+
   useEffect(() => {
     setLoading(true);
     axios.get(`http://localhost:8080/api/movies/${id}`)
-      .then(res => {
-        setMovie(res.data);
-      })
-      .catch(err => {
-        console.error("Lỗi lấy chi tiết phim từ Backend:", err);
-      });
+      .then(res => setMovie(res.data))
+      .catch(err => console.error("Lỗi lấy chi tiết phim từ Backend:", err));
   }, [id]);
 
-  // Gọi API lấy lịch chiếu động dựa theo ngày được chọn
   useEffect(() => {
+    const theaterQuery = selectedTheater === 'all' && filteredTheaters.length > 0
+      ? filteredTheaters.map(t => t.theaterId || t.theater_id || t.id).join(',')
+      : selectedTheater;
+
     axios.get(`http://localhost:8080/api/showtimes/filter`, {
-      params: { theaterId: 'all', date: selectedDate }
+      params: { theaterId: theaterQuery || 'all', date: selectedDate }
     })
     .then(res => {
       const safeData = Array.isArray(res.data) ? res.data : [];
@@ -78,9 +116,8 @@ const MovieDetail = () => {
       setShowtimes([]);
       setLoading(false);
     });
-  }, [id, selectedDate]);
+  }, [id, selectedDate, selectedTheater, filteredTheaters]);
 
-  // Hàm copy đường link URL chia sẻ phim vào bộ nhớ máy tính
   const handleShareMovie = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl)
@@ -91,7 +128,6 @@ const MovieDetail = () => {
       .catch(err => console.error("Lỗi copy link:", err));
   };
 
-  // Cuộn mượt mà xuống khu vực chọn suất chiếu khi bấm nút Đặt Vé
   const scrollToBooking = () => {
     document.getElementById('detail-schedule-section')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -99,7 +135,6 @@ const MovieDetail = () => {
   if (loading && !movie) return <div className="detail-loading">Đang tải thông tin phim...</div>;
   if (!movie) return <div className="detail-loading">Không tìm thấy phim yêu cầu.</div>;
 
-  // Nhóm lịch chiếu theo từng rạp cụ thể
   const theaterGroups = {};
   showtimes.forEach(st => {
     const tId = st.room?.theater?.theaterId || "T01";
@@ -114,7 +149,6 @@ const MovieDetail = () => {
 
   return (
     <div className="movie-detail-page">
-      {/* 1. KHU VỰC HERO BANNER TOP */}
       <div className="detail-hero" style={{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), #0a0a0c), url(${movie.image})` }}>
         <div className="detail-hero-content">
           <span className="detail-badge-status">{movie.status === 1 ? "ĐANG CHIẾU" : "SẮP CHIẾU"}</span>
@@ -147,7 +181,6 @@ const MovieDetail = () => {
         </div>
       </div>
 
-      {/* 2. KHU VỰC THÔNG TIN CHI TIẾT & TRAILER VIDEO */}
       <div className="detail-body-container">
         <div className="detail-main-layout">
           <div className="detail-left-info">
@@ -173,13 +206,23 @@ const MovieDetail = () => {
 
           <div className="detail-right-box">
             <h3>Thông Tin Phim</h3>
-            <div className="right-box-row"><span>Thời lượng</span><strong>{movie.duration} minutes</strong></div>
+            <div className="right-box-row"><span>Thời lượng</span><strong>{movie.duration} phút</strong></div>
             <div className="right-box-row"><span>Khởi Chiếu</span><strong>{movie.releaseDate || "16/05/2026"}</strong></div>
-            <div className="right-box-row"><span>Đánh Giá</span><strong style={{color: '#ffc107'}}>⭐ 8.5/10</strong></div>
+
+            <div className="right-box-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Đánh Giá</span>
+                    <strong style={{color: '#ffc107'}}>
+                        ⭐ {averageRating > 0 ? `${averageRating}/10` : "Chưa có"}
+                    </strong>
+                </div>
+                {totalReviewCount > 0 && (
+                    <span style={{ fontSize: '0.8rem', color: '#888' }}>({totalReviewCount} lượt đánh giá)</span>
+                )}
+            </div>
           </div>
         </div>
 
-        {/* 🎬 KHU VỰC PHÁT TRAILER YOUTUBE TỰ ĐỘNG KHÍT KHUNG 16:9 */}
         <div className="detail-trailer-section" style={{ margin: '50px 0' }}>
           <h2 className="detail-section-title" style={{ marginBottom: '20px' }}>Trailer Phim</h2>
 
@@ -201,7 +244,6 @@ const MovieDetail = () => {
           )}
         </div>
 
-        {/* 3. KHU VỰC LỊCH CHIẾU ĐỘNG DƯỚI ĐÁY */}
         {movie.status !== 2 && (
           <div className="detail-schedule-wrapper" id="detail-schedule-section">
             <h2 className="detail-main-title">Lịch Chiếu</h2>
@@ -217,6 +259,50 @@ const MovieDetail = () => {
                   <span className="detail-date-text">{d.label}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="theaters-filter-bar" style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '30px', background: '#1c1c24', padding: '15px 20px', borderRadius: '12px', border: '1px solid #2a2a35' }}>
+              <span className="filter-label" style={{ color: '#fff', fontWeight: 'bold' }}>📍 Lọc rạp chiếu:</span>
+
+              <select
+                  className="filter-select"
+                  value={selectedProvince}
+                  onChange={handleProvinceChange}
+                  style={{ padding: '8px 12px', background: '#222228', color: '#fff', border: '1px solid #33333d', borderRadius: '8px', cursor: 'pointer', outline: 'none' }}
+              >
+                  <option value="">-- Chọn Tỉnh Thành --</option>
+                  {uniqueProvinces.map((prov, index) => (
+                      <option key={index} value={prov}>{prov}</option>
+                  ))}
+              </select>
+
+              <select
+                  className="filter-select"
+                  value={selectedTheater}
+                  onChange={(e) => setSelectedTheater(e.target.value)}
+                  disabled={!selectedProvince}
+                  style={{
+                      padding: '8px 12px',
+                      background: selectedProvince ? '#222228' : '#111115',
+                      color: selectedProvince ? '#fff' : '#666',
+                      border: '1px solid #33333d',
+                      borderRadius: '8px',
+                      cursor: selectedProvince ? 'pointer' : 'not-allowed',
+                      outline: 'none'
+                  }}
+              >
+                  {!selectedProvince ? (
+                      <option value="all">Vui lòng chọn tỉnh trước</option>
+                  ) : (
+                      <option value="all">-- Tất Cả Rạp --</option>
+                  )}
+                  {filteredTheaters.map((theater) => {
+                      const tId = theater.theaterId || theater.theater_id || theater.id;
+                      return (
+                        <option key={tId} value={tId}>{theater.name}</option>
+                      );
+                  })}
+              </select>
             </div>
 
             <div className="detail-theaters-list">
@@ -250,11 +336,13 @@ const MovieDetail = () => {
                   </div>
                 ))
               ) : (
-                <div className="detail-no-data">Rất tiếc, phim không có suất chiếu nào vào ngày đã chọn.</div>
+                <div className="detail-no-data" style={{color: '#666', textAlign: 'center', padding: '20px'}}>Rất tiếc, phim không có suất chiếu nào vào ngày và rạp đã chọn.</div>
               )}
             </div>
           </div>
         )}
+
+        <ReviewSection movieId={id} onReviewsUpdate={handleReviewsUpdate} />
 
       </div>
     </div>

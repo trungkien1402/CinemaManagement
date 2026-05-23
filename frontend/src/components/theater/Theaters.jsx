@@ -8,7 +8,9 @@ const Theaters = () => {
   const [theaters, setTheaters] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. GỌI API LẤY DỮ LIỆU RẠP THỰC TẾ TỪ DATABASE
+  // 💡 STATE MỚI: Lưu Tỉnh/Thành phố đang được chọn
+  const [selectedCity, setSelectedCity] = useState('all');
+
   useEffect(() => {
     axios.get('http://localhost:8080/api/theaters')
       .then(res => {
@@ -21,24 +23,43 @@ const Theaters = () => {
       });
   }, []);
 
-  // 2. HÀM XỬ LÝ CHUYỂN TRANG THÔNG MINH
   const handleViewSchedule = (theaterId) => {
-    // Chuyển sang trang lịch chiếu VÀ "bỏ túi" đem theo mã rạp được chọn
     navigate('/lich-chieu', { state: { selectedTheaterId: theaterId } });
   };
 
   if (loading) return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Đang tải hệ thống rạp...</div>;
+
+  // 💡 LỌC DANH SÁCH THÀNH PHỐ DUY NHẤT TỪ DATA
+  const cities = ['all', ...new Set(theaters.map(t => t.city).filter(Boolean))];
+
+  // 💡 LỌC RẠP THEO THÀNH PHỐ ĐƯỢC CHỌN
+  const filteredTheaters = selectedCity === 'all'
+    ? theaters
+    : theaters.filter(t => t.city === selectedCity);
 
   return (
     <div className="theaters-wrapper">
       <div className="theaters-header">
         <h1>Hệ Thống Rạp</h1>
         <p>Hệ thống rạp chiếu phim hiện đại trên toàn quốc</p>
+
+        {/* 💡 DROPDOWN CHỌN TỈNH THÀNH */}
+        <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-start' }}>
+          <select
+            value={selectedCity}
+            onChange={(e) => setSelectedCity(e.target.value)}
+            style={{ padding: '10px 20px', borderRadius: '8px', background: '#1c1c24', color: '#fff', border: '1px solid #333', fontSize: '16px', outline: 'none', cursor: 'pointer', minWidth: '250px' }}
+          >
+            <option value="all">📍 -- Tất cả Tỉnh/Thành phố --</option>
+            {cities.filter(c => c !== 'all').map((city, idx) => (
+              <option key={idx} value={city}>{city}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="theaters-grid">
-        {theaters.map((theater, index) => {
-          // MẸO: Lưu trữ link ảnh fallback phòng trường hợp DB chưa có cột ảnh rạp
+      <div className="theaters-grid" style={{ marginTop: '30px' }}>
+        {filteredTheaters.length > 0 ? filteredTheaters.map((theater, index) => {
           const fallbackImages = [
             'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=800&auto=format&fit=crop',
@@ -50,7 +71,6 @@ const Theaters = () => {
 
           return (
             <div className="theater-card" key={theater.theaterId || index}>
-
               <div className="theater-img-box">
                 {displayAmenities.includes('IMAX') && (
                   <span className="theater-badge">IMAX</span>
@@ -59,12 +79,12 @@ const Theaters = () => {
               </div>
 
               <div className="theater-info">
-                <h2 className="theater-name">CinemaX {theater.name}</h2>
+                <h2 className="theater-name">{theater.name.startsWith('CinemaX') ? theater.name : `CinemaX ${theater.name}`}</h2>
 
-                {/* 💡 ĐÃ SỬA: Chuyển sang theater.location cho khớp với Entity Java */}
                 <div className="theater-detail-row">
                   <i>📍</i>
-                  <span style={{ whiteSpace: 'pre-line' }}>{theater.location || "Đang cập nhật địa chỉ"}</span>
+                  {/* Hiển thị rõ địa chỉ và thành phố */}
+                  <span style={{ whiteSpace: 'pre-line' }}>{theater.address || theater.location}, {theater.city}</span>
                 </div>
 
                 <div className="theater-detail-row">
@@ -89,24 +109,21 @@ const Theaters = () => {
                 </div>
 
                 <div className="theater-actions">
-                  <button
-                    className="btn-primary-theater"
-                    onClick={() => handleViewSchedule(theater.theaterId)}
-                  >
+                  <button className="btn-primary-theater" onClick={() => handleViewSchedule(theater.theaterId)}>
                     Xem Lịch Chiếu
                   </button>
-                  <button
-                    className="btn-secondary-theater"
-                    onClick={() => window.open(theater.mapLink || 'https://maps.google.com', '_blank')}
-                  >
+                  <button className="btn-secondary-theater" onClick={() => window.open(theater.mapLink || 'https://maps.google.com', '_blank')}>
                     Chỉ Đường
                   </button>
                 </div>
-
               </div>
             </div>
           );
-        })}
+        }) : (
+          <div style={{ color: '#aaa', textAlign: 'center', gridColumn: '1 / -1', padding: '40px' }}>
+            Hiện chưa có cụm rạp nào tại khu vực này.
+          </div>
+        )}
       </div>
     </div>
   );

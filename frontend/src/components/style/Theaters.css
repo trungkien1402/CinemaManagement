@@ -22,10 +22,10 @@
   margin: 0;
 }
 
-/* Lưới Grid chứa các Rạp */
 .theaters-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  /* 💡 ĐÃ SỬA: Đổi auto-fit thành auto-fill để rạp không bị giãn to khi chỉ có 1 rạp */
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 30px;
 }
 

@@ -7,7 +7,6 @@ const MovieSchedule = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 💡 ĐÃ SỬA: Vòng lặp i < 7 để hiển thị FULL 1 TUẦN
   const datesData = useMemo(() => {
     const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
     const list = [];
@@ -36,6 +35,9 @@ const MovieSchedule = () => {
   const [selectedDate, setSelectedDate] = useState(datesData[0].date);
   const [showtimes, setShowtimes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // 💡 STATE MỚI: Chọn Tỉnh/Thành phố
+  const [selectedCity, setSelectedCity] = useState('all');
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/theaters')
@@ -73,6 +75,18 @@ const MovieSchedule = () => {
 
   const handleTimeSlotClick = (showtimeId) => {
     if (showtimeId) navigate(`/dat-ve/${showtimeId}`);
+  };
+
+  // 💡 LỌC DỮ LIỆU ĐỊA ĐIỂM
+  const cities = ['all', ...new Set(theaters.map(t => t.city).filter(Boolean))];
+  const filteredTheaters = selectedCity === 'all'
+    ? theaters
+    : theaters.filter(t => t.theaterId === 'all' || t.city === selectedCity);
+
+  // Khi đổi thành phố, tự động nhảy về nút "Tất Cả Rạp" của thành phố đó
+  const handleCityChange = (e) => {
+    setSelectedCity(e.target.value);
+    setSelectedTheater('all');
   };
 
   if (loading) return <div className="loading-text">Đang tải lịch chiếu từ hệ thống...</div>;
@@ -114,22 +128,41 @@ const MovieSchedule = () => {
         <h1 className="figma-main-title">Lịch Chiếu</h1>
         <p className="figma-sub-title">Chọn rạp và ngày để xem lịch chiếu</p>
 
-        <div className="figma-filter-group">
-          <span className="figma-filter-label">📍 Chọn Rạp</span>
-          <div className="figma-cinema-row">
-            {theaters.map((theater) => {
-              const tId = theater.theaterId || theater.theater_id || 'all';
-              return (
-                <button
-                  key={tId}
-                  className={`figma-cinema-btn ${selectedTheater === tId ? 'active' : ''}`}
-                  onClick={() => setSelectedTheater(tId)}
-                >
-                  {theater.name.startsWith('CinemaX') ? theater.name : `${theater.name}`}
-                </button>
-              );
-            })}
+        {/* 💡 BỘ LỌC TỈNH/THÀNH VÀ RẠP KẾT HỢP */}
+        <div className="figma-filter-group" style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <span className="figma-filter-label">🌍 Chọn Tỉnh/Thành</span>
+            <select
+              value={selectedCity}
+              onChange={handleCityChange}
+              style={{ padding: '10px 15px', borderRadius: '8px', background: '#222228', color: '#fff', border: '1px solid #33333d', fontSize: '15px', outline: 'none', cursor: 'pointer', minWidth: '200px' }}
+            >
+              <option value="all">Tất cả Tỉnh/Thành</option>
+              {cities.filter(c => c !== 'all').map((city, idx) => (
+                <option key={idx} value={city}>{city}</option>
+              ))}
+            </select>
           </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
+            <span className="figma-filter-label">📍 Chọn Rạp</span>
+            <div className="figma-cinema-row">
+              {filteredTheaters.map((theater) => {
+                const tId = theater.theaterId || theater.theater_id || 'all';
+                return (
+                  <button
+                    key={tId}
+                    className={`figma-cinema-btn ${selectedTheater === tId ? 'active' : ''}`}
+                    onClick={() => setSelectedTheater(tId)}
+                  >
+                    {theater.name.startsWith('CinemaX') ? theater.name : `${theater.name}`}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
 
         <div className="figma-filter-group" style={{ marginTop: '24px' }}>
