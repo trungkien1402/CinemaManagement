@@ -16,8 +16,6 @@ public class Ticket {
     @Column(name = "total_price")
     private Double totalPrice;
 
-    @Column(length = 20)
-    private String status;
 
     @Column(name = "booking_date")
     private LocalDateTime bookingDate;
@@ -33,6 +31,9 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seat_id")
     private Seat seat;
+
+    @Column(name = "status")
+    private String statusTicket= "BOOKED";
 
     @Column(name = "status_tk")
     private Integer statusTk = 0;

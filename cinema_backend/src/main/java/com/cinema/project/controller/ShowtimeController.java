@@ -2,7 +2,6 @@ package com.cinema.project.controller;
 
 import com.cinema.project.model.Seat;
 import com.cinema.project.model.Showtime;
-import com.cinema.project.model.Ticket;
 import com.cinema.project.payload.response.SeatResponse;
 import com.cinema.project.repositories.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -65,21 +63,23 @@ public class ShowtimeController {
     }
 
     // ==========================================
-    // 2. CLIENT LẤY SƠ ĐỒ GHẾ (ĐÃ FIX LỖI ÉP KIỂU STRING)
+    // 2. CLIENT LẤY SƠ ĐỒ GHẾ (ĐÃ FIX KHỚP THAM SỐ STRING)
     // ==========================================
     @GetMapping("/showtimes/{showtimeId}/seats")
     public ResponseEntity<List<SeatResponse>> getSeatsForShowtime(@PathVariable String showtimeId) {
-        // ĐÃ FIX: Chuyển đổi showtimeId từ Long sang String bằng String.valueOf() để khớp với CrudRepository<Showtime, String>
-        Showtime showtime = showtimeRepository.findById(String.valueOf(showtimeId))
+        Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy suất chiếu ứng với ID cung cấp!"));
 
         List<Seat> allSeats = seatRepository.findByRoom_RoomId(showtime.getRoom().getRoomId());
+
+        // 🛠️ ĐÃ FIX: Truyền trực tiếp String showtimeId để khớp với TicketRepository mới sửa đổi
         List<String> bookedSeatIds = ticketRepository.findBookedSeatIdsByShowtime(showtimeId);
 
         List<SeatResponse> response = allSeats.stream().map(seat -> {
             boolean isOccupied = seat.getSeatId() != null && bookedSeatIds.contains(seat.getSeatId());
             return new SeatResponse(seat.getSeatId(), seat.getSeatNumber(), seat.getSeatType(), isOccupied);
         }).collect(Collectors.toList());
+
         return ResponseEntity.ok(response);
     }
 
@@ -92,13 +92,12 @@ public class ShowtimeController {
     }
 
     // ==========================================
-    // 4. ADMIN PHÁT HÀNH TẠO MỚI SUẤT CHIẾU (ĐÃ FIX LỖI SETSHOWTIMEID)
+    // 4. ADMIN PHÁT HÀNH TẠO MỚI SUẤT CHIẾU
     // ==========================================
     @PostMapping("/admin/showtimes/create")
     public ResponseEntity<?> createShowtime(@RequestBody Map<String, Object> payload) {
         try {
             Showtime showtime = new Showtime();
-            // ĐÃ FIX: Tạo chuỗi ID String (ví dụ "ST-87212") bằng cách nối chuỗi thay vì truyền trực tiếp số Long
             showtime.setShowtimeId("ST-" + (System.currentTimeMillis() % 100000L));
 
             Long movieId = Long.parseLong(payload.get("movieId").toString());
@@ -117,7 +116,7 @@ public class ShowtimeController {
     }
 
     // ==========================================
-    // 5. ADMIN LẤY BÁO CÁO THỐNG KÊ DOANH THU & BIỂU ĐỒ
+    // 5. ADMIN LẤY BÁO CÁO THỐNG KÊ DOANH THU & BIỂU ĐỒ (ĐÃ FIX ĐỘNG 100%)
     // ==========================================
     @GetMapping("/admin/showtimes-dashboard/summary")
     public ResponseEntity<?> getAdminAnalyticsSummary() {
@@ -146,7 +145,10 @@ public class ShowtimeController {
 
                 long ticketsSold = row[1] != null ? ((Number) row[1]).longValue() : 0L;
                 movieMap.put("ticketsSold", ticketsSold);
-                movieMap.put("revenue", ticketsSold * 85000.0);
+
+                // ✅ ĐÃ FIX ĐỘNG: Lấy dữ liệu tổng tiền thực tế từ row[2] của database trả về
+                double revenue = row[2] != null ? ((Number) row[2]).doubleValue() : 0.0;
+                movieMap.put("revenue", revenue);
 
                 return movieMap;
             }).collect(Collectors.toList());
@@ -159,36 +161,7 @@ public class ShowtimeController {
     }
 
     // ==========================================
-    // 6. ADMIN TRA CỨU VÉ ĐỂ CHECK-IN
-    // ==========================================
-    @GetMapping("/admin/checkin/search/{ticketId}")
-    public ResponseEntity<?> searchTicketForCheckin(@PathVariable String ticketId) {
-        Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
-        if (!ticketOpt.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Mã vé không tồn tại trên hệ thống!");
-        }
-        return ResponseEntity.ok(ticketOpt.get());
-    }
-
-    // ==========================================
-    // 7. ADMIN XÁC NHẬN SOÁT VÉ VÀO CỬA
-    // ==========================================
-    @PutMapping("/admin/checkin/confirm/{ticketId}")
-    public ResponseEntity<?> confirmCheckin(@PathVariable String ticketId) {
-        Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy mã vé này!"));
-
-        if (ticket.getStatusTk() != null && ticket.getStatusTk() == 1) {
-            return ResponseEntity.badRequest().body("Vé này đã được sử dụng từ trước!");
-        }
-
-        ticket.setStatusTk(1);
-        ticketRepository.save(ticket);
-        return ResponseEntity.ok("Xác nhận Check-in soát vé thành công!");
-    }
-
-    // ==========================================
-    // 8. NHÓM CHỨC NĂNG QUẢN TRỊ VOUCHER KHUYẾN MÃI
+    // 6. NHÓM CHỨC NĂNG QUẢN TRỊ VOUCHER KHUYẾN MÃI
     // ==========================================
     @GetMapping("/admin/vouchers/all")
     public ResponseEntity<?> getAllVouchers() {

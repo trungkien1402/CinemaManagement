@@ -2,12 +2,8 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosClient';
 import '../style/Admin.css';
-// Chart.js
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
-// QR Scanner
 import { Html5QrcodeScanner } from 'html5-qrcode';
 
-// Import các sub-component vừa được tách nhỏ
 import AnalyticsTab from './AnalyticsTab';
 import MoviesTab from './MoviesTab';
 import TheatersTab from './TheatersTab';
@@ -15,17 +11,15 @@ import ShowtimesTab from './ShowtimesTab';
 import BookingsTab from './BookingsTab';
 import VouchersTab from './VouchersTab';
 import QrcodeCheckinTab from './QrcodeCheckinTab';
-import { useTranslation } from 'react-i18next'; // 👈 Giữ nguyên import bộ dịch
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
+import { useTranslation } from 'react-i18next'; 
 
 const AdminDashboard = () => {
-    const { t, i18n } = useTranslation(); // 👈 Lấy thêm i18n để gọi hàm đổi ngôn ngữ trực tiếp
+    const { t, i18n } = useTranslation(); 
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('analytics');
     const [loading, setLoading] = useState(false);
     const scannerRef = useRef(null);
-    // --- STATE KHO DỮ LIỆU ---
+    
     const [movies, setMovies] = useState([]);
     const [theaters, setTheaters] = useState([]);
     const [rooms, setRooms] = useState([]);
@@ -33,16 +27,17 @@ const AdminDashboard = () => {
     const [bookings, setBookings] = useState([]);
     const [vouchers, setVouchers] = useState([]);
     const [analytics, setAnalytics] = useState({ totalRevenue: 0, totalTickets: 0, monthlyData: [], topMovies: [] });
-    // --- STATE ĐIỀU KHIỂN UI/SƠ ĐỒ GHẾ ---
+    
     const [selectedTheaterId, setSelectedTheaterId] = useState('');
     const [selectedRoomId, setSelectedRoomId] = useState('');
     const [seats, setSeats] = useState([]);
     const [manualTicketId, setManualTicketId] = useState('');
-    // --- STATE QỦAN LÝ FORM ---
+    
     const [editingMovieId, setEditingMovieId] = useState(null);
     const [movieForm, setMovieForm] = useState({
         title: '', description: '', trailerUrl: '', movieFormat: '2D',
-        status: 1, duration: '', genre: '', ageRating: 'P', releaseDate: '', image: '', author: ''
+        status: '1', 
+        duration: '', genre: '', ageRating: 'P', releaseDate: '', image: '', author: ''
     });
     const [roomForm, setRoomForm] = useState({ roomId: '', roomNumber: '', rowsCount: 8, colsCount: 10 });
     const [stForm, setStForm] = useState({ movieId: '', roomId: '', showDate: '', startTime: '', ticketPrice: 85000 });
@@ -61,33 +56,34 @@ const AdminDashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            
             if (activeTab === 'analytics') {
                 const res = await api.get('/admin/showtimes-dashboard/summary', authHeader);
                 setAnalytics(res.data);
             } else if (activeTab === 'movies') {
-                const res = await api.get('/movies/admin/all', authHeader);
+                const res = await api.get(`/movies/admin/all?t=${new Date().getTime()}`, authHeader);
                 setMovies(res.data);
             } else if (activeTab === 'bookings') {
                 const res = await api.get('/admin/bookings/all', authHeader);
                 setBookings(res.data);
             } else if (activeTab === 'theaters') {
-                const res = await api.get('/admin/theaters/all');
+                const res = await api.get('/admin/theaters/all', authHeader);
                 setTheaters(res.data);
             } else if (activeTab === 'showtimes') {
                 const [st, mv, th] = await Promise.all([
-                    api.get('/admin/showtimes/all'),
-                    api.get('/movies/admin/all'),
-                    api.get('/admin/theaters/all')
+                    api.get('/admin/showtimes/all', authHeader),
+                    api.get(`/movies/admin/all?t=${new Date().getTime()}`, authHeader),
+                    api.get('/admin/theaters/all', authHeader)
                 ]);
                 setShowtimes(st.data);
                 setMovies(mv.data);
                 setTheaters(th.data);
             } else if (activeTab === 'vouchers') {
-                const res = await api.get('/admin/vouchers/all');
+                const res = await api.get('/admin/vouchers/all', authHeader);
                 setVouchers(res.data);
             }
         } catch (err) {
-            console.error("Lỗi khi đồng bộ API dữ liệu Admin: ", err);
+            console.error("Lỗi đồng bộ dữ liệu: ", err);
         } finally {
             setLoading(false);
         }
@@ -97,23 +93,22 @@ const AdminDashboard = () => {
         loadTabValues();
     }, [loadTabValues]);
 
-    // Lọc lấy phòng chiếu khi chọn Rạp tại mục Cấu hình
     useEffect(() => {
         if (selectedTheaterId) {
-            api.get(`/admin/rooms/theater/${selectedTheaterId}`).then(res => setRooms(res.data));
+            const token = localStorage.getItem('token');
+            api.get(`/admin/rooms/theater/${selectedTheaterId}`, { headers: { Authorization: `Bearer ${token}` } })
+               .then(res => setRooms(res.data));
         }
     }, [selectedTheaterId]);
 
-    // Xem sơ đồ ghế vật lý khi chọn Phòng cụ thể
     useEffect(() => {
         if (selectedRoomId) {
-            api.get(`/admin/seats/room/${selectedRoomId}`).then(res => setSeats(res.data));
+            const token = localStorage.getItem('token');
+            api.get(`/admin/seats/room/${selectedRoomId}`, { headers: { Authorization: `Bearer ${token}` } })
+               .then(res => setSeats(res.data));
         }
     }, [selectedRoomId]);
 
-    // =========================================================================
-    // 2. NGHIỆP VỤ QR CHECK-IN SOÁT VÉ
-    // =========================================================================
     useEffect(() => {
         if (activeTab === 'qrcode-checkin') {
             scannerRef.current = new Html5QrcodeScanner('qr-reader-view', { fps: 12, qrbox: 250 });
@@ -132,135 +127,123 @@ const AdminDashboard = () => {
     const fireConfirmCheckin = async (id) => {
         if (!id) return alert(t('admin.adminDashboard.alerts.requireTicketId'));
         try {
-            await api.put(`/admin/checkin/confirm/${id}`);
-            alert(`${t('admin.adminDashboard.alerts.checkinSuccess')} #${id}`);
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            const res = await api.post(`/admin/bookings/checkin/${id}`, {}, authHeader);
+            alert(`✅ ${t('admin.adminDashboard.alerts.checkinSuccess') || "Vé"} #${id}: ${res.data}`);
             setManualTicketId('');
         } catch (err) {
             alert(t('admin.adminDashboard.alerts.checkinFail') + (err.response?.data || t('admin.adminDashboard.alerts.checkinFailFallback')));
         }
     };
 
-    // =========================================================================
-    // 3. XỬ LÝ SỰ KIỆN FORM PHIM (MOVIES)
-    // =========================================================================
     const saveOrUpdateMovie = async (e) => {
         e.preventDefault();
         try {
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            
+            const processedForm = {
+                ...movieForm,
+                status: parseInt(movieForm.status, 10),
+                duration: !movieForm.duration || parseInt(movieForm.duration, 10) <= 0 ? 1 : parseInt(movieForm.duration, 10),
+                releaseDate: movieForm.releaseDate ? movieForm.releaseDate : new Date().toISOString().split('T')[0]
+            };
+
             if (editingMovieId) {
-                await api.put(`/movies/admin/update/${editingMovieId}`, movieForm);
-                alert(t('admin.adminDashboard.alerts.movieUpdateSuccess'));
+                await api.put(`/movies/admin/update/${editingMovieId}`, processedForm, authHeader);
+                alert(t('admin.adminDashboard.alerts.movieUpdateSuccess') || "Cập nhật thông tin phim thành công!");
             } else {
-                await api.post('/movies/admin/create', movieForm);
-                alert(t('admin.adminDashboard.alerts.movieCreateSuccess'));
+                await api.post('/movies/admin/create', processedForm, authHeader);
+                alert(t('admin.adminDashboard.alerts.movieCreateSuccess') || "Thêm phim mới vào kho thành công!");
             }
             setEditingMovieId(null);
-            setMovieForm({ title: '', description: '', trailerUrl: '', movieFormat: '2D', status: 1, duration: '', genre: '', ageRating: 'P', releaseDate: '', image: '', author: '' });
+            setMovieForm({ title: '', description: '', trailerUrl: '', movieFormat: '2D', status: '1', duration: '', genre: '', ageRating: 'P', releaseDate: '', image: '', author: '' });
             loadTabValues();
-        } catch (err) { alert(t('admin.adminDashboard.alerts.movieError') + err.response?.data); }
+        } catch (err) { 
+            alert((t('admin.adminDashboard.alerts.movieError') || "Lỗi xử lý phim: ") + (err.response?.data || err.message)); 
+        }
     };
 
     const triggerEditMovie = (m) => {
         setEditingMovieId(m.movieId);
-        setMovieForm({ ...m });
+        setMovieForm({ 
+            ...m,
+            status: m.status !== undefined && m.status !== null ? String(m.status) : '1'
+        });
     };
 
     const deleteMovieObj = async (id) => {
         if (!window.confirm(t('admin.adminDashboard.alerts.confirmDeleteMovie'))) return;
         try {
-            await api.delete(`/movies/admin/delete/${id}`);
-            alert(t('admin.adminDashboard.alerts.movieDeleteSuccess'));
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            await api.delete(`/movies/admin/delete/${id}`, authHeader);
+            alert(t('admin.adminDashboard.alerts.movieDeleteSuccess') || "Đã xóa phim thành công!");
             loadTabValues();
-        } catch (err) { alert(t('admin.adminDashboard.alerts.movieDeleteFail')); }
+        } catch (err) { alert(t('admin.adminDashboard.alerts.movieDeleteFail') || "Xóa phim thất bại!"); }
     };
 
-    // =========================================================================
-    // 4. XỬ LÝ SỰ KIỆN PHÒNG & GHẾ (THEATERS/ROOMS)
-    // =========================================================================
     const createNewRoomAndSeats = async (e) => {
         e.preventDefault();
         if (!selectedTheaterId) return alert(t('admin.adminDashboard.alerts.requireTheaterForRoom'));
         try {
-            await api.post(`/admin/rooms/create/${selectedTheaterId}`, roomForm);
-            alert(t('admin.adminDashboard.alerts.roomCreateSuccess'));
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            await api.post(`/admin/rooms/create/${selectedTheaterId}`, roomForm, authHeader);
+            alert(t('admin.adminDashboard.alerts.roomCreateSuccess') || "Khởi tạo phòng thành công!");
             setRoomForm({ roomId: '', roomNumber: '', rowsCount: 8, colsCount: 10 });
-            api.get(`/admin/rooms/theater/${selectedTheaterId}`).then(res => setRooms(res.data));
-        } catch (err) { alert(t('admin.adminDashboard.alerts.roomError') + err.response?.data); }
+            api.get(`/admin/rooms/theater/${selectedTheaterId}`, authHeader).then(res => setRooms(res.data));
+        } catch (err) { alert((t('admin.adminDashboard.alerts.roomError') || "Lỗi tạo phòng: ") + err.response?.data); }
     };
 
     const toggleSeatMaintenance = async (seatId) => {
         try {
-            await api.put(`/admin/seats/toggle-status/${seatId}`);
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            await api.put(`/admin/seats/toggle-status/${seatId}`, {}, authHeader);
             setSeats(seats.map(s => s.seatId === seatId ? { ...s, isOccupied: !s.isOccupied } : s));
         } catch (err) { alert(t('admin.adminDashboard.alerts.seatError')); }
     };
 
-    // =========================================================================
-    // 5. XỬ LÝ SUẤT CHIẾU & VOUCHER
-    // =========================================================================
     const createShowtimeObj = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/admin/showtimes/create', stForm);
-            alert(t('admin.adminDashboard.alerts.showtimeCreateSuccess'));
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            await api.post('/admin/showtimes/create', stForm, authHeader);
+            alert(t('admin.adminDashboard.alerts.showtimeCreateSuccess') || "Tạo lịch chiếu phim thành công!");
             setStForm({ movieId: '', roomId: '', showDate: '', startTime: '', ticketPrice: 85000 });
             loadTabValues();
-        } catch (err) { alert(t('admin.adminDashboard.alerts.showtimeError') + err.response?.data); }
+        } catch (err) { alert((t('admin.adminDashboard.alerts.showtimeError') || "Lỗi tạo lịch chiếu: ") + err.response?.data); }
     };
 
     const saveVoucherObj = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/admin/vouchers/create', voucherForm);
-            alert(t('admin.adminDashboard.alerts.voucherCreateSuccess'));
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            await api.post('/admin/vouchers/create', voucherForm, authHeader);
+            alert(t('admin.adminDashboard.alerts.voucherCreateSuccess') || "Phát hành Voucher thành công!");
             setVoucherForm({ voucherCode: '', discountPercent: 10, expiryDate: '' });
             loadTabValues();
-        } catch (err) { alert(t('admin.adminDashboard.alerts.voucherError') + err.response?.data); }
+        } catch (err) { alert((t('admin.adminDashboard.alerts.voucherError') || "Lỗi tạo voucher: ") + err.response?.data); }
     };
 
     const deleteVoucherObj = async (code) => {
         try {
-            await api.delete(`/admin/vouchers/delete/${code}`);
+            const token = localStorage.getItem('token');
+            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+            await api.delete(`/admin/vouchers/delete/${code}`, authHeader);
             loadTabValues();
         } catch (err) { alert(t('admin.adminDashboard.alerts.voucherDeleteError')); }
     };
 
-    // =========================================================================
-    // 6. TIỀN XỬ LÝ BIẾU ĐỒ DOANH THU (CHARTS)
-    // =========================================================================
-    const barChartData = {
-        labels: [
-            t('admin.adminDashboard.months.m1'), t('admin.adminDashboard.months.m2'), t('admin.adminDashboard.months.m3'),
-            t('admin.adminDashboard.months.m4'), t('admin.adminDashboard.months.m5'), t('admin.adminDashboard.months.m6'),
-            t('admin.adminDashboard.months.m7'), t('admin.adminDashboard.months.m8'), t('admin.adminDashboard.months.m9'),
-            t('admin.adminDashboard.months.m10'), t('admin.adminDashboard.months.m11'), t('admin.adminDashboard.months.m12')
-        ],
-        datasets: [{
-            label: t('admin.adminDashboard.charts.revenueLabel'),
-            data: Array.from({ length: 12 }, (_, i) => {
-                const match = analytics.monthlyData?.find(d => d.month === (i + 1));
-                return match ? match.revenue : 0;
-            }),
-            backgroundColor: '#3b82f6',
-            borderRadius: 4
-        }]
-    };
-
-    const doughnutData = {
-        labels: analytics.topMovies?.map(m => m.title) || [],
-        datasets: [{
-            data: analytics.topMovies?.map(m => m.ticketsSold) || [],
-            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
-            borderWidth: 1
-        }]
-    };
-
     return (
         <div className="admin-layout">
-            {/* SIDEBAR ĐIỀU HƯỚNG */}
             <aside className="admin-navigation-panel">
                 <div className="admin-brand">CINEMA MATRIX</div>
                 
-                {/* 💡 ĐÂY RỒI: CỤM NÚT SWITCH NGÔN NGỮ NẰM NGAY TRÊN SIDEBAR */}
                 <div className="lang-switcher-admin" style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px', padding: '0 20px' }}>
                     <button 
                         onClick={() => changeLanguage('vi')} 
@@ -289,13 +272,10 @@ const AdminDashboard = () => {
                 </nav>
             </aside>
             
-            {/* PHẦN HIỂN THỊ CHỨC NĂNG TẬP TRUNG */}
             <main className="admin-main-viewport">
                 {loading && <div className="loading-spinner-overlay">{t('admin.adminDashboard.status.loading')}</div>}
                 
-                {activeTab === 'analytics' && (
-                    <AnalyticsTab analytics={analytics} barChartData={barChartData} doughnutData={doughnutData} />
-                )}
+                {activeTab === 'analytics' && <AnalyticsTab analytics={analytics} />}
                 {activeTab === 'movies' && (
                     <MoviesTab 
                         movieForm={movieForm} setMovieForm={setMovieForm} saveOrUpdateMovie={saveOrUpdateMovie} 
@@ -317,9 +297,7 @@ const AdminDashboard = () => {
                         theaters={theaters} rooms={rooms} showtimes={showtimes} 
                     />
                 )}
-                {activeTab === 'bookings' && (
-                    <BookingsTab bookings={bookings} />
-                )}
+                {activeTab === 'bookings' && <BookingsTab bookings={bookings} />}
                 {activeTab === 'vouchers' && (
                     <VouchersTab 
                         saveVoucherObj={saveVoucherObj} voucherForm={voucherForm} setVoucherForm={setVoucherForm} 

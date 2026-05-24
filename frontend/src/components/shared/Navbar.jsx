@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AuthModal from '../auth/AuthModal'; 
-import LanguageSwitcher from './LanguageSwitcher'; // 👈 IMPORT NÚT CHUYỂN NGÔN NGỮ
+import LanguageSwitcher from './LanguageSwitcher'; 
 import '../style/Navbar.css';
 import { useTranslation } from 'react-i18next';
 
@@ -85,7 +85,7 @@ const Navbar = () => {
                 {/* Right Section */}
                 <div className="nav-right" ref={dropdownRef} style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                     
-                    {/* 💡 THẢ NÚT COMPONENT CHUYỂN NGÔN NGỮ VÀO ĐÂY */}
+                    {/* NÚT CHUYỂN NGÔN NGỮ */}
                     <LanguageSwitcher />
 
                     {user ? (
@@ -119,12 +119,19 @@ const Navbar = () => {
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
-                                    <Link to="/profile" className="dropdown-item">
-                                        <i className="fa-regular fa-user"></i> {t('nav.dropdown.myProfile') || "Hồ sơ của tôi"}
-                                    </Link>
-                                    <Link to="/ve-da-dat" className="dropdown-item">
-                                        <i className="fa-solid fa-ticket"></i> {t('nav.dropdown.bookingHistory') || "Lịch sử đặt vé"}
-                                    </Link>
+
+                                    {/* 💡 ĐÃ GỘP FIX CODE TẠI ĐÂY: Vừa check Role User, vừa dùng đa ngôn ngữ */}
+                                    {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
+                                        <>
+                                            <Link to="/profile" className="dropdown-item">
+                                                <i className="fa-regular fa-user"></i> {t('nav.dropdown.myProfile') || "Hồ sơ của tôi"}
+                                            </Link>
+                                            <Link to="/ve-da-dat" className="dropdown-item">
+                                                <i className="fa-solid fa-ticket"></i> {t('nav.dropdown.bookingHistory') || "Lịch sử đặt vé"}
+                                            </Link>
+                                        </>
+                                    )}
+                                    
                                     <div className="dropdown-divider"></div>
                                     <button className="dropdown-item logout" onClick={handleLogout}>
                                         <i className="fa-solid fa-right-from-bracket"></i> {t('nav.dropdown.logout') || "Đăng xuất"}
