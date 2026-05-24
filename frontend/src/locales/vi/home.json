@@ -1,0 +1,86 @@
+{
+  "home": {
+    "heroSlider": {
+      "tags": {
+        "nowShowing": "ĐANG CHIẾU"
+      },
+      "meta": {
+        "minutes": "phút"
+      },
+      "buttons": {
+        "bookNow": "Đặt Vé Ngay",
+        "detail": "Chi Tiết"
+      }
+    },
+"nowShowing": {
+      "title": "Phim Đang Chiếu",
+      "subtitle": "Khám phá những siêu phẩm điện ảnh đang làm mưa làm gió tại rạp",
+      "status": {
+        "loading": "Đang tải phim đang chiếu...",
+        "empty": "Hiện tại chưa có lịch phim đang chiếu."
+      }
+    },
+    "comingSoon": {
+      "title": "Phim Sắp Chiếu",
+      "status": {
+        "loading": "Đang tải phim sắp chiếu...",
+        "empty": "Hiện tại chưa có lịch phim sắp chiếu."
+      }
+    },
+    "schedule": {
+      "title": "Lịch Chiếu",
+      "subtitle": "Chọn rạp và ngày để xem lịch chiếu",
+      "days": {
+        "today": "Hôm nay",
+        "sun": "Chủ Nhật",
+        "mon": "Thứ 2",
+        "tue": "Thứ 3",
+        "wed": "Thứ 4",
+        "thu": "Thứ 5",
+        "fri": "Thứ 6",
+        "sat": "Thứ 7"
+      },
+      "filters": {
+        "allTheaters": "Tất Cả Rạp",
+        "cityLabel": "Chọn Tỉnh/Thành",
+        "allCities": "Tất cả Tỉnh/Thành",
+        "theaterLabel": "Chọn Rạp",
+        "dateLabel": "Chọn Ngày"
+      },
+      "movieMeta": {
+        "minutes": "phút"
+      },
+      "status": {
+        "loading": "Đang tải lịch chiếu từ hệ thống...",
+        "noData": "Rất tiếc, không có lịch chiếu nào phù hợp cho ngày này."
+      }
+    },
+    "news": {
+      "hero": {
+        "title": "TIN TỨC ĐIỆN ẢNH",
+        "subtitle": "Cập nhật phim mới, trailer, review và thế giới điện ảnh"
+      },
+      "status": {
+        "loading": "Đang tải tin tức..."
+      },
+      "buttons": {
+        "readMore": "Xem chi tiết →"
+      }
+    },
+    "shared": {
+      "cinemaFilter": {
+        "label": "Chọn Rạp"
+      },
+      "dateFilter": {
+        "label": "Chọn Ngày"
+      },
+      "movieCard": {
+        "viewDetail": "Xem chi tiết",
+        "bookBtn": "Đặt vé"
+      },
+      "sectionHeader": {
+        "viewAll": "Xem Tất Cả"
+      }
+    }
+  }
+}

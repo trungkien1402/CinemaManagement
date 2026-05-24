@@ -4,13 +4,23 @@ import axios from 'axios';
 import cinemaAddressIcon from '../../assets/cinema address.png';
 import calendarIcon from '../../assets/calendar.png';
 import '../style/MovieSchedule.css';
+import { useTranslation } from 'react-i18next';
 
 const MovieSchedule = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
   const datesData = useMemo(() => {
-    const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const daysOfWeek = [
+      t('home.schedule.days.sun'),
+      t('home.schedule.days.mon'),
+      t('home.schedule.days.tue'),
+      t('home.schedule.days.wed'),
+      t('home.schedule.days.thu'),
+      t('home.schedule.days.fri'),
+      t('home.schedule.days.sat')
+    ];
     const list = [];
     const today = new Date();
 
@@ -22,13 +32,13 @@ const MovieSchedule = () => {
       const dd = String(d.getDate()).padStart(2, '0');
 
       list.push({
-        day: i === 0 ? 'Hôm nay' : daysOfWeek[d.getDay()],
+        day: i === 0 ? t('home.schedule.days.today') : daysOfWeek[d.getDay()],
         date: `${yyyy}-${mm}-${dd}`,
         label: `${d.getDate()}/${d.getMonth() + 1}`
       });
     }
     return list;
-  }, []);
+  }, [t]);
 
   const initialTheater = location.state?.selectedTheaterId || 'all';
 
@@ -45,13 +55,13 @@ const MovieSchedule = () => {
     axios.get('http://localhost:8080/api/theaters')
       .then(res => {
         const dbTheaters = Array.isArray(res.data) ? res.data : [];
-        setTheaters([{ theaterId: 'all', name: 'Tất Cả Rạp' }, ...dbTheaters]);
+        setTheaters([{ theaterId: 'all', name: t('home.schedule.filters.allTheaters') }, ...dbTheaters]);
       })
       .catch(err => {
         console.error("Lỗi lấy danh sách rạp làm bộ lọc:", err);
-        setTheaters([{ theaterId: 'all', name: 'Tất Cả Rạp' }]);
+        setTheaters([{ theaterId: 'all', name: t('home.schedule.filters.allTheaters') }]);
       });
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (location.state?.selectedTheaterId) {
@@ -66,7 +76,7 @@ const MovieSchedule = () => {
     })
     .then(res => {
       setShowtimes(Array.isArray(res.data) ? res.data : []);
-      setLoading(false);
+      setLoading(false)
     })
     .catch(err => {
       console.error("Lỗi lấy danh sách lịch chiếu động:", err);
@@ -91,7 +101,7 @@ const MovieSchedule = () => {
     setSelectedTheater('all');
   };
 
-  if (loading) return <div className="loading-text">Đang tải lịch chiếu từ hệ thống...</div>;
+  if (loading) return <div className="loading-text">{t('home.schedule.status.loading')}</div>;
 
   const safeShowtimes = Array.isArray(showtimes) ? showtimes : [];
   const groupSchedules = {};
@@ -127,21 +137,21 @@ const MovieSchedule = () => {
     <div className="figma-booking-wrapper">
       <div className="figma-container">
 
-        <h1 className="figma-main-title">Lịch Chiếu</h1>
-        <p className="figma-sub-title">Chọn rạp và ngày để xem lịch chiếu</p>
+        <h1 className="figma-main-title">{t('home.schedule.title')}</h1>
+        <p className="figma-sub-title">{t('home.schedule.subtitle')}</p>
 
         {/* 💡 BỘ LỌC TỈNH/THÀNH VÀ RẠP KẾT HỢP (ĐÃ FIX CÚ PHÁP) */}
         <div className="figma-filter-group" style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
           
           {/* Chọn Tỉnh/Thành */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <span className="figma-filter-label">🌍 Chọn Tỉnh/Thành</span>
+            <span className="figma-filter-label">🌍 {t('home.schedule.filters.cityLabel')}</span>
             <select
               value={selectedCity}
               onChange={handleCityChange}
               style={{ padding: '10px 15px', borderRadius: '8px', background: '#222228', color: '#fff', border: '1px solid #33333d', fontSize: '15px', outline: 'none', cursor: 'pointer', minWidth: '200px' }}
             >
-              <option value="all">Tất cả Tỉnh/Thành</option>
+              <option value="all">{t('home.schedule.filters.allCities')}</option>
               {cities.filter(c => c !== 'all').map((city, idx) => (
                 <option key={idx} value={city}>{city}</option>
               ))}
@@ -152,7 +162,7 @@ const MovieSchedule = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
             <span className="figma-filter-label">
               <img src={cinemaAddressIcon} alt="Cinema Icon" className="figma-label-icon" style={{ width: '16px', marginRight: '6px' }} /> 
-              Chọn Rạp
+              {t('home.schedule.filters.theaterLabel')}
             </span>
             <div className="figma-cinema-row">
               {filteredTheaters.map((theater) => {
@@ -176,7 +186,7 @@ const MovieSchedule = () => {
         <div className="figma-filter-group" style={{ marginTop: '24px' }}>
           <span className="figma-filter-label">
             <img src={calendarIcon} alt="Calendar Icon" className="figma-label-icon" style={{ width: '16px', marginRight: '6px' }} /> 
-            Chọn Ngày
+            {t('home.schedule.filters.dateLabel')}
           </span>
 
           <div className="figma-date-row">
@@ -208,7 +218,7 @@ const MovieSchedule = () => {
 
                   <div className="figma-movie-meta">
                     <span className="figma-star">⭐ 8.5</span>
-                    <span>{movie.duration} phút</span>
+                    <span>{movie.duration} {t('home.schedule.movieMeta.minutes')}</span>
                     <span>{movie.genre}</span>
                   </div>
 
@@ -279,7 +289,7 @@ const MovieSchedule = () => {
             ))
           ) : (
             <div className="figma-no-data" style={{ textAlign: 'center', padding: '40px', color: '#6c6c73' }}>
-              <p>Rất tiếc, không có lịch chiếu nào phù hợp cho ngày này.</p>
+              <p>{t('home.schedule.status.noData')}</p>
             </div>
           )}
         </div>

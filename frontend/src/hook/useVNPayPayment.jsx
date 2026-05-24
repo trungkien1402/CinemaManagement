@@ -1,20 +1,22 @@
 import { useState } from 'react';
 import axiosClient from '../api/axiosClient'; // Đảm bảo đúng đường dẫn tới axiosClient của bạn
+import { useTranslation } from 'react-i18next'; // 👈 IMPORT THÊM I18N
 
 export const useVNPayPayment = () => {
+    const { t } = useTranslation(); // 👈 KHỞI TẠO HOOK
     const [processing, setProcessing] = useState(false);
 
     const handleVNPayPayment = async ({ user, showtimeId, selectedSeats, totalAmount, navigate }) => {
         // CHƯA LOGIN
         if (!user) {
-            alert("Vui lòng đăng nhập!");
+            alert(t('payment.alerts.loginRequired') || "Vui lòng đăng nhập!");
             navigate('/login');
             return;
         }
 
         // CHƯA CHỌN GHẾ
         if (selectedSeats.length === 0) {
-            alert("Vui lòng chọn ít nhất 1 ghế!");
+            alert(t('payment.alerts.selectSeat') || "Vui lòng chọn ít nhất 1 ghế!");
             return;
         }
 
@@ -63,7 +65,7 @@ export const useVNPayPayment = () => {
                 document.body.removeChild(triggerLink);
                 
             } else {
-                throw new Error("Không nhận được paymentUrl hợp lệ từ Backend!");
+                throw new Error(t('payment.errors.invalidUrl') || "Không nhận được paymentUrl hợp lệ từ Backend!");
             }
 
         } catch (err) {
@@ -75,7 +77,7 @@ export const useVNPayPayment = () => {
                 err.response?.data?.message ||
                 err.response?.data ||
                 err.message ||
-                "Khởi tạo giao dịch thanh toán thất bại!"
+                t('payment.errors.initFailed') || "Khởi tạo giao dịch thanh toán thất bại!"
             );
         } finally {
             setProcessing(false);

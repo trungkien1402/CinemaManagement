@@ -6,8 +6,10 @@ import filmIcon from '../../assets/film.png';
 import seatIcon from '../../assets/cinema seat.png';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const BookingHistory = () => {
+    const { t, i18n } = useTranslation(); 
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [history, setHistory] = useState([]);
@@ -16,7 +18,7 @@ const BookingHistory = () => {
     useEffect(() => {
         // Nếu chưa đăng nhập thì đá về trang login
         if (!user) {
-            alert("Vui lòng đăng nhập để xem lịch sử!");
+            alert(t('auth.history.alerts.loginRequired') || "Vui lòng đăng nhập để xem lịch sử!");
             navigate('/login');
             return;
         }
@@ -31,10 +33,10 @@ const BookingHistory = () => {
                 console.error("Lỗi lấy lịch sử:", err);
                 setLoading(false);
             });
-    }, [user, navigate]);
+    }, [user, navigate, t]); // Nhớ thêm t vào dependency array cho an toàn
 
     if (loading) {
-        return <div style={{ color: '#fff', textAlign: 'center', marginTop: '50px' }}>Đang tải lịch sử đặt vé...</div>;
+        return <div style={{ color: '#fff', textAlign: 'center', marginTop: '50px' }}>{t('auth.history.status.loading') || "Đang tải lịch sử đặt vé..."}</div>;
     }
 
     return (
@@ -54,14 +56,14 @@ const BookingHistory = () => {
         alt="Film Icon" 
         style={{ width: '24px', height: '24px', objectFit: 'contain' }} 
     />
-    LỊCH SỬ ĐẶT VÉ CỦA BẠN
+    {t('auth.history.title') || "LỊCH SỬ ĐẶT VÉ CỦA BẠN"}
 </h2>
 
                 {history.length === 0 ? (
                     <div style={{ textAlign: 'center', color: '#aaa', marginTop: '50px' }}>
-                        <p style={{ fontSize: '18px' }}>Bạn chưa đặt bất kỳ vé xem phim nào!</p>
+                        <p style={{ fontSize: '18px' }}>{t('auth.history.empty.message') || "Bạn chưa đặt bất kỳ vé xem phim nào!"}</p>
                         <button onClick={() => navigate('/')} style={{ background: '#ff3333', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer', marginTop: '15px' }}>
-                            Đặt vé ngay
+                            {t('auth.history.empty.button') || "Đặt vé ngay"}
                         </button>
                     </div>
                 ) : (
@@ -70,39 +72,39 @@ const BookingHistory = () => {
                             <div key={ticket.ticketId} style={{ background: '#1a1a24', borderRadius: '10px', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', borderLeft: '5px solid #28a745' }}>
                                 <div>
                                     <h4 style={{ margin: '0 0 15px 0', color: '#ffcc00', fontSize: '18px' }}>
-                                        Mã Vé: {ticket.ticketId}
+                                        {t('auth.history.card.ticketId') || "Mã Vé:"} {ticket.ticketId}
                                     </h4>
 
                                     {/* ✅ 1. NGÀY ĐẶT (Thay 🗓️ bằng calendarIcon) */}
                                     <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <img src={calendarIcon} alt="Calendar" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-                                        <span>Ngày đặt: {new Date(ticket.bookingDate).toLocaleString('vi-VN')}</span>
+                                        <span>{t('auth.history.card.bookingDate') || "Ngày đặt:"} {new Date(ticket.bookingDate).toLocaleString(i18n.language.startsWith('en') ? 'en-US' : 'vi-VN')}</span>
                                     </p>
 
                                     {/* ✅ 2. SUẤT CHIẾU (Thay 🍿 bằng suatChieu) */}
                                     <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <img src={suatChieu} alt="Showtime" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-                                        <span>Suất chiếu ID: <strong>{ticket.showtime?.showtimeId}</strong></span>
+                                        <span>{t('auth.history.card.showtimeId') || "Suất chiếu ID:"} <strong>{ticket.showtime?.showtimeId}</strong></span>
                                     </p>
 
                                     {/* ✅ 3. PHIM (Thay 🎬 bằng filmIcon) */}
                                     {ticket.showtime?.movie && (
                                         <p style={{ margin: '8px 0', color: '#ffcc00', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                             <img src={filmIcon} alt="Movie" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-                                            <span>Phim: <strong>{ticket.showtime?.movie?.title}</strong></span>
+                                            <span>{t('auth.history.card.movie') || "Phim:"} <strong>{ticket.showtime?.movie?.title}</strong></span>
                                         </p>
                                     )}
 
                                     {/* ✅ 4. GHẾ (Thay 💺 bằng seatIcon) */}
                                     <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <img src={seatIcon} alt="Seat" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-                                        <span>Ghế số: <span style={{ color: '#fff', fontWeight: 'bold' }}>{ticket.seat?.seatNumber || ticket.seat?.seatId}</span></span>
+                                        <span>{t('auth.history.card.seat') || "Ghế số:"} <span style={{ color: '#fff', fontWeight: 'bold' }}>{ticket.seat?.seatNumber || ticket.seat?.seatId}</span></span>
                                     </p>
                                 </div>
 
                                 <div style={{ textAlign: 'right' }}>
                                     <span style={{ background: '#28a745', color: '#fff', padding: '5px 12px', borderRadius: '15px', fontSize: '12px', fontWeight: 'bold' }}>
-                                        ĐÃ THANH TOÁN
+                                        {t('auth.history.card.paid') || "ĐÃ THANH TOÁN"}
                                     </span>
                                     <h3 style={{ color: '#28a745', margin: '15px 0 0 0' }}>
                                         {ticket.totalPrice?.toLocaleString()} VNĐ

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axiosClient';
 import '../style/News.css';
+import { useTranslation } from 'react-i18next';
 
 const NewsPage = () => {
-
+    const { t } = useTranslation();
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -40,11 +41,11 @@ const NewsPage = () => {
                 <div className="hero-content">
 
                     <h1>
-                        TIN TỨC ĐIỆN ẢNH
+                        {t('home.news.hero.title') || "TIN TỨC ĐIỆN ẢNH"}
                     </h1>
 
                     <p>
-                        Cập nhật phim mới, trailer, review và thế giới điện ảnh
+                        {t('home.news.hero.subtitle') || "Cập nhật phim mới, trailer, review và thế giới điện ảnh"}
                     </p>
 
                 </div>
@@ -53,7 +54,7 @@ const NewsPage = () => {
             {/* LOADING */}
             {loading && (
                 <div className="loading">
-                    Đang tải tin tức...
+                    {t('home.news.status.loading') || "Đang tải tin tức..."}
                 </div>
             )}
 
@@ -83,7 +84,7 @@ const NewsPage = () => {
                                 rel="noreferrer"
                                 className="read-more"
                             >
-                                Xem chi tiết →
+                                {t('home.news.buttons.readMore') || "Xem chi tiết →"}
                             </a>
 
                         </div>

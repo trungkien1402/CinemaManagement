@@ -1,0 +1,87 @@
+{
+  "detail": {
+    "status": {
+      "loading": "Loading movie details...",
+      "notFound": "Requested movie not found."
+    },
+    "buttons": {
+      "share": "Share",
+      "favorite": "Favorite",
+      "liked": "Liked"
+    },
+    "alerts": {
+      "linkCopied": "✅ Link Copied!"
+    },
+    "heroMeta": {
+      "director": "Director:"
+    },
+    "synopsis": {
+      "title": "Synopsis",
+      "defaultText": "A thrilling cinematic masterpiece."
+    },
+    "info": {
+      "genre": "Genre:",
+      "cast": "Cast:",
+      "boxTitle": "Movie Info",
+      "duration": "Duration",
+      "releaseDate": "Release Date",
+      "rating": "Rating",
+      "noRating": "N/A",
+      "reviewsCount": "reviews"
+    },
+    "trailer": {
+      "title": "Movie Trailer",
+      "updating": "Trailer updating..."
+    },
+    "schedule": {
+      "title": "Showtimes",
+      "filterLabel": "Filter cinemas:",
+      "selectProvince": "-- Select Province/City --",
+      "selectProvinceFirst": "Please select a city first",
+      "noData": "Sorry, there are no showtimes available for the selected date and cinema."
+    },
+    "reviews": {
+      "title": "Reviews & Ratings",
+      "loginPrompt": {
+        "text1": "You need to ",
+        "boldText": "Login",
+        "text2": " to write a review for this movie."
+      },
+      "form": {
+        "yourRating": "Your rating ({{name}}):",
+        "placeholder": "Share your thoughts about this movie..."
+      },
+      "ratingLabels": {
+        "excellent": "Excellent",
+        "veryGood": "Very Good",
+        "good": "Good",
+        "fair": "Fair",
+        "poor": "Poor"
+      },
+      "buttons": {
+        "submit": "Submit Review",
+        "submitting": "Submitting..."
+      },
+      "list": {
+        "empty": "No reviews yet. Be the first to review this movie!",
+        "anonymous": "User"
+      },
+      "alerts": {
+        "loginRequired": "Please login to leave a review!",
+        "emptyComment": "Please enter your comment!",
+        "submitError": "Error submitting review! Please check console."
+      }
+    },
+    "quickModal": {
+      "title": "Quick Booking:",
+      "labels": {
+        "selectTheater": "Select cinema:",
+        "selectDate": "Select date:",
+        "availableSlots": "Available showtimes:"
+      },
+      "status": {
+        "scanning": "Scanning showtimes schedule..."
+      }
+    }
+  }
+}

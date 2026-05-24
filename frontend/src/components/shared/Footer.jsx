@@ -1,53 +1,54 @@
 import React from 'react';
 import '../style/Footer.css';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="footer-container">
       <div className="footer-content">
         
-
         <div className="footer-logo-section">
           <div className="logo-wrapper">
             <div className="logo-icon">C</div>
             <span className="brand-name">CinemaX</span>
           </div>
           <p className="slogan">
-            Trải nghiệm điện ảnh đẳng cấp với công nghệ hiện đại nhất
+            {t('footer.slogan')}
           </p>
         </div>
 
-
         <div>
-          <h3 className="footer-title">Phim</h3>
+          <h3 className="footer-title">{t('footer.titles.movies')}</h3>
           <ul className="footer-list">
-            <li>Đang Chiếu</li>
-            <li>Sắp Chiếu</li>
-            <li>Lịch Chiếu</li>
+            <li>{t('nav.nowShowing')}</li>
+            <li>{t('nav.comingSoon')}</li>
+            <li>{t('nav.schedule')}</li>
           </ul>
         </div>
 
         <div>
-          <h3 className="footer-title">Dịch Vụ</h3>
+          <h3 className="footer-title">{t('footer.titles.services')}</h3>
           <ul className="footer-list">
-            <li>Hệ Thống Rạp</li>
-            <li>Tài Khoản</li>
-            <li>Tin Tức</li>
+            <li>{t('nav.theaters')}</li>
+            <li>{t('nav.dropdown.personalAccount')}</li>
+            <li>{t('nav.news')}</li>
           </ul>
         </div>
 
         <div>
-          <h3 className="footer-title">Hỗ Trợ</h3>
+          <h3 className="footer-title">{t('footer.titles.support')}</h3>
           <ul className="footer-list">
-            <li>Câu Hỏi Thường Gặp</li>
-            <li>Hotline: <span className="hotline-num">1900 xxxx</span></li>
+            <li>{t('footer.links.faq')}</li>
+            <li>{t('footer.links.hotline')} <span className="hotline-num">1900 xxxx</span></li>
             <li style={{ textTransform: 'lowercase' }}>support@cinemax.vn</li>
           </ul>
         </div>
       </div>
 
       <div className="copyright-section">
-        <p>© 2026 CinemaX. Bản quyền thuộc về CinemaX.</p>
+        <p>{t('footer.copyright')}</p>
       </div>
     </footer>
   );

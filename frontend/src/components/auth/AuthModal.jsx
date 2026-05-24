@@ -4,9 +4,11 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
 import api from '../../api/api';
 import '../style/AuthModal.css';
+import { useTranslation } from 'react-i18next';
 
 const AuthModal = ({ isOpen, onClose }) => {
 
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -66,7 +68,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                     );
 
 
-                    alert("Đăng nhập thành công!");
+                    alert(t('auth.authModal.alerts.loginSuccess'));
 
                     onClose();
 
@@ -90,10 +92,10 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                     const errorMsg =
                         resultAction.payload ||
-                        "Sai Email hoặc Mật khẩu!";
+                        t('auth.authModal.alerts.loginFail');
 
                     alert(
-                        "Thất bại: " +
+                        t('auth.authModal.alerts.failPrefix') +
                         (
                             typeof errorMsg === 'object'
                                 ? JSON.stringify(errorMsg)
@@ -113,7 +115,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                         email: formData.email
                     });
 
-                    alert("Mã OTP đã được gửi vào Email của bạn!");
+                    alert(t('auth.authModal.alerts.otpSent'));
 
                     setStep(2);
                 }
@@ -126,7 +128,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                 error.message;
 
             alert(
-                "Lỗi: " +
+                t('auth.authModal.alerts.errorPrefix') +
                 (
                     typeof msg === 'object'
                         ? JSON.stringify(msg)
@@ -164,7 +166,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
             alert(
                 error.response?.data ||
-                "Mã OTP không đúng!"
+                t('auth.authModal.alerts.otpInvalid')
             );
 
         } finally {
@@ -202,14 +204,14 @@ const AuthModal = ({ isOpen, onClose }) => {
                             setStep(1);
                         }}
                     >
-                        ĐĂNG NHẬP
+                        {t('auth.authModal.tabs.login')}
                     </button>
 
                     <button
                         className={!isLogin ? 'active' : ''}
                         onClick={() => setIsLogin(false)}
                     >
-                        ĐĂNG KÝ
+                        {t('auth.authModal.tabs.register')}
                     </button>
 
                 </div>
@@ -225,7 +227,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                             <input
                                 name="email"
                                 type="email"
-                                placeholder="Email"
+                                placeholder={t('auth.authModal.form.placeholders.email')}
                                 onChange={handleChange}
                                 value={formData.email || ''}
                                 required
@@ -234,7 +236,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                             <input
                                 name="password"
                                 type="password"
-                                placeholder="Mật khẩu"
+                                placeholder={t('auth.authModal.form.placeholders.password')}
                                 onChange={handleChange}
                                 value={formData.password || ''}
                                 required
@@ -247,8 +249,8 @@ const AuthModal = ({ isOpen, onClose }) => {
                             >
                                 {
                                     loading
-                                        ? "ĐANG XỬ LÝ..."
-                                        : "ĐĂNG NHẬP"
+                                        ? t('auth.authModal.form.buttons.processing')
+                                        : t('auth.authModal.form.buttons.login')
                                 }
                             </button>
                         </>
@@ -261,7 +263,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                 <input
                                     name="email"
                                     type="email"
-                                    placeholder="Email"
+                                    placeholder={t('auth.authModal.form.placeholders.email')}
                                     onChange={handleChange}
                                     value={formData.email || ''}
                                     required
@@ -269,7 +271,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                                 <input
                                     name="username"
-                                    placeholder="Tên hiển thị"
+                                    placeholder={t('auth.authModal.form.placeholders.username')}
                                     onChange={handleChange}
                                     value={formData.username || ''}
                                     required
@@ -277,7 +279,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                                 <input
                                     name="phone"
-                                    placeholder="Số điện thoại"
+                                    placeholder={t('auth.authModal.form.placeholders.phone')}
                                     onChange={handleChange}
                                     value={formData.phone || ''}
                                     required
@@ -289,18 +291,18 @@ const AuthModal = ({ isOpen, onClose }) => {
                                     value={formData.gender || 'Nam'}
                                 >
                                     <option value="Nam">
-                                        Nam
+                                        {t('auth.authModal.form.options.gender.male')}
                                     </option>
 
                                     <option value="Nữ">
-                                        Nữ
+                                        {t('auth.authModal.form.options.gender.female')}
                                     </option>
                                 </select>
 
                                 <input
                                     name="password"
                                     type="password"
-                                    placeholder="Mật khẩu"
+                                    placeholder={t('auth.authModal.form.placeholders.password')}
                                     onChange={handleChange}
                                     value={formData.password || ''}
                                     required
@@ -313,8 +315,8 @@ const AuthModal = ({ isOpen, onClose }) => {
                                 >
                                     {
                                         loading
-                                            ? "GỬI OTP..."
-                                            : "TIẾP TỤC"
+                                            ? t('auth.authModal.form.buttons.sendingOtp')
+                                            : t('auth.authModal.form.buttons.continue')
                                     }
                                 </button>
                             </>
@@ -325,7 +327,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                                 <input
                                     type="text"
-                                    placeholder="Mã OTP"
+                                    placeholder={t('auth.authModal.form.placeholders.otp')}
                                     className="otp-input"
                                     value={otpInput || ''}
                                     onChange={(e) =>
@@ -339,7 +341,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                     onClick={handleVerifyOtp}
                                     className="auth-btn-submit"
                                 >
-                                    XÁC NHẬN
+                                    {t('auth.authModal.form.buttons.confirm')}
                                 </button>
 
                                 <button
@@ -347,7 +349,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                     onClick={() => setStep(1)}
                                     className="btn-back"
                                 >
-                                    Quay lại
+                                    {t('auth.authModal.form.buttons.back')}
                                 </button>
 
                             </div>

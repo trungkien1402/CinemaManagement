@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import cinemaAddressIcon from '../../assets/cinema address.png';
 import phoneIcon from '../../assets/phone-call.png';
@@ -9,6 +10,7 @@ import clockIcon from '../../assets/clock.png';
 import '../style/Theaters.css';
 
 const Theaters = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [theaters, setTheaters] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +34,7 @@ const Theaters = () => {
     navigate('/lich-chieu', { state: { selectedTheaterId: theaterId } });
   };
 
-  if (loading) return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Đang tải hệ thống rạp...</div>;
+  if (loading) return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>{t('theaters.status.loading') || "Đang tải hệ thống rạp..."}</div>;
 
   // 💡 LỌC DANH SÁCH THÀNH PHỐ DUY NHẤT TỪ DATA (Ưu tiên cột city hoặc fallback location nếu city trống)
   const cities = ['all', ...new Set(theaters.map(t => t.city || t.location).filter(Boolean))];
@@ -45,8 +47,8 @@ const Theaters = () => {
   return (
     <div className="theaters-wrapper">
       <div className="theaters-header">
-        <h1>Hệ Thống Rạp</h1>
-        <p>Hệ thống rạp chiếu phim hiện đại trên toàn quốc</p>
+        <h1>{t('theaters.header.title') || "Hệ Thống Rạp"}</h1>
+        <p>{t('theaters.header.subtitle') || "Hệ thống rạp chiếu phim hiện đại trên toàn quốc"}</p>
 
         {/* 💡 DROPDOWN CHỌN TỈNH THÀNH */}
         <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-start' }}>
@@ -55,7 +57,7 @@ const Theaters = () => {
             onChange={(e) => setSelectedCity(e.target.value)}
             style={{ padding: '10px 20px', borderRadius: '8px', background: '#1c1c24', color: '#fff', border: '1px solid #333', fontSize: '16px', outline: 'none', cursor: 'pointer', minWidth: '250px' }}
           >
-            <option value="all">📍 -- Tất cả Tỉnh/Thành phố --</option>
+            <option value="all">{t('theaters.filters.allCities') || "📍 -- Tất cả Tỉnh/Thành phố --"}</option>
             {cities.filter(c => c !== 'all').map((city, idx) => (
               <option key={idx} value={city}>{city}</option>
             ))}
@@ -77,7 +79,7 @@ const Theaters = () => {
           // Xử lý chuỗi địa chỉ hiển thị an toàn không bị lặp chữ
           const fullAddress = theater.location 
             ? (theater.city && !theater.location.includes(theater.city) ? `${theater.location}, ${theater.city}` : theater.location)
-            : (theater.address || "Đang cập nhật địa chỉ");
+            : (theater.address || t('theaters.card.fallbackAddress') || "Đang cập nhật địa chỉ");
 
           return (
             <div className="theater-card" key={theater.theaterId || index}>
@@ -110,7 +112,7 @@ const Theaters = () => {
                     alt="Phone" 
                     style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
                   />
-                  <span>{theater.phone || "1900 xxxx"}</span>
+                  <span>{theater.phone || t('theaters.card.fallbackPhone') || "1900 xxxx"}</span>
                 </div>
 
                 {/* Giờ hoạt động */}
@@ -120,11 +122,11 @@ const Theaters = () => {
                     alt="Clock" 
                     style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
                   />
-                  <span>{theater.operatingHours || "8:00 - 23:30 hàng ngày"}</span>
+                  <span>{theater.operatingHours || t('theaters.card.fallbackHours') || "8:00 - 23:30 hàng ngày"}</span>
                 </div>
 
                 <div className="amenities-section">
-                  <div className="amenities-title">Tiện ích</div>
+                  <div className="amenities-title">{t('theaters.card.amenities') || "Tiện ích"}</div>
                   <div className="amenities-tags">
                     {displayAmenities.map((amenity, idx) => (
                       <span className="amenity-tag" key={idx}>
@@ -136,10 +138,10 @@ const Theaters = () => {
 
                 <div className="theater-actions">
                   <button className="btn-primary-theater" onClick={() => handleViewSchedule(theater.theaterId)}>
-                    Xem Lịch Chiếu
+                    {t('theaters.buttons.viewSchedule') || "Xem Lịch Chiếu"}
                   </button>
                   <button className="btn-secondary-theater" onClick={() => window.open(theater.mapLink || 'https://maps.google.com', '_blank')}>
-                    Chỉ Đường
+                    {t('theaters.buttons.directions') || "Chỉ Đường"}
                   </button>
                 </div>
               </div>
@@ -147,7 +149,7 @@ const Theaters = () => {
           );
         }) : (
           <div style={{ color: '#aaa', textAlign: 'center', gridColumn: '1 / -1', padding: '40px' }}>
-            Hiện chưa có cụm rạp nào tại khu vực này.
+            {t('theaters.status.empty') || "Hiện chưa có cụm rạp nào tại khu vực này."}
           </div>
         )}
       </div>

@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux';
 import '../style/Seat.css';
 // IMPORT HOOK THANH TOÁN MỚI TÁCH
 import { useVNPayPayment } from '../../hook/useVNPayPayment'; 
+import { useTranslation } from 'react-i18next';
 
 const SeatSelection = () => {
-
+    const { t } = useTranslation();
     const { showtimeId } = useParams();
     const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const SeatSelection = () => {
             })
             .catch((err) => {
                 console.error("Lỗi tải ghế:", err);
-                Loading(false);
+                setLoading(false); // Fix lỗi gõ sai chữ Loading(false) gốc
             });
 
     }, [showtimeId]);
@@ -97,7 +98,7 @@ const SeatSelection = () => {
     if (loading) {
         return (
             <div className="loading-container">
-                Đang tải sơ đồ ghế...
+                {t('auth.seat.status.loading') || "Đang tải sơ đồ ghế..."}
             </div>
         );
     }
@@ -108,7 +109,7 @@ const SeatSelection = () => {
             {/* MÀN HÌNH */}
             <div className="screen-container">
                 <div className="screen">
-                    MÀN HÌNH CHÍNH
+                    {t('auth.seat.screen') || "MÀN HÌNH CHÍNH"}
                 </div>
             </div>
 
@@ -146,23 +147,23 @@ const SeatSelection = () => {
             <div className="legend-area">
                 <div className="legend-item">
                     <span className="box thuong"></span>
-                    Thường (30K)
+                    {t('auth.seat.legend.standard') || "Thường (30K)"}
                 </div>
                 <div className="legend-item">
                     <span className="box vip"></span>
-                    VIP (50K)
+                    {t('auth.seat.legend.vip') || "VIP (50K)"}
                 </div>
                 <div className="legend-item">
                     <span className="box doi"></span>
-                    Ghế đôi (100K)
+                    {t('auth.seat.legend.double') || "Ghế đôi (100K)"}
                 </div>
                 <div className="legend-item">
                     <span className="box selected"></span>
-                    Đang chọn
+                    {t('auth.seat.legend.selecting') || "Đang chọn"}
                 </div>
                 <div className="legend-item">
                     <span className="box occupied"></span>
-                    Đã bán
+                    {t('auth.seat.legend.sold') || "Đã bán"}
                 </div>
             </div>
 
@@ -170,28 +171,28 @@ const SeatSelection = () => {
             <div className="info-section">
                 <div className="ticket-info">
                     <p>
-                        Mã suất chiếu:
+                        {t('auth.seat.info.showtimeId') || "Mã suất chiếu:"}
                         <strong> {showtimeId}</strong>
                     </p>
                     <p>
-                        Ghế đã chọn:
+                        {t('auth.seat.info.selectedSeats') || "Ghế đã chọn:"}
                         <strong>
                             {
                                 selectedSeats.length > 0
                                     ? " " + selectedSeats.map((s) => s.seatNumber).join(', ')
-                                    : " Chưa chọn"
+                                    : " " + (t('auth.seat.info.none') || "Chưa chọn")
                             }
                         </strong>
                     </p>
                     <p>
-                        Số lượng ghế:
+                        {t('auth.seat.info.seatCount') || "Số lượng ghế:"}
                         <strong> {selectedSeats.length}</strong>
                     </p>
                 </div>
 
                 {/* TỔNG TIỀN */}
                 <div className="total-price-area">
-                    <span>Tổng tiền:</span>
+                    <span>{t('auth.seat.info.totalAmount') || "Tổng tiền:"}</span>
                     <h3 className="price">
                         {calculateTotal().toLocaleString()} VNĐ
                     </h3>
@@ -205,8 +206,8 @@ const SeatSelection = () => {
                 >
                     {
                         processing
-                            ? "ĐANG CHUYỂN THANH TOÁN..."
-                            : "THANH TOÁN VNPAY"
+                            ? (t('auth.seat.buttons.processing') || "ĐANG CHUYỂN THANH TOÁN...")
+                            : (t('auth.seat.buttons.pay') || "THANH TOÁN VNPAY")
                     }
                 </button>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import cinemaAddressIcon from '../../assets/cinema address.png';
+import { useTranslation } from 'react-i18next';
 
 const MovieSchedule = ({
   datesData,
@@ -14,9 +15,11 @@ const MovieSchedule = ({
   theaterGroups,
   navigate
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="detail-schedule-wrapper" id="detail-schedule-section">
-      <h2 className="detail-main-title">Lịch Chiếu</h2>
+      <h2 className="detail-main-title">{t('home.schedule.title') || "Lịch Chiếu"}</h2>
 
       {/* DATE SELECTION ROW */}
       <div className="detail-date-row">
@@ -34,7 +37,7 @@ const MovieSchedule = ({
 
       {/* FILTER BAR */}
       <div className="theaters-filter-bar" style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '30px', background: '#1c1c24', padding: '15px 20px', borderRadius: '12px', border: '1px solid #2a2a35' }}>
-        <span className="filter-label" style={{ color: '#fff', fontWeight: 'bold' }}>📍 Lọc rạp chiếu:</span>
+        <span className="filter-label" style={{ color: '#fff', fontWeight: 'bold' }}>📍 {t('detail.schedule.filterLabel') || "Lọc rạp chiếu:"}</span>
         
         <select
           className="filter-select"
@@ -42,7 +45,7 @@ const MovieSchedule = ({
           onChange={handleProvinceChange}
           style={{ padding: '8px 12px', background: '#222228', color: '#fff', border: '1px solid #33333d', borderRadius: '8px', cursor: 'pointer', outline: 'none' }}
         >
-          <option value="">-- Chọn Tỉnh Thành --</option>
+          <option value="">{t('detail.schedule.selectProvince') || "-- Chọn Tỉnh Thành --"}</option>
           {uniqueProvinces.map((prov, index) => (
             <option key={index} value={prov}>{prov}</option>
           ))}
@@ -64,9 +67,9 @@ const MovieSchedule = ({
           }}
         >
           {!selectedProvince ? (
-            <option value="all">Vui lòng chọn tỉnh trước</option>
+            <option value="all">{t('detail.schedule.selectProvinceFirst') || "Vui lòng chọn tỉnh trước"}</option>
           ) : (
-            <option value="all">-- Tất Cả Rạp --</option>
+            <option value="all">{t('home.schedule.filters.allTheaters') || "-- Tất Cả Rạp --"}</option>
           )}
           {filteredTheaters.map((theater) => {
             const tId = theater.theaterId || theater.theater_id || theater.id;
@@ -109,7 +112,7 @@ const MovieSchedule = ({
           ))
         ) : (
           <div className="detail-no-data" style={{ color: '#666', textAlign: 'center', padding: '20px' }}>
-            Rất tiếc, phim không có suất chiếu nào vào ngày và rạp đã chọn.
+            {t('detail.schedule.noData') || "Rất tiếc, phim không có suất chiếu nào vào ngày và rạp đã chọn."}
           </div>
         )}
       </div>

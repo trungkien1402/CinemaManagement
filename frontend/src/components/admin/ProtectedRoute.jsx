@@ -1,7 +1,10 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; 
 
 const ProtectedRoute = ({ children }) => {
+  const { t } = useTranslation(); 
   const userFromRedux = useSelector((state) => state.auth.user);
   const user = userFromRedux || JSON.parse(localStorage.getItem("user"));
 
@@ -12,10 +15,12 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (user.role !== 'ROLE_ADMIN') {
-    alert("Bạn không có quyền vào khu vực Admin!");
+    // 💡 BỌC ĐA NGÔN NGỮ CHO KHỐI THÔNG BÁO QUYỀN HẠN TẠI ĐÂY
+    alert(t('admin.adminDashboard.alerts.accessDenied'));
     return <Navigate to="/" replace />;
   }
 
   return children;
 };
+
 export default ProtectedRoute;

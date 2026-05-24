@@ -1,19 +1,28 @@
 import React from 'react';
-
+import { useTranslation } from 'react-i18next'; 
 const BookingsTab = ({ bookings }) => {
+    const { t } = useTranslation(); 
     return (
         <div className="tab-view">
-            <h2 className="tab-title">Nhật Ký Giao Dịch Đặt Vé Toàn Hệ Thống</h2>
+            <h2 className="tab-title">{t('admin.adminDashboard.bookingsTab.title')}</h2>
             <div className="table-responsive-box">
                 <table className="data-display-table">
                     <thead>
-                        <tr><th>Mã Hoá Đơn</th><th>Tài khoản</th><th>Tên Phim</th><th>Ghế</th><th>Giá Tiền</th><th>Ngày Đặt Vé</th><th>Trạng Thái</th></tr>
+                        <tr>
+                            <th>{t('admin.adminDashboard.bookingsTab.table.ticketId')}</th>
+                            <th>{t('admin.adminDashboard.bookingsTab.table.username')}</th>
+                            <th>{t('admin.adminDashboard.bookingsTab.table.movieTitle')}</th>
+                            <th>{t('admin.adminDashboard.bookingsTab.table.seats')}</th>
+                            <th>{t('admin.adminDashboard.bookingsTab.table.price')}</th>
+                            <th>{t('admin.adminDashboard.bookingsTab.table.date')}</th>
+                            <th>{t('admin.adminDashboard.bookingsTab.table.status')}</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {bookings.map(b => (
                             <tr key={b.ticketId}>
                                 <td><code className="invoice-code">#{b.ticketId}</code></td>
-                                <td>{b.user?.username || "Ẩn danh"}</td>
+                                <td>{b.user?.username || t('admin.adminDashboard.bookingsTab.anonymous')}</td>
                                 <td>{b.showtime?.movie?.title}</td>
                                 <td><span className="seat-badge">{b.seat?.seatNumber}</span></td>
                                 <td><strong>{b.totalPrice?.toLocaleString()}đ</strong></td>

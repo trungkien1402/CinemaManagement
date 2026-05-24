@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Trang Chủ",
+    "nowShowing": "Phim Đang Chiếu",
+    "comingSoon": "Phim Sắp Chiếu",
+    "schedule": "Lịch Chiếu",
+    "theaters": "Rạp",
+    "news": "Tin Tức",
+    "login": "Đăng Nhập",
+    "dropdown": {
+      "personalAccount": "Tài khoản cá nhân",
+      "adminPage": "Trang Quản Trị",
+      "myProfile": "Hồ sơ của tôi",
+      "bookingHistory": "Lịch sử đặt vé",
+      "logout": "Đăng xuất"
+    }
+  },
+  "footer": {
+    "slogan": "Trải nghiệm điện ảnh đẳng cấp với công nghệ hiện đại nhất",
+    "titles": {
+      "movies": "Phim",
+      "services": "Dịch Vụ",
+      "support": "Hỗ Trợ"
+    },
+    "links": {
+      "faq": "Câu Hỏi Thường Gặp",
+      "hotline": "Hotline:"
+    },
+    "copyright": "© 2026 CinemaX. Bản quyền thuộc về CinemaX."
+  }
+}

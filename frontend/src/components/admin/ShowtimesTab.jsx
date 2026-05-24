@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ShowtimesTab = ({ createShowtimeObj, stForm, setStForm, movies, selectedTheaterId, setSelectedTheaterId, theaters, rooms, showtimes }) => {
-    // 1. Tạo state để lưu trữ từ khóa tìm kiếm
+    const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
 
-    // 2. Logic lọc danh sách suất chiếu dựa trên từ khóa nhập vào
     const filteredShowtimes = showtimes.filter(st => {
         const searchLower = searchTerm.toLowerCase().trim();
         
-        // Tránh lỗi crash nếu dữ liệu từ backend trả về bị trống (null/undefined)
         const showtimeId = st.showtimeId ? String(st.showtimeId).toLowerCase() : '';
         const movieTitle = st.movie?.title ? st.movie.title.toLowerCase() : '';
         const roomNumber = st.room?.roomNumber ? String(st.room.roomNumber).toLowerCase() : '';
         const showDate = st.showDate ? st.showDate.toLowerCase() : '';
 
-        // Trả về true nếu từ khóa khớp với 1 trong các trường dữ liệu
         return showtimeId.includes(searchLower) || 
                movieTitle.includes(searchLower) || 
                roomNumber.includes(searchLower) ||
@@ -23,39 +21,35 @@ const ShowtimesTab = ({ createShowtimeObj, stForm, setStForm, movies, selectedTh
 
     return (
         <div className="tab-view">
-            <h2 className="tab-title">Cấu Hình Lịch Trình Chiếu Phim</h2>
+            <h2 className="tab-title">{t('admin.adminDashboard.showtimesTab.title')}</h2>
             
-            {/* Form tạo suất chiếu giữ nguyên */}
             <form onSubmit={createShowtimeObj} className="interactive-form-grid">
                 <select value={stForm.movieId} onChange={e => setStForm({...stForm, movieId: e.target.value})} required>
-                    <option value="">-- Bước 1: Chọn Phim Chiếu --</option>
+                    <option value="">{t('admin.adminDashboard.showtimesTab.form.steps.step1')}</option>
                     {movies.map(m => <option key={m.movieId} value={m.movieId}>{m.title}</option>)}
                 </select>
                 <select value={selectedTheaterId} onChange={e => setSelectedTheaterId(e.target.value)}>
-                    <option value="">-- Bước 2: Chọn Cụm Rạp --</option>
+                    <option value="">{t('admin.adminDashboard.showtimesTab.form.steps.step2')}</option>
                     {theaters.map(t => <option key={t.theaterId} value={t.theaterId}>{t.name}</option>)}
                 </select>
                 <select value={stForm.roomId} onChange={e => setStForm({...stForm, roomId: e.target.value})} required>
-                    <option value="">-- Bước 3: Chọn Phòng Chiếu --</option>
+                    <option value="">{t('admin.adminDashboard.showtimesTab.form.steps.step3')}</option>
                     {rooms.map(r => <option key={r.roomId} value={r.roomId}>{r.roomNumber}</option>)}
                 </select>
                 <input type="date" value={stForm.showDate} onChange={e => setStForm({...stForm, showDate: e.target.value})} required />
                 <input type="time" value={stForm.startTime} onChange={e => setStForm({...stForm, startTime: e.target.value})} required />
-                <input type="number" placeholder="Đơn giá vé (VND)" value={stForm.ticketPrice} onChange={e => setStForm({...stForm, ticketPrice: parseFloat(e.target.value)})} required />
+                <input type="number" placeholder={t('admin.adminDashboard.showtimesTab.form.placeholders.price')} value={stForm.ticketPrice} onChange={e => setStForm({...stForm, ticketPrice: parseFloat(e.target.value)})} required />
 
-                <button type="submit" className="form-submit-btn-main full-width-field"> Phát Hành Lịch Chiếu</button>
+                <button type="submit" className="form-submit-btn-main full-width-field">{t('admin.adminDashboard.showtimesTab.form.buttons.submit')}</button>
             </form>
 
             <hr className="section-divider" style={{ margin: '25px 0', border: '0', borderTop: '1px solid #e2e8f0' }} />
 
-            {/* ========================================================= */}
-            {/* THANH TÌM KIẾM MỚI ĐƯỢC THÊM VÀO                           */}
-            {/* ========================================================= */}
             <div className="search-container-box" style={{ marginBottom: '15px', display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <span style={{ fontWeight: 'bold', color: '#4a5568' }}>Tìm kiếm suất chiếu:</span>
+                <span style={{ fontWeight: 'bold', color: '#4a5568' }}>{t('admin.adminDashboard.showtimesTab.search.label')}</span>
                 <input 
                     type="text" 
-                    placeholder="Nhập tên phim, mã suất, phòng chiếu hoặc ngày (YYYY-MM-DD)..." 
+                    placeholder={t('admin.adminDashboard.showtimesTab.search.placeholder')} 
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                     style={{
@@ -80,22 +74,21 @@ const ShowtimesTab = ({ createShowtimeObj, stForm, setStForm, movies, selectedTh
                             color: '#4a5568'
                         }}
                     >
-                        Xóa lọc
+                        {t('admin.adminDashboard.showtimesTab.search.clearBtn')}
                     </button>
                 )}
             </div>
 
-            {/* BẢNG HIỂN THỊ DỮ LIỆU ĐÃ ĐƯỢC THAY THÀNH LUỒNG ĐÃ QUA LỌC (filteredShowtimes) */}
             <div className="table-responsive-box">
                 <table className="data-display-table">
                     <thead>
                         <tr>
-                            <th>Mã Suất</th>
-                            <th>Tên Phim</th>
-                            <th>Phòng Chiếu</th>
-                            <th>Ngày Chiếu</th>
-                            <th>Giờ Bắt Đầu</th>
-                            <th>Giá Vé niêm yết</th>
+                            <th>{t('admin.adminDashboard.showtimesTab.table.showtimeId')}</th>
+                            <th>{t('admin.adminDashboard.showtimesTab.table.movieTitle')}</th>
+                            <th>{t('admin.adminDashboard.showtimesTab.table.roomNumber')}</th>
+                            <th>{t('admin.adminDashboard.showtimesTab.table.showDate')}</th>
+                            <th>{t('admin.adminDashboard.showtimesTab.table.startTime')}</th>
+                            <th>{t('admin.adminDashboard.showtimesTab.table.ticketPrice')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,8 +105,8 @@ const ShowtimesTab = ({ createShowtimeObj, stForm, setStForm, movies, selectedTh
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#718096', italic: 'true' }}>
-                                    Không tìm thấy suất chiếu nào khớp với từ khóa "{searchTerm}"
+                                <td colSpan="6" style={{ textAlign: 'center', padding: '20px', color: '#718096', fontStyle: 'italic' }}>
+                                    {t('admin.adminDashboard.showtimesTab.table.emptyText', { term: searchTerm })}
                                 </td>
                             </tr>
                         )}
