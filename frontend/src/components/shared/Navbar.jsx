@@ -112,12 +112,17 @@ const Navbar = () => {
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
-                                    <Link to="/profile" className="dropdown-item">
+                                    {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
+                                        <Link to="/profile" className="dropdown-item">
                                         <i className="fa-regular fa-user"></i> Hồ sơ của tôi
-                                    </Link>
-                                    <Link to="/ve-da-dat" className="dropdown-item">
+                                         </Link>
+                                    )}
+                                    {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
+                                       <Link to="/ve-da-dat" className="dropdown-item">
                                         <i className="fa-solid fa-ticket"></i> Lịch sử đặt vé
-                                    </Link>
+                                         </Link>
+                                    )}
+                                    
                                     <div className="dropdown-divider"></div>
                                     <button className="dropdown-item logout" onClick={handleLogout}>
                                         <i className="fa-solid fa-right-from-bracket"></i> Đăng xuất

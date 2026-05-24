@@ -35,7 +35,7 @@ public class Movie {
     private String movieFormat;
 
     @Column(name = "status", nullable = false)
-    private int status = 1;
+    private int status ;
 
     @Min(value = 1, message = "Thời lượng phải lớn hơn 0")
     @Column(name = "duration", nullable = false)
