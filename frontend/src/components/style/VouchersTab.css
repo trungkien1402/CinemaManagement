@@ -1,0 +1,283 @@
+/* ==========================================================================
+   Vouchers Tab Stylesheet (Prefix: vctab-)
+   ========================================================================== */
+
+.vctab-container {
+    padding: 30px;
+    background-color: #0d0d0c;
+    min-height: 100vh;
+    color: #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    box-sizing: border-box;
+}
+
+.vctab-main-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.vctab-main-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    height: 60%;
+    width: 4px;
+    background-color: #26dc78;
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   Interactive Form (Cấu hình lưới biểu mẫu tạo voucher)
+   ========================================================================== */
+.vctab-interactive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    background-color: #141416;
+    border: 1px solid #27272a;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.vctab-form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.vctab-form-item label {
+    font-size: 13px;
+    color: #a1a1aa;
+    font-weight: 500;
+}
+
+.vctab-interactive-grid input,
+.vctab-interactive-grid select {
+    background-color: #1c1c1e;
+    border: 1px solid #2d2d30;
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.vctab-interactive-grid input:focus,
+.vctab-interactive-grid select:focus {
+    border-color: #26dc78;
+    background-color: #222224;
+    box-shadow: 0 0 0 2px rgba(38, 220, 120, 0.15);
+}
+
+/* Căn nút bấm khớp hàng ngang ở màn hình lớn */
+.vctab-btn-align-bottom {
+    justify-content: flex-end;
+}
+
+.vctab-submit-btn {
+    background-color: #26dc78;
+    color: #0d0d0c;
+    font-weight: 700;
+    border: none;
+    padding: 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.vctab-submit-btn:hover {
+    background-color: #1a9664;
+    transform: translateY(-1px);
+}
+
+.vctab-divider {
+    margin: 32px 0;
+    border: 0;
+    border-top: 1px solid #27272a;
+}
+
+/* ==========================================================================
+   Data Table Layout (Danh sách quản lý mã voucher)
+   ========================================================================== */
+.vctab-table-responsive {
+    width: 100%;
+    background-color: #141416;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.vctab-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.vctab-data-table th {
+    background-color: #18181b;
+    color: #a1a1aa;
+    font-weight: 600;
+    padding: 16px 20px;
+    border-bottom: 2px solid #27272a;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.vctab-data-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #27272a;
+    color: #e4e4e7;
+    vertical-align: middle;
+}
+
+.vctab-data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.vctab-data-table tbody tr:hover {
+    background-color: #1f1f23;
+}
+
+/* Làm mờ các hàng voucher đã cạn lượt dùng */
+.vctab-row-disabled {
+    background-color: rgba(24, 24, 27, 0.4);
+}
+
+.vctab-code-badge {
+    font-family: monospace;
+    color: #38bdf8;
+    background-color: rgba(56, 189, 248, 0.1);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Định dạng huy hiệu phân biệt loại giảm giá */
+.vctab-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.vctab-badge.percent {
+    background-color: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+.vctab-badge.cash {
+    background-color: rgba(234, 179, 8, 0.15);
+    color: #facc15;
+    border: 1px solid rgba(234, 179, 8, 0.2);
+}
+
+/* Trạng thái bộ đếm lượt sử dụng */
+.vctab-counter { font-weight: 700; }
+.vctab-counter.success { color: #26dc78; }
+.vctab-counter.danger { color: #ef4444; }
+.vctab-max-text { color: #71717a; }
+
+.vctab-soldout-tag {
+    margin-left: 8px;
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.vctab-date-text {
+    color: #a1a1aa;
+}
+
+.vctab-delete-btn {
+    background-color: transparent;
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.vctab-delete-btn:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+}
+
+.vctab-empty-row {
+    text-align: center !important;
+    padding: 40px !important;
+    color: #71717a !important;
+    font-style: italic;
+    background-color: #18181b;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Chuyển đổi giao diện dạng thẻ trên Mobile)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .vctab-container { padding: 15px; }
+
+    .vctab-table-responsive {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    /* Ẩn thanh header bảng gốc */
+    .vctab-data-table th { display: none; }
+
+    /* Định hình lại từng dòng tr thành 1 chiếc card độc lập */
+    .vctab-data-table tbody tr {
+        display: block;
+        background-color: #141416;
+        border: 1px solid #27272a;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        padding: 12px 16px;
+    }
+
+    /* Sắp xếp nội dung theo hàng ngang hai đầu */
+    .vctab-data-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px dashed #27272a;
+        text-align: right;
+    }
+
+    .vctab-data-table td:last-child { border-bottom: none; }
+
+    /* Tạo nhãn tiêu đề bằng thuộc tính content gán ở Mobile */
+    .vctab-data-table td::before {
+        font-weight: 600;
+        color: #a1a1aa;
+        text-transform: uppercase;
+        font-size: 11px;
+    }
+
+    .vctab-data-table td:nth-of-type(1)::before { content: "Mã Voucher"; }
+    .vctab-data-table td:nth-of-type(2)::before { content: "Loại & Mức giảm"; }
+    .vctab-data-table td:nth-of-type(3)::before { content: "Số Lượt Dùng"; }
+    .vctab-data-table td:nth-of-type(4)::before { content: "Hạn Sử Dụng"; }
+    .vctab-data-table td:nth-of-type(5)::before { content: "Hành Động"; }
+}

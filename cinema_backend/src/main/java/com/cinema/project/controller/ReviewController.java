@@ -1,6 +1,6 @@
 package com.cinema.project.controller;
 
-// 👇 ĐÂY NÀY! Thiếu mấy dòng import này nên nó mới báo đỏ đó!
+
 import com.cinema.project.model.Review;
 import com.cinema.project.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;

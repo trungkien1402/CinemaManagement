@@ -55,10 +55,27 @@ const PaymentSuccess = () => {
 
                 console.log("=== ĐANG GỬI LỆNH TẠO VÉ SANG BACKEND ===", bookingData);
 
+                // Lấy token bảo mật từ bộ nhớ để chuẩn bị gửi kèm request
+                const token = localStorage.getItem('token');
+                const authHeader = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
                 // Gọi API tạo vé chính thức của bạn
-                await axios.post("http://localhost:8080/api/bookings/create", bookingData);
+                await axios.post("http://localhost:8080/api/bookings/create", bookingData, authHeader);
                 
-                // Giải phóng bộ nhớ tạm sau khi tạo vé thành công
+                // ================= TỰ ĐỘNG CẬP NHẬT LƯỢT DÙNG VOUCHER VÀO DB =================
+                // Giả định bookingData của bạn có chứa trường voucherCode (hoặc couponCode tùy cấu hình object đặt vé của bạn)
+                const appliedVoucher = bookingData.voucherCode || bookingData.couponCode;
+                
+                if (appliedVoucher) {
+                    const cleanCode = appliedVoucher.trim().toUpperCase();
+                    console.log(`=== ĐANG ĐỒNG BỘ TRỪ LƯỢT VOUCHER CHÍNH THỨC: ${cleanCode} ===`);
+                    
+                    // Gọi sang Endpoint Client mà bạn đã tạo ở Java Controller
+                    await axios.post(`http://localhost:8080/api/vouchers/apply/${cleanCode}`, {}, authHeader);
+                }
+                // ===========================================================================
+
+                // Giải phóng bộ nhớ tạm sau khi tạo vé và áp voucher thành công
                 localStorage.removeItem("pendingBooking");
 
                 setMessage("Thanh toán thành công! Vé phim của bạn đã được khởi tạo hệ thống.");
