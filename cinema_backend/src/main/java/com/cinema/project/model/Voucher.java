@@ -9,23 +9,22 @@ public class Voucher {
 
     @Id
     @Column(length = 50)
-    private String voucherCode; // Ví dụ: MOVIES2026, GIAM20K
+    private String voucherCode;
 
     @Column(nullable = false)
-    private double discountValue; // Giá trị giảm (Ví dụ: 20000 hoặc 15)
+    private double discountValue;
 
     @Column(length = 20, nullable = false)
-    private String discountType; // "CASH" (giảm tiền mặt) hoặc "PERCENT" (giảm %)
+    private String discountType;
 
     @Column(nullable = false)
-    private LocalDate expiryDate; // Ngày hết hạn
+    private LocalDate expiryDate;
 
     @Column(nullable = false)
-    private int maxUses; // Số lượt dùng tối đa ban đầu
+    private int maxUses;
 
     @Column(nullable = false)
-    private int usedCount = 0; // Số lượt đã dùng thực tế
-
+    private int usedCount = 0;
     // Getters and Setters
     public String getVoucherCode() { return voucherCode; }
     public void setVoucherCode(String voucherCode) { this.voucherCode = voucherCode; }

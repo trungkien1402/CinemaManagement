@@ -1,0 +1,309 @@
+/* ==========================================================================
+   Showtimes Tab Stylesheet (Prefix: sttab-)
+   ========================================================================== */
+
+.sttab-container {
+    padding: 30px;
+    background-color: #0d0d0c;
+    min-height: 100vh;
+    color: #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    box-sizing: border-box;
+}
+
+.sttab-main-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.sttab-main-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    height: 60%;
+    width: 4px;
+    background-color: #26dc78;
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   Interactive Form (Lưới biểu mẫu tạo suất chiếu)
+   ========================================================================== */
+.sttab-interactive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    background-color: #141416;
+    border: 1px solid #27272a;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.sttab-interactive-grid input,
+.sttab-interactive-grid select {
+    background-color: #1c1c1e;
+    border: 1px solid #2d2d30;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.sttab-interactive-grid input:focus,
+.sttab-interactive-grid select:focus {
+    border-color: #26dc78;
+    background-color: #222224;
+    box-shadow: 0 0 0 2px rgba(38, 220, 120, 0.15);
+}
+
+/* Nút Submit chính trải rộng toàn bộ grid */
+.sttab-submit-btn {
+    grid-column: 1 / -1;
+    background-color: #26dc78;
+    color: #0d0d0c;
+    font-weight: 700;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.sttab-submit-btn:hover {
+    background-color: #1a9664;
+    transform: translateY(-2px);
+}
+
+/* Đường chia cắt cấu trúc tab */
+.sttab-divider {
+    margin: 32px 0;
+    border: 0;
+    border-top: 1px solid #27272a;
+}
+
+/* ==========================================================================
+   Search Toolbar (Thanh tìm kiếm nâng cấp)
+   ========================================================================== */
+.sttab-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    background-color: #141416;
+    border: 1px solid #27272a;
+    padding: 14px 20px;
+    border-radius: 12px;
+}
+
+.sttab-search-label {
+    font-weight: 600;
+    color: #a1a1aa;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.sttab-search-input-group {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+}
+
+.sttab-search-input-group input {
+    flex: 1;
+    background-color: #1c1c1e;
+    border: 1px solid #2d2d30;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.sttab-search-input-group input:focus {
+    border-color: #38bdf8;
+}
+
+/* Nút xóa từ khóa lọc nhanh */
+.sttab-clear-btn {
+    background-color: #27272a;
+    color: #e4e4e7;
+    border: 1px solid #3f3f46;
+    padding: 0 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.sttab-clear-btn:hover {
+    background-color: #3f3f46;
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   Data Table Layout (Danh sách lịch chiếu)
+   ========================================================================== */
+.sttab-table-responsive {
+    width: 100%;
+    background-color: #141416;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.sttab-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.sttab-data-table th {
+    background-color: #18181b;
+    color: #a1a1aa;
+    font-weight: 600;
+    padding: 16px 20px;
+    border-bottom: 2px solid #27272a;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.sttab-data-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #27272a;
+    color: #e4e4e7;
+    vertical-align: middle;
+}
+
+.sttab-data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.sttab-data-table tbody tr:hover {
+    background-color: #1f1f23;
+}
+
+.sttab-id-code {
+    font-family: monospace;
+    color: #38bdf8;
+    background-color: rgba(56, 189, 248, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.sttab-movie-title {
+    max-width: 250px;
+}
+
+.sttab-room-badge {
+    background-color: #27272a;
+    border: 1px solid #3f3f46;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.sttab-date-text {
+    color: #a1a1aa;
+}
+
+.sttab-time-badge {
+    background-color: rgba(38, 220, 120, 0.1);
+    color: #26dc78;
+    border: 1px solid rgba(38, 220, 120, 0.2);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.sttab-price-text {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.sttab-empty-row {
+    text-align: center !important;
+    padding: 40px !important;
+    color: #71717a !important;
+    font-style: italic;
+    background-color: #18181b;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Xử lý giao diện trên Mobile dưới 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .sttab-container { padding: 15px; }
+
+    /* Chuyển thanh công cụ tìm kiếm thành cột dọc trên thiết bị nhỏ */
+    .sttab-search-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .sttab-search-input-group {
+        width: 100%;
+    }
+
+    .sttab-table-responsive {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    /* Ẩn các tiêu đề cột gốc của bảng */
+    .sttab-data-table th { display: none; }
+
+    /* Tạo khối bao bọc (Card) cho từng cụm dòng dữ liệu */
+    .sttab-data-table tbody tr {
+        display: block;
+        background-color: #141416;
+        border: 1px solid #27272a;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        padding: 12px 16px;
+    }
+
+    /* Biến ô dữ liệu thành mô hình dòng hai bên tương tác */
+    .sttab-data-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px dashed #27272a;
+        text-align: right;
+    }
+
+    .sttab-data-table td:last-child { border-bottom: none; }
+
+    /* Chèn text tiêu đề cột nhân bản sang góc trái dòng Mobile */
+    .sttab-data-table td::before {
+        font-weight: 600;
+        color: #a1a1aa;
+        text-transform: uppercase;
+        font-size: 11px;
+    }
+
+    .sttab-data-table td:nth-of-type(1)::before { content: "Mã Suất"; }
+    .sttab-data-table td:nth-of-type(2)::before { content: "Tên Phim"; }
+    .sttab-data-table td:nth-of-type(3)::before { content: "Phòng Chiếu"; }
+    .sttab-data-table td:nth-of-type(4)::before { content: "Ngày Chiếu"; }
+    .sttab-data-table td:nth-of-type(5)::before { content: "Giờ Bắt Đầu"; }
+    .sttab-data-table td:nth-of-type(6)::before { content: "Giá Vé"; }
+
+    .sttab-movie-title { max-width: none; }
+}

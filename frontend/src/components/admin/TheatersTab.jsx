@@ -1,162 +1,319 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import '../style/TheatersTab.css';
 
-const TheatersTab = ({ 
-    selectedTheaterId, 
-    setSelectedTheaterId, 
-    setSelectedRoomId, 
-    setSeats, 
-    theaters, 
-    createNewRoomAndSeats, 
-    roomForm, 
-    setRoomForm, 
-    selectedRoomId, 
-    rooms, 
-    seats, 
-    toggleSeatMaintenance 
-}) => {
+const TheatersTab = () => {
+    // State form thêm rạp
+    const [theaterId, setTheaterId] = useState('');
+    const [name, setName] = useState('');
+    const [location, setLocation] = useState('');
+    const [city, setCity] = useState('');
+    const [phone, setPhone] = useState('');
 
-    // ✅ LOGIC CẢI TIẾN: Tính toán số cột động dựa trên phòng đang chọn để căn chỉnh ma trận CSS Grid
-    const currentRoom = rooms.find(r => String(r.roomId) === String(selectedRoomId));
-    // Nếu có thông tin phòng từ DB thì lấy số cột của phòng đó, không thì lấy số cột tạm tính từ form (mặc định tối thiểu 1)
-    const dynamicCols = currentRoom && currentRoom.colsCount ? currentRoom.colsCount : (roomForm.colsCount || 10);
+    // State danh sách tổng
+    const [theaters, setTheaters] = useState([]);
+    const [rooms, setRooms] = useState([]);
+    const [seats, setSeats] = useState([]);
 
-    const handleTheaterChange = (e) => {
-        const id = e.target.value;
-        setSelectedTheaterId(id);
-        setSelectedRoomId(''); // Khử phòng đang chọn cũ
-        setSeats([]);          // Xóa sạch mảng ghế tránh hiện tượng "rác" UI
+    // State quản lý bộ lọc phân cấp (Rạp -> Phòng)
+    const [selectedTheaterId, setSelectedTheaterId] = useState('');
+    const [selectedRoomId, setSelectedRoomId] = useState('');
+
+    // State form thêm phòng mới
+    const [inputRoomId, setInputRoomId] = useState('');
+    const [roomNumber, setRoomNumber] = useState('');
+    const [rowsCount, setRowsCount] = useState(8);
+    const [colsCount, setColsCount] = useState(10);
+    
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState({ type: '', text: '' });
+
+    // Khi bật trang, lấy ngay danh sách rạp
+    useEffect(() => {
+        fetchTheaters();
+    }, []);
+
+    // Khi người dùng đổi cụm rạp -> Tự động load danh sách phòng của rạp đó
+    useEffect(() => {
+        if (selectedTheaterId) {
+            fetchRoomsByTheater(selectedTheaterId);
+            setSeats([]); // Xóa sơ đồ cũ đi để chờ chọn phòng mới
+            setSelectedRoomId('');
+        } else {
+            setRooms([]);
+            setSeats([]);
+        }
+    }, [selectedTheaterId]);
+
+    // Khi người dùng chọn phòng cụ thể -> Hiện ma trận ghế của phòng đó lên
+    useEffect(() => {
+        if (selectedRoomId) {
+            fetchSeatsByRoom(selectedRoomId);
+        } else {
+            setSeats([]);
+        }
+    }, [selectedRoomId]);
+
+    const fetchTheaters = async () => {
+        try {
+            const token = localStorage.getItem('token'); 
+            const response = await axios.get('http://localhost:8080/api/admin/theaters/all', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setTheaters(response.data);
+            if (response.data.length > 0 && !selectedTheaterId) {
+                setSelectedTheaterId(response.data[0].theaterId);
+            }
+        } catch (error) {
+            console.error("Lỗi tải rạp:", error);
+        }
     };
 
-    const handleNumberInputChange = (field, value) => {
-        const parsedValue = parseInt(value, 10);
-        // Ngăn chặn nhập số âm hoặc số 0 gây hỏng ma trận vòng lặp
-        setRoomForm({
-            ...roomForm,
-            [field]: isNaN(parsedValue) || parsedValue <= 0 ? 1 : parsedValue
-        });
+    const fetchRoomsByTheater = async (tId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`http://localhost:8080/api/admin/rooms/theater/${tId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setRooms(response.data);
+        } catch (error) {
+            console.error("Lỗi tải danh sách phòng:", error);
+        }
+    };
+
+    const fetchSeatsByRoom = async (rId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`http://localhost:8080/api/admin/seats/room/${rId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setSeats(response.data);
+        } catch (error) {
+            console.error("Lỗi tải sơ đồ ghế:", error);
+        }
+    };
+
+    const handleAddTheater = async (e) => {
+        e.preventDefault();
+        setMessage({ type: '', text: '' });
+        try {
+            const token = localStorage.getItem('token');
+            const payload = {
+                theaterId: theaterId.trim().toUpperCase(),
+                name: name.trim(),
+                location: location.trim(),
+                city: city.trim(),
+                phone: phone.trim(),
+                operatingHours: "08:00 - 23:30"
+            };
+            await axios.post('http://localhost:8080/api/admin/theaters/create', payload, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setMessage({ type: 'success', text: `Đã lưu cụm rạp "${payload.name}"!` });
+            setTheaterId(''); setName(''); setLocation(''); setCity(''); setPhone('');
+            fetchTheaters();
+        } catch (error) {
+            setMessage({ type: 'error', text: error.response?.data || "Lỗi thêm cụm rạp!" });
+        }
+    };
+
+    const handleCreateRoom = async (e) => {
+        e.preventDefault();
+        if (!selectedTheaterId) {
+            setMessage({ type: 'error', text: 'Vui lòng chọn cụm rạp cần thêm phòng trước!' });
+            return;
+        }
+        if (inputRoomId.trim().length > 3) {
+            setMessage({ type: 'error', text: 'Mã phòng nhập ngắn gọn (VD: P1, P2) để tối ưu hóa bộ nhớ!' });
+            return;
+        }
+
+        setLoading(true);
+        setMessage({ type: '', text: '' });
+
+        const payload = {
+            roomId: inputRoomId.trim().toUpperCase(),
+            roomNumber: roomNumber.trim(),
+            rowsCount: parseInt(rowsCount),
+            colsCount: parseInt(colsCount)
+        };
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`http://localhost:8080/api/admin/rooms/create/${selectedTheaterId}`, payload, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setMessage({ type: 'success', text: response.data });
+            setInputRoomId('');
+            setRoomNumber('');
+            
+            await fetchRoomsByTheater(selectedTheaterId);
+            
+            const targetRoomSystemId = `${selectedTheaterId}-${payload.roomId}`;
+            setSelectedRoomId(targetRoomSystemId);
+        } catch (error) {
+            setMessage({ type: 'error', text: error.response?.data || "Lỗi tạo phòng!" });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSeatClick = async (seatId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.put(`http://localhost:8080/api/admin/seats/change-type/${seatId}`, {}, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setSeats(seats.map(s => s.seatId === seatId ? response.data : s));
+        } catch (error) {
+            console.error("Lỗi cập nhật loại ghế:", error);
+        }
     };
 
     return (
-        <div className="tab-view">
-            <h2 className="tab-title">Hệ Thống Hạ Tầng Cụm Rạp</h2>
-            <div className="dual-column-panel">
-                
-                {/* CỘT TRÁI: CẤU HÌNH VÀ THÊM MỚI PHÒNG CHIẾU */}
-                <div className="form-settings-panel">
-                    <h5>📍 Chọn vị trí Cụm Rạp</h5>
-                    <select value={selectedTheaterId} onChange={handleTheaterChange}>
-                        <option value="">-- Chọn danh sách rạp chiếu --</option>
-                        {theaters.map(t => (
-                            <option key={t.theaterId} value={t.theaterId}>{t.name}</option>
-                        ))}
-                    </select>
+        <div className="thtab-container">
+            <h2 className="thtab-main-title">Hệ Thống Quản Trị Cụm Rạp & Thiết Kế Ghế Sơ Đồ</h2>
 
-                    {selectedTheaterId && (
-                        <form onSubmit={createNewRoomAndSeats} className="sub-form-box">
-                            <h5>🏢 Thêm phòng chiếu mới & Sinh ghế tự động</h5>
-                            <input 
-                                type="text" 
-                                placeholder="Mã phòng (Ví dụ: P01_RAP_A)" 
-                                value={roomForm.roomId || ''} 
-                                onChange={e => setRoomForm({...roomForm, roomId: e.target.value})} 
-                                required 
-                            />
-                            <input 
-                                type="text" 
-                                placeholder="Tên phòng hiển thị (Ví dụ: Phòng Số 1)" 
-                                value={roomForm.roomNumber || ''} 
-                                onChange={e => setRoomForm({...roomForm, roomNumber: e.target.value})} 
-                                required 
-                            />
-                            
-                            <label>Số hàng ghế vật lý (A-Z):</label>
-                            <input 
-                                type="number" 
-                                min="1"
-                                max="26"
-                                value={roomForm.rowsCount || ''} 
-                                onChange={e => handleNumberInputChange('rowsCount', e.target.value)} 
-                                required
-                            />
-                            
-                            <label>Số ghế trên mỗi hàng:</label>
-                            <input 
-                                type="number" 
-                                min="1"
-                                max="30"
-                                value={roomForm.colsCount || ''} 
-                                onChange={e => handleNumberInputChange('colsCount', e.target.value)} 
-                                required
-                            />
-                            
-                            <button type="submit" className="form-submit-btn-main">
-                                Khởi Tạo & Cấu Hình Sơ Đồ Ghế
-                            </button>
-                        </form>
-                    )}
+            {message.text && (
+                <div className={`thtab-alert ${message.type === 'success' ? 'success' : 'error'}`}>
+                    {message.text}
                 </div>
+            )}
 
-                {/* CỘT PHẢI: HIỂN THỊ TRỰC QUAN SƠ ĐỒ MA TRẬN GHẾ */}
-                <div className="visualization-settings-panel">
-                    <h5>🖥️ Sơ đồ thiết kế phòng ghế vật lý</h5>
-                    <select value={selectedRoomId} onChange={e => setSelectedRoomId(e.target.value)}>
-                        <option value="">-- Chọn phòng chiếu hiển thị sơ đồ --</option>
-                        {rooms.map(r => (
-                            <option key={r.roomId} value={r.roomId}>
-                                {r.roomNumber} ({r.totalSeats || (r.rowsCount * r.colsCount)} ghế)
-                            </option>
-                        ))}
-                    </select>
-
-                    {selectedRoomId && (
-                        <div style={{ marginTop: '20px' }}>
-                            <div className="cinema-screen-bar">MÀN HÌNH CHIẾU PHIM</div>
-                            
-                            {/* ✅ ĐÃ CẢI TIẾN LOGIC: Ép CSS gán chuẩn số cột động giúp các hàng ghế xếp thẳng tắp */}
-                            <div 
-                                className="seats-matrix-grid-display"
-                                style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: `repeat(${dynamicCols}, minmax(35px, 1fr))`,
-                                    gap: '8px',
-                                    justifyContent: 'center',
-                                    padding: '15px',
-                                    background: '#1a1d24',
-                                    borderRadius: '8px',
-                                    overflowX: 'auto'
-                                }}
-                            >
-                                {seats.map(s => (
-                                    <button
-                                        key={s.seatId}
-                                        type="button"
-                                        onClick={() => toggleSeatMaintenance(s.seatId)}
-                                        className={`seat-node ${s.seatType === 'VIP' ? 'vip' : 'normal'} ${s.isOccupied ? 'maintenance-lock' : ''}`}
-                                        title={`Mã ghế: ${s.seatNumber} \nLoại: ${s.seatType} \nBấm để Khóa/Mở bảo trì`}
-                                        style={{
-                                            padding: '8px 0',
-                                            fontSize: '11px',
-                                            fontWeight: 'bold',
-                                            textAlign: 'center',
-                                            cursor: 'pointer',
-                                            borderRadius: '4px'
-                                        }}
-                                    >
-                                        {s.seatNumber}
-                                    </button>
-                                ))}
-                            </div>
-
-                            <div className="legend-row" style={{ marginTop: '15px', display: 'flex', gap: '20px', justifyContent: 'center' }}>
-                                <span className="legend-item"><span className="box normal"></span> Ghế Thường</span>
-                                <span className="legend-item"><span className="box vip"></span> Ghế VIP</span>
-                                <span className="legend-item"><span className="box locked"></span> Đang bảo trì (Khóa)</span>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
+            {/* BLOCK 1: THÊM CỤM RẠP CHIẾU */}
+            <div className="thtab-card">
+                <h3 className="thtab-card-title title-green">➕ THÊM CỤM RẠP CHIẾU MỚI</h3>
+                <form onSubmit={handleAddTheater} className="thtab-form-grid">
+                    <div className="thtab-form-item">
+                        <label>Mã Rạp (VD: T01):</label>
+                        <input type="text" value={theaterId} onChange={(e) => setTheaterId(e.target.value)} placeholder="Viết liền không dấu" required />
+                    </div>
+                    <div className="thtab-form-item">
+                        <label>Tên Rạp:</label>
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="VD: CGV Nguyễn Trãi" required />
+                    </div>
+                    <div className="thtab-form-item">
+                        <label>Thành Phố:</label>
+                        <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="VD: Đà Nẵng" required />
+                    </div>
+                    <div className="thtab-form-item">
+                        <label>Địa Chỉ Chi Tiết:</label>
+                        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Số nhà, Tên đường..." required />
+                    </div>
+                    <div className="thtab-form-item">
+                        <label>Hotline Rạp:</label>
+                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Số điện thoại" required />
+                    </div>
+                    <div className="thtab-form-item thtab-btn-align-bottom">
+                        <button type="submit" className="thtab-btn submit green">Lưu Cụm Rạp</button>
+                    </div>
+                </form>
             </div>
+
+            {/* BLOCK 2: KHỞI TẠO PHÒNG CHIẾU CHO RẠP ĐANG CHỌN */}
+            <div className="thtab-card">
+                <h3 className="thtab-card-title title-red">⚙️ THÊM PHÒNG CHIẾU VÀO RẠP ĐANG CHỌN</h3>
+                
+                <div className="thtab-target-bar">
+                    <label>📍 Bước 1 - Chọn cụm rạp mục tiêu: </label>
+                    <select value={selectedTheaterId} onChange={(e) => setSelectedTheaterId(e.target.value)}>
+                        <option value="">-- Click chọn rạp chiếu --</option>
+                        {theaters.map(t => <option key={t.theaterId} value={t.theaterId}>{t.name} ({t.city})</option>)}
+                    </select>
+                </div>
+
+                <form onSubmit={handleCreateRoom} className="thtab-form-grid">
+                    <div className="thtab-form-item">
+                        <label>Mã phòng độc lập (VD: P1, P2):</label>
+                        <input type="text" value={inputRoomId} onChange={(e) => setInputRoomId(e.target.value)} placeholder="Tối đa 3 chữ" required />
+                    </div>
+                    <div className="thtab-form-item">
+                        <label>Tên hiển thị phòng:</label>
+                        <input type="text" value={roomNumber} onChange={(e) => setRoomNumber(e.target.value)} placeholder="VD: Phòng Chiếu IMAX 01" required />
+                    </div>
+                    <div className="thtab-form-item">
+                        <label>Số hàng dọc (A-Z):</label>
+                        <input type="number" value={rowsCount} onChange={(e) => setRowsCount(e.target.value)} />
+                    </div>
+                    <div className="thtab-form-item">
+                        <label>Số cột ngang (1-20):</label>
+                        <input type="number" value={colsCount} onChange={(e) => setColsCount(e.target.value)} />
+                    </div>
+                    <div className="thtab-form-item thtab-btn-align-bottom">
+                        <button type="submit" disabled={loading} className="thtab-btn submit red">
+                            {loading ? 'Đang tạo...' : 'Tạo Sơ Đồ Phòng Cho Rạp'}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            {/* BLOCK 3: BỘ LỌC ĐỂ XEM VÀ CHỈNH SỬA SƠ ĐỒ GHẾ CỦA TỪNG PHÒNG THỰC TẾ */}
+            <div className="thtab-card">
+                <h3 className="thtab-card-title title-blue">🔍 TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG</h3>
+                <div className="thtab-filter-row">
+                    <div className="thtab-filter-item">
+                        <label>1. Chọn cụm rạp phim:</label>
+                        <select value={selectedTheaterId} onChange={(e) => setSelectedTheaterId(e.target.value)}>
+                            <option value="">-- Chọn rạp phim --</option>
+                            {theaters.map(t => <option key={t.theaterId} value={t.theaterId}>{t.name}</option>)}
+                        </select>
+                    </div>
+                    <div className="thtab-filter-item">
+                        <label>2. Chọn phòng chiếu (Chỉ hiện phòng của rạp trên):</label>
+                        <select 
+                            value={selectedRoomId} 
+                            onChange={(e) => setSelectedRoomId(e.target.value)} 
+                            disabled={rooms.length === 0} 
+                            className={rooms.length === 0 ? 'disabled' : ''}
+                        >
+                            <option value="">-- Chọn phòng xem sơ đồ --</option>
+                            {rooms.map(r => <option key={r.roomId} value={r.roomId}>{r.roomNumber} (Mã gốc: {r.roomId})</option>)}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {/* BẢN ĐỒ MA TRẬN GHẾ NƠI CÓ THỂ TỰ CHỈNH SỬA VÀ LƯU TRỰC TIẾP */}
+            {seats.length > 0 && (
+                <div className="thtab-matrix-card">
+                    <div className="thtab-screen-line"></div>
+                    <p className="thtab-screen-text">MÀN HÌNH CHÍNH TẠI PHÒNG</p>
+                    <p className="thtab-note-success">✓ Dữ liệu đã lưu vĩnh viễn! Click tự do vào từng ghế để cập nhật lại cấu trúc (Thường ➔ VIP ➔ Đôi)</p>
+
+                    <div 
+                        className="thtab-seats-layout" 
+                        style={{ gridTemplateColumns: `repeat(${colsCount}, minmax(42px, 55px))` }}
+                    >
+                        {seats.map(s => {
+                            const type = s.seatType ? s.seatType.toUpperCase() : 'NORMAL';
+                            let classType = 'normal';
+
+                            if (type === 'VIP') {
+                                classType = 'vip';
+                            } else if (type === 'DOUBLE') {
+                                classType = 'double';
+                            }
+
+                            return (
+                                <button
+                                    key={s.seatId}
+                                    type="button"
+                                    onClick={() => handleSeatClick(s.seatId)}
+                                    className={`thtab-seat-btn ${classType}`}
+                                >
+                                    {s.seatNumber}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <div className="thtab-legend">
+                        <span className="thtab-legend-item"><span className="thtab-legend-box normal"></span> Thường</span>
+                        <span className="thtab-legend-item"><span className="thtab-legend-box vip"></span> VIP</span>
+                        <span className="thtab-legend-item"><span className="thtab-legend-box double"></span> Ghế đôi</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

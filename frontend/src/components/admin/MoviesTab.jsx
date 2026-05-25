@@ -1,10 +1,13 @@
 import React from 'react';
+import '../style/MovieTab.css';
 
 const MoviesTab = ({ movieForm, setMovieForm, saveOrUpdateMovie, editingMovieId, movies, triggerEditMovie, deleteMovieObj }) => {
     return (
-        <div className="tab-view">
-            <h2 className="tab-title">Kho Lưu Trữ Phim Điện Ảnh</h2>
-            <form onSubmit={saveOrUpdateMovie} className="interactive-form-grid">
+        <div className="mvtab-container">
+            <h2 className="mvtab-main-title">Kho Lưu Trữ Phim Điện Ảnh</h2>
+            
+            {/* Form nhập thông tin phim dạng Grid */}
+            <form onSubmit={saveOrUpdateMovie} className="mvtab-interactive-grid">
                 <input type="text" placeholder="Tên phim điện ảnh" value={movieForm.title || ''} onChange={e => setMovieForm({...movieForm, title: e.target.value})} required />
                 <input type="text" placeholder="Thể loại (Hành động, Tình cảm...)" value={movieForm.genre || ''} onChange={e => setMovieForm({...movieForm, genre: e.target.value})} />
                 <input type="number" placeholder="Thời lượng (Phút)" value={movieForm.duration || ''} onChange={e => setMovieForm({...movieForm, duration: e.target.value})} />
@@ -26,7 +29,6 @@ const MoviesTab = ({ movieForm, setMovieForm, saveOrUpdateMovie, editingMovieId,
                     <option value="T18">T18 - Phim giới hạn 18+</option>
                 </select>
                 
-                {/* ✅ ĐÃ ĐẢO ĐÚNG LOGIC: 1 là Đang chiếu, 2 là Sắp chiếu */}
                 <select value={String(movieForm.status !== undefined && movieForm.status !== null ? movieForm.status : "1")} 
                         onChange={e => setMovieForm({...movieForm, status: e.target.value})}>
                     <option value="1">Trạng thái: Đang chiếu</option>
@@ -34,32 +36,52 @@ const MoviesTab = ({ movieForm, setMovieForm, saveOrUpdateMovie, editingMovieId,
                     <option value="0">Trạng thái: Ngưng chiếu</option>
                 </select>
 
-                <textarea className="full-width-field" placeholder="Tóm tắt cốt truyện phim..." value={movieForm.description || ''} onChange={e => setMovieForm({...movieForm, description: e.target.value})} />
-                <button type="submit" className="form-submit-btn-main">{editingMovieId ? "💾 Cập Nhật Phim" : "➕ Thêm Phim Mới"}</button>
+                <textarea className="mvtab-full-width" placeholder="Tóm tắt cốt truyện phim..." value={movieForm.description || ''} onChange={e => setMovieForm({...movieForm, description: e.target.value})} />
+                <button type="submit" className="mvtab-submit-btn">{editingMovieId ? "💾 Cập Nhật Phim" : "➕ Thêm Phim Mới"}</button>
             </form>
             
-            <div className="table-responsive-box">
-                <table className="data-display-table">
+            {/* Bảng danh sách phim */}
+            <div className="mvtab-table-responsive">
+                <table className="mvtab-data-table">
                     <thead>
-                        <tr><th>Mã Phim</th><th>Hình ảnh</th><th>Tên Phim</th><th>Định dạng</th><th>Độ tuổi</th><th>Trạng thái</th><th>Hành động</th></tr>
+                        <tr>
+                            <th>Mã Phim</th>
+                            <th>Hình ảnh</th>
+                            <th>Tên Phim</th>
+                            <th>Định dạng</th>
+                            <th>Độ tuổi</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {movies.map(m => (
                             <tr key={m.movieId}>
-                                <td>#{m.movieId}</td>
-                                <td><img src={m.image} alt="" className="table-thumbnail-img" /></td>
-                                <td><strong>{m.title}</strong></td>
-                                <td><span className="badge-format">{m.movieFormat}</span></td>
-                                <td><span className="badge-age">{m.ageRating}</span></td>
+                                <td><code className="mvtab-id-code">#{m.movieId}</code></td>
                                 <td>
-                                    {/* ✅ ĐÃ ĐẢO ĐÚNG TAG MÀU SẮC THEO ĐỊNH NGHĨA MỚI */}
-                                    {String(m.status) === "1" && <span className="badge-status-green">Đang chiếu</span>}
-                                    {String(m.status) === "2" && <span className="badge-status-yellow">Sắp chiếu</span>}
-                                    {String(m.status) === "0" && <span className="badge-status-red">Ngưng chiếu</span>}
+                                    <img 
+                                        src={m.image && m.image.trim() !== "" ? m.image : "https://placehold.co/400x600?text=No+Poster"} 
+                                        alt="Poster" 
+                                        className="mvtab-thumbnail-img" 
+                                        onError={(e) => {
+                                            e.target.onerror = null; 
+                                            e.target.src = "https://placehold.co/400x600?text=Error+Image";
+                                        }}
+                                    />
+                                </td>
+                                <td className="mvtab-movie-title"><strong>{m.title}</strong></td>
+                                <td><span className="mvtab-badge-format">{m.movieFormat}</span></td>
+                                <td><span className="mvtab-badge-age">{m.ageRating}</span></td>
+                                <td>
+                                    {String(m.status) === "1" && <span className="mvtab-status-badge green">Đang chiếu</span>}
+                                    {String(m.status) === "2" && <span className="mvtab-status-badge yellow">Sắp chiếu</span>}
+                                    {String(m.status) === "0" && <span className="mvtab-status-badge red">Ngưng chiếu</span>}
                                 </td>
                                 <td>
-                                    <button onClick={() => triggerEditMovie(m)} className="control-btn btn-edit-sm">Sửa</button>
-                                    <button onClick={() => deleteMovieObj(m.movieId)} className="control-btn btn-delete-sm">Xóa</button>
+                                    <div className="mvtab-action-group">
+                                        <button onClick={() => triggerEditMovie(m)} className="mvtab-action-btn edit">Sửa</button>
+                                        <button onClick={() => deleteMovieObj(m.movieId)} className="mvtab-action-btn delete">Xóa</button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

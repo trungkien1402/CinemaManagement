@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/seats")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // ĐÃ SỬA: Bổ sung CORS để cho phép ReactJS Client gọi API sơ đồ ghế thuận lợi
+@CrossOrigin(origins = "*")
 public class SeatController {
 
     private final SeatService seatService;
@@ -17,7 +17,6 @@ public class SeatController {
     // =========================================================================
     // API LẤY TẤT CẢ GHẾ VẬT LÝ THEO MÃ PHÒNG (Cấu hình hệ thống)
     // =========================================================================
-    // URL: GET http://localhost:8080/api/seats/room/{roomId}
     @GetMapping("/room/{roomId}")
     public ResponseEntity<?> getSeatsByRoom(@PathVariable String roomId) {
         try {
@@ -31,15 +30,12 @@ public class SeatController {
     // =========================================================================
     // API LẤY TRẠNG THÁI KHÓA/MỞ GHẾ THEO SUẤT CHIẾU (Phục vụ khách đặt vé)
     // =========================================================================
-    // URL: GET http://localhost:8080/api/seats/showtime/{showtimeId}
     @GetMapping("/showtime/{showtimeId}")
-    // ĐÃ SỬA: Đổi kiểu dữ liệu từ String sang Long showtimeId để sửa dứt điểm lỗi biên dịch ứng dụng
     public ResponseEntity<?> getSeatsByShowtime(@PathVariable String showtimeId) {
         try {
-            if (showtimeId == null) {
+            if (showtimeId == null || showtimeId.trim().isEmpty()) {
                 return ResponseEntity.badRequest().body("Mã suất chiếu không hợp lệ!");
             }
-            // Truyền biến Long an toàn vào tầng Service đã được tối ưu hóa ở bước trước
             return ResponseEntity.ok(seatService.getSeatsStatusByShowtime(showtimeId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

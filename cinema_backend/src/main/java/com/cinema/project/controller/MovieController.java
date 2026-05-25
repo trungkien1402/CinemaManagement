@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // ĐÃ SỬA: Bổ sung CORS đảm bảo Client ReactJS gọi API không bị chặn
+@CrossOrigin(origins = "*")
 public class MovieController {
 
     private final MovieService movieService;
@@ -21,7 +21,6 @@ public class MovieController {
     // =========================================================================
     // CLIENT API - LẤY DANH SÁCH PHIM RA TRANG CHỦ (Đang chiếu / Sắp chiếu)
     // =========================================================================
-    // URL: GET http://localhost:8080/api/movies?status=2 (2: Đang chiếu, 1: Sắp chiếu)
     @GetMapping
     public ResponseEntity<?> getAllMovies(
             @RequestParam(required = false) Integer status
@@ -31,7 +30,6 @@ public class MovieController {
                     ? movieService.getMoviesByStatus(status)
                     : movieService.getAllMovies();
 
-            // Trả về cấu trúc bọc dữ liệu chuẩn MovieResponse(success=true, listMovies=[...])
             return ResponseEntity.ok(new MovieResponse(true, list));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -40,9 +38,8 @@ public class MovieController {
     }
 
     // =========================================================================
-    // CLIENT API - XEM CHI TIẾT BỘ PHIM (Dùng khi click vào ảnh phim ở giao diện Client)
+    // CLIENT API - XEM CHI TIẾT BỘ PHIM
     // =========================================================================
-    // URL: GET http://localhost:8080/api/movies/{id}
     @GetMapping("/{id}")
     public ResponseEntity<?> getMovieById(@PathVariable Integer id) {
         try {
@@ -50,7 +47,6 @@ public class MovieController {
                 return ResponseEntity.badRequest().body("Mã định danh phim không hợp lệ!");
             }
 
-            // Chuyển đổi an toàn kiểu dữ liệu từ Integer sang Long trước khi đẩy xuống tầng Service xử lý database
             Long idInLongFormat = id.longValue();
 
             return movieService.getMovieById(idInLongFormat)
@@ -62,7 +58,4 @@ public class MovieController {
                     .body("Lỗi hệ thống khi tải chi tiết phim: " + e.getMessage());
         }
     }
-
-    // 💡 ĐÃ LOẠI BỎ: Hàm getAllMoviesForAdmin() từng trùng lặp URL tại đây.
-    // Toàn bộ luồng dữ liệu Admin sẽ được điều phối độc lập qua file AdminMovieController.java giúp code sạch và dễ bảo trì.
 }

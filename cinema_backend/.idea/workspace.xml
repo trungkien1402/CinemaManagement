@@ -5,27 +5,211 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c65d965e-7968-4d2e-8378-4f66bdc0a535" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/VoucherController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/AdminBookingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/AdminCinemaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/AdminMovieService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/VoucherService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminBookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminBookingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminCinemaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminCinemaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminMovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/AdminMovieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/BookingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/MovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/MovieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/SeatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/SeatController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/ShowtimeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/ShowtimeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Ticket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/TicketRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Voucher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/Voucher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/payload/request/RoomCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/payload/request/RoomCreationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/VoucherRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/repositories/VoucherRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/BookingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/MovieService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/MovieService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/SeatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/SeatService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/ShowtimeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/service/ShowtimeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/cinema/project/CinemaBackendApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/cinema/project/CinemaBackendApplicationTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminBookingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminBookingController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminCinemaController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/AdminCinemaController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/ShowtimeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/ShowtimeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Movie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Movie.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Ticket.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Ticket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/TicketRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Room.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Room.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Voucher.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/Voucher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/RoomCreationRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/payload/request/RoomCreationRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/VoucherRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/repositories/VoucherRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-21T14-25-50_263.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-21T14-28-33_891.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-21T14-29-47_880.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T11-36-48_737.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T11-37-41_550.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T11-49-18_851.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T12-29-44_153.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T12-30-26_495.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T13-17-05_336.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T13-36-39_541-jvmRun1.dump" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T13-36-39_541-jvmRun1.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-17-05_288.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-26-43_303.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-28-12_342.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-37-47_074.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-37-59_904.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-38-25_080.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-38-35_713.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-40-50_959.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-46-17_216.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-46-25_031.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-48-46_574.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-49-13_217.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T14-49-51_040.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T15-13-55_419.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T15-28-54_050.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T15-34-22_434.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T15-37-50_362.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T15-47-17_823.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T16-26-49_937.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T16-40-17_765.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T16-41-16_772.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T16-54-36_450.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-00-12_357.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-01-19_882.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-16-37_259.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-18-39_978.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-19-31_300.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-20-16_482.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-22-39_301.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-24-31_977.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-25-18_862.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-26-25_648.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-29-35_830.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-31-38_807.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-33-09_879.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-34-06_116.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-36-06_822.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-37-12_968.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-38-07_822.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-38-45_688.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T17-38-55_624.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-00-22_934.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-23-38_465.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-24-23_608.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-24-35_396.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-24-48_284.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-25-27_523.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-25-43_322.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-26-08_050.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-26-36_401.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-27-16_949.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-27-57_978.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-39-36_969.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-40-18_170.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-42-46_676.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T18-44-15_605.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-12-41_011.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-14-01_001.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-14-23_111.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-15-06_685.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-22-02_785.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-36-05_291.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-36-50_999.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-38-35_353.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-39-25_060.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-43-26_561.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-46-38_605.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T19-47-25_824.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T20-44-14_276.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T20-44-45_119.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T20-47-12_455.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T20-48-06_054.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-19-14_753.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-20-23_383.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-21-49_256.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-22-01_883.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-22-49_062.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-26-32_076.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-27-18_656.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-22T21-29-47_056.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T07-55-00_853.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-05-21_305.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-08-05_468.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-08-14_330.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-09-24_802.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-10-41_550.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-13-42_847.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-16-22_047.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-17-44_710.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-18-57_753.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-20-35_430.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T08-21-31_722.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T12-00-07_349.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T12-03-26_880.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T21-07-45_827.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T21-17-38_465.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T21-20-30_693.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T21-21-14_598.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T21-48-30_940.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T21-49-02_943.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T21-50-34_717.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T22-44-03_670.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-23T22-44-45_864.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T00-22-39_179.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T10-46-51_498.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T10-51-49_091.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T10-53-52_338.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T10-54-37_335.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T10-54-47_428.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T10-56-48_702.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-02-16_818.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-07-00_600.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-08-08_765.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-20-57_074.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-23-50_496.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-26-28_451.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-44-45_046.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-45-53_390.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-47-20_265.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-53-04_179.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-55-12_872.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-58-49_118.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T11-59-53_611.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-05-00_390.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-06-42_272.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-07-06_900.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-16-59_415.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-17-11_499.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-21-37_824.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-22-04_295.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-22-35_985.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-23-02_759.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-23-37_708.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-24-37_264.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-25-07_990.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-34-21_323.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-36-01_853.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T12-36-04_678.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T14-37-50_695.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T14-40-29_822.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T14-42-47_846.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T14-52-37_957.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-05-24T14-53-45_208.dumpstream" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.cinema.project.CinemaBackendApplicationTests.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.cinema.project.CinemaBackendApplicationTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/cinema/project/CinemaBackendApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/cinema/project/CinemaBackendApplicationTests.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/AnalyticsTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/AnalyticsTab.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/BookingsTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/BookingsTab.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/MoviesTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/MoviesTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/QrcodeCheckinTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/QrcodeCheckinTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/ShowtimesTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/ShowtimesTab.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/TheatersTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/TheatersTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/VouchersTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/VouchersTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/payment/PaymentSuccess.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/payment/PaymentSuccess.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/seat/SeatSelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/seat/SeatSelection.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/Admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/Admin.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/MovieCard.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/MovieCard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/style/Seat.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/style/Seat.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ticket/BookingHistory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ticket/BookingHistory.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +371,8 @@
       <workItem from="1779545197743" duration="2251000" />
       <workItem from="1779556514339" duration="1040000" />
       <workItem from="1779594044599" duration="6817000" />
-      <workItem from="1779608196040" duration="844000" />
+      <workItem from="1779608196040" duration="15362000" />
+      <workItem from="1779680868680" duration="7246000" />
     </task>
     <servers />
   </component>

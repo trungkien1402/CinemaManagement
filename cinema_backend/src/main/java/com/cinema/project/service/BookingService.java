@@ -33,25 +33,25 @@ public class BookingService {
     private final SeatRepository seatRepository;
     private final JavaMailSender mailSender;
 
+    // =========================================================================
+    // CODE ĐẶT VÉ CHÍNH (Đã được giữ nguyên logic cốt lõi của bạn)
+    // =========================================================================
     @Transactional
     public List<Ticket> processBooking(BookingRequest request) {
 
-        // tìm user
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy User"));
 
-        // tìm suất chiếu
         Showtime showtime = showtimeRepository.findById(request.getShowtimeId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Suất chiếu"));
 
         List<Ticket> savedTickets = new ArrayList<>();
 
-        // duyệt từng ghế
         for (String seatId : request.getSeatIds()) {
             Seat seat = seatRepository.findById(seatId)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy Ghế"));
 
-            // kiểm tra ghế đã được đặt chưa
+            // Kiểm tra trùng ghế song song (Bảo vệ dữ liệu thời gian thực)
             boolean exists = ticketRepository.existsByShowtimeAndSeat(showtime, seat);
             if (exists) {
                 throw new RuntimeException("Ghế " + seat.getSeatNumber() + " đã được đặt!");
@@ -73,7 +73,7 @@ public class BookingService {
             savedTickets.add(ticketRepository.save(ticket));
         }
 
-        // Tự động gửi Email kèm mã QR sau khi đặt thành công
+        // Tự động gửi Email kèm mã QR
         try {
             if (user.getEmail() != null && !user.getEmail().isEmpty()) {
                 sendTicketEmailWithQR(user.getEmail(), savedTickets, showtime);
@@ -86,9 +86,26 @@ public class BookingService {
         return savedTickets;
     }
 
+    // =========================================================================
+    // CÁC HÀM ĐƯỢC CHUYỂN TỪ CONTROLLER VỀ (Đúng chuẩn kiến trúc)
+    // =========================================================================
+
+    // Lấy danh sách ID ghế đã khóa theo suất chiếu
+    public List<String> getBookedSeats(String showtimeId) {
+        return ticketRepository.findBookedSeatIdsByShowtime(showtimeId);
+    }
+
+    // Lấy lịch sử đặt vé của một khách hàng
+    public List<Ticket> getBookingHistory(String userId) {
+        return ticketRepository.findByUserId(userId);
+    }
+
+    // =========================================================================
+    // HÀM PHỤ TRỢ (PRIVATE HELPERS) - CHỈ DÙNG NỘI BỘ TRONG SERVICE
+    // =========================================================================
+
     private void sendTicketEmailWithQR(String toEmail, List<Ticket> tickets, Showtime showtime) throws Exception {
         MimeMessage message = mailSender.createMimeMessage();
-        // multipart = true để cho phép đính kèm file/hình ảnh
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         helper.setTo(toEmail);
@@ -119,10 +136,8 @@ public class BookingService {
         }
         qrContentText.append("Trạng thái: ĐÃ THANH TOÁN\nTổng tiền: ").append(String.format("%,.0f", grandTotal)).append(" VNĐ");
 
-        // 1. Tạo mảng Byte chứa dữ liệu ảnh QR bằng hàm phụ bên dưới (Kích thước ảnh 250x250 px)
         byte[] qrCodeImage = generateQRCodeImage(qrContentText.toString(), 250, 250);
 
-        // 2. Thiết lập giao diện HTML cho Mail, thêm thẻ <img src='cid:qrCodeImageInline' /> tại nơi muốn hiển thị QR
         String htmlBody = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>"
                 + "  <h2 style='color: #28a745; text-align: center;'>🎉 ĐẶT VÉ THÀNH CÔNG! 🎉</h2>"
                 + "  <p>Chào bạn, thông tin đặt vé xem phim của bạn đã được xác nhận thành công trên hệ thống:</p>"
@@ -143,14 +158,11 @@ public class BookingService {
                 + "</div>";
 
         helper.setText(htmlBody, true);
-
-        // 3. Thực hiện tiêm dữ liệu ảnh QR thô vào mã định danh 'qrCodeImageInline' đã đặt trong thẻ <img> phía trên
         helper.addInline("qrCodeImageInline", new ByteArrayResource(qrCodeImage), "image/png");
 
         mailSender.send(message);
     }
 
-    // Hàm phụ sử dụng ZXing để vẽ luồng dữ liệu byte thành hình ảnh QR dạng PNG
     private byte[] generateQRCodeImage(String text, int width, int height) throws Exception {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);

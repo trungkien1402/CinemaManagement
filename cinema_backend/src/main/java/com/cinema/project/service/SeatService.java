@@ -21,35 +21,36 @@ public class SeatService {
     private final TicketRepository ticketRepository;
     private final ShowtimeRepository showtimeRepository;
 
+    // 1. Lấy tất cả ghế vật lý theo mã phòng (Cấu hình Admin)
     public List<Seat> getSeatsByRoom(String roomId) {
         return seatRepository.findByRoom_RoomId(roomId);
     }
 
-    // ĐÃ SỬA: Đổi tham số đầu vào từ String sang Long showtimeId để đồng bộ với toàn hệ thống
+    // 2. Lấy trạng thái khóa/mở ghế theo suất chiếu phục vụ Client đặt vé
     public List<Map<String, Object>> getSeatsStatusByShowtime(String showtimeId) {
 
-        // 1. Tìm thông tin suất chiếu xem thuộc phòng nào
-        // Lưu ý: Nếu showtimeRepository.findById nhận vào String, ta dùng showtimeId.toString() tại đây
-        Showtime showtime = showtimeRepository.findById(showtimeId.toString())
+        // Bước 1: Tìm thông tin suất chiếu để xác định phòng chiếu
+        Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy suất chiếu với ID: " + showtimeId));
 
         String roomId = showtime.getRoom().getRoomId();
 
-        // 2. Lấy toàn bộ ghế vật lý cấu hình sẵn của phòng đó lên từ Database
+        // Bước 2: Lấy toàn bộ ghế vật lý của phòng đó lên
         List<Seat> allSeats = seatRepository.findByRoom_RoomId(roomId);
 
-        // 3. Khớp hoàn hảo với TicketRepository mới (Truyền vào Long showtimeId)
+        // Bước 3: Lấy danh sách ID ghế đã có vé đặt thành công cho suất chiếu này
         List<String> bookedSeatIds = ticketRepository.findBookedSeatIdsByShowtime(showtimeId);
 
-        // 4. ĐỒNG BỘ & TỐI ƯU: Sử dụng Stream API thay cho vòng lặp for truyền thống để tạo cấu trúc JSON
+        // Bước 4: Chuyển đổi dữ liệu sang dạng Map (JSON) để trả về Frontend
         return allSeats.stream().map(seat -> {
             Map<String, Object> seatMap = new HashMap<>();
             seatMap.put("seatId", seat.getSeatId());
             seatMap.put("seatNumber", seat.getSeatNumber());
             seatMap.put("seatType", seat.getSeatType());
 
-            // Nếu mã ID ghế nằm trong danh sách vé đã thanh toán (COMPLETED), đánh dấu true để Frontend khóa ghế
-            // Ngoài ra, kiểm tra thêm nếu ghế gốc bị Admin đánh dấu bảo trì (seat.getIsOccupied() == true) thì cũng khóa luôn
+            // LOGIC KHÓA GHẾ: Ghế bị khóa (true) nếu:
+            // - Đã nằm trong danh sách ghế đã đặt thành công (bookedSeatIds)
+            // - HOẶC ghế đó bị admin đánh dấu bảo trì/hỏng (seat.getIsOccupied() == true)
             boolean isLocked = (seat.getSeatId() != null && bookedSeatIds.contains(seat.getSeatId()))
                     || Boolean.TRUE.equals(seat.getIsOccupied());
 

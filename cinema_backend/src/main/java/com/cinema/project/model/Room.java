@@ -22,7 +22,7 @@ public class Room {
     private Theater theater;
 
     @Column(name = "room_number")
-    private Integer roomNumber;
+    private String roomNumber;
 
     @Column(name = "total_seats")
     private Integer totalSeats;
