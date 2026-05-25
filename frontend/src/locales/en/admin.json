@@ -13,16 +13,22 @@
       },
       "analyticsTab": {
         "title": "Financial Analytics Report",
-        "totalRevenue": "Total System Revenue",
-        "totalTickets": "Total Tickets Sold",
+        "totalRevenue": "TOTAL SYSTEM REVENUE",
+        "totalTickets": "TOTAL TICKETS SOLD",
         "ticketUnit": "Tickets",
         "monthlyChartTitle": "Monthly Revenue Statistics (Year 2026)",
         "movieChartTitle": "Revenue Market Share by Movie",
-        "emptyText": "No movie data recorded yet"
+        "emptyText": "No movie data recorded yet",
+        "revenueLabel": "Revenue (VND)",
+        "registeredUsers": "REGISTERED USERS",
+        "REGISTEREDUSERS": "REGISTERED USERS",
+        "totalMoviesManaged": "TOTAL MOVIES MANAGED",
+        "TOTALMOVIESMANAGED": "TOTAL MOVIES MANAGED"
       },
       "bookingsTab": {
         "title": "System-Wide Ticket Booking Transaction Logs",
         "anonymous": "Anonymous",
+        "empty": "No ticket booking transaction logs found!",
         "table": {
           "ticketId": "Invoice Code",
           "username": "Account",
@@ -74,6 +80,7 @@
           "title": "Title",
           "format": "Format",
           "age": "Rating",
+          "status": "Status",
           "actions": "Actions",
           "editBtn": "Edit",
           "deleteBtn": "Delete"
@@ -119,6 +126,7 @@
       },
       "theatersTab": {
         "title": "Cinema Infrastructure System",
+        "addTheaterTitle": "Add New Cinema Complex to System",
         "leftPanel": {
           "title": "Select Cinema Complex Location",
           "selectTheaterPlaceholder": "-- Select Cinema from list --",
@@ -154,6 +162,14 @@
       "vouchersTab": {
         "title": "Voucher Promotional Program Structure",
         "form": {
+          "labels": {
+            "voucherCode": "Promo Code",
+            "discountType": "Discount Type",
+            "discountPercent": "Discount Rate (%)",
+            "maxUses": "Maximum Uses",
+            "expiryDate": "Expiry Date",
+            "discountValue": "Discount Value"
+          },
           "placeholders": {
             "voucherCode": "Promo Code (e.g., MOVIE2026)",
             "discountPercent": "Discount Rate (%)"
@@ -163,6 +179,9 @@
           }
         },
         "table": {
+          "empty": "No gift promo vouchers issued in the system yet!",
+          "maxUses": "Maximum Allowed Uses",
+          "MAXUSES": "MAXIMUM ALLOWED USES",
           "voucherCode": "Voucher Code",
           "discountPercent": "Discount Percentage",
           "expiryDate": "Expiry Date",
