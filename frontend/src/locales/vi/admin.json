@@ -21,9 +21,10 @@
         "emptyText": "Chưa ghi nhận dữ liệu phim nào",
         "revenueLabel": "Doanh thu (VND)",
         "registeredUsers": "NGƯỜI DÙNG ĐĂNG KÝ",
-        "REGISTEREDUSERS": "NGƯỜI DÙNG ĐĂNG KÝ",
         "totalMoviesManaged": "TỔNG SỐ PHIM QUẢN LÝ",
-        "TOTALMOVIESMANAGED": "TỔNG SỐ PHIM QUẢN LÝ"
+        "movieUnit": "Phim",
+        "userUnit": "Thành viên"
+        
       },
       "bookingsTab": {
         "title": "Nhật ký giao dịch đặt vé toàn hệ thống",
@@ -49,7 +50,8 @@
             "author": "Đạo diễn / Tác giả",
             "image": "URL Ảnh Poster Phim",
             "trailerUrl": "URL Video Trailer YouTube",
-            "description": "Tóm tắt nội dung phim..."
+            "description": "Tóm tắt nội dung phim...",
+            "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)"
           },
           "options": {
             "formats": {
@@ -170,9 +172,14 @@
             "expiryDate": "Ngày Hết Hạn",
             "discountValue": "Mức Giảm Giá"
           },
+          "options": {
+            "percent": "Giảm theo phần trăm (%)",
+            "cash": "Giảm theo số tiền (VND)"
+          },
           "placeholders": {
             "voucherCode": "Mã khuyến mãi (Ví dụ: MOVIE2026)",
-            "discountPercent": "Tỷ lệ giảm giá (%)"
+            "discountPercent": "Tỷ lệ giảm giá (%)",
+            "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)"
           },
           "buttons": {
             "submit": "Phát hành mã giảm giá"

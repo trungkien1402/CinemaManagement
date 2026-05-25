@@ -35,6 +35,12 @@
       <assistant-state connection-id="e25808bc-2a49-49c3-b8d3-73fbb55d4029" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
         <tools />
       </assistant-state>
+      <assistant-state connection-id="c96b4e13-b1d6-4551-99e5-11f401e10926" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
+        <tools />
+      </assistant-state>
+      <assistant-state connection-id="c96b4e13-b1d6-4551-99e5-11f401e10926" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
+        <tools />
+      </assistant-state>
     </assistants>
     <selection-state>
       <model-selection />
@@ -48,7 +54,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="e25808bc-2a49-49c3-b8d3-73fbb55d4029">
-      <console name="Connection" type="STANDARD" schema="postgres" session="Main"><![CDATA[SELECT table_name, column_name, data_type, character_maximum_length AS length
+      <console name="Connection" type="STANDARD" schema="public" session="Main"><![CDATA[SELECT table_name, column_name, data_type, character_maximum_length AS length
 FROM information_schema.columns 
 WHERE table_schema = 'public'
 ORDER BY table_name, ordinal_position;
@@ -56,19 +62,156 @@ SELECT conname AS constraint_name, contype AS type, enr.relname AS table_name
 FROM pg_constraint c
 JOIN pg_class enr ON c.conrelid = enr.oid
 WHERE c.connamespace = 'public'::regnamespace
-AND enr.relname IN ('movies', 'showtimes', 'rooms', 'seats', 'tickets', 'reports', 'users');]]></console>
+AND enr.relname IN ('movies', 'showtimes', 'rooms', 'seats', 'tickets', 'reports', 'users');
+
+-- =========================================================================
+-- KHỞI TẠO CẤU TRÚC BẢNG (Chạy toàn bộ khối này trước)
+-- =========================================================================
+
+CREATE TABLE users (
+    user_id BIGSERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) UNIQUE NOT NULL,
+    gender VARCHAR(10),
+    role VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE movies (
+    movie_id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    trailer_url VARCHAR(500),
+    movie_format VARCHAR(50),
+    status INT,
+    duration INT,
+    genre VARCHAR(100),
+    age_rating VARCHAR(10),
+    release_date DATE,
+    image VARCHAR(500),
+    author VARCHAR(100)
+);
+
+CREATE TABLE theaters (
+    theater_id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100),
+    city VARCHAR(50),
+    location VARCHAR(255),
+    address VARCHAR(500),
+    phone VARCHAR(20),
+    operating_hours VARCHAR(100)
+);
+
+CREATE TABLE rooms (
+    room_id VARCHAR(10) PRIMARY KEY,
+    theater_id VARCHAR(20) REFERENCES theaters(theater_id),
+    room_number INT,
+    total_seats INT
+);
+
+CREATE TABLE seats (
+    seat_id VARCHAR(10) PRIMARY KEY,
+    room_id VARCHAR(10) REFERENCES rooms(room_id),
+    seat_number VARCHAR(10),
+    seat_type VARCHAR(20)
+);
+
+CREATE TABLE showtimes (
+    showtime_id VARCHAR(50) PRIMARY KEY, -- Đã tăng kích thước
+    movie_id BIGINT REFERENCES movies(movie_id),
+    room_id VARCHAR(10) REFERENCES rooms(room_id),
+    show_date DATE,
+    start_time TIME,
+    ticket_price NUMERIC
+);
+
+CREATE TABLE tickets (
+    ticket_id VARCHAR(50) PRIMARY KEY, -- Đã tăng kích thước
+    showtime_id VARCHAR(50) REFERENCES showtimes(showtime_id),
+    user_id BIGINT REFERENCES users(user_id),
+    total_price NUMERIC,
+    status VARCHAR(20),
+    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE booking_seats (
+    id BIGSERIAL PRIMARY KEY,
+    booking_id VARCHAR(50) REFERENCES tickets(ticket_id),
+    seat_id VARCHAR(10) REFERENCES seats(seat_id)
+);
+
+CREATE TABLE payments (
+    payment_id BIGSERIAL PRIMARY KEY,
+    booking_id VARCHAR(50) REFERENCES tickets(ticket_id),
+    amount NUMERIC,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    payment_method VARCHAR(50),
+    transaction_id VARCHAR(100)
+);
+
+CREATE TABLE vouchers (
+    voucher_code VARCHAR(50) PRIMARY KEY,
+    discount_percent NUMERIC,
+    expiry_date DATE,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE reports (
+    report_id VARCHAR(50) PRIMARY KEY,
+    theater_id VARCHAR(20) REFERENCES theaters(theater_id),
+    movie_id BIGINT REFERENCES movies(movie_id),
+    report_date DATE,
+    total_revenue NUMERIC
+);
+
+-- =========================================================================
+-- BƠM DỮ LIỆU CƠ BẢN (Users, Theaters, Movies)
+-- =========================================================================
+
+-- 1. USERS
+INSERT INTO users (email, gender, password, phone, role, username) VALUES 
+('admin.cinema@gmail.com', 'Nam', '$2a$10$r8V.B4Z/q...', '0987654321', 'ROLE_ADMIN', 'Admin Manager'),
+('minhtrien@gmail.com', 'Nam', '123456', '0387113240', 'ROLE_USER', 'Minh Triển'), 
+('nguyenvandung@gmail.com', 'Nam', '123456', '0912345678', 'ROLE_USER', 'Văn Dũng'),
+('khachhang1@gmail.com', 'Nữ', '123456', '0909123456', 'ROLE_USER', 'Trần Thu Hà');
+
+-- 2. THEATERS (Full thông tin theo chuẩn)
+INSERT INTO theaters (theater_id, name, city, location, address, phone, operating_hours) VALUES 
+('T01', 'Vincom Đồng Khởi', 'Hồ Chí Minh', '72 Lê Thánh Tôn, Quận 1', '72 Lê Thánh Tôn, Phường Bến Nghé, Quận 1, TP. HCM', '1900 1234', '8:00 - 23:30 hàng ngày'),
+('T02', 'Landmark 81', 'Hồ Chí Minh', '208 Nguyễn Hữu Cảnh, Bình Thạnh', 'Vinhomes Central Park, 208 Nguyễn Hữu Cảnh, Bình Thạnh, TP. HCM', '1900 5678', '8:00 - 23:30 hàng ngày'),
+('T03', 'Thảo Điền', 'Hồ Chí Minh', '159 Xa lộ Hà Nội, Quận 2', 'Tầng 6, Thảo Điền Pearl, 12 Quốc Hương, Quận 2, TP. Thủ Đức', '1900 9999', '9:00 - 23:00 hàng ngày'),
+('T04', 'Times City Hà Nội', 'Hà Nội', '458 Minh Khai, Hai Bà Trưng', 'Tầng B1, Vincom Mega Mall Times City, 458 Minh Khai, Hà Nội', '1900 8888', '8:30 - 23:30 hàng ngày');
+
+-- 3. MOVIES (12 bộ bom tấn chuẩn)
+INSERT INTO movies (title, description, trailer_url, movie_format, status, duration, genre, age_rating, release_date, image, author) VALUES 
+('Deadpool & Wolverine', 'Wade Wilson đối đầu với các biến cố đa vũ trụ...', 'https://youtube.com/watch?v=deadpool_wolverine', '2D', 1, 127, 'Hành động, Hài', '18+', '2024-07-26', 'https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg', 'Shawn Levy'),
+('Inside Out 2', 'Cô bé Riley chính thức bước vào độ tuổi dậy thì...', 'https://youtube.com/watch?v=inside_out_2', '2D', 1, 96, 'Hoạt hình', 'P', '2024-06-14', 'https://image.tmdb.org/t/p/w500/vpnVM9B6m9baVAwaddHGf23Yw0R.jpg', 'Kelsey Mann'),
+('Dune: Part Two', 'Paul Atreides đồng hành cùng tộc người Fremen...', 'https://youtube.com/watch?v=dune_2', 'IMAX', 1, 166, 'Hành động', '16+', '2024-03-01', 'https://image.tmdb.org/t/p/w500/6MVXnjN8zYCee4oQ9dtcLNhGrN9.jpg', 'Denis Villeneuve'),
+('Oppenheimer', 'Câu chuyện chấn động về J. Robert Oppenheimer...', 'https://youtube.com/watch?v=oppenheimer', '2D', 1, 180, 'Tiểu sử', '18+', '2023-07-21', 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg', 'Christopher Nolan'),
+('Spider-Man: No Way Home', 'Danh tính bị bại lộ, Peter Parker nhờ đến bùa chú...', 'https://youtube.com/watch?v=spiderman_nwh', '2D', 1, 148, 'Hành động', '13+', '2021-12-17', 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg', 'Jon Watts'),
+('Avatar: The Way of Water', 'Hơn một thập kỷ sau, Jake Sully và Neytiri...', 'https://youtube.com/watch?v=avatar_2', '3D', 2, 192, 'Hành động', '13+', '2022-12-16', 'https://image.tmdb.org/t/p/w500/ngl2FKBlU4fhbdsrtdom9LVLBXw.jpg', 'James Cameron'),
+('Kung Fu Panda 4', 'Po chuẩn bị chuyển giao ngôi vị Thần Long...', 'https://youtube.com/watch?v=kungfu_panda_4', '2D', 1, 94, 'Hoạt hình', 'P', '2024-03-08', 'https://image.tmdb.org/t/p/w500/kDp1vUBiTHpYvYPMZ3k2mI1fOa5.jpg', 'Mike Mitchell'),
+('Despicable Me 4', 'Gia đình Gru chào đón thành viên mới siêu quậy...', 'https://youtube.com/watch?v=despicable_me_4', '2D', 1, 95, 'Hoạt hình', 'P', '2024-07-03', 'https://image.tmdb.org/t/p/w500/w9kR8qbmQ0w676bO86p6g6or69A.jpg', 'Chris Renaud'),
+('Avengers: Endgame', 'Sau cái búng tay hủy diệt của Thanos...', 'https://youtube.com/watch?v=avengers_endgame', '3D', 2, 181, 'Hành động', '13+', '2019-04-26', 'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg', 'Russo Brothers'),
+('Avengers: Infinity War', 'Biệt đội siêu anh hùng ngăn chặn Thanos...', 'https://youtube.com/watch?v=infinity_war', '3D', 2, 149, 'Hành động', '13+', '2018-04-27', 'https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg', 'Russo Brothers'),
+('The Avengers', 'Biệt đội siêu anh hùng đầu tiên được tập hợp...', 'https://youtube.com/watch?v=the_avengers', '2D', 1, 143, 'Hành động', '13+', '2012-05-04', 'https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg', 'Joss Whedon'),
+('Bad Boys: Ride or Die', 'Cặp đôi bài trùng cảnh sát sành điệu vùng Miami...', 'https://youtube.com/watch?v=bad_boys_4', '2D', 2, 115, 'Hành động', '18+', '2024-06-07', 'https://image.tmdb.org/t/p/w500/oGythE98MYleE6mZlGs5oBGkux1.jpg', 'Adil El Arbi');
+
+-- (Còn lại bảng Rooms, Seats, Showtimes thì do ông code chức năng tự sinh ghế trong Java Admin rồi nên không cần bơm cứng dữ liệu nữa nhé!)]]></console>
     </connection>
     <connection id="b29cbf28-d211-4a3f-9e1a-7e6da246b5fe">
       <console name="Connection 1" type="STANDARD" schema="postgres" session="Main" />
+    </connection>
+    <connection id="c96b4e13-b1d6-4551-99e5-11f401e10926">
+      <console name="Connection 2" type="STANDARD" schema="public" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="e25808bc-2a49-49c3-b8d3-73fbb55d4029" object-ref="consoles/Connection" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabasePrerequisiteManager">
     <prerequisites />
@@ -76,6 +219,7 @@ AND enr.relname IN ('movies', 'showtimes', 'rooms', 'seats', 'tickets', 'reports
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="e25808bc-2a49-49c3-b8d3-73fbb55d4029" />
     <connection id="b29cbf28-d211-4a3f-9e1a-7e6da246b5fe" />
+    <connection id="c96b4e13-b1d6-4551-99e5-11f401e10926" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="e25808bc-2a49-49c3-b8d3-73fbb55d4029" dataset="public.seats" active-filter-id="bd8aea36-16d4-4be7-b0d1-707f6c427bee">
@@ -245,6 +389,127 @@ AND enr.relname IN ('movies', 'showtimes', 'rooms', 'seats', 'tickets', 'reports
           <azure-token-client-id value="" />
           <azure-token-client-certificate-file value="" />
           <session-user value="" />
+        </database>
+        <properties>
+          <auto-commit value="false" />
+        </properties>
+        <ssh-settings>
+          <active value="false" />
+          <proxy-host value="" />
+          <proxy-port value="22" />
+          <proxy-user value="" />
+          <auth-type value="PASSWORD" />
+          <key-file value="" />
+        </ssh-settings>
+        <ssl-settings>
+          <active value="false" />
+          <certificate-authority-file value="" />
+          <client-certificate-file value="" />
+          <client-key-file value="" />
+        </ssl-settings>
+        <details>
+          <charset value="UTF-8" />
+          <session-management value="true" />
+          <ddl-file-binding value="true" />
+          <database-logging value="true" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
+          <restore-workspace-deep value="false" />
+          <environment-type value="default" />
+          <connectivity-timeout value="30" />
+          <idle-time-to-disconnect value="30" />
+          <idle-time-to-disconnect-pool value="5" />
+          <credential-expiry-time value="10" />
+          <max-connection-pool-size value="7" />
+          <alternative-statement-delimiter value="" />
+        </details>
+        <debugger>
+          <compile-dependencies value="true" />
+          <tcp-host-address value="" />
+          <tcp-port-from value="4000" />
+          <tcp-port-to value="4999" />
+          <jdwp-tunnel-type value="NONE" />
+          <debugger-type value="ASK" />
+          <reverse-ssh-tunnel>
+            <host value="" />
+            <port value="22" />
+            <bind-host value="127.0.0.1" />
+            <bind-port value="0" />
+            <auth-type value="PASSWORD" />
+            <user value="" />
+            <key-file value="" />
+          </reverse-ssh-tunnel>
+        </debugger>
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false" hide-audit-columns="false">
+          <object-filters />
+          <object-type-filter use-master-settings="true">
+            <object-type name="SCHEMA" enabled="true" />
+            <object-type name="USER" enabled="true" />
+            <object-type name="ROLE" enabled="true" />
+            <object-type name="PRIVILEGE" enabled="true" />
+            <object-type name="CHARSET" enabled="true" />
+            <object-type name="TABLE" enabled="true" />
+            <object-type name="VIEW" enabled="true" />
+            <object-type name="JSON_VIEW" enabled="true" />
+            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+            <object-type name="NESTED_TABLE" enabled="true" />
+            <object-type name="COLUMN" enabled="true" />
+            <object-type name="INDEX" enabled="true" />
+            <object-type name="CONSTRAINT" enabled="true" />
+            <object-type name="DATASET_TRIGGER" enabled="true" />
+            <object-type name="DATABASE_TRIGGER" enabled="true" />
+            <object-type name="SYNONYM" enabled="true" />
+            <object-type name="SEQUENCE" enabled="true" />
+            <object-type name="PROCEDURE" enabled="true" />
+            <object-type name="FUNCTION" enabled="true" />
+            <object-type name="PACKAGE" enabled="true" />
+            <object-type name="TYPE" enabled="true" />
+            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+            <object-type name="ARGUMENT" enabled="true" />
+            <object-type name="JAVA_CLASS" enabled="true" />
+            <object-type name="JAVA_FIELD" enabled="true" />
+            <object-type name="JAVA_METHOD" enabled="true" />
+            <object-type name="JAVA_RESOURCE" enabled="true" />
+            <object-type name="DIMENSION" enabled="true" />
+            <object-type name="CLUSTER" enabled="true" />
+            <object-type name="DBLINK" enabled="true" />
+            <object-type name="CREDENTIAL" enabled="true" />
+            <object-type name="AI_PROFILE" enabled="true" />
+            <object-type name="AI_MODEL" enabled="true" />
+          </object-type-filter>
+        </object-filters>
+      </connection>
+      <connection source-id="" id="c96b4e13-b1d6-4551-99e5-11f401e10926" active="true" signed="true">
+        <database>
+          <name value="Connection 2" />
+          <description value="" />
+          <database-type value="POSTGRES" />
+          <config-type value="BASIC" />
+          <database-version value="15.17" />
+          <driver-source value="BUNDLED" />
+          <driver-library value="" />
+          <driver value="" />
+          <url-type value="DATABASE" />
+          <host value="localhost" />
+          <port value="5440" />
+          <database value="cinema_management" />
+          <tns-folder value="" />
+          <tns-profile value="" />
+          <server-type value="" />
+          <protocol value="" />
+          <url-parameters />
+          <type value="USER" />
+          <user value="postgres" />
+          <token-type value="" />
+          <token-config-file value="" />
+          <token-profile value="" />
+          <adb-compartment-ocid value="" />
+          <adb-database-ocid value="" />
+          <azure-token-database-id-uri value="" />
+          <azure-token-tenant-id value="" />
+          <azure-token-client-id value="" />
+          <azure-token-client-certificate-file value="" />
+          <session-user value="postgres" />
         </database>
         <properties>
           <auto-commit value="false" />

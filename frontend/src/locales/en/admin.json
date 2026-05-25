@@ -21,9 +21,7 @@
         "emptyText": "No movie data recorded yet",
         "revenueLabel": "Revenue (VND)",
         "registeredUsers": "REGISTERED USERS",
-        "REGISTEREDUSERS": "REGISTERED USERS",
-        "totalMoviesManaged": "TOTAL MOVIES MANAGED",
-        "TOTALMOVIESMANAGED": "TOTAL MOVIES MANAGED"
+        "totalMoviesManaged": "TOTAL MOVIES MANAGED"
       },
       "bookingsTab": {
         "title": "System-Wide Ticket Booking Transaction Logs",
@@ -49,7 +47,8 @@
             "author": "Director / Author",
             "image": "Poster Image URL",
             "trailerUrl": "YouTube Trailer URL",
-            "description": "Plot Summary..."
+            "description": "Plot Summary...",
+            "maxUses": "Enter issue quantity (e.g., 100)"
           },
           "options": {
             "formats": {
@@ -170,9 +169,14 @@
             "expiryDate": "Expiry Date",
             "discountValue": "Discount Value"
           },
+          "options": {
+            "percent": "Percentage Off (%)",
+            "cash": "Fixed Amount (VND)"
+          },
           "placeholders": {
             "voucherCode": "Promo Code (e.g., MOVIE2026)",
-            "discountPercent": "Discount Rate (%)"
+            "discountPercent": "Discount Rate (%)",
+            "maxUses": "Enter issue quantity (e.g., 100)"
           },
           "buttons": {
             "submit": "Issue Gift Promo Code"
