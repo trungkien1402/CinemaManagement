@@ -6,12 +6,17 @@ import '../style/Navbar.css';
 import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
-    const { t } = useTranslation();
+    // 🛠️ FIX CHÍNH TẠI ĐÂY: Thêm i18n vào để không còn bị lỗi đen màn hình
+    const { t, i18n } = useTranslation(); 
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const dropdownRef = useRef(null);
+
+    // Xác định ngôn ngữ hiện tại để switch text nhanh
+    const isEn = i18n.language?.startsWith('en');
 
     // Xử lý hiệu ứng scroll để đổi nền Navbar
     useEffect(() => {
@@ -104,7 +109,7 @@ const Navbar = () => {
                             {showDropdown && (
                                 <div className="dropdown-menu">
                                     <div className="dropdown-header">
-                                        <p>{t('nav.dropdown.personalAccount') || "Tài khoản cá nhân"}</p>
+                                        <p>{t('nav.dropdown.personalAccount') || (isEn ? "Personal Account" : "Tài khoản cá nhân")}</p>
                                         <span>{user.email || 'Thành viên CinemaX'}</span>
                                     </div>
                                     <div className="dropdown-divider"></div>
@@ -114,27 +119,31 @@ const Navbar = () => {
                                         <>
                                             <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
                                                 <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i> 
-                                                <span style={{fontWeight: 'bold', color: '#ffc107'}}>{t('nav.dropdown.adminPage') || "Trang Quản Trị"}</span>
+                                                <span style={{fontWeight: 'bold', color: '#ffc107'}}>
+                                                    {t('nav.dropdown.adminPage') || (isEn ? "Admin Dashboard" : "Trang Quản Trị")}
+                                                </span>
                                             </Link>
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
 
-                                    {/* 💡 ĐÃ GỘP FIX CODE TẠI ĐÂY: Vừa check Role User, vừa dùng đa ngôn ngữ */}
+                                    {/* Khách hàng thông thường */}
                                     {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
                                         <>
-                                            <Link to="/profile" className="dropdown-item">
-                                                <i className="fa-regular fa-user"></i> {t('nav.dropdown.myProfile') || "Hồ sơ của tôi"}
+                                            <Link to="/ho-so" className="dropdown-item" onClick={() => setShowDropdown(false)}>
+                                                <i className="fa-regular fa-user"></i>{' '}
+                                                {isEn ? 'My Profile' : 'Hồ sơ của tôi'}
                                             </Link>
-                                            <Link to="/ve-da-dat" className="dropdown-item">
-                                                <i className="fa-solid fa-ticket"></i> {t('nav.dropdown.bookingHistory') || "Lịch sử đặt vé"}
+                                            <Link to="/ve-da-dat" className="dropdown-item" onClick={() => setShowDropdown(false)}>
+                                                <i className="fa-solid fa-ticket"></i>{' '}
+                                                {isEn ? 'Booking History' : 'Lịch sử đặt vé'}
                                             </Link>
                                         </>
                                     )}
                                     
                                     <div className="dropdown-divider"></div>
                                     <button className="dropdown-item logout" onClick={handleLogout}>
-                                        <i className="fa-solid fa-right-from-bracket"></i> {t('nav.dropdown.logout') || "Đăng xuất"}
+                                        <i className="fa-solid fa-right-from-bracket"></i> {t('nav.dropdown.logout') || (isEn ? "Logout" : "Đăng xuất")}
                                     </button>
                                 </div>
                             )}

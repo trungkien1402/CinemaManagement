@@ -36,4 +36,11 @@ public class User {
 
     @Column(name = "role", nullable = false, length = 20)
     private String role;
+
+    // 💡 ĐÃ THÊM 2 TRƯỜNG NÀY ĐỂ ĐỒNG BỘ VỚI FRONTEND VÀ HẾT ĐỎ CONTROLLER
+    @Column(name = "full_name", length = 100)
+    private String fullName;
+
+    @Column(name = "date_of_birth")
+    private String dateOfBirth;
 }

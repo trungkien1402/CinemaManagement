@@ -5,62 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c65d965e-7968-4d2e-8378-4f66bdc0a535" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../frontend/src/components/shared/LanguageSwitcher.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/i18n.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/en/admin.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/en/auth.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/en/detail.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/en/home.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/en/navbar.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/en/payment.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/en/theaters.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/vi/admin.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/vi/auth.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/vi/detail.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/vi/home.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/vi/navbar.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/vi/payment.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/locales/vi/theaters.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend/src/components/style/UserProfile.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend/src/components/user/UserProfile.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/cinema_backend-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/AdminDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/AnalyticsTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/AnalyticsTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/BookingsTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/BookingsTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/MoviesTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/MoviesTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/ProtectedRoute.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/ProtectedRoute.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/QrcodeCheckinTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/QrcodeCheckinTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/ShowtimesTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/ShowtimesTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/TheatersTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/TheatersTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/admin/VouchersTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/admin/VouchersTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/auth/AuthModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/auth/AuthModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/ComingSoon.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/ComingSoon.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/MovieSchedule.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/MovieSchedule.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/NewsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/NewsPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/NowShowing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/NowShowing.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/home/slider/HeroSlider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/home/slider/HeroSlider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/movie/MovieDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/movie/MovieDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/movie/MovieHero.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/movie/MovieHero.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/movie/MovieSchedule.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/movie/MovieSchedule.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/movie/MovieTrailer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/movie/MovieTrailer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/movie/ReviewSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/movie/ReviewSection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/payment/PaymentSuccess.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/payment/PaymentSuccess.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/seat/SeatSelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/seat/SeatSelection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/CinemaFilter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/CinemaFilter.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/DateFilter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/DateFilter.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/Footer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/GlobalBookingModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/GlobalBookingModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/MovieCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/MovieCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cinema/project/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/cinema/project/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/cinema/project/model/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/shared/SectionHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/shared/SectionHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/theater/Theaters.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/theater/Theaters.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ticket/BookingHistory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ticket/BookingHistory.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/hook/useVNPayPayment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/hook/useVNPayPayment.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/main.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,46 +60,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.CinemaBackendApplication.executor": "Run",
-    "Maven.cinema_backend [clean,install...].executor": "Run",
-    "Maven.cinema_backend [clean].executor": "Run",
-    "Maven.cinema_backend [compile].executor": "Run",
-    "Maven.cinema_backend [install,--non-recursive].executor": "Run",
-    "Maven.cinema_backend [install].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.CinemaBackendApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Merging main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/NGOC DANH/OneDrive/Desktop/CinemaManagement/cinema_backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.CinemaBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cinema_backend [clean,install...].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cinema_backend [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cinema_backend [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cinema_backend [install,--non-recursive].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cinema_backend [install].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CinemaBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/NGOC DANH/OneDrive/Desktop/CinemaManagement/cinema_backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java" />
@@ -225,6 +180,7 @@
       <workItem from="1779608196040" duration="15362000" />
       <workItem from="1779680868680" duration="7246000" />
       <workItem from="1779701667380" duration="1992000" />
+      <workItem from="1779704223877" duration="258000" />
     </task>
     <servers />
   </component>
