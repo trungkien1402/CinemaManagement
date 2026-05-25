@@ -23,6 +23,10 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import SeatSelection from './components/seat/SeatSelection';
 
 import ChatBox from './components/chatbox/ChatBox';
+import UserProfile from './components/user/UserProfile';
+
+
+
 
 
 // 💡 IMPORT TRANG CHI TIẾT PHIM MỚI VÀO ĐÂY
@@ -103,6 +107,10 @@ function App() {
 
           <Route path="/" element={<Home />} />
 
+          <Route
+            path="/ho-so"
+            element={<UserProfile />}
+          />
 
           <Route
             path="/dang-chieu"

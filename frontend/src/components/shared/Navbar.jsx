@@ -113,9 +113,9 @@ const Navbar = () => {
                                         </>
                                     )}
                                     {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
-                                        <Link to="/profile" className="dropdown-item">
-                                        <i className="fa-regular fa-user"></i> Hồ sơ của tôi
-                                         </Link>
+                                       <Link to="/ho-so" className="dropdown-item">
+                                         <i className="fa-regular fa-user"></i> Hồ sơ của tôi
+                                       </Link>
                                     )}
                                     {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
                                        <Link to="/ve-da-dat" className="dropdown-item">
