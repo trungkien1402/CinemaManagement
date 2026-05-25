@@ -1,0 +1,24 @@
+{
+  "payment": {
+    "status": {
+      "confirming": "Đang xác nhận kết quả thanh toán...",
+      "canceled": "Bạn đã hủy bỏ giao dịch thanh toán vé phim.",
+      "failed": "Giao dịch thất bại! Mã lỗi hệ thống: VNP_{{code}}",
+      "noPendingData": "Không tìm thấy thông tin vé phim lưu tạm (Có thể giao dịch đã được xử lý xong).",
+      "success": "Thanh toán thành công! Vé phim của bạn đã được khởi tạo hệ thống.",
+      "systemError": "Lỗi hệ thống trong quá trình khởi tạo dữ liệu vé!"
+    },
+    "buttons": {
+      "viewTicket": "Vào rạp xem vé",
+      "backHome": "Quay lại trang chủ"
+    },
+    "alerts": {
+      "loginRequired": "Vui lòng đăng nhập!",
+      "selectSeat": "Vui lòng chọn ít nhất 1 ghế!"
+    },
+    "errors": {
+      "invalidUrl": "Không nhận được paymentUrl hợp lệ từ Backend!",
+      "initFailed": "Khởi tạo giao dịch thanh toán thất bại!"
+    }
+  }
+}

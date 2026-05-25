@@ -1,0 +1,25 @@
+{
+  "theaters": {
+    "status": {
+      "loading": "Đang tải hệ thống rạp...",
+      "empty": "Hiện chưa có cụm rạp nào tại khu vực này."
+    },
+    "header": {
+      "title": "Hệ Thống Rạp",
+      "subtitle": "Hệ thống rạp chiếu phim hiện đại trên toàn quốc"
+    },
+    "filters": {
+      "allCities": "📍 -- Tất cả Tỉnh/Thành phố --"
+    },
+    "card": {
+      "fallbackAddress": "Đang cập nhật địa chỉ",
+      "fallbackPhone": "1900 xxxx",
+      "fallbackHours": "8:00 - 23:30 hàng ngày",
+      "amenities": "Tiện ích"
+    },
+    "buttons": {
+      "viewSchedule": "Xem Lịch Chiếu",
+      "directions": "Chỉ Đường"
+    }
+  }
+}

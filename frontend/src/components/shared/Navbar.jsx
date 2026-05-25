@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AuthModal from '../auth/AuthModal'; 
+import LanguageSwitcher from './LanguageSwitcher'; 
 import '../style/Navbar.css';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
+    const { t } = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -60,27 +63,31 @@ const Navbar = () => {
                 {/* Navigation Links */}
                 <div className="nav-menu">
                     <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Trang Chủ
+                        {t('nav.home') || "Trang Chủ"}
                     </NavLink>
                     <NavLink to="/dang-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Phim Đang Chiếu
+                        {t('nav.nowShowing') || "Phim Đang Chiếu"}
                     </NavLink>
                     <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Phim Sắp Chiếu
+                        {t('nav.comingSoon') || "Phim Sắp Chiếu"}
                     </NavLink>
                     <NavLink to="/lich-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Lịch Chiếu
+                        {t('nav.schedule') || "Lịch Chiếu"}
                     </NavLink>
                     <NavLink to="/rap" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Rạp
+                        {t('nav.theaters') || "Rạp"}
                     </NavLink>
                     <NavLink to="/tin-tuc" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Tin Tức
+                        {t('nav.news') || "Tin Tức"}
                     </NavLink>
                 </div>
 
                 {/* Right Section */}
-                <div className="nav-right" ref={dropdownRef}>
+                <div className="nav-right" ref={dropdownRef} style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    
+                    {/* NÚT CHUYỂN NGÔN NGỮ */}
+                    <LanguageSwitcher />
+
                     {user ? (
                         <div className="user-profile">
                             <button 
@@ -97,7 +104,7 @@ const Navbar = () => {
                             {showDropdown && (
                                 <div className="dropdown-menu">
                                     <div className="dropdown-header">
-                                        <p>Tài khoản cá nhân</p>
+                                        <p>{t('nav.dropdown.personalAccount') || "Tài khoản cá nhân"}</p>
                                         <span>{user.email || 'Thành viên CinemaX'}</span>
                                     </div>
                                     <div className="dropdown-divider"></div>
@@ -107,25 +114,27 @@ const Navbar = () => {
                                         <>
                                             <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
                                                 <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i> 
-                                                <span style={{fontWeight: 'bold', color: '#ffc107'}}>Trang Quản Trị</span>
+                                                <span style={{fontWeight: 'bold', color: '#ffc107'}}>{t('nav.dropdown.adminPage') || "Trang Quản Trị"}</span>
                                             </Link>
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
+
+                                    {/* 💡 ĐÃ GỘP FIX CODE TẠI ĐÂY: Vừa check Role User, vừa dùng đa ngôn ngữ */}
                                     {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
-                                        <Link to="/profile" className="dropdown-item">
-                                        <i className="fa-regular fa-user"></i> Hồ sơ của tôi
-                                         </Link>
-                                    )}
-                                    {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
-                                       <Link to="/ve-da-dat" className="dropdown-item">
-                                        <i className="fa-solid fa-ticket"></i> Lịch sử đặt vé
-                                         </Link>
+                                        <>
+                                            <Link to="/profile" className="dropdown-item">
+                                                <i className="fa-regular fa-user"></i> {t('nav.dropdown.myProfile') || "Hồ sơ của tôi"}
+                                            </Link>
+                                            <Link to="/ve-da-dat" className="dropdown-item">
+                                                <i className="fa-solid fa-ticket"></i> {t('nav.dropdown.bookingHistory') || "Lịch sử đặt vé"}
+                                            </Link>
+                                        </>
                                     )}
                                     
                                     <div className="dropdown-divider"></div>
                                     <button className="dropdown-item logout" onClick={handleLogout}>
-                                        <i className="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                                        <i className="fa-solid fa-right-from-bracket"></i> {t('nav.dropdown.logout') || "Đăng xuất"}
                                     </button>
                                 </div>
                             )}
@@ -133,7 +142,7 @@ const Navbar = () => {
                     ) : (
                         <button className="login-button" onClick={() => setIsModalOpen(true)}>
                             <i className="fa-regular fa-circle-user"></i>
-                            <span>Đăng Nhập</span>
+                            <span>{t('nav.login') || "Đăng Nhập"}</span>
                         </button>
                     )}
                 </div>

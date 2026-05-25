@@ -7,8 +7,10 @@ import calendarIcon from '../../assets/calendar.png';
 import clockIcon from '../../assets/clock.png';
 
 import '../style/GlobalBookingModal.css';
+import { useTranslation } from 'react-i18next';
 
 const GlobalBookingModal = () => {
+  const { t } = useTranslation();
   const navigate = useNav();
   const [isOpen, setIsOpen] = useState(false);
   const [movie, setMovie] = useState(null);
@@ -17,7 +19,15 @@ const GlobalBookingModal = () => {
   // TẠO DANH SÁCH 7 NGÀY
   // =========================
   const datesData = useMemo(() => {
-    const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const daysOfWeek = [
+      t('home.schedule.days.sun'),
+      t('home.schedule.days.mon'),
+      t('home.schedule.days.tue'),
+      t('home.schedule.days.wed'),
+      t('home.schedule.days.thu'),
+      t('home.schedule.days.fri'),
+      t('home.schedule.days.sat')
+    ];
     const list = [];
     const today = new Date();
     for (let i = 0; i < 7; i++) {
@@ -27,13 +37,13 @@ const GlobalBookingModal = () => {
       const mm = String(d.getMonth() + 1).padStart(2, '0');
       const dd = String(d.getDate()).padStart(2, '0');
       list.push({
-        day: i === 0 ? 'Hôm nay' : daysOfWeek[d.getDay()],
+        day: i === 0 ? t('home.schedule.days.today') : daysOfWeek[d.getDay()],
         date: `${yyyy}-${mm}-${dd}`,
         label: `${d.getDate()}/${d.getMonth() + 1}`
       });
     }
     return list;
-  }, []);
+  }, [t]);
 
   // =======================================================================
   // 💡 STATE & LOGIC LỌC ĐỊA ĐIỂM / RẠP CHIẾU
@@ -119,14 +129,14 @@ const GlobalBookingModal = () => {
         <button onClick={() => setIsOpen(false)} className="quick-modal-close-btn">&times;</button>
 
         <h2 className="quick-modal-movie-title">
-          Đặt Vé Nhanh: <span style={{color: '#ff4d4d'}}>{movie.title}</span>
+          {t('detail.quickModal.title')} <span style={{color: '#ff4d4d'}}>{movie.title}</span>
         </h2>
 
         {/* ================= KHỐI 1: CHỌN ĐỊA ĐIỂM / RẠP CHIẾU ================= */}
         <div style={{marginBottom: '20px'}}>
           <span className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
             <img src={cinemaAddressIcon} alt="Cinema Icon" className="figma-label-icon" style={{ width: '18px', height: '18px' }} /> 
-            Chọn rạp chiếu:
+            {t('detail.quickModal.labels.selectTheater')}
           </span>
           
           <div className="quick-modal-flex-row" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -136,7 +146,7 @@ const GlobalBookingModal = () => {
               onChange={handleProvinceChange}
               style={{ padding: '8px 12px', background: '#222228', color: '#fff', border: '1px solid #33333d', borderRadius: '8px', cursor: 'pointer', outline: 'none' }}
             >
-              <option value="">-- Chọn Tỉnh Thành --</option>
+              <option value="">{t('detail.schedule.selectProvince')}</option>
               {uniqueProvinces.map((prov, index) => (
                 <option key={index} value={prov}>{prov}</option>
               ))}
@@ -158,9 +168,9 @@ const GlobalBookingModal = () => {
               }}
             >
               {!selectedProvince ? (
-                <option value="all">Vui lòng chọn tỉnh trước</option>
+                <option value="all">{t('detail.schedule.selectProvinceFirst')}</option>
               ) : (
-                <option value="all">-- Tất Cả Rạp --</option>
+                <option value="all">{t('home.schedule.filters.allTheaters')}</option>
               )}
               {filteredTheaters.map((theater) => {
                 const tId = theater.theaterId || theater.theater_id || theater.id;
@@ -176,7 +186,7 @@ const GlobalBookingModal = () => {
         <div style={{marginBottom: '20px'}}>
           <span className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
             <img src={calendarIcon} alt="Calendar Icon" className="figma-label-icon" style={{ width: '18px', height: '18px' }} /> 
-            Chọn ngày chiếu:
+            {t('detail.quickModal.labels.selectDate')}
           </span>
           
           <div className="quick-modal-flex-row" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
@@ -198,11 +208,11 @@ const GlobalBookingModal = () => {
         <div>
           <span className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
             <img src={clockIcon} alt="Clock Icon" className="figma-label-icon" style={{ width: '18px', height: '18px' }} /> 
-            Khung giờ trống thực tế:
+            {t('detail.quickModal.labels.availableSlots')}
           </span>
 
           {loadingSlots ? (
-            <div style={{color: '#888', textAlign: 'center', padding: '15px'}}>Đang quét lịch phòng chiếu...</div>
+            <div style={{color: '#888', textAlign: 'center', padding: '15px'}}>{t('detail.quickModal.status.scanning')}</div>
           ) : slots.length > 0 ? (
             <div className="quick-modal-slots-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '10px' }}>
               {slots
@@ -237,7 +247,7 @@ const GlobalBookingModal = () => {
             </div>
           ) : (
             <div style={{color: '#666', textAlign: 'center', padding: '20px', background: '#1c1c20', borderRadius: '8px', fontSize: '0.9rem'}}>
-              Rất tiếc, phim không có suất chiếu nào vào ngày và rạp đã chọn.
+              {t('detail.schedule.noData')}
             </div>
           )}
         </div>

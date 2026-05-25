@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import '../style/TheatersTab.css';
 
 const TheatersTab = () => {
-    // State form thêm rạp
+    const { t } = useTranslation();
+
+    // --- CÁC STATE QUẢN LÝ DỮ LIỆU ---
     const [theaterId, setTheaterId] = useState('');
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [city, setCity] = useState('');
     const [phone, setPhone] = useState('');
 
-    // State danh sách tổng
     const [theaters, setTheaters] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [seats, setSeats] = useState([]);
 
-    // State quản lý bộ lọc phân cấp (Rạp -> Phòng)
     const [selectedTheaterId, setSelectedTheaterId] = useState('');
     const [selectedRoomId, setSelectedRoomId] = useState('');
 
-    // State form thêm phòng mới
     const [inputRoomId, setInputRoomId] = useState('');
     const [roomNumber, setRoomNumber] = useState('');
     const [rowsCount, setRowsCount] = useState(8);
@@ -28,16 +28,15 @@ const TheatersTab = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
 
-    // Khi bật trang, lấy ngay danh sách rạp
+    // --- EFFECT LIFECYCLE VÀ CALL API ---
     useEffect(() => {
         fetchTheaters();
     }, []);
 
-    // Khi người dùng đổi cụm rạp -> Tự động load danh sách phòng của rạp đó
     useEffect(() => {
         if (selectedTheaterId) {
             fetchRoomsByTheater(selectedTheaterId);
-            setSeats([]); // Xóa sơ đồ cũ đi để chờ chọn phòng mới
+            setSeats([]); 
             setSelectedRoomId('');
         } else {
             setRooms([]);
@@ -45,7 +44,6 @@ const TheatersTab = () => {
         }
     }, [selectedTheaterId]);
 
-    // Khi người dùng chọn phòng cụ thể -> Hiện ma trận ghế của phòng đó lên
     useEffect(() => {
         if (selectedRoomId) {
             fetchSeatsByRoom(selectedRoomId);
@@ -154,10 +152,12 @@ const TheatersTab = () => {
         } catch (error) {
             setMessage({ type: 'error', text: error.response?.data || "Lỗi tạo phòng!" });
         } finally {
+            // ✅ Đã sửa: Sử dụng khối finally để luôn dừng trạng thái loading kể cả khi thành công hay thất bại
             setLoading(false);
         }
     };
 
+    // Hàm thay đổi trạng thái/loại ghế (Thường -> VIP -> Đôi) khi click
     const handleSeatClick = async (seatId) => {
         try {
             const token = localStorage.getItem('token');
@@ -170,9 +170,15 @@ const TheatersTab = () => {
         }
     };
 
+    // Tìm số cột động thực tế từ danh sách ghế đang có để cấu hình CSS Grid chính xác
+    const currentRoomObj = rooms.find(r => r.roomId === selectedRoomId);
+    const dynamicCols = currentRoomObj?.colsCount || colsCount || 10;
+
     return (
-        <div className="thtab-container">
-            <h2 className="thtab-main-title">Hệ Thống Quản Trị Cụm Rạp & Thiết Kế Ghế Sơ Đồ</h2>
+        <div className="thtab-container tab-view">
+            <h2 className="thtab-main-title tab-title">
+                {t('admin.adminDashboard.theatersTab.title') || "Hệ Thống Quản Trị Cụm Rạp & Thiết Kế Ghế Sơ Đồ"}
+            </h2>
 
             {message.text && (
                 <div className={`thtab-alert ${message.type === 'success' ? 'success' : 'error'}`}>
@@ -180,9 +186,9 @@ const TheatersTab = () => {
                 </div>
             )}
 
-            {/* BLOCK 1: THÊM CỤM RẠP CHIẾU */}
+            {/* BLOCK 1: THÊM CỤM RẠP CHIẾU MỚI */}
             <div className="thtab-card">
-                <h3 className="thtab-card-title title-green">➕ THÊM CỤM RẠP CHIẾU MỚI</h3>
+                <h3 className="thtab-card-title title-green">➕ {t('admin.adminDashboard.theatersTab.addTheaterTitle') || "THÊM CỤM RẠP CHIẾU MỚI"}</h3>
                 <form onSubmit={handleAddTheater} className="thtab-form-grid">
                     <div className="thtab-form-item">
                         <label>Mã Rạp (VD: T01):</label>
@@ -210,110 +216,147 @@ const TheatersTab = () => {
                 </form>
             </div>
 
-            {/* BLOCK 2: KHỞI TẠO PHÒNG CHIẾU CHO RẠP ĐANG CHỌN */}
-            <div className="thtab-card">
-                <h3 className="thtab-card-title title-red">⚙️ THÊM PHÒNG CHIẾU VÀO RẠP ĐANG CHỌN</h3>
+            {/* DUAL COLUMN PANEL: Gộp khối Tạo Phòng (Trái) và Xem ma trận ghế (Phải) */}
+            <div className="dual-column-panel">
                 
-                <div className="thtab-target-bar">
-                    <label>📍 Bước 1 - Chọn cụm rạp mục tiêu: </label>
-                    <select value={selectedTheaterId} onChange={(e) => setSelectedTheaterId(e.target.value)}>
-                        <option value="">-- Click chọn rạp chiếu --</option>
-                        {theaters.map(t => <option key={t.theaterId} value={t.theaterId}>{t.name} ({t.city})</option>)}
-                    </select>
-                </div>
-
-                <form onSubmit={handleCreateRoom} className="thtab-form-grid">
-                    <div className="thtab-form-item">
-                        <label>Mã phòng độc lập (VD: P1, P2):</label>
-                        <input type="text" value={inputRoomId} onChange={(e) => setInputRoomId(e.target.value)} placeholder="Tối đa 3 chữ" required />
-                    </div>
-                    <div className="thtab-form-item">
-                        <label>Tên hiển thị phòng:</label>
-                        <input type="text" value={roomNumber} onChange={(e) => setRoomNumber(e.target.value)} placeholder="VD: Phòng Chiếu IMAX 01" required />
-                    </div>
-                    <div className="thtab-form-item">
-                        <label>Số hàng dọc (A-Z):</label>
-                        <input type="number" value={rowsCount} onChange={(e) => setRowsCount(e.target.value)} />
-                    </div>
-                    <div className="thtab-form-item">
-                        <label>Số cột ngang (1-20):</label>
-                        <input type="number" value={colsCount} onChange={(e) => setColsCount(e.target.value)} />
-                    </div>
-                    <div className="thtab-form-item thtab-btn-align-bottom">
-                        <button type="submit" disabled={loading} className="thtab-btn submit red">
-                            {loading ? 'Đang tạo...' : 'Tạo Sơ Đồ Phòng Cho Rạp'}
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            {/* BLOCK 3: BỘ LỌC ĐỂ XEM VÀ CHỈNH SỬA SƠ ĐỒ GHẾ CỦA TỪNG PHÒNG THỰC TẾ */}
-            <div className="thtab-card">
-                <h3 className="thtab-card-title title-blue">🔍 TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG</h3>
-                <div className="thtab-filter-row">
-                    <div className="thtab-filter-item">
-                        <label>1. Chọn cụm rạp phim:</label>
+                {/* CỘT TRÁI: KHỞI TẠO PHÒNG CHIẾU */}
+                <div className="form-settings-panel thtab-card">
+                    <h3 className="thtab-card-title title-red">⚙️ {t('admin.adminDashboard.theatersTab.leftPanel.formTitle') || "THÊM PHÒNG CHIẾU"}</h3>
+                    
+                    <div className="thtab-target-bar" style={{ marginBottom: '15px' }}>
+                        <label>📍 {t('admin.adminDashboard.theatersTab.leftPanel.title') || "Bước 1 - Chọn cụm rạp mục tiêu:"} </label>
                         <select value={selectedTheaterId} onChange={(e) => setSelectedTheaterId(e.target.value)}>
-                            <option value="">-- Chọn rạp phim --</option>
-                            {theaters.map(t => <option key={t.theaterId} value={t.theaterId}>{t.name}</option>)}
+                            <option value="">{t('admin.adminDashboard.theatersTab.leftPanel.selectTheaterPlaceholder') || "-- Click chọn rạp chiếu --"}</option>
+                            {theaters.map(tItem => (
+                                <option key={tItem.theaterId} value={tItem.theaterId}>{tItem.name} ({tItem.city})</option>
+                            ))}
                         </select>
                     </div>
-                    <div className="thtab-filter-item">
-                        <label>2. Chọn phòng chiếu (Chỉ hiện phòng của rạp trên):</label>
+
+                    {selectedTheaterId && (
+                        <form onSubmit={handleCreateRoom} className="sub-form-box thtab-form-grid" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            <div>
+                                <label>{t('admin.adminDashboard.theatersTab.leftPanel.placeholders.roomId') || "Mã phòng độc lập (VD: P1, P2):"}</label>
+                                <input type="text" value={inputRoomId} onChange={(e) => setInputRoomId(e.target.value)} placeholder="Tối đa 3 chữ" required />
+                            </div>
+                            <div>
+                                <label>{t('admin.adminDashboard.theatersTab.leftPanel.placeholders.roomNumber') || "Tên hiển thị phòng:"}</label>
+                                <input type="text" value={roomNumber} onChange={(e) => setRoomNumber(e.target.value)} placeholder="VD: Phòng Chiếu IMAX 01" required />
+                            </div>
+                            <div>
+                                <label>{t('admin.adminDashboard.theatersTab.leftPanel.labels.rowsCount') || "Số hàng dọc (A-Z):"}</label>
+                                <input type="number" min="1" max="26" value={rowsCount} onChange={(e) => setRowsCount(e.target.value)} required />
+                            </div>
+                            <div>
+                                <label>{t('admin.adminDashboard.theatersTab.leftPanel.labels.colsCount') || "Số cột ngang (1-30):"}</label>
+                                <input type="number" min="1" max="30" value={colsCount} onChange={(e) => setColsCount(e.target.value)} required />
+                            </div>
+                            
+                            <button type="submit" disabled={loading} className="thtab-btn submit red form-submit-btn-main" style={{ marginTop: '10px' }}>
+                                {loading ? 'Đang tạo...' : (t('admin.adminDashboard.theatersTab.leftPanel.buttons.submit') || 'Tạo Sơ Đồ Phòng Cho Rạp')}
+                            </button>
+                        </form>
+                    )}
+                </div>
+
+                {/* CỘT PHẢI: HIỂN THỊ VÀ TRÌNH QUẢN LÝ MA TRẬN GHẾ TRỰC QUAN */}
+                <div className="visualization-settings-panel thtab-card">
+                    <h3 className="thtab-card-title title-blue">🔍 {t('admin.adminDashboard.theatersTab.rightPanel.title') || "TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG"}</h3>
+                    
+                    <div className="thtab-filter-row" style={{ marginBottom: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>{t('admin.adminDashboard.theatersTab.rightPanel.selectRoomPlaceholder') || "Chọn phòng xem sơ đồ:"}</label>
                         <select 
                             value={selectedRoomId} 
                             onChange={(e) => setSelectedRoomId(e.target.value)} 
-                            disabled={rooms.length === 0} 
+                            disabled={rooms.length === 0}
                             className={rooms.length === 0 ? 'disabled' : ''}
                         >
-                            <option value="">-- Chọn phòng xem sơ đồ --</option>
-                            {rooms.map(r => <option key={r.roomId} value={r.roomId}>{r.roomNumber} (Mã gốc: {r.roomId})</option>)}
+                            <option value="">-- Chọn phòng --</option>
+                            {rooms.map(r => (
+                                <option key={r.roomId} value={r.roomId}>
+                                    {r.roomNumber} ({r.totalSeats || (r.rowsCount * r.colsCount)} {t('admin.adminDashboard.theatersTab.rightPanel.seatUnit') || "ghế"})
+                                </option>
+                            ))}
                         </select>
                     </div>
+
+                    {selectedRoomId && seats.length > 0 && (
+                        <div className="thtab-matrix-card" style={{ marginTop: '20px' }}>
+                            <div className="cinema-screen-bar thtab-screen-line"></div>
+                            <p className="thtab-screen-text" style={{ textAlign: 'center', margin: '5px 0 15px', fontWeight: 'bold', color: '#a0aec0' }}>
+                                {t('admin.adminDashboard.theatersTab.rightPanel.screenBar') || "MÀN HÌNH CHÍNH TẠI PHÒNG"}
+                            </p>
+                            
+                            <p className="thtab-note-success" style={{ fontSize: '12px', color: '#48bb78', fontStyle: 'italic', marginBottom: '10px', textAlign: 'center' }}>
+                                ✓ Click tự do vào từng ghế để đổi loại cấu trúc (Thường ➔ VIP ➔ Đôi)
+                            </p>
+
+                            {/* Ép cấu trúc CSS Grid theo số cột động của phòng */}
+                            <div 
+                                className="thtab-seats-layout seats-matrix-grid-display"
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: `repeat(${dynamicCols}, minmax(35px, 1fr))`,
+                                    gap: '8px',
+                                    justifyContent: 'center',
+                                    padding: '15px',
+                                    background: '#1a1d24',
+                                    borderRadius: '8px',
+                                    overflowX: 'auto'
+                                }}
+                            >
+                                {seats.map(s => {
+                                    const type = s.seatType ? s.seatType.toUpperCase() : 'NORMAL';
+                                    let classType = 'normal';
+
+                                    if (type === 'VIP') {
+                                        classType = 'vip';
+                                    } else if (type === 'DOUBLE') {
+                                        classType = 'double';
+                                    }
+
+                                    return (
+                                        <button
+                                            key={s.seatId}
+                                            type="button"
+                                            onClick={() => handleSeatClick(s.seatId)}
+                                            className={`thtab-seat-btn seat-node ${classType} ${s.isOccupied ? 'maintenance-lock' : ''}`}
+                                            title={`${t('admin.adminDashboard.theatersTab.rightPanel.seatTitle.code') || "Mã"}: ${s.seatNumber}`}
+                                            style={{
+                                                padding: '8px 0',
+                                                fontSize: '11px',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                cursor: 'pointer',
+                                                borderRadius: '4px'
+                                            }}
+                                        >
+                                            {s.seatNumber}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Dòng chú thích ý nghĩa màu sắc của ghế */}
+                            <div className="thtab-legend legend-row" style={{ marginTop: '15px', display: 'flex', gap: '20px', justifyContent: 'center' }}>
+                                <span className="thtab-legend-item legend-item">
+                                    <span className="thtab-legend-box box normal"></span> 
+                                    {t('admin.adminDashboard.theatersTab.rightPanel.legends.normal') || "Thường"}
+                                </span>
+                                <span className="thtab-legend-item legend-item">
+                                    <span className="thtab-legend-box box vip"></span> 
+                                    {t('admin.adminDashboard.theatersTab.rightPanel.legends.vip') || "VIP"}
+                                </span>
+                                <span className="thtab-legend-item legend-item">
+                                    <span className="thtab-legend-box box double locked"></span> 
+                                    {t('admin.adminDashboard.theatersTab.rightPanel.legends.locked') || "Ghế đôi / Bảo trì"}
+                                </span>
+                            </div>
+                        </div>
+                    )}
                 </div>
+
             </div>
-
-            {/* BẢN ĐỒ MA TRẬN GHẾ NƠI CÓ THỂ TỰ CHỈNH SỬA VÀ LƯU TRỰC TIẾP */}
-            {seats.length > 0 && (
-                <div className="thtab-matrix-card">
-                    <div className="thtab-screen-line"></div>
-                    <p className="thtab-screen-text">MÀN HÌNH CHÍNH TẠI PHÒNG</p>
-                    <p className="thtab-note-success">✓ Dữ liệu đã lưu vĩnh viễn! Click tự do vào từng ghế để cập nhật lại cấu trúc (Thường ➔ VIP ➔ Đôi)</p>
-
-                    <div 
-                        className="thtab-seats-layout" 
-                        style={{ gridTemplateColumns: `repeat(${colsCount}, minmax(42px, 55px))` }}
-                    >
-                        {seats.map(s => {
-                            const type = s.seatType ? s.seatType.toUpperCase() : 'NORMAL';
-                            let classType = 'normal';
-
-                            if (type === 'VIP') {
-                                classType = 'vip';
-                            } else if (type === 'DOUBLE') {
-                                classType = 'double';
-                            }
-
-                            return (
-                                <button
-                                    key={s.seatId}
-                                    type="button"
-                                    onClick={() => handleSeatClick(s.seatId)}
-                                    className={`thtab-seat-btn ${classType}`}
-                                >
-                                    {s.seatNumber}
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    <div className="thtab-legend">
-                        <span className="thtab-legend-item"><span className="thtab-legend-box normal"></span> Thường</span>
-                        <span className="thtab-legend-item"><span className="thtab-legend-box vip"></span> VIP</span>
-                        <span className="thtab-legend-item"><span className="thtab-legend-box double"></span> Ghế đôi</span>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

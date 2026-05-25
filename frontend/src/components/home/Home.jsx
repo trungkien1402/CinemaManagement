@@ -5,8 +5,10 @@ import MovieCard from '../shared/MovieCard';
 import SectionHeader from '../shared/SectionHeader';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovie } from '../../store/movieSlice';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { listMovies, loading } = useSelector((state) => state.movies);
 
@@ -37,7 +39,7 @@ const Home = () => {
         return () => clearInterval(interval);
     }, [nowShowingMovies]);
 
-    if (loading) return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>Đang tải phim...</div>;
+    if (loading) return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>{t('home.nowShowing.status.loading')}</div>;
 
     // Lấy đúng cụm 4 phim Đang Chiếu theo index chạy tự động
     const visibleNowShowing = nowShowingMovies.slice(currentIndex, currentIndex + 4);
@@ -53,8 +55,8 @@ const Home = () => {
 
                 {/* ================= PHẦN 1: PHIM ĐANG CHIẾU (CÓ HIỆU ỨNG LƯỚT 5 GIÂY) ================= */}
                 <SectionHeader
-                    title="Phim Đang Chiếu"
-                    subtitle="Những bộ phim đang hot nhất hiện nay"
+                    title={t('home.nowShowing.title')}
+                    subtitle={t('home.nowShowing.subtitle') || "Những bộ phim đang hot nhất hiện nay"}
                     linkTo="/dang-chieu"
                 />
 
@@ -67,14 +69,14 @@ const Home = () => {
 
                 {/* ================= PHẦN 2: PHIM SẮP CHIẾU (ĐÃ BỔ SUNG KHUNG HIỂN THỊ) ================= */}
                 <SectionHeader
-                    title="Phim Sắp Chiếu"
-                    subtitle="Những bộ phim sắp đổ bộ phòng vé"
+                    title={t('home.comingSoon.title')}
+                    subtitle={t('home.comingSoon.subtitle') || "Những bộ phim sắp đổ bộ phòng vé"}
                     linkTo="/sap-chieu"
                 />
 
                 <div className="movie-grid" style={{ animation: 'fadeIn 0.5s ease-in-out' }}>
                     {visibleComingSoon.length === 0 ? (
-                        <div style={{ color: '#aaa', padding: '20px' }}>Hiện tại chưa có lịch phim sắp chiếu.</div>
+                        <div style={{ color: '#aaa', padding: '20px' }}>{t('home.comingSoon.status.empty')}</div>
                     ) : (
                         visibleComingSoon.map((movie) => (
                             <MovieCard key={movie.movieId} movie={movie} />

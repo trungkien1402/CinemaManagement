@@ -1,12 +1,16 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
+
 import api from '../../api/axiosClient'; 
 import '../style/AnalyticsTab.css';
+import { useTranslation } from 'react-i18next';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 
+// Đăng ký các element của ChartJS (bắt buộc ở phiên bản mới)
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 const AnalyticsTab = ({ analytics }) => {
+    const { t } = useTranslation(); 
     const [localTotalMovies, setLocalTotalMovies] = useState(0);
     const [localTotalUsers, setLocalTotalUsers] = useState(0);
 
@@ -35,7 +39,7 @@ const AnalyticsTab = ({ analytics }) => {
         fetchLocalMetrics();
     }, []);
 
-    // Cấu hình biểu đồ cột
+    // Tự động tính toán số liệu biểu đồ cột dựa trên dữ liệu thật từ API
     const generatedBarChartData = useMemo(() => {
         const monthsLabels = ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'];
         const revenueValues = Array(12).fill(0);
@@ -50,14 +54,14 @@ const AnalyticsTab = ({ analytics }) => {
         return {
             labels: monthsLabels,
             datasets: [{
-                label: 'Doanh thu (đ)',
+                label: t('admin.adminDashboard.analyticsTab.revenueLabel') || 'Doanh thu (đ)',
                 data: revenueValues,
                 backgroundColor: '#26dc78', 
                 hoverBackgroundColor: '#1a9664', 
                 borderRadius: 4
             }]
         };
-    }, [analytics]);
+    }, [analytics, t]);
 
     // Cấu hình biểu đồ tròn
     const generatedDoughnutData = useMemo(() => {
@@ -89,65 +93,92 @@ const AnalyticsTab = ({ analytics }) => {
     };
 
     return (
-        <div className="antab-container">
-            <h2 className="antab-main-title">Báo Cáo Phân Tích Tổng Quan</h2>
+        <div className="antab-container tab-view">
+            <h2 className="antab-main-title tab-title">
+                {t('Overview Analysis Report') || "Báo Cáo Phân Tích Tổng Quan"}
+            </h2>
             
             {/* Hàng chứa các thẻ metric */}
-            <div className="antab-metrics-row">
+            <div className="antab-metrics-row metric-cards-row">
                 
                 {/* Thẻ 1: Tổng doanh thu */}
-                <div className="antab-card antab-card-revenue">
-                    <h4 className="antab-card-label">Tổng Doanh Thu Hệ Thống</h4>
-                    <p className="antab-card-number">
+                <div className="antab-card antab-card-revenue metric-card card-green">
+                    <h4 className="antab-card-label">
+                        {t('admin.adminDashboard.analyticsTab.totalRevenue') || "Tổng Doanh Thu Hệ Thống"}
+                    </h4>
+                    <p className="antab-card-number number-display">
                         {(analytics?.totalRevenue || 0).toLocaleString('vi-VN')}đ
                     </p>
                 </div>
 
                 {/* Thẻ 2: Tổng số vé đã bán */}
-                <div className="antab-card antab-card-tickets">
-                    <h4 className="antab-card-label">Tổng Vé Đã Bán</h4>
-                    <p className="antab-card-number">
-                        {analytics?.totalTickets || 0} Vé
+                <div className="antab-card antab-card-tickets metric-card card-blue">
+                    <h4 className="antab-card-label">
+                        {t('admin.adminDashboard.analyticsTab.totalTickets') || "Tổng Vé Đã Bán"}
+                    </h4>
+                    <p className="antab-card-number number-display">
+                        {analytics?.totalTickets || 0} {t('admin.adminDashboard.analyticsTab.ticketUnit') || "Vé"}
                     </p>
                 </div>
 
                 {/* Thẻ 3: Tổng số phim */}
-                <div className="antab-card antab-card-movies">
-                    <h4 className="antab-card-label">Tổng Số Phim Đang Quản Lý</h4>
-                    <p className="antab-card-number">
-                        {localTotalMovies} Phim
+                <div className="antab-card antab-card-movies metric-card">
+                    <h4 className="antab-card-label">
+                        {t('admin.adminDashboard.analyticsTab.totalMoviesManaged') || "Tổng Số Phim Đang Quản Lý"}
+                    </h4>
+                    <p className="antab-card-number number-display">
+                        {localTotalMovies} {t('admin.adminDashboard.analyticsTab.movieUnit') || "Phim"}
                     </p>
                 </div>
 
                 {/* Thẻ 4: Khách hàng */}
-                <div className="antab-card antab-card-users">
-                    <h4 className="antab-card-label">Khách Hàng Đăng Ký Hệ Thống</h4>
-                    <p className="antab-card-number">
-                        {localTotalUsers} Thành viên
+                <div className="antab-card antab-card-users metric-card">
+                    <h4 className="antab-card-label">
+                        {t('admin.adminDashboard.analyticsTab.registeredUsers') || "Khách Hàng Đăng Ký Hệ Thống"}
+                    </h4>
+                    <p className="antab-card-number number-display">
+                        {localTotalUsers} {t('admin.adminDashboard.analyticsTab.userUnit') || "Thành viên"}
                     </p>
                 </div>
 
             </div>
 
             {/* Khu vực hiển thị biểu đồ */}
-            <div className="antab-charts-grid">
-                <div className="antab-chart-wrapper">
-                    <h5 className="antab-chart-title">👑 Thống kê doanh số theo tháng (Năm 2026)</h5>
-                    <div className="antab-chart-render-box">
+            <div className="antab-charts-grid visualization-grid">
+                
+                {/* Biểu đồ cột */}
+                <div className="antab-chart-wrapper chart-wrapper">
+                    <h5 className="antab-chart-title">
+                        📈 {t('Monthly sales statistics (Year 2026)') || "Thống kê doanh số theo tháng (Năm 2026)"}
+                    </h5>
+                    <div className="antab-chart-render-box" style={{ flex: 1, position: 'relative', width: '100%', height: '100%' }}>
                         <Bar data={generatedBarChartData} options={chartOptions} />
                     </div>
                 </div>
                 
-                <div className="antab-chart-wrapper">
-                    <h5 className="antab-chart-title">🎯 Thị phần doanh số theo Phim</h5>
+                {/* Biểu đồ tròn */}
+                <div className="antab-chart-wrapper chart-wrapper">
+                    <h5 className="antab-chart-title">
+                        🎯 {t('admin.adminDashboard.analyticsTab.movieChartTitle') || "Thị phần doanh số theo Phim"}
+                    </h5>
                     {analytics?.topMovies?.length > 0 ? (
                         <div className="antab-chart-render-box">
-                            <Doughnut data={generatedDoughnutData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e5e5e5' } } } }} />
+                            <Doughnut 
+                                data={generatedDoughnutData} 
+                                options={{ 
+                                    responsive: true, 
+                                    maintainAspectRatio: false, 
+                                    plugins: { legend: { labels: { color: '#e5e5e5' } } } 
+                                }} 
+                            />
                         </div>
                     ) : (
-                        <p className="antab-chart-empty">Chưa ghi nhận dữ liệu phim</p>
+                        <p className="antab-chart-empty empty-text">
+                            {t('admin.adminDashboard.analyticsTab.emptyText') || "Chưa ghi nhận dữ liệu phim"}
+                        </p>
                     )}
                 </div>
+
             </div>
         </div>
     );

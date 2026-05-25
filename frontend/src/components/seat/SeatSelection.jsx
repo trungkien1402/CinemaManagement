@@ -4,8 +4,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import '../style/Seat.css';
 import { useVNPayPayment } from '../../hook/useVNPayPayment'; 
+import { useTranslation } from 'react-i18next';
 
 const SeatSelection = () => {
+    const { t } = useTranslation();
     const { showtimeId } = useParams();
     const navigate = useNavigate();
 
@@ -16,7 +18,7 @@ const SeatSelection = () => {
     const [loading, setLoading] = useState(true);
     const [maxCols, setMaxCols] = useState(10); // Số cột mặc định phòng chiếu
 
-    // 🌟 STATE QUẢN LÝ VOUCHER BỔ SUNG
+    // 🌟 STATE QUẢN LÝ VOUCHER
     const [voucherCode, setVoucherCode] = useState("");
     const [appliedVoucher, setAppliedVoucher] = useState(null); // Lưu object voucher hợp lệ từ backend
     const [voucherError, setVoucherError] = useState("");
@@ -54,7 +56,7 @@ const SeatSelection = () => {
             })
             .catch((err) => {
                 console.error("Lỗi tải ghế:", err);
-                setLoading(false);
+                setLoading(false); 
             });
     }, [showtimeId]);
 
@@ -109,21 +111,22 @@ const SeatSelection = () => {
         setVoucherSuccess("");
         
         if (!voucherCode.trim()) {
-            setVoucherError("Vui lòng điền mã giảm giá!");
+            setVoucherError(t('auth.seat.voucher.errors.empty') || "Vui lòng điền mã giảm giá!");
             return;
         }
 
         try {
-            // Gọi API Check hợp lệ tới Backend (Endpoint đã tạo ở VoucherController)
+            // Gọi API Check hợp lệ tới Backend
             const response = await axiosClient.get(`/vouchers/check?code=${voucherCode.trim()}`);
             setAppliedVoucher(response.data);
-            setVoucherSuccess(`Áp dụng thành công! Mã giảm: ${response.data.discountType === 'PERCENT' ? response.data.discountValue + '%' : response.data.discountValue.toLocaleString() + 'đ'}`);
+            const successMsg = t('auth.seat.voucher.success') || "Áp dụng thành công! Mã giảm:";
+            setVoucherSuccess(`${successMsg} ${response.data.discountType === 'PERCENT' ? response.data.discountValue + '%' : response.data.discountValue.toLocaleString() + 'đ'}`);
         } catch (error) {
             setAppliedVoucher(null);
             if (error.response && error.response.data) {
                 setVoucherError(error.response.data); // Hiện text thông báo lỗi từ backend trả về
             } else {
-                setVoucherError("Mã giảm giá không chính xác hoặc đã hết hạn!");
+                setVoucherError(t('auth.seat.voucher.errors.invalid') || "Mã giảm giá không chính xác hoặc đã hết hạn!");
             }
         }
     };
@@ -148,23 +151,20 @@ const SeatSelection = () => {
     };
 
     if (loading) {
-        return <div className="loading-container">Đang tải sơ đồ ghế...</div>;
+        return (
+            <div className="loading-container">
+                {t('auth.seat.status.loading') || "Đang tải sơ đồ ghế..."}
+            </div>
+        );
     }
 
     return (
         <div className="booking-wrapper">
-            {/* THANH CHÚ THÍCH */}
-            <div className="legend-area">
-                <div className="legend-item"><span className="box normal"></span> Thường (30K)</div>
-                <div className="legend-item"><span className="box vip"></span> VIP (50K)</div>
-                <div className="legend-item"><span className="box doi"></span> Ghế đôi (100K)</div>
-                <div className="legend-item"><span className="box selected"></span> Đang chọn</div>
-                <div className="legend-item"><span className="box occupied"></span> Đã bán</div>
-            </div>
-
-            {/* MÀN HÌNH CONG */}
+            {/* MÀN HÌNH CHÍNH */}
             <div className="screen-container">
-                <div className="screen">MÀN HÌNH CHÍNH</div>
+                <div className="screen">
+                    {t('auth.seat.screen') || "MÀN HÌNH CHÍNH"}
+                </div>
                 <div className="screen-glow"></div>
             </div>
 
@@ -205,13 +205,39 @@ const SeatSelection = () => {
                 })}
             </div>
 
-            {/* 🌟 KHU VỰC NHẬP MÃ VOUCHER GIẢM GIÁ MỚI THÊM 🌟 */}
+            {/* CHÚ THÍCH PHÂN LOẠI GHẾ */}
+            <div className="legend-area">
+                <div className="legend-item">
+                    <span className="box normal"></span>
+                    {t('auth.seat.legend.standard') || "Thường (30K)"}
+                </div>
+                <div className="legend-item">
+                    <span className="box vip"></span>
+                    {t('auth.seat.legend.vip') || "VIP (50K)"}
+                </div>
+                <div className="legend-item">
+                    <span className="box doi"></span>
+                    {t('auth.seat.legend.double') || "Ghế đôi (100K)"}
+                </div>
+                <div className="legend-item">
+                    <span className="box selected"></span>
+                    {t('auth.seat.legend.selecting') || "Đang chọn"}
+                </div>
+                <div className="legend-item">
+                    <span className="box occupied"></span>
+                    {t('auth.seat.legend.sold') || "Đã bán"}
+                </div>
+            </div>
+
+            {/* 🌟 KHU VỰC NHẬP MÃ VOUCHER GIẢM GIÁ */}
             <div className="voucher-section" style={{ margin: "20px auto", maxWidth: "600px", background: "#1f293d", padding: "15px", borderRadius: "8px" }}>
-                <h4 style={{ color: "#fff", marginBottom: "10px", fontSize: "16px" }}>Khuyến mãi / Mã giảm giá</h4>
+                <h4 style={{ color: "#fff", marginBottom: "10px", fontSize: "16px" }}>
+                    {t('auth.seat.voucher.title') || "Khuyến mãi / Mã giảm giá"}
+                </h4>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <input 
                         type="text" 
-                        placeholder="Nhập mã voucher (Ví dụ: GIAM20K, MOVIE10...)" 
+                        placeholder={t('auth.seat.voucher.placeholder') || "Nhập mã voucher (Ví dụ: GIAM20K, MOVIE10...)"} 
                         value={voucherCode}
                         onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
                         disabled={!!appliedVoucher}
@@ -222,18 +248,18 @@ const SeatSelection = () => {
                             onClick={handleApplyVoucher}
                             style={{ padding: "10px 20px", background: "#3b82f6", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" }}
                         >
-                            Áp dụng
+                            {t('auth.seat.voucher.buttons.apply') || "Áp dụng"}
                         </button>
                     ) : (
                         <button 
                             onClick={handleRemoveVoucher}
                             style={{ padding: "10px 20px", background: "#ef4444", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" }}
                         >
-                            Hủy bỏ
+                            {t('auth.seat.voucher.buttons.remove') || "Hủy bỏ"}
                         </button>
                     )}
                 </div>
-                {/* Thông báo Real-time */}
+                {/* Thông báo Voucher Real-time */}
                 {voucherError && <p style={{ color: "#ef4444", marginTop: "8px", fontSize: "14px" }}>⚠️ {voucherError}</p>}
                 {voucherSuccess && <p style={{ color: "#10b981", marginTop: "8px", fontSize: "14px" }}>✅ {voucherSuccess}</p>}
             </div>
@@ -241,25 +267,49 @@ const SeatSelection = () => {
             {/* BẢNG THÔNG TIN ĐẶT VÉ BÊN DƯỚI */}
             <div className="info-section">
                 <div className="ticket-info">
-                    <p>Mã suất chiếu: <strong>{showtimeId}</strong></p>
-                    <p>Ghế đã chọn: <strong className="highlight-text">{selectedSeats.length > 0 ? selectedSeats.map((s) => s.seatNumber).join(', ') : "Chưa chọn"}</strong></p>
-                    <p>Số lượng: <strong>{selectedSeats.length} vé</strong></p>
+                    <p>
+                        {t('auth.seat.info.showtimeId') || "Mã suất chiếu:"}
+                        <strong> {showtimeId}</strong>
+                    </p>
+                    <p>
+                        {t('auth.seat.info.selectedSeats') || "Ghế đã chọn:"}
+                        <strong className="highlight-text">
+                            {
+                                selectedSeats.length > 0
+                                    ? " " + selectedSeats.map((s) => s.seatNumber).join(', ')
+                                    : " " + (t('auth.seat.info.none') || "Chưa chọn")
+                            }
+                        </strong>
+                    </p>
+                    <p>
+                        {t('auth.seat.info.seatCount') || "Số lượng ghế:"}
+                        <strong> {selectedSeats.length}</strong>
+                    </p>
                 </div>
 
                 <div className="total-price-area">
                     {/* Hiển thị chi tiết bóc tách giá tiền nếu có voucher */}
                     {appliedVoucher && (
                         <div style={{ fontSize: "14px", color: "#9ca3af", textAlign: "right", marginBottom: "5px" }}>
-                            <p>Tạm tính: {calculateSubTotal().toLocaleString()} VNĐ</p>
-                            <p>Giảm giá: -{calculateDiscount().toLocaleString()} VNĐ</p>
+                            <p>{t('auth.seat.info.subTotal') || "Tạm tính:"} {calculateSubTotal().toLocaleString()} VNĐ</p>
+                            <p>{t('auth.seat.info.discount') || "Giảm giá:"} -{calculateDiscount().toLocaleString()} VNĐ</p>
                         </div>
                     )}
-                    <span>Tổng tiền thanh toán:</span>
+                    <span>{t('auth.seat.info.totalAmount') || "Tổng tiền thanh toán:"}</span>
                     <h3 className="price">{calculateTotal().toLocaleString()} VNĐ</h3>
                 </div>
 
-                <button className="confirm-btn" onClick={handlePayment} disabled={processing || selectedSeats.length === 0}>
-                    {processing ? "ĐANG CHUYỂN THANH TOÁN..." : "THANH TOÁN VNPAY"}
+                {/* BUTTON THANH TOÁN */}
+                <button 
+                    className="confirm-btn" 
+                    onClick={handlePayment} 
+                    disabled={processing || selectedSeats.length === 0}
+                >
+                    {
+                        processing
+                            ? (t('auth.seat.buttons.processing') || "ĐANG CHUYỂN THANH TOÁN...")
+                            : (t('auth.seat.buttons.pay') || "THANH TOÁN VNPAY")
+                    }
                 </button>
             </div>
         </div>

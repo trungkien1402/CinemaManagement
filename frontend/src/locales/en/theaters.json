@@ -1,0 +1,25 @@
+{
+  "theaters": {
+    "status": {
+      "loading": "Loading cinema system...",
+      "empty": "There are currently no cinemas in this area."
+    },
+    "header": {
+      "title": "Cinema System",
+      "subtitle": "Modern cinema network nationwide"
+    },
+    "filters": {
+      "allCities": "📍 -- All Provinces/Cities --"
+    },
+    "card": {
+      "fallbackAddress": "Address updating",
+      "fallbackPhone": "1900 xxxx",
+      "fallbackHours": "8:00 - 23:30 daily",
+      "amenities": "Amenities"
+    },
+    "buttons": {
+      "viewSchedule": "Showtimes",
+      "directions": "Directions"
+    }
+  }
+}

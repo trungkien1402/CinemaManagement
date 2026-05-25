@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Home",
+    "nowShowing": "Now Showing",
+    "comingSoon": "Coming Soon",
+    "schedule": "Showtimes",
+    "theaters": "Cinemas",
+    "news": "News",
+    "login": "Login",
+    "dropdown": {
+      "personalAccount": "Personal Account",
+      "adminPage": "Admin Dashboard",
+      "myProfile": "My Profile",
+      "bookingHistory": "Booking History",
+      "logout": "Logout"
+    }
+  },
+  "footer": {
+    "slogan": "Premium cinematic experience with state-of-the-art technology",
+    "titles": {
+      "movies": "Movies",
+      "services": "Services",
+      "support": "Support"
+    },
+    "links": {
+      "faq": "FAQs",
+      "hotline": "Hotline:"
+    },
+    "copyright": "© 2026 CinemaX. All rights reserved."
+  }
+}

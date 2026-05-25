@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import '../style/VouchersTab.css';
 
 const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, deleteVoucherObj }) => {
+    const { t } = useTranslation();
     
     // Hàm xử lý thay đổi giá trị giảm giá để chặn lỗi nhập quá 100% khi chọn PERCENT
     const handleDiscountValueChange = (e) => {
@@ -37,18 +39,20 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
     };
 
     return (
-        <div className="vctab-container">
-            <h2 className="vctab-main-title">Cơ Cấu Chương Trình Khuyến Mãi Voucher</h2>
+        <div className="vctab-container tab-view">
+            <h2 className="vctab-main-title tab-title">
+                {t('admin.adminDashboard.vouchersTab.title') || "Cơ Cấu Chương Trình Khuyến Mãi Voucher"}
+            </h2>
             
             {/* Form phát hành Voucher */}
-            <form onSubmit={saveVoucherObj} className="vctab-interactive-grid">
+            <form onSubmit={saveVoucherObj} className="vctab-interactive-grid interactive-form-grid">
                 
                 {/* 1. Nhập mã Voucher */}
                 <div className="vctab-form-item">
-                    <label>Mã Khuyến Mãi:</label>
+                    <label>{t('admin.adminDashboard.vouchersTab.form.labels.voucherCode') || "Mã Khuyến Mãi:"}</label>
                     <input 
                         type="text" 
-                        placeholder="Ví dụ: MOVIE2026" 
+                        placeholder={t('admin.adminDashboard.vouchersTab.form.placeholders.voucherCode') || "Ví dụ: MOVIE2026"} 
                         value={voucherForm.voucherCode || ''} 
                         onChange={e => setVoucherForm({...voucherForm, voucherCode: e.target.value.toUpperCase().trim()})} 
                         required 
@@ -57,23 +61,23 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
                 
                 {/* 2. Chọn loại giảm giá (CASH hoặc PERCENT) */}
                 <div className="vctab-form-item">
-                    <label>Hình thức giảm giá:</label>
+                    <label>{t('admin.adminDashboard.vouchersTab.form.labels.discountType') || "Hình thức giảm giá:"}</label>
                     <select 
                         value={voucherForm.discountType || 'PERCENT'} 
                         onChange={handleDiscountTypeChange}
                         required
                     >
-                        <option value="PERCENT">Giảm giá theo Phần trăm (%)</option>
-                        <option value="CASH">Giảm giá theo Số tiền mặt (đ)</option>
+                        <option value="PERCENT">{t('admin.adminDashboard.vouchersTab.form.options.percent') || "Giảm giá theo Phần trăm (%)"}</option>
+                        <option value="CASH">{t('admin.adminDashboard.vouchersTab.form.options.cash') || "Giảm giá theo Số tiền mặt (đ)"}</option>
                     </select>
                 </div>
 
-                {/* 3. Nhập giá trị giảm giá (Đã tích hợp hàm lọc dữ liệu đầu vào) */}
+                {/* 3. Nhập giá trị giảm giá */}
                 <div className="vctab-form-item">
-                    <label>Mức giảm cụ thể:</label>
+                    <label>{t('admin.adminDashboard.vouchersTab.form.labels.discountValue') || "Mức giảm cụ thể:"}</label>
                     <input 
                         type="number" 
-                        placeholder={voucherForm.discountType === 'CASH' ? "Số tiền giảm (Ví dụ: 20000)" : "Tỷ lệ giảm giá (1 - 100%)"} 
+                        placeholder={voucherForm.discountType === 'CASH' ? (t('admin.adminDashboard.vouchersTab.form.placeholders.discountCash') || "Số tiền giảm (Ví dụ: 20000)") : (t('admin.adminDashboard.vouchersTab.form.placeholders.discountPercent') || "Tỷ lệ giảm giá (1 - 100%)")} 
                         min="1" 
                         max={voucherForm.discountType === 'CASH' ? undefined : "100"}
                         value={voucherForm.discountValue ?? ''} 
@@ -84,10 +88,10 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
 
                 {/* 4. Nhập số lượt sử dụng tối đa */}
                 <div className="vctab-form-item">
-                    <label>Số lượng phát hành:</label>
+                    <label>{t('admin.adminDashboard.vouchersTab.form.labels.maxUses') || "Số lượng phát hành:"}</label>
                     <input 
                         type="number" 
-                        placeholder="Ví dụ: 100" 
+                        placeholder={t('admin.adminDashboard.vouchersTab.form.placeholders.maxUses') || "Ví dụ: 100"} 
                         min="1" 
                         value={voucherForm.maxUses || ''} 
                         onChange={e => setVoucherForm({...voucherForm, maxUses: parseInt(e.target.value, 10) || ''})} 
@@ -97,7 +101,7 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
 
                 {/* 5. Chọn hạn sử dụng */}
                 <div className="vctab-form-item">
-                    <label>Hạn sử dụng chương trình:</label>
+                    <label>{t('admin.adminDashboard.vouchersTab.form.labels.expiryDate') || "Hạn sử dụng chương trình:"}</label>
                     <input 
                         type="date" 
                         value={voucherForm.expiryDate || ''} 
@@ -107,7 +111,9 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
                 </div>
 
                 <div className="vctab-form-item vctab-btn-align-bottom">
-                    <button type="submit" className="vctab-submit-btn">🎁 Phát Hành Mã Quà Tặng</button>
+                    <button type="submit" className="vctab-submit-btn form-submit-btn-main">
+                        🎁 {t('admin.adminDashboard.vouchersTab.form.buttons.submit') || "Phát Hành Mã Quà Tặng"}
+                    </button>
                 </div>
             </form>
 
@@ -118,11 +124,11 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
                 <table className="vctab-data-table">
                     <thead>
                         <tr>
-                            <th>Mã Voucher</th>
-                            <th>Loại & Mức giảm</th>
-                            <th>Lượt dùng (Đã dùng / Tối đa)</th>
-                            <th>Hạn sử dụng</th>
-                            <th>Hành động</th>
+                            <th>{t('admin.adminDashboard.vouchersTab.table.voucherCode') || "Mã Voucher"}</th>
+                            <th>{t('admin.adminDashboard.vouchersTab.table.discountPercent') || "Loại & Mức giảm"}</th>
+                            <th>{t('admin.adminDashboard.vouchersTab.table.maxUses') || "Lượt dùng (Đã dùng / Tối đa)"}</th>
+                            <th>{t('admin.adminDashboard.vouchersTab.table.expiryDate') || "Hạn sử dụng"}</th>
+                            <th>{t('admin.adminDashboard.vouchersTab.table.actions') || "Hành động"}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,9 +140,9 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
 
                                 return (
                                     <tr key={v.voucherCode} className={isRunOut ? 'vctab-row-disabled' : ''}>
-                                        <td><code className="vctab-code-badge">{v.voucherCode}</code></td>
+                                        <td><code className="vctab-code-badge invoice-code">{v.voucherCode}</code></td>
                                         <td>
-                                            <span className={`vctab-badge ${v.discountType === 'PERCENT' ? 'percent' : 'cash'}`}>
+                                            <span className={`vctab-badge badge-format ${v.discountType === 'PERCENT' ? 'percent' : 'cash'}`}>
                                                 {v.discountType === 'PERCENT' ? `${v.discountValue}% OFF` : `${v.discountValue?.toLocaleString()}đ Giảm`}
                                             </span>
                                         </td>
@@ -145,16 +151,16 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
                                                 {currentUsed}
                                             </span>
                                             <span className="vctab-max-text"> / {maxAllowed}</span>
-                                            {isRunOut && <span className="vctab-soldout-tag">Hết lượt</span>}
+                                            {isRunOut && <span className="vctab-soldout-tag"> {t('admin.adminDashboard.vouchersTab.table.soldOut') || "Hết lượt"}</span>}
                                         </td>
                                         <td className="vctab-date-text">{v.expiryDate}</td>
                                         <td>
                                             <button 
                                                 type="button"
                                                 onClick={() => deleteVoucherObj(v.voucherCode)} 
-                                                className="vctab-delete-btn"
+                                                className="vctab-delete-btn control-btn btn-delete-sm"
                                             >
-                                                Xóa bỏ
+                                                {t('admin.adminDashboard.vouchersTab.table.deleteBtn') || "Xóa bỏ"}
                                             </button>
                                         </td>
                                     </tr>
@@ -162,8 +168,8 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
                             })
                         ) : (
                             <tr>
-                                <td colSpan="5" className="vctab-empty-row">
-                                    Chưa có chương trình khuyến mãi nào được phát hành.
+                                <td colSpan="5" className="vctab-empty-row" style={{ textAlign: 'center', padding: '20px' }}>
+                                    {t('admin.adminDashboard.vouchersTab.table.empty') || "Chưa có chương trình khuyến mãi nào được phát hành."}
                                 </td>
                             </tr>
                         )}

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Sử dụng axios trần để tránh lỗi import đồng bộ
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const PaymentSuccess = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [message, setMessage] = useState("Đang xác nhận kết quả thanh toán...");
+    const [message, setMessage] = useState(t('payment.status.confirming') || "Đang xác nhận kết quả thanh toán...");
     const [isSuccess, setIsSuccess] = useState(false);
     const [processing, setProcessing] = useState(true);
 
@@ -26,7 +28,7 @@ const PaymentSuccess = () => {
 
                 // 1. TRƯỜNG HỢP NGƯỜI DÙNG BẤM HỦY THANH TOÁN (Mã 24)
                 if (responseCode === "24") {
-                    setMessage("Bạn đã hủy bỏ giao dịch thanh toán vé phim.");
+                    setMessage(t('payment.status.canceled') || "Bạn đã hủy bỏ giao dịch thanh toán vé phim.");
                     setIsSuccess(false);
                     setProcessing(false);
                     
@@ -37,7 +39,7 @@ const PaymentSuccess = () => {
 
                 // 2. TRƯỜNG HỢP CÁC LỖI KHÁC TỪ VNPAY (Không phải 00)
                 if (responseCode !== "00") {
-                    setMessage(`Giao dịch thất bại! Mã lỗi hệ thống: VNP_${responseCode}`);
+                    setMessage(t('payment.status.failed', { code: responseCode }) || `Giao dịch thất bại! Mã lỗi hệ thống: VNP_${responseCode}`);
                     setIsSuccess(false);
                     setProcessing(false);
                     localStorage.removeItem("pendingBooking");
@@ -47,7 +49,7 @@ const PaymentSuccess = () => {
                 // 3. TRƯỜNG HỢP THÀNH CÔNG (Mã 00) -> Tiến hành lưu vé vào Database
                 const bookingData = JSON.parse(localStorage.getItem("pendingBooking"));
                 if (!bookingData) {
-                    setMessage("Không tìm thấy thông tin vé phim lưu tạm (Có thể giao dịch đã được xử lý xong).");
+                    setMessage(t('payment.status.noPendingData') || "Không tìm thấy thông tin vé phim lưu tạm (Có thể giao dịch đã được xử lý xong).");
                     setIsSuccess(false);
                     setProcessing(false);
                     return;
@@ -78,12 +80,12 @@ const PaymentSuccess = () => {
                 // Giải phóng bộ nhớ tạm sau khi tạo vé và áp voucher thành công
                 localStorage.removeItem("pendingBooking");
 
-                setMessage("Thanh toán thành công! Vé phim của bạn đã được khởi tạo hệ thống.");
+                setMessage(t('payment.status.success') || "Thanh toán thành công! Vé phim của bạn đã được khởi tạo hệ thống.");
                 setIsSuccess(true);
 
             } catch (err) {
                 console.error("LỖI XỬ LÝ KẾT QUẢ:", err);
-                setMessage(err.response?.data?.message || err.response?.data || "Lỗi hệ thống trong quá trình khởi tạo dữ liệu vé!");
+                setMessage(err.response?.data?.message || err.response?.data || t('payment.status.systemError') || "Lỗi hệ thống trong quá trình khởi tạo dữ liệu vé!");
                 setIsSuccess(false);
             } finally {
                 setProcessing(false);
@@ -92,7 +94,7 @@ const PaymentSuccess = () => {
 
         handlePaymentResult();
         return () => { isCalled = true; };
-    }, [location]);
+    }, [location, t]);
 
     return (
         <div style={{ background: "#0d0d13", color: "#fff", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontFamily: "Arial, sans-serif" }}>
@@ -109,7 +111,7 @@ const PaymentSuccess = () => {
             {/* Nút bấm điều hướng quay trở lại */}
             {!processing && (
                 <button 
-                    onClick={() => navigate('/')} 
+                    onClick={() => navigate(isSuccess ? '/ve-da-dat' : '/')} 
                     style={{ 
                         marginTop: 35, 
                         padding: '12px 35px', 
@@ -126,7 +128,7 @@ const PaymentSuccess = () => {
                     onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
                     onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
                 >
-                    {isSuccess ? "Vào rạp xem vé" : "Quay lại trang chủ"}
+                    {isSuccess ? (t('payment.buttons.viewTicket') || "Vào rạp xem vé") : (t('payment.buttons.backHome') || "Quay lại trang chủ")}
                 </button>
             )}
         </div>

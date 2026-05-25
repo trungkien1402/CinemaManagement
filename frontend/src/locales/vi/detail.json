@@ -1,0 +1,87 @@
+{
+  "detail": {
+    "status": {
+      "loading": "Đang tải thông tin phim...",
+      "notFound": "Không tìm thấy phim yêu cầu."
+    },
+    "buttons": {
+      "share": "Chia Sẻ",
+      "favorite": "Yêu Thích",
+      "liked": "Đã Thích"
+    },
+    "alerts": {
+      "linkCopied": "✅ Đã Copy Link!"
+    },
+    "hero": {
+      "director": "Đạo diễn:"
+    },
+    "synopsis": {
+      "title": "Nội Dung Phim",
+      "defaultText": "Một siêu phẩm điện ảnh đầy kịch tính."
+    },
+    "info": {
+      "genre": "Thể loại:",
+      "cast": "Diễn viên:",
+      "boxTitle": "Thông Tin Phim",
+      "duration": "Thời lượng",
+      "releaseDate": "Khởi Chiếu",
+      "rating": "Đánh Giá",
+      "noRating": "Chưa có",
+      "reviewsCount": "lượt đánh giá"
+    },
+    "trailer": {
+      "title": "Trailer Phim",
+      "updating": "Trailer đang cập nhật..."
+    },
+    "schedule": {
+      "title": "Lịch Chiếu",
+      "filterLabel": "Lọc rạp chiếu:",
+      "selectProvince": "-- Chọn Tỉnh Thành --",
+      "selectProvinceFirst": "Vui lòng chọn tỉnh trước",
+      "noData": "Rất tiếc, phim không có suất chiếu nào vào ngày và rạp đã chọn."
+    },
+    "reviews": {
+      "title": "Bình Luận & Đánh Giá",
+      "loginPrompt": {
+        "text1": "Bạn cần ",
+        "boldText": "Đăng nhập",
+        "text2": " để có thể viết bình luận cho bộ phim này."
+      },
+      "form": {
+        "yourRating": "Đánh giá của bạn ({{name}}):",
+        "placeholder": "Chia sẻ cảm nghĩ của bạn về bộ phim này..."
+      },
+      "ratingLabels": {
+        "excellent": "Tuyệt vời",
+        "veryGood": "Rất hay",
+        "good": "Khá ổn",
+        "fair": "Tạm được",
+        "poor": "Tệ"
+      },
+      "buttons": {
+        "submit": "Gửi Bình Luận",
+        "submitting": "Đang gửi..."
+      },
+      "list": {
+        "empty": "Chưa có bình luận nào. Hãy là người đầu tiên đánh giá phim này!",
+        "anonymous": "Người dùng"
+      },
+      "alerts": {
+        "loginRequired": "Vui lòng đăng nhập để bình luận!",
+        "emptyComment": "Bạn chưa nhập nội dung bình luận kìa!",
+        "submitError": "Lỗi khi đăng bình luận! Xem lại console nhé."
+      }
+    },
+    "quickModal": {
+      "title": "Đặt Vé Nhanh:",
+      "labels": {
+        "selectTheater": "Chọn rạp chiếu:",
+        "selectDate": "Chọn ngày chiếu:",
+        "availableSlots": "Khung giờ trống thực tế:"
+      },
+      "status": {
+        "scanning": "Đang quét lịch phòng chiếu..."
+      }
+    }
+  }
+}

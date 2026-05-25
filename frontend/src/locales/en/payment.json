@@ -1,0 +1,24 @@
+{
+  "payment": {
+    "status": {
+      "confirming": "Confirming payment result...",
+      "canceled": "You have canceled the movie ticket payment transaction.",
+      "failed": "Transaction failed! System error code: VNP_{{code}}",
+      "noPendingData": "Temporary ticket data not found (The transaction might have already been processed).",
+      "success": "Payment successful! Your movie ticket has been initialized in the system.",
+      "systemError": "System error occurred during data initialization!"
+    },
+    "buttons": {
+      "viewTicket": "Go to My Tickets",
+      "backHome": "Back to Home"
+    },
+    "alerts": {
+      "loginRequired": "Please login!",
+      "selectSeat": "Please select at least 1 seat!"
+    },
+    "errors": {
+      "invalidUrl": "Did not receive a valid paymentUrl from Backend!",
+      "initFailed": "Failed to initialize payment transaction!"
+    }
+  }
+}

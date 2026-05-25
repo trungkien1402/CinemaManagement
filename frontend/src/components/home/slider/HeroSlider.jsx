@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; // 💡 1. IMPORT HOOK ĐIỀU HƯỚNG
 import '../../style/HeroSlider.css';
+import { useTranslation } from 'react-i18next';
 
 const HeroSlider = ({ movies }) => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate(); // 💡 2. KHỞI TẠO HOOK NAVIGATE
 
@@ -52,14 +54,14 @@ const HeroSlider = ({ movies }) => {
       {/* Nội dung chữ gọn gàng */}
       <div className="hero-slider-content" key={`content-${movie.movieId}`}>
         <div className="hero-slider-tags">
-          <span className="hero-tag-status">ĐANG CHIẾU</span>
+          <span className="hero-tag-status">{t('home.heroSlider.tags.nowShowing')}</span>
           <span className="hero-tag-rating">★ 8.2</span>
         </div>
 
         <h1 className="hero-movie-title">{movie.title}</h1>
 
         <div className="hero-movie-meta">
-          <span className="meta-item"><i className="far fa-clock"></i> {movie.duration} phút</span>
+          <span className="meta-item"><i className="far fa-clock"></i> {movie.duration} {t('home.heroSlider.meta.minutes')}</span>
           <span className="hero-separator">|</span>
           <span className="meta-item">
             <i className="far fa-calendar-alt"></i> {movie.release_date ? new Date(movie.release_date).getFullYear() : "2026"}
@@ -74,7 +76,7 @@ const HeroSlider = ({ movies }) => {
             className="hero-btn-red"
             onClick={() => handleQuickBooking(movie)}
           >
-            Đặt Vé Ngay
+            {t('home.heroSlider.buttons.bookNow')}
           </button>
 
           {/* 💡 4. ĐÃ GẮN SỰ KIỆN CLICK VÀO NÚT CHI TIẾT */}
@@ -82,7 +84,7 @@ const HeroSlider = ({ movies }) => {
             className="hero-btn-outline"
             onClick={() => handleGoToDetail(movie)}
           >
-            Chi Tiết
+            {t('home.heroSlider.buttons.detail')}
           </button>
         </div>
       </div>

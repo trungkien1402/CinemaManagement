@@ -3,8 +3,10 @@ import '../style/NowShowing.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovie } from '../../store/movieSlice';
 import React, { memo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ComingSoon = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { listMovies, loading } = useSelector((state) => state.movies);
 
@@ -12,7 +14,7 @@ const ComingSoon = () => {
         dispatch(fetchMovie());
     }, [dispatch]);
 
-    if (loading) return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Đang tải phim sắp chiếu...</div>;
+    if (loading) return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>{t('home.comingSoon.status.loading')}</div>;
 
     // Lọc trạng thái status = 2 kèm kiểm tra mảng tránh lỗi crash
     const comingSoon = listMovies ? listMovies.filter(movie => movie.status === 2) : [];
@@ -20,13 +22,13 @@ const ComingSoon = () => {
     return (
         <div className="section-header-nowshowing">
             <h2 className="title-nowshowing">
-                Phim Sắp Chiếu
+                {t('home.comingSoon.title')}
             </h2>
 
             {/* 💡 Đổi tên class thành movie-grid-layout đồng bộ */}
             <div className="movie-grid-layout">
                 {comingSoon.length === 0 ? (
-                    <div style={{ color: '#aaa', padding: '20px' }}>Hiện tại chưa có lịch phim sắp chiếu.</div>
+                    <div style={{ color: '#aaa', padding: '20px' }}>{t('home.comingSoon.status.empty')}</div>
                 ) : (
                     comingSoon.map((movie) => (
                         <MovieCard key={movie.movieId} movie={movie} />

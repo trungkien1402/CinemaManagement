@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style/SectionHeader.css';
+import { useTranslation } from 'react-i18next';
 
 const SectionHeader = ({ title, subtitle, linkTo }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="section-header-container">
       <div className="header-left">
@@ -12,7 +15,7 @@ const SectionHeader = ({ title, subtitle, linkTo }) => {
       
       {linkTo && (
         <Link to={linkTo} className="view-all-link">
-          Xem Tất Cả <span className="arrow-icon">&#10095;</span>  <i className="bi bi-chevron-right"></i>
+          {t('home.shared.sectionHeader.viewAll')} <span className="arrow-icon">&#10095;</span>  <i className="bi bi-chevron-right"></i>
         </Link>
       )}
     </div>

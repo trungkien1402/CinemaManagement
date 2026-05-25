@@ -10,13 +10,15 @@ import MovieTrailer from './MovieTrailer';
 import MovieSchedule from './MovieSchedule';
 // Import custom hook
 import { useMovieData } from './useMovieData'; 
+import { useTranslation } from 'react-i18next';
 
 const MovieDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [isFavorite, setIsFavorite] = useState(false);
-  const [shareText, setShareText] = useState('Chia Sẻ');
+  const [shareText, setShareText] = useState(t('detail.buttons.share') || 'Chia Sẻ');
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviewCount, setTotalReviewCount] = useState(0);
 
@@ -35,7 +37,15 @@ const MovieDetail = () => {
   // TẠO DANH SÁCH 7 NGÀY
   // =========================
   const datesData = useMemo(() => {
-    const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const daysOfWeek = [
+      t('home.schedule.days.sun') || 'Chủ Nhật',
+      t('home.schedule.days.mon') || 'Thứ 2',
+      t('home.schedule.days.tue') || 'Thứ 3',
+      t('home.schedule.days.wed') || 'Thứ 4',
+      t('home.schedule.days.thu') || 'Thứ 5',
+      t('home.schedule.days.fri') || 'Thứ 6',
+      t('home.schedule.days.sat') || 'Thứ 7'
+    ];
     const today = new Date();
     const list = [];
 
@@ -47,13 +57,13 @@ const MovieDetail = () => {
       const mm = String(d.getMonth() + 1).padStart(2, '0');
       const dd = String(d.getDate()).padStart(2, '0');
       list.push({
-        day: i === 0 ? 'Hôm nay' : daysOfWeek[d.getDay()],
+        day: i === 0 ? (t('home.schedule.days.today') || 'Hôm nay') : daysOfWeek[d.getDay()],
         date: `${yyyy}-${mm}-${dd}`,
         label: `${dd}/${mm}`
       });
     }
     return list;
-  }, []);
+  }, [t]);
 
   // Sử dụng Custom Hook để lấy toàn bộ dữ liệu và logic liên quan API
   const {
@@ -77,8 +87,8 @@ const MovieDetail = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl)
       .then(() => {
-        setShareText("✅ Đã Copy Link!");
-        setTimeout(() => setShareText("Chia Sẻ"), 2500);
+        setShareText(t('detail.alerts.linkCopied') || "✅ Đã Copy Link!");
+        setTimeout(() => setShareText(t('detail.buttons.share') || "Chia Sẻ"), 2500);
       })
       .catch(err => console.error("Lỗi copy link:", err));
   };
@@ -87,8 +97,8 @@ const MovieDetail = () => {
     document.getElementById('detail-schedule-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (loading && !movie) return <div className="detail-loading">Đang tải thông tin phim...</div>;
-  if (!movie) return <div className="detail-loading">Không tìm thấy phim yêu cầu.</div>;
+  if (loading && !movie) return <div className="detail-loading">{t('detail.status.loading') || "Đang tải thông tin phim..."}</div>;
+  if (!movie) return <div className="detail-loading">{t('detail.status.notFound') || "Không tìm thấy phim yêu cầu."}</div>;
 
   // =========================
   // PHÂN NHÓM RẠP CHUẨN// =========================
@@ -120,13 +130,13 @@ const MovieDetail = () => {
         <div className="detail-main-layout">
           {/* LEFT CONTENT: SYNOPSIS */}
           <div className="detail-left-info">
-            <h2 className="detail-section-title">Nội Dung Phim</h2>
+            <h2 className="detail-section-title">{t('detail.synopsis.title') || "Nội Dung Phim"}</h2>
             <p className="detail-synopsis">
-              {movie.description || 'Một siêu phẩm điện ảnh đầy kịch tính.'}
+              {movie.description || t('detail.synopsis.defaultText') || 'Một siêu phẩm điện ảnh đầy kịch tính.'}
             </p>
 
             <div className="detail-meta-block">
-              <strong>Thể loại:</strong>
+              <strong>{t('detail.info.genre') || "Thể loại:"}</strong>
               <div className="detail-genre-tags">
                 {movie.genre?.split(',').map((g, idx) => (
                   <span key={idx} className="detail-genre-tag">
@@ -137,31 +147,31 @@ const MovieDetail = () => {
             </div>
 
             <div className="detail-meta-block">
-              <strong>Diễn viên:</strong>
+              <strong>{t('detail.info.cast') || "Diễn viên:"}</strong>
               <p>Trần Bảo Sơn, Ngô Thanh Vân, Hồng Ánh</p>
             </div>
           </div>
 
           {/* RIGHT CONTENT: INFO BOX */}
           <div className="detail-right-box">
-            <h3>Thông Tin Phim</h3>
+            <h3>{t('detail.info.boxTitle') || "Thông Tin Phim"}</h3>
             <div className="right-box-row">
-              <span>Thời lượng</span>
-              <strong>{movie.duration} phút</strong>
+              <span>{t('detail.info.duration') || "Thời lượng"}</span>
+              <strong>{movie.duration} {t('home.schedule.movieMeta.minutes') || "phút"}</strong>
             </div>
             <div className="right-box-row">
-              <span>Khởi Chiếu</span>
+              <span>{t('detail.info.releaseDate') || "Khởi Chiếu"}</span>
               <strong>{movie.releaseDate || "16/05/2026"}</strong>
             </div>
             <div className="right-box-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
               <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <span>Đánh Giá</span>
+                <span>{t('detail.info.rating') || "Đánh Giá"}</span>
                 <strong style={{ color: '#ffc107' }}>
-                  ⭐ {averageRating > 0 ? `${averageRating}/10` : "Chưa có"}
+                  ⭐ {averageRating > 0 ? `${averageRating}/10` : (t('detail.info.noRating') || "Chưa có")}
                 </strong>
               </div>
               {totalReviewCount > 0 && (
-                <span style={{ fontSize: '0.8rem', color: '#888' }}>({totalReviewCount} lượt đánh giá)</span>
+                <span style={{ fontSize: '0.8rem', color: '#888' }}>({totalReviewCount} {t('detail.info.reviewsCount') || "lượt đánh giá"})</span>
               )}
             </div>
           </div>

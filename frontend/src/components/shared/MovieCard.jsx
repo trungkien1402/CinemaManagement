@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/MovieCard.css';
+import { useTranslation } from 'react-i18next';
 
 const MovieCard = ({ movie }) => {
+  const { t } = useTranslation();
   const { title, image, duration, genre, release_date } = movie;
   const year = release_date ? new Date(release_date).getFullYear() : "";
 
@@ -29,13 +31,13 @@ const MovieCard = ({ movie }) => {
         <img src={image || "https://via.placeholder.com/400x600?text=No+Poster"} alt={title} />
 
         <div className="poster-info">
-          <span>{duration} phút</span>
+          <span>{duration} {t('home.heroSlider.meta.minutes')}</span>
           <span>{year}</span>
         </div>
 
         {/* 💡 LỚP PHỦ KÍNH MỜ THANH LỊCH */}
         <div className="poster-overlay">
-          <span className="overlay-text">Xem chi tiết</span>
+          <span className="overlay-text">{t('home.shared.movieCard.viewDetail')}</span>
         </div>
       </div>
 
@@ -45,7 +47,7 @@ const MovieCard = ({ movie }) => {
 
         {movie.status !== 2 && (
           <button className="btn-book" onClick={handleOpenModal}>
-            Đặt vé
+            {t('home.shared.movieCard.bookBtn')}
           </button>
         )}
       </div>
