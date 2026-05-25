@@ -12,7 +12,7 @@
         "detail": "Chi Tiết"
       }
     },
-"nowShowing": {
+    "nowShowing": {
       "title": "Phim Đang Chiếu",
       "subtitle": "Khám phá những siêu phẩm điện ảnh đang làm mưa làm gió tại rạp",
       "status": {
@@ -22,6 +22,7 @@
     },
     "comingSoon": {
       "title": "Phim Sắp Chiếu",
+      "subtitle": "Chờ đón những siêu phẩm điện ảnh bom tấn sắp sửa đổ bộ phòng vé",
       "status": {
         "loading": "Đang tải phim sắp chiếu...",
         "empty": "Hiện tại chưa có lịch phim sắp chiếu."
@@ -82,5 +83,13 @@
         "viewAll": "Xem Tất Cả"
       }
     }
+  },
+  "genres": {
+    "Hành động": "Hành động",
+    "Viễn tưởng": "Viễn tưởng",
+    "Action": "Hành động",
+    "Sci-Fi": "Viễn tưởng",
+    "Hành động, Viễn tưởng": "Hành động, Viễn tưởng",
+    "Action, Sci-Fi": "Hành động, Viễn tưởng"
   }
 }

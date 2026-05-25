@@ -67,7 +67,7 @@ const HeroSlider = ({ movies }) => {
             <i className="far fa-calendar-alt"></i> {movie.release_date ? new Date(movie.release_date).getFullYear() : "2026"}
           </span>
           <span className="hero-separator">|</span>
-          <span className="meta-item">{movie.genre}</span>
+<span className="meta-item">{movie.genre ? movie.genre.split(',').map(g => t(`genres.${g.trim()}`)).join(', ') : ''}</span>
         </div>
 
         <div className="hero-slider-actions">
