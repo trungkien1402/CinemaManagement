@@ -6,7 +6,7 @@ import '../style/AnalyticsTab.css';
 import { useTranslation } from 'react-i18next';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 
-// Đăng ký các element của ChartJS (bắt buộc ở phiên bản mới)
+// Đăng ký các element của ChartJS
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 const AnalyticsTab = ({ analytics }) => {
@@ -41,7 +41,22 @@ const AnalyticsTab = ({ analytics }) => {
 
     // Tự động tính toán số liệu biểu đồ cột dựa trên dữ liệu thật từ API
     const generatedBarChartData = useMemo(() => {
-        const monthsLabels = ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'];
+        // Dùng mảng bọc đa ngôn ngữ t() để dịch các tháng trục X
+        const monthsLabels = [
+            t('admin.adminDashboard.months.m1'), 
+            t('admin.adminDashboard.months.m2'), 
+            t('admin.adminDashboard.months.m3'), 
+            t('admin.adminDashboard.months.m4'), 
+            t('admin.adminDashboard.months.m5'), 
+            t('admin.adminDashboard.months.m6'), 
+            t('admin.adminDashboard.months.m7'), 
+            t('admin.adminDashboard.months.m8'), 
+            t('admin.adminDashboard.months.m9'), 
+            t('admin.adminDashboard.months.m10'), 
+            t('admin.adminDashboard.months.m11'), 
+            t('admin.adminDashboard.months.m12')
+        ];
+        
         const revenueValues = Array(12).fill(0);
 
         if (analytics?.monthlyData) {
@@ -54,7 +69,7 @@ const AnalyticsTab = ({ analytics }) => {
         return {
             labels: monthsLabels,
             datasets: [{
-                label: t('admin.adminDashboard.analyticsTab.revenueLabel') || 'Doanh thu (đ)',
+                label: t('admin.adminDashboard.analyticsTab.revenueLabel') || 'Doanh thu (VND)',
                 data: revenueValues,
                 backgroundColor: '#26dc78', 
                 hoverBackgroundColor: '#1a9664', 
@@ -95,7 +110,7 @@ const AnalyticsTab = ({ analytics }) => {
     return (
         <div className="antab-container tab-view">
             <h2 className="antab-main-title tab-title">
-                {t('Overview Analysis Report') || "Báo Cáo Phân Tích Tổng Quan"}
+                {t('admin.adminDashboard.analyticsTab.overviewAnalysisReport') || "Báo Cáo Phân Tích Tổng Quan"}
             </h2>
             
             {/* Hàng chứa các thẻ metric */}
@@ -149,7 +164,8 @@ const AnalyticsTab = ({ analytics }) => {
                 {/* Biểu đồ cột */}
                 <div className="antab-chart-wrapper chart-wrapper">
                     <h5 className="antab-chart-title">
-                        📈 {t('Monthly sales statistics (Year 2026)') || "Thống kê doanh số theo tháng (Năm 2026)"}
+                        {/* Đã sửa lại key gọi title biểu đồ chuẩn chỉ khớp JSON */}
+                        📈 {t('admin.adminDashboard.analyticsTab.monthlyChartTitle') || "Thống kê doanh số theo tháng (Năm 2026)"}
                     </h5>
                     <div className="antab-chart-render-box" style={{ flex: 1, position: 'relative', width: '100%', height: '100%' }}>
                         <Bar data={generatedBarChartData} options={chartOptions} />

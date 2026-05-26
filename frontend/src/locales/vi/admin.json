@@ -1,211 +1,126 @@
 {
+  "auth": {
+    "authModal": {
+      "tabs": { "login": "ĐĂNG NHẬP", "register": "ĐĂNG KÝ" },
+      "form": {
+        "placeholders": { "email": "Địa chỉ Email", "password": "Mật khẩu", "username": "Tên hiển thị", "phone": "Số điện thoại", "otp": "Mã xác thực OTP" },
+        "options": { "gender": { "male": "Nam", "female": "Nữ" } },
+        "buttons": { "login": "ĐĂNG NHẬP", "processing": "ĐANG XỬ LÝ...", "continue": "TIẾP TỤC", "sendingOtp": "ĐANG GỬI OTP...", "confirm": "XÁC NHẬN", "back": "Quay lại" }
+      },
+      "alerts": { "loginSuccess": "Đăng nhập thành công!", "loginFail": "Sai Email hoặc Mật khẩu!", "failPrefix": "Thất bại: ", "otpSent": "Mã OTP đã được gửi đến email của bạn!", "errorPrefix": "Lỗi: ", "otpInvalid": "Mã OTP không chính xác!" }
+    },
+    "seat": {
+      "status": { "loading": "Đang tải sơ đồ ghế..." },
+      "screen": "MÀN HÌNH CHÍNH",
+      "legend": { "standard": "Thường (30K)", "vip": "VIP (50K)", "double": "Ghế đôi (100K)", "selecting": "Đang chọn", "sold": "Đã bán" },
+      "info": { "showtimeId": "Mã suất chiếu:", "selectedSeats": "Ghế đã chọn:", "none": "Chưa chọn", "seatCount": "Số lượng ghế:", "totalAmount": "Tổng tiền:" },
+      "buttons": { "pay": "THANH TOÁN VNPAY", "processing": "ĐANG CHUYỂN THANH TOÁN..." },
+      "voucher": { "title": "Ưu đãi & Mã giảm giá", "placeholder": "Nhập mã giảm giá của bạn...", "buttons": { "apply": "Áp dụng" } }
+    },
+    "history": {
+      "alerts": { "loginRequired": "Vui lòng đăng nhập để xem lịch sử!" },
+      "status": { "loading": "Đang tải lịch sử đặt vé..." },
+      "title": "LỊCH SỬ ĐẶT VÉ CỦA BẠN",
+      "empty": { "message": "Bạn chưa đặt bất kỳ vé xem phim nào!", "button": "Đặt vé ngay" },
+      "card": { "ticketId": "Mã Vé:", "bookingDate": "Ngày đặt:", "showtimeId": "Suất chiếu ID:", "movie": "Phim:", "seat": "Ghế số:", "paid": "ĐÃ THANH TOÁN" }
+    }
+  },
+  "home": {
+    "heroSlider": { "tags": { "nowShowing": "ĐANG CHIẾU" }, "meta": { "minutes": "phút" }, "buttons": { "bookNow": "Đặt Vé Ngay", "detail": "Chi Tiết" } },
+    "nowShowing": { "title": "Phim Đang Chiếu", "subtitle": "Khám phá những siêu phẩm điện ảnh đang làm mưa làm gió tại rạp", "status": { "loading": "Đang tải phim đang chiếu...", "empty": "Hiện tại chưa có lịch phim đang chiếu." } },
+    "comingSoon": { "title": "Phim Sắp Chiếu", "subtitle": "Chờ đón những siêu phẩm điện ảnh bom tấn sắp sửa đổ bộ phòng vé", "status": { "loading": "Đang tải phim sắp chiếu...", "empty": "Hiện tại chưa có lịch phim sắp chiếu." } },
+    "schedule": {
+      "title": "Lịch Chiếu", "subtitle": "Chọn rạp và ngày để xem lịch chiếu",
+      "days": { "today": "Hôm nay", "sun": "Chủ Nhật", "mon": "Thứ 2", "tue": "Thứ 3", "wed": "Thứ 4", "thu": "Thứ 5", "fri": "Thứ 6", "sat": "Thứ 7" },
+      "filters": { "allTheaters": "Tất Cả Rạp", "cityLabel": "Chọn Tỉnh/Thành", "allCities": "Tất cả Tỉnh/Thành", "theaterLabel": "Chọn Rạp", "dateLabel": "Chọn Ngày" },
+      "movieMeta": { "minutes": "phút" },
+      "status": { "loading": "Đang tải lịch chiếu từ hệ thống...", "noData": "Rất tiếc, không có lịch chiếu nào phù hợp cho ngày này." }
+    },
+    "news": { "hero": { "title": "TIN TỨC ĐIỆN ẢNH", "subtitle": "Cập nhật phim mới, trailer, review và thế giới điện ảnh" }, "status": { "loading": "Đang tải tin tức..." }, "buttons": { "readMore": "Xem chi tiết →" } },
+    "shared": { "cinemaFilter": { "label": "Chọn Rạp" }, "dateFilter": { "label": "Chọn Ngày" }, "movieCard": { "viewDetail": "Xem chi tiết", "bookBtn": "Đặt vé" }, "sectionHeader": { "viewAll": "Xem Tất Cả" } }
+  },
+  "genres": {
+    "Hành động": "Hành động", "Viễn tưởng": "Viễn tưởng", "Action": "Hành động", "Sci-Fi": "Viễn tưởng", "Hành động, Viễn tưởng": "Hành động, Viễn tưởng", "Action, Sci-Fi": "Hành động, Viễn tưởng"
+  },
   "admin": {
     "adminDashboard": {
-      "tabs": {
-        "analytics": "Tổng quan",
-        "movies": "Quản lý phim",
-        "theaters": "Cấu hình Phòng & Ghế",
-        "showtimes": "Quản lý lịch chiếu",
-        "bookings": "Lịch sử hóa đơn",
-        "vouchers": "Khuyến mãi Voucher",
-        "qrcodeCheckin": "Quét vé QR",
-        "backToHome": "Về trang chủ"
-      },
+      "tabs": { "analytics": "Tổng quan", "movies": "Quản lý phim", "theaters": "Cấu hình Phòng & Ghế", "showtimes": "Quản lý lịch chiếu", "bookings": "Lịch sử hóa đơn", "vouchers": "Khuyến mãi Voucher", "qrcodeCheckin": "Quét vé QR", "backToHome": "Về trang chủ" },
       "analyticsTab": {
-        "title": "Báo cáo phân tích tài chính",
-        "totalRevenue": "TỔNG DOANH THU HỆ THỐNG",
-        "totalTickets": "TỔNG SỐ VÉ ĐÃ BÁN",
-        "ticketUnit": "Vé",
-        "monthlyChartTitle": "Thống kê doanh thu theo tháng (Năm 2026)",
-        "movieChartTitle": "Thị phần doanh thu theo phim",
-        "emptyText": "Chưa ghi nhận dữ liệu phim nào",
-        "revenueLabel": "Doanh thu (VND)",
-        "registeredUsers": "NGƯỜI DÙNG ĐĂNG KÝ",
-        "totalMoviesManaged": "TỔNG SỐ PHIM QUẢN LÝ",
-        "movieUnit": "Phim",
-        "userUnit": "Thành viên"
-        
+        "title": "Báo cáo phân tích tài chính", "overviewAnalysisReport": "Báo Cáo Phân Tích Tổng Quan", "totalRevenue": "TỔNG DOANH THU HỆ THỐNG", "totalTickets": "TỔNG SỐ VÉ ĐÃ BÁN", "ticketUnit": "Vé", "monthlyChartTitle": "Thống kê doanh thu theo tháng (Năm 2026)", "movieChartTitle": "Thị phần doanh thu theo phim", "emptyText": "Chưa ghi nhận dữ liệu phim nào", "revenueLabel": "Doanh thu (VND)", "registeredUsers": "NGƯỜI DÙNG ĐĂNG KÝ", "totalMoviesManaged": "TỔNG SỐ PHIM QUẢN LÝ", "movieUnit": "Phim", "userUnit": "Thành viên"
       },
       "bookingsTab": {
-        "title": "Nhật ký giao dịch đặt vé toàn hệ thống",
-        "anonymous": "Ẩn danh",
-        "empty": "Hiện tại chưa có dữ liệu giao dịch đặt vé nào!",
-        "table": {
-          "ticketId": "Mã hóa đơn",
-          "username": "Tài khoản",
-          "movieTitle": "Tên phim",
-          "seats": "Số ghế",
-          "price": "Giá vé",
-          "date": "Ngày đặt",
-          "status": "Trạng thái"
-        }
+        "title": "Nhật ký giao dịch đặt vé toàn hệ thống", "anonymous": "Ẩn danh", "empty": "Hiện tại chưa có dữ liệu giao dịch đặt vé nào!",
+        "table": { "ticketId": "Mã hóa đơn", "username": "Tài khoản", "movieTitle": "Tên phim", "seats": "Số ghế", "price": "Giá vé", "date": "Ngày đặt", "status": "Trạng thái" }
       },
       "moviesTab": {
         "title": "Kho lưu trữ phim chiếu rạp",
         "form": {
-          "placeholders": {
-            "title": "Tên bộ phim",
-            "genre": "Thể loại (Hành động, Tình cảm...)",
-            "duration": "Thời lượng (Phút)",
-            "author": "Đạo diễn / Tác giả",
-            "image": "URL Ảnh Poster Phim",
-            "trailerUrl": "URL Video Trailer YouTube",
-            "description": "Tóm tắt nội dung phim...",
-            "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)"
-          },
+          "placeholders": { "title": "Tên bộ phim", "genre": "Thể loại (Hành động, Tình cảm...)", "duration": "Thời lượng (Phút)", "author": "Đạo diễn / Tác giả", "image": "URL Ảnh Poster Phim", "trailerUrl": "URL Video Trailer YouTube", "description": "Tóm tắt nội dung phim...", "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)" },
           "options": {
-            "formats": {
-              "2d": "Định dạng 2D",
-              "3d": "Định dạng 3D",
-              "imax": "Định dạng IMAX"
-            },
-            "age": {
-              "p": "P - Mọi lứa tuổi",
-              "t13": "T13 - Trên 13 tuổi",
-              "t16": "T16 - Trên 16 tuổi",
-              "t18": "T18 - Giới hạn 18+"
-            },
-            "status": {
-              "upcoming": "Trạng thái: Sắp chiếu",
-              "showing": "Trạng thái: Đang chiếu",
-              "stopped": "Trạng thái: Đã dừng chiếu"
-            }
+            "formats": { "2d": "Định dạng 2D", "3d": "Định dạng 3D", "imax": "Định dạng IMAX" },
+            "age": { "p": "P - Mọi lứa tuổi", "t13": "T13 - Trên 13 tuổi", "t16": "T16 - Trên 16 tuổi", "t18": "T18 - Giới hạn 18+" },
+            "status": { "upcoming": "Trạng thái: Sắp chiếu", "showing": "Trạng thái: Đang chiếu", "stopped": "Trạng thái: Đã dừng chiếu" }
           },
-          "buttons": {
-            "create": "Thêm phim mới",
-            "update": "Cập nhật thông tin phim"
-          }
+          "buttons": { "create": "Thêm phim mới", "update": "Cập nhật thông tin phim" }
         },
-        "table": {
-          "movieId": "Mã phim",
-          "image": "Poster",
-          "title": "Tên phim",
-          "format": "Định dạng",
-          "age": "Giới hạn tuổi",
-          "status": "Trạng thái",
-          "actions": "Hành động",
-          "editBtn": "Sửa",
-          "deleteBtn": "Xóa"
-        }
+        "table": { "movieId": "Mã phim", "image": "Poster", "title": "Tên phim", "format": "Định dạng", "age": "Giới hạn tuổi", "status": "Trạng thái", "actions": "Hành động", "editBtn": "Sửa", "deleteBtn": "Xóa" }
       },
       "qrcodeCheckinTab": {
         "title": "Cổng soát vé tự động (QR Gate)",
-        "manualBox": {
-          "divider": "HOẶC NHẬP MÃ VÉ THỦ CÔNG",
-          "placeholder": "Nhập mã vé (Ví dụ: 20)",
-          "button": "Xác nhận vào cổng"
-        }
+        "manualBox": { "divider": "HOẶC NHẬP MÃ VÉ THỦ CÔNG", "placeholder": "Nhập mã vé (Ví dụ: 20)", "button": "Xác nhận vào cổng" }
       },
       "showtimesTab": {
         "title": "Cấu hình lịch chiếu phim rạp",
         "form": {
-          "steps": {
-            "step1": "-- Bước 1: Chọn phim chiếu --",
-            "step2": "-- Bước 2: Chọn cụm rạp --",
-            "step3": "-- Bước 3: Chọn phòng chiếu --"
-          },
-          "placeholders": {
-            "price": "Giá vé cơ sở (VND)"
-          },
-          "buttons": {
-            "submit": "Xuất bản lịch chiếu phim"
-          }
+          "steps": { "step1": "-- Bước 1: Chọn phim chiếu --", "step2": "-- Bước 2: Chọn cụm rạp --", "step3": "-- Bước 3: Chọn phòng chiếu --" },
+          "placeholders": { "price": "Giá vé cơ sở (VND)" },
+          "buttons": { "submit": "Xuất bản lịch chiếu phim" }
         },
-        "search": {
-          "label": "Tìm kiếm lịch chiếu:",
-          "placeholder": "Nhập tên phim, mã lịch chiếu, phòng, hoặc ngày (YYYY-MM-DD)...",
-          "clearBtn": "Xóa bộ lọc"
-        },
-        "table": {
-          "showtimeId": "Mã lịch chiếu",
-          "movieTitle": "Tên bộ phim",
-          "roomNumber": "Phòng chiếu",
-          "showDate": "Ngày chiếu",
-          "startTime": "Giờ bắt đầu",
-          "ticketPrice": "Giá niêm yết",
-          "emptyText": "Không tìm thấy lịch chiếu nào khớp với từ khóa \"{{term}}\""
-        }
+        "search": { "label": "Tìm kiếm lịch chiếu:", "placeholder": "Nhập tên phim, mã lịch chiếu, phòng, hoặc ngày (YYYY-MM-DD)...", "clearBtn": "Xóa bộ lọc" },
+        "table": { "showtimeId": "Mã lịch chiếu", "movieTitle": "Tên bộ phim", "roomNumber": "Phòng chiếu", "showDate": "Ngày chiếu", "startTime": "Giờ bắt đầu", "ticketPrice": "Giá niêm yết", "emptyText": "Không tìm thấy lịch chiếu nào khớp với từ khóa \"{{term}}\"" }
       },
       "theatersTab": {
         "title": "Hệ thống cơ sở hạ tầng rạp",
-        "addTheaterTitle": "Thêm cụm rạp mới vào hệ thống",
+        "addTheater": {
+          "title": "Thêm cụm rạp mới vào hệ thống",
+          "labels": { "cinemaId": "Mã Rạp (VD: T01):", "cinemaName": "Tên Rạp:", "city": "Thành Phố:", "address": "Địa Chỉ Chi Tiết:", "hotline": "Hotline Rạp:" },
+          "placeholders": { "cinemaId": "Viết liền không dấu", "cinemaName": "VD: CGV Nguyễn Trãi", "city": "VD: Đà Nẵng", "address": "Số nhà, Tên đường...", "hotline": "Số điện thoại" },
+          "buttons": { "save": "Lưu Cụm Rạp" }
+        },
         "leftPanel": {
-          "title": "Chọn vị trí cụm rạp",
-          "selectTheaterPlaceholder": "-- Chọn rạp chiếu từ danh sách --",
+          "title": "Bước 1 - Chọn cụm rạp mục tiêu:",
+          "selectTheaterPlaceholder": "-- Click chọn rạp chiếu --",
           "formTitle": "Thêm phòng chiếu mới & Tự động sinh ghế",
-          "placeholders": {
-            "roomId": "Mã phòng (Ví dụ: P01_CINEMA_A)",
-            "roomNumber": "Tên phòng hiển thị (Ví dụ: Phòng số 1)"
-          },
-          "labels": {
-            "rowsCount": "Số hàng ghế vật lý (A-Z):",
-            "colsCount": "Số ghế trên mỗi hàng:"
-          },
-          "buttons": {
-            "submit": "Khởi tạo & Cấu hình sơ đồ ghế"
-          }
+          "placeholders": { "roomId": "Mã phòng độc lập (VD: P1, P2):", "roomIdPlaceholder": "Tối đa 3 chữ", "roomNumber": "Tên hiển thị phòng:", "roomNumberPlaceholder": "VD: Phòng Chiếu IMAX 01" },
+          "labels": { "rowsCount": "Số hàng dọc (A-Z):", "colsCount": "Số cột ngang (1-30):" },
+          "buttons": { "loading": "Đang tạo...", "submit": "Tạo Sơ Đồ Phòng Cho Rạp" }
         },
         "rightPanel": {
-          "title": "Sơ đồ thiết kế vị trí ghế vật lý",
-          "selectRoomPlaceholder": "-- Chọn phòng chiếu để hiển thị sơ đồ --",
+          "title": "TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG",
+          "selectRoomPlaceholder": "Chọn phòng xem sơ đồ:",
+          "selectRoomOptionNone": "-- Chọn phòng --",
           "seatUnit": "ghế",
-          "screenBar": "MÀN HÌNH CHIẾU PHIM",
-          "seatTitle": {
-            "code": "Mã số ghế",
-            "hint": "Click để Bật/Tắt khóa bảo trì ghế"
-          },
-          "legends": {
-            "normal": "Ghế thường",
-            "vip": "Ghế VIP",
-            "locked": "Đang bảo trì (Khóa)"
-          }
+          "screenBar": "MÀN HÌNH CHÍNH TẠI PHÒNG",
+          "hintText": "✓ Click tự do vào từng ghế để đổi loại cấu trúc (Thường ➔ VIP ➔ Đôi)",
+          "seatTitle": { "code": "Mã", "hint": "Click để Bật/Tắt khóa bảo trì ghế" },
+          "legends": { "normal": "Ghế thường", "vip": "Ghế VIP", "locked": "Ghế đôi / Bảo trì" }
         }
       },
       "vouchersTab": {
         "title": "Cấu trúc chương trình khuyến mãi Voucher",
         "form": {
-          "labels": {
-            "voucherCode": "Mã Giảm Giá",
-            "discountType": "Loại Khuyến Mãi",
-            "discountPercent": "Mức Giảm giá (%)",
-            "maxUses": "Số Lượt Sử Dụng",
-            "expiryDate": "Ngày Hết Hạn",
-            "discountValue": "Mức Giảm Giá"
-          },
-          "options": {
-            "percent": "Giảm theo phần trăm (%)",
-            "cash": "Giảm theo số tiền (VND)"
-          },
-          "placeholders": {
-            "voucherCode": "Mã khuyến mãi (Ví dụ: MOVIE2026)",
-            "discountPercent": "Tỷ lệ giảm giá (%)",
-            "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)"
-          },
-          "buttons": {
-            "submit": "Phát hành mã giảm giá"
-          }
+          "labels": { "voucherCode": "Mã Giảm Giá", "discountType": "Loại Khuyến Mãi", "discountPercent": "Mức Giảm giá (%)", "maxUses": "Số Lượt Sử Dụng", "expiryDate": "Ngày Hết Hạn", "discountValue": "Mức Giảm Giá" },
+          "options": { "percent": "Giảm theo phần trăm (%)", "cash": "Giảm theo số tiền (VND)" },
+          "placeholders": { "voucherCode": "Mã khuyến mãi (Ví dụ: MOVIE2026)", "discountPercent": "Tỷ lệ giảm giá (%)", "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)" },
+          "buttons": { "submit": "Phát hành mã giảm giá" }
         },
         "table": {
-          "empty": "Hiện tại hệ thống chưa phát hành mã voucher nào!",
-          "maxUses": "Số lượt sử dụng tối đa",
-          "MAXUSES": "SỐ LƯỢT SỬ DỤNG TỐI ĐA",
-          "voucherCode": "Mã Voucher",
-          "discountPercent": "Tỷ lệ giảm giá",
-          "expiryDate": "Ngày hết hạn",
-          "actions": "Hành động",
-          "deleteBtn": "Xóa bỏ"
+          "empty": "Hiện tại hệ thống chưa phát hành mã voucher nào!", "maxUses": "Số lượt sử dụng tối đa", "MAXUSES": "SỐ LƯỢT SỬ DỤNG TỐI ĐA", "voucherCode": "Mã Voucher", "discountPercent": "Tỷ lệ giảm giá", "expiryDate": "Ngày hết hạn", "actions": "Hành động", "deleteBtn": "Xóa bỏ"
         }
       },
-      "status": {
-        "loading": "Đang tải dữ liệu hệ thống..."
-      },
-      "charts": {
-        "revenueLabel": "Doanh thu (VND)"
-      },
-      "months": {
-        "m1": "Thg 1", "m2": "Thg 2", "m3": "Thg 3", "m4": "Thg 4", "m5": "Thg 5", "m6": "Thg 6",
-        "m7": "Thg 7", "m8": "Thg 8", "m9": "Thg 9", "m10": "Thg 10", "m11": "Thg 11", "m12": "Thg 12"
-      },
+      "status": { "loading": "Đang tải dữ liệu hệ thống..." },
+      "charts": { "revenueLabel": "Doanh thu (VND)" },
+      "months": { "m1": "Thg 1", "m2": "Thg 2", "m3": "Thg 3", "m4": "Thg 4", "m5": "Thg 5", "m6": "Thg 6", "m7": "Thg 7", "m8": "Thg 8", "m9": "Thg 9", "m10": "Thg 10", "m11": "Thg 11", "m12": "Thg 12" },
       "alerts": {
         "requireTicketId": "Vui lòng nhập Mã vé!",
         "checkinSuccess": "Xác nhận soát vé thành công cho mã",
@@ -218,9 +133,12 @@
         "movieDeleteSuccess": "Xóa phim thành công!",
         "movieDeleteFail": "Lỗi hệ thống: Phim đã lên lịch chiếu không thể xóa!",
         "requireTheaterForRoom": "Vui lòng chọn cụm rạp để thêm phòng!",
+        "roomIdTooLong": "Mã phòng nhập ngắn gọn (VD: P1, P2) để tối ưu hóa bộ nhớ!",
+        "theaterCreateSuccess": "Đã lưu cụm rạp \"{{name}}\"!",
+        "theaterCreateError": "Lỗi thêm cụm rạp!",
         "roomCreateSuccess": "Tạo phòng và tự động sinh ma trận ghế thành công!",
         "roomError": "Lỗi khởi tạo phòng: ",
-        "seatError": "Lỗi khi chuyển đổi trạng thái bảo trì ghế!",
+        "seatError": "Lỗi khi chuyển đổi trạng thái bảo trì hoặc loại ghế!",
         "showtimeCreateSuccess": "Lên lịch trình suất chiếu thành công!",
         "showtimeError": "Lỗi tạo lịch chiếu: ",
         "voucherCreateSuccess": "Phát hành mã quà tặng voucher thành công!",

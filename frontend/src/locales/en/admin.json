@@ -1,208 +1,126 @@
 {
+  "auth": {
+    "authModal": {
+      "tabs": { "login": "LOGIN", "register": "REGISTER" },
+      "form": {
+        "placeholders": { "email": "Email Address", "password": "Password", "username": "Display Name", "phone": "Phone Number", "otp": "OTP Verification Code" },
+        "options": { "gender": { "male": "Male", "female": "Female" } },
+        "buttons": { "login": "LOGIN", "processing": "PROCESSING...", "continue": "CONTINUE", "sendingOtp": "SENDING OTP...", "confirm": "CONFIRM", "back": "Back" }
+      },
+      "alerts": { "loginSuccess": "Login successful!", "loginFail": "Invalid Email or Password!", "failPrefix": "Failed: ", "otpSent": "OTP code has been sent to your email!", "errorPrefix": "Error: ", "otpInvalid": "Invalid OTP code!" }
+    },
+    "seat": {
+      "status": { "loading": "Loading seat map..." },
+      "screen": "MAIN SCREEN",
+      "legend": { "standard": "Standard (30K)", "vip": "VIP (50K)", "double": "Double Seat (100K)", "selecting": "Selecting", "sold": "Sold" },
+      "info": { "showtimeId": "Showtime ID:", "selectedSeats": "Selected Seats:", "none": "None", "seatCount": "Seat Count:", "totalAmount": "Total Amount:" },
+      "buttons": { "pay": "PAY WITH VNPAY", "processing": "REDIRECTING TO PAYMENT..." },
+      "voucher": { "title": "Promotions & Discounts", "placeholder": "Enter your promo code...", "buttons": { "apply": "Apply" } }
+    },
+    "history": {
+      "alerts": { "loginRequired": "Please login to view history!" },
+      "status": { "loading": "Loading booking history..." },
+      "title": "YOUR BOOKING HISTORY",
+      "empty": { "message": "You haven't booked any movie tickets yet!", "button": "Book Tickets Now" },
+      "card": { "ticketId": "Ticket ID:", "bookingDate": "Booking Date:", "showtimeId": "Showtime ID:", "movie": "Movie:", "seat": "Seats:", "paid": "PAID" }
+    }
+  },
+  "home": {
+    "heroSlider": { "tags": { "nowShowing": "NOW SHOWING" }, "meta": { "minutes": "mins" }, "buttons": { "bookNow": "Book Now", "detail": "Detail" } },
+    "nowShowing": { "title": "Now Showing", "subtitle": "Discover the blockbuster movies hitting theaters right now", "status": { "loading": "Loading current movies...", "empty": "There are currently no showtimes for now showing movies." } },
+    "comingSoon": { "title": "Coming Soon", "subtitle": "Anticipate the massive cinematic projects about to hit the box office", "status": { "loading": "Loading upcoming movies...", "empty": "There are currently no showtimes for upcoming movies." } },
+    "schedule": {
+      "title": "Showtimes", "subtitle": "Select a theater and date to view showtimes",
+      "days": { "today": "Today", "sun": "Sunday", "mon": "Monday", "tue": "Tuesday", "wed": "Wednesday", "thu": "Thursday", "fri": "Friday", "sat": "Saturday" },
+      "filters": { "allTheaters": "All Theaters", "cityLabel": "Select Location", "allCities": "All Locations", "theaterLabel": "Select Theater", "dateLabel": "Select Date" },
+      "movieMeta": { "minutes": "mins" },
+      "status": { "loading": "Loading showtimes from system...", "noData": "Sorry, no showtimes available for this date." }
+    },
+    "news": { "hero": { "title": "CINEMA NEWS", "subtitle": "Update new movies, trailers, reviews and the cinematic world" }, "status": { "loading": "Loading news..." }, "buttons": { "readMore": "Read More →" } },
+    "shared": { "cinemaFilter": { "label": "Select Theater" }, "dateFilter": { "label": "Select Date" }, "movieCard": { "viewDetail": "View Detail", "bookBtn": "Book Now" }, "sectionHeader": { "viewAll": "View All" } }
+  },
+  "genres": {
+    "Hành động": "Action", "Viễn tưởng": "Sci-Fi", "Action": "Action", "Sci-Fi": "Sci-Fi", "Hành động, Viễn tưởng": "Action, Sci-Fi", "Action, Sci-Fi": "Action, Sci-Fi"
+  },
   "admin": {
     "adminDashboard": {
-      "tabs": {
-        "analytics": "Overview",
-        "movies": "Manage Movies",
-        "theaters": "Room & Seat Setup",
-        "showtimes": "Manage Showtimes",
-        "bookings": "Invoice Logs",
-        "vouchers": "Voucher Promos",
-        "qrcodeCheckin": "QR Ticket Check-in",
-        "backToHome": "Back to Home"
-      },
+      "tabs": { "analytics": "Overview", "movies": "Manage Movies", "theaters": "Room & Seat Setup", "showtimes": "Manage Showtimes", "bookings": "Invoice Logs", "vouchers": "Voucher Promos", "qrcodeCheckin": "QR Ticket Check-in", "backToHome": "Back to Home" },
       "analyticsTab": {
-        "title": "Financial Analytics Report",
-        "totalRevenue": "TOTAL SYSTEM REVENUE",
-        "totalTickets": "TOTAL TICKETS SOLD",
-        "ticketUnit": "Tickets",
-        "monthlyChartTitle": "Monthly Revenue Statistics (Year 2026)",
-        "movieChartTitle": "Revenue Market Share by Movie",
-        "emptyText": "No movie data recorded yet",
-        "revenueLabel": "Revenue (VND)",
-        "registeredUsers": "REGISTERED USERS",
-        "totalMoviesManaged": "TOTAL MOVIES MANAGED"
+        "title": "Financial Analytics Report", "overviewAnalysisReport": "Overview Analysis Report", "totalRevenue": "TOTAL SYSTEM REVENUE", "totalTickets": "TOTAL TICKETS SOLD", "ticketUnit": "Tickets", "monthlyChartTitle": "Monthly Revenue Statistics (Year 2026)", "movieChartTitle": "Revenue Market Share by Movie", "emptyText": "No movie data recorded yet", "revenueLabel": "Revenue (VND)", "registeredUsers": "REGISTERED USERS", "totalMoviesManaged": "TOTAL MOVIES MANAGED", "movieUnit": "Movies", "userUnit": "Members"
       },
       "bookingsTab": {
-        "title": "System-Wide Ticket Booking Transaction Logs",
-        "anonymous": "Anonymous",
-        "empty": "No ticket booking transaction logs found!",
-        "table": {
-          "ticketId": "Invoice Code",
-          "username": "Account",
-          "movieTitle": "Movie Title",
-          "seats": "Seat No",
-          "price": "Price",
-          "date": "Booking Date",
-          "status": "Status"
-        }
+        "title": "System-Wide Ticket Booking Transaction Logs", "anonymous": "Anonymous", "empty": "No ticket booking transaction logs found!",
+        "table": { "ticketId": "Invoice Code", "username": "Account", "movieTitle": "Movie Title", "seats": "Seat No", "price": "Price", "date": "Booking Date", "status": "Status" }
       },
       "moviesTab": {
         "title": "Cinema Movie Repository",
         "form": {
-          "placeholders": {
-            "title": "Movie Title",
-            "genre": "Genre (Action, Romance...)",
-            "duration": "Duration (Minutes)",
-            "author": "Director / Author",
-            "image": "Poster Image URL",
-            "trailerUrl": "YouTube Trailer URL",
-            "description": "Plot Summary...",
-            "maxUses": "Enter issue quantity (e.g., 100)"
-          },
+          "placeholders": { "title": "Movie Title", "genre": "Genre (Action, Romance...)", "duration": "Duration (Minutes)", "author": "Director / Author", "image": "Poster Image URL", "trailerUrl": "YouTube Trailer URL", "description": "Plot Summary...", "maxUses": "Enter issue quantity (e.g., 100)" },
           "options": {
-            "formats": {
-              "2d": "2D Format",
-              "3d": "3D Format",
-              "imax": "IMAX Format"
-            },
-            "age": {
-              "p": "P - General Audiences",
-              "t13": "T13 - Over 13 years old",
-              "t16": "T16 - Over 16 years old",
-              "t18": "T18 - Restricted 18+"
-            },
-            "status": {
-              "upcoming": "Status: Upcoming",
-              "showing": "Status: Now Showing",
-              "stopped": "Status: Ended"
-            }
+            "formats": { "2d": "2D Format", "3d": "3D Format", "imax": "IMAX Format" },
+            "age": { "p": "P - General Audiences", "t13": "T13 - Over 13 years old", "t16": "T16 - Over 16 years old", "t18": "T18 - Restricted 18+" },
+            "status": { "upcoming": "Status: Upcoming", "showing": "Status: Now Showing", "stopped": "Status: Ended" }
           },
-          "buttons": {
-            "create": "Add New Movie",
-            "update": "Update Movie"
-          }
+          "buttons": { "create": "Add New Movie", "update": "Update Movie" }
         },
-        "table": {
-          "movieId": "Movie ID",
-          "image": "Poster",
-          "title": "Title",
-          "format": "Format",
-          "age": "Rating",
-          "status": "Status",
-          "actions": "Actions",
-          "editBtn": "Edit",
-          "deleteBtn": "Delete"
-        }
+        "table": { "movieId": "Movie ID", "image": "Poster", "title": "Title", "format": "Format", "age": "Rating", "status": "Status", "actions": "Actions", "editBtn": "Edit", "deleteBtn": "Delete" }
       },
       "qrcodeCheckinTab": {
         "title": "Automated Ticket Gate (QR Gate)",
-        "manualBox": {
-          "divider": "OR ENTER TICKET ID MANUALLY",
-          "placeholder": "Enter Ticket ID (e.g., 20)",
-          "button": "Confirm Admission"
-        }
+        "manualBox": { "divider": "OR ENTER TICKET ID MANUALLY", "placeholder": "Enter Ticket ID (e.g., 20)", "button": "Confirm Admission" }
       },
       "showtimesTab": {
         "title": "Movie Showtime Scheduling Configuration",
         "form": {
-          "steps": {
-            "step1": "-- Step 1: Select Movie --",
-            "step2": "-- Step 2: Select Cinema Complex --",
-            "step3": "-- Step 3: Select Screen Room --"
-          },
-          "placeholders": {
-            "price": "Ticket Base Price (VND)"
-          },
-          "buttons": {
-            "submit": "Publish Showtime Schedule"
-          }
+          "steps": { "step1": "-- Step 1: Select Movie --", "step2": "-- Step 2: Select Cinema Complex --", "step3": "-- Step 3: Select Screen Room --" },
+          "placeholders": { "price": "Ticket Base Price (VND)" },
+          "buttons": { "submit": "Publish Showtime Schedule" }
         },
-        "search": {
-          "label": "Search showtimes:",
-          "placeholder": "Enter movie title, showtime ID, room, or date (YYYY-MM-DD)...",
-          "clearBtn": "Clear filter"
-        },
-        "table": {
-          "showtimeId": "Showtime ID",
-          "movieTitle": "Movie Title",
-          "roomNumber": "Screen Room",
-          "showDate": "Show Date",
-          "startTime": "Start Time",
-          "ticketPrice": "Listed Price",
-          "emptyText": "No showtimes found matching keyword \"{{term}}\""
-        }
+        "search": { "label": "Search showtimes:", "placeholder": "Enter movie title, showtime ID, room, or date (YYYY-MM-DD)...", "clearBtn": "Clear filter" },
+        "table": { "showtimeId": "Showtime ID", "movieTitle": "Movie Title", "roomNumber": "Screen Room", "showDate": "Show Date", "startTime": "Start Time", "ticketPrice": "Listed Price", "emptyText": "No showtimes found matching keyword \"{{term}}\"" }
       },
       "theatersTab": {
         "title": "Cinema Infrastructure System",
-        "addTheaterTitle": "Add New Cinema Complex to System",
+        "addTheater": {
+          "title": "Add New Cinema Complex to System",
+          "labels": { "cinemaId": "Cinema ID (e.g., T01):", "cinemaName": "Cinema Name:", "city": "City:", "address": "Detailed Address:", "hotline": "Cinema Hotline:" },
+          "placeholders": { "cinemaId": "Write continuous without accents", "cinemaName": "e.g., CGV Nguyen Trai", "city": "e.g., Da Nang", "address": "House number, Street name...", "hotline": "Phone number" },
+          "buttons": { "save": "Save Cinema Complex" }
+        },
         "leftPanel": {
-          "title": "Select Cinema Complex Location",
-          "selectTheaterPlaceholder": "-- Select Cinema from list --",
+          "title": "Step 1 - Select target cinema complex:",
+          "selectTheaterPlaceholder": "-- Click to select cinema --",
           "formTitle": "Add New Screen Room & Auto-generate Seats",
-          "placeholders": {
-            "roomId": "Room ID (e.g., P01_CINEMA_A)",
-            "roomNumber": "Display Room Name (e.g., Room 1)"
-          },
-          "labels": {
-            "rowsCount": "Physical Seat Rows (A-Z):",
-            "colsCount": "Seats per row:"
-          },
-          "buttons": {
-            "submit": "Initialize & Configure Seat Layout"
-          }
+          "placeholders": { "roomId": "Independent Room ID (e.g., P1, P2):", "roomIdPlaceholder": "Max 3 letters", "roomNumber": "Display Room Name:", "roomNumberPlaceholder": "e.g., IMAX Screen Room 01" },
+          "labels": { "rowsCount": "Physical Seat Rows (A-Z):", "colsCount": "Seats per row (1-30):" },
+          "buttons": { "loading": "Creating...", "submit": "Generate Room Seat Layout" }
         },
         "rightPanel": {
-          "title": "Physical Seat Layout Design Diagram",
-          "selectRoomPlaceholder": "-- Select screen room to display layout --",
+          "title": "ROOM SEAT LAYOUT DESIGN MANAGEMENT",
+          "selectRoomPlaceholder": "Select room to view layout:",
+          "selectRoomOptionNone": "-- Select room --",
           "seatUnit": "seats",
           "screenBar": "CINEMA SCREEN",
-          "seatTitle": {
-            "code": "Seat No",
-            "hint": "Click to Toggle Maintenance Lock"
-          },
-          "legends": {
-            "normal": "Regular Seat",
-            "vip": "VIP Seat",
-            "locked": "Under Maintenance (Locked)"
-          }
+          "hintText": "✓ Feel free to click on each seat to change structure type (Regular ➔ VIP ➔ Double)",
+          "seatTitle": { "code": "Code", "hint": "Click to toggle seat maintenance lock" },
+          "legends": { "normal": "Regular Seat", "vip": "VIP Seat", "locked": "Double Seat / Under Maintenance" }
         }
       },
       "vouchersTab": {
         "title": "Voucher Promotional Program Structure",
         "form": {
-          "labels": {
-            "voucherCode": "Promo Code",
-            "discountType": "Discount Type",
-            "discountPercent": "Discount Rate (%)",
-            "maxUses": "Maximum Uses",
-            "expiryDate": "Expiry Date",
-            "discountValue": "Discount Value"
-          },
-          "options": {
-            "percent": "Percentage Off (%)",
-            "cash": "Fixed Amount (VND)"
-          },
-          "placeholders": {
-            "voucherCode": "Promo Code (e.g., MOVIE2026)",
-            "discountPercent": "Discount Rate (%)",
-            "maxUses": "Enter issue quantity (e.g., 100)"
-          },
-          "buttons": {
-            "submit": "Issue Gift Promo Code"
-          }
+          "labels": { "voucherCode": "Promo Code", "discountType": "Discount Type", "discountPercent": "Discount Rate (%)", "maxUses": "Maximum Uses", "expiryDate": "Expiry Date", "discountValue": "Discount Value" },
+          "options": { "percent": "Percentage Off (%)", "cash": "Fixed Amount (VND)" },
+          "placeholders": { "voucherCode": "Promo Code (e.g., MOVIE2026)", "discountPercent": "Discount Rate (%)", "maxUses": "Enter issue quantity (e.g., 100)" },
+          "buttons": { "submit": "Issue Gift Promo Code" }
         },
         "table": {
-          "empty": "No gift promo vouchers issued in the system yet!",
-          "maxUses": "Maximum Allowed Uses",
-          "MAXUSES": "MAXIMUM ALLOWED USES",
-          "voucherCode": "Voucher Code",
-          "discountPercent": "Discount Percentage",
-          "expiryDate": "Expiry Date",
-          "actions": "Actions",
-          "deleteBtn": "Remove"
+          "empty": "No gift promo vouchers issued in the system yet!", "maxUses": "Maximum Allowed Uses", "MAXUSES": "MAXIMUM ALLOWED USES", "voucherCode": "Voucher Code", "discountPercent": "Discount Percentage", "expiryDate": "Expiry Date", "actions": "Actions", "deleteBtn": "Remove"
         }
       },
-      "status": {
-        "loading": "Loading system data..."
-      },
-      "charts": {
-        "revenueLabel": "Revenue (VND)"
-      },
-      "months": {
-        "m1": "Jan", "m2": "Feb", "m3": "Mar", "m4": "Apr", "m5": "May", "m6": "Jun",
-        "m7": "Jul", "m8": "Aug", "m9": "Sep", "m10": "Oct", "m11": "Nov", "m12": "Dec"
-      },
+      "status": { "loading": "Loading system data..." },
+      "charts": { "revenueLabel": "Revenue (VND)" },
+      "months": { "m1": "Jan", "m2": "Feb", "m3": "Mar", "m4": "Apr", "m5": "May", "m6": "Jun", "m7": "Jul", "m8": "Aug", "m9": "Sep", "m10": "Oct", "m11": "Nov", "m12": "Dec" },
       "alerts": {
         "requireTicketId": "Please enter a Ticket ID",
         "checkinSuccess": "Admission confirmed successfully for Ticket",
@@ -214,10 +132,13 @@
         "confirmDeleteMovie": "Are you sure you want to delete this movie from the catalog?",
         "movieDeleteSuccess": "Movie deleted successfully!",
         "movieDeleteFail": "System error: Movies with scheduled showtimes cannot be deleted!",
-        "requireTheaterForRoom": "Please select a cinema to add a room!",
+        "requireTheaterForRoom": "Please select a cinema complex first!",
+        "roomIdTooLong": "Room ID should be short (e.g., P1, P2) for memory optimization!",
+        "theaterCreateSuccess": "Saved cinema complex \"{{name}}\" successfully!",
+        "theaterCreateError": "Error adding cinema complex!",
         "roomCreateSuccess": "Room created and seat matrix generated automatically!",
         "roomError": "Room creation error: ",
-        "seatError": "Error toggling seat maintenance!",
+        "seatError": "Error toggling seat maintenance or changing types!",
         "showtimeCreateSuccess": "Showtime scheduled successfully!",
         "showtimeError": "Showtime creation error: ",
         "voucherCreateSuccess": "Gift voucher issued successfully!",
