@@ -10,6 +10,9 @@ const UserProfile = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // State lưu thông tin vé đang chọn để mở Modal
+  const [selectedTicket, setSelectedTicket] = useState(null);
+
   // State quản lý việc nhập liệu trên Form
   const [editForm, setEditForm] = useState({
     fullName: '',
@@ -25,7 +28,6 @@ const UserProfile = () => {
     const token = localStorage.getItem('token');
     const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-    // 💡 Đã cập nhật endpoint mới không chứa tiền tố /admin công cộng công tác
     Promise.all([
       axios.get(`http://localhost:8080/api/users/${userId}`, config),
       axios.get(`http://localhost:8080/api/bookings/history/${userId}`, config).catch(() => ({ data: [] }))
@@ -33,7 +35,6 @@ const UserProfile = () => {
     .then(([userRes, ticketsRes]) => {
       setProfileData(userRes.data);
 
-      // Điền dữ liệu ban đầu từ database vào Form
       setEditForm({
         fullName: userRes.data.fullName || userRes.data.username || '',
         phone: userRes.data.phone || '',
@@ -46,32 +47,28 @@ const UserProfile = () => {
       else if (ticketsRes.data?.content) listTickets = ticketsRes.data.content;
       setTickets(listTickets);
 
+      setSelectedTicket(null);
       setLoading(false);
     })
     .catch((err) => {
-      console.error("LỖI TẢI PROFILE:", err); // 💡 Đã sửa thành console.error chuẩn React
+      console.error("LỖI TẢI PROFILE:", err);
       setLoading(false);
     });
   }, [authUser]);
 
-  // Xử lý sự kiện khi gõ vào ô Input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditForm({ ...editForm, [name]: value });
   };
 
-  // Hàm gửi dữ liệu lên Database khi ấn nút Lưu
   const handleSaveProfile = async () => {
     try {
-      const userId = Number(authUser?.id || authUser?.userId); // Ép kiểu số tương thích Java Long
+      const userId = Number(authUser?.id || authUser?.userId);
       const token = localStorage.getItem('token');
       const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-      // 💡 Đã cập nhật endpoint PUT mới đồng bộ
       await axios.put(`http://localhost:8080/api/users/update/${userId}`, editForm, config);
       alert("Cập nhật thông tin thành công!");
-
-      // Đồng bộ lại tên hiển thị tức thời trên giao diện
       setProfileData({ ...profileData, ...editForm });
     } catch (error) {
       console.error("Lỗi cập nhật DB:", error);
@@ -134,24 +131,48 @@ const UserProfile = () => {
             <>
               <h2>Lịch Sử Đặt Vé</h2>
               {tickets.length > 0 ? tickets.map((t, index) => (
-                <div className="ticket-card" key={t.bookingId || t.id || index}>
+                <div className="ticket-card" key={t.ticketId || index}>
                   <img src={t.showtime?.movie?.image || "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=300&auto=format&fit=crop"} alt="poster" className="ticket-poster" />
                   <div className="ticket-info">
                     <div className="ticket-header">
                       <div>
-                        <h3 className="movie-title">{t.showtime?.movie?.title || "Phim chưa rõ tên"}</h3>
-                        <p className="booking-code">Mã: {t.bookingId || "BK001"}</p>
+                        <h3 className="movie-title">{t.showtime?.movie?.title || "Phim đã chọn"}</h3>
+                        <p className="booking-code">Mã vé: {t.ticketId}</p>
                       </div>
-                      <span className={`status-badge ${t.status === 'SUCCESS' || t.status === 1 ? 'success' : 'watched'}`}>
-                        {t.status === 'SUCCESS' || t.status === 1 ? 'Đã xác nhận' : 'Đã xem'}
-                      </span>
+
+                      {t.statusTk === 1 ? (
+                        <span className="status-badge-checked">
+                          Đã xem
+                        </span>
+                      ) : (
+                        <span className="status-badge-pending">
+                          Chưa xem
+                        </span>
+                      )}
                     </div>
+
                     <div className="ticket-details-grid">
-                      <div><span className="detail-label">Rạp</span><span className="detail-value">{t.showtime?.room?.theater?.name || "CinemaX Vincom"}</span></div>
-                      <div><span className="detail-label">Suất chiếu</span><span className="detail-value"><i className="fa-regular fa-calendar" style={{marginRight: '5px'}}></i> {t.showtime?.showDate} • {t.showtime?.startTime}</span></div>
-                      <div style={{ gridColumn: '1 / -1' }}><span className="detail-label">Ghế</span><span className="detail-value">{Array.isArray(t.seats) ? t.seats.map(s => s.seatNumber).join(', ') : 'A5, A6'}</span></div>
+                      <div><span className="detail-label">Rạp</span><span className="detail-value">{t.showtime?.room?.theater?.name || "CinemaX"}</span></div>
+                      <div>
+                        <span className="detail-label">Suất chiếu</span>
+                        <span className="detail-value">
+                          <i className="fa-regular fa-calendar" style={{marginRight: '5px'}}></i> {t.showtime?.showDate} • {t.showtime?.startTime}
+                        </span>
+                      </div>
+                      <div style={{ gridColumn: '1 / -1' }}>
+                        <span className="detail-label">Ghế</span>
+                        <span className="detail-value" style={{ color: '#e50914', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                          {t.seat?.seatNumber || "Chưa rõ"}
+                        </span>
+                      </div>
                     </div>
-                    <button className="btn-detail">Xem Chi Tiết</button>
+
+                    <div className="ticket-action-right">
+                      <button className="btn-detail" onClick={() => setSelectedTicket(t)}>
+                        Xem Chi Tiết
+                      </button>
+                    </div>
+
                   </div>
                 </div>
               )) : <p style={{color: '#888'}}>Bạn chưa đặt vé nào.</p>}
@@ -241,6 +262,79 @@ const UserProfile = () => {
 
         </main>
       </div>
+
+      {/* ========================================================================= */}
+      {/* 💡 POPUP MODAL */}
+      {/* ========================================================================= */}
+      {selectedTicket && (
+        <div className="ticket-modal-overlay" onClick={() => setSelectedTicket(null)}>
+          <div className="ticket-modal-content" onClick={(e) => e.stopPropagation()}>
+
+            <button className="ticket-modal-close-btn" onClick={() => setSelectedTicket(null)}>
+              &times;
+            </button>
+
+            <h2 className="ticket-modal-title">VÉ XEM PHIM ĐIỆN TỬ</h2>
+            <p className="ticket-modal-subtitle">CinemaX hân hạnh phục vụ bạn</p>
+
+            <div className="ticket-modal-qr-container">
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${selectedTicket.ticketId}`}
+                alt="Ticket QR Code"
+                className="ticket-modal-qr-image"
+              />
+            </div>
+
+            <p className="ticket-modal-code">MÃ VÉ: {selectedTicket.ticketId}</p>
+
+            <div className="ticket-modal-details">
+              <div className="ticket-modal-row">
+                <span className="ticket-modal-label">🎬 Phim:</span>
+                <span className="ticket-modal-value movie-highlight">{selectedTicket.showtime?.movie?.title}</span>
+              </div>
+              <div className="ticket-modal-row">
+                <span className="ticket-modal-label">📍 Rạp:</span>
+                <span className="ticket-modal-value">{selectedTicket.showtime?.room?.theater?.name || "CinemaX Vincom"}</span>
+              </div>
+              <div className="ticket-modal-row">
+                <span className="ticket-modal-label">🚪 Phòng:</span>
+                <span className="ticket-modal-value">{selectedTicket.showtime?.room?.name || "Phòng chiếu mặc định"}</span>
+              </div>
+              <div className="ticket-modal-row">
+                <span className="ticket-modal-label">🗓️ Suất chiếu:</span>
+                <span className="ticket-modal-value time-highlight">{selectedTicket.showtime?.showDate} • {selectedTicket.showtime?.startTime}</span>
+              </div>
+              <div className="ticket-modal-row">
+                <span className="ticket-modal-label">💺 Ghế đã chọn:</span>
+                <span className="ticket-modal-value seat-highlight">{selectedTicket.seat?.seatNumber}</span>
+              </div>
+              <div className="ticket-modal-row">
+                <span className="ticket-modal-label">💰 Tổng tiền:</span>
+                <span className="ticket-modal-value price-highlight">
+                  {String(selectedTicket.totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ
+                </span>
+              </div>
+
+              <div className="ticket-modal-status-section">
+                <span className="ticket-modal-label">Trạng thái:</span>
+                {selectedTicket.statusTk === 1 ? (
+                  <span className="status-badge-checked">
+                    🟢 Đã Check-in (Đã xem)
+                  </span>
+                ) : (
+                  <span className="status-badge-pending">
+                    🟡 Chưa sử dụng (Chờ soát vé)
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <p className="ticket-modal-footer-note">
+              *Vui lòng đưa mã QR này cho nhân viên tại quầy soát vé để quét nhận diện vào phòng chiếu.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

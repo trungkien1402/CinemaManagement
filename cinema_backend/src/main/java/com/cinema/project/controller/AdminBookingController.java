@@ -30,7 +30,8 @@ public class AdminBookingController {
     }
 
     // 2. XỬ LÝ CHECK-IN QUÉT MÃ QR HOẶC NHẬP TAY THỦ CÔNG
-    @PostMapping("/checkin/{ticketId}")
+    // 💡 ĐÃ SỬA: Đổi từ @PostMapping thành @PutMapping để không bị lỗi 405 Method Not Allowed
+    @PutMapping("/checkin/{ticketId}")
     public ResponseEntity<?> checkInTicket(@PathVariable String ticketId) {
         try {
             String resultMessage = adminBookingService.checkInTicket(ticketId);
