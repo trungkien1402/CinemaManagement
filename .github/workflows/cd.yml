@@ -1,0 +1,42 @@
+name: CD - Trien Khai Code
+
+# Chỉ chạy CD khi file CI đã chạy thành công rực rỡ
+on:
+  workflow_run:
+    workflows: ["CI - Kiem Tra Loi"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    # Chỉ deploy nếu bước CI báo màu Xanh (success)
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Triển khai lên Server VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}         # Địa chỉ IP của Server ông thuê (VD: 103.145.xx.xx)
+          username: ${{ secrets.SERVER_USERNAME }} # Tài khoản Server (VD: root)
+          password: ${{ secrets.SERVER_PASSWORD }} # Mật khẩu Server
+          script: |
+            # ---------------------------------------------------
+            # ĐÂY LÀ NHỮNG LỆNH SẼ TỰ ĐỘNG CHẠY TRÊN SERVER CỦA ÔNG
+            # ---------------------------------------------------
+            cd /var/www/CinemaManagement
+            git pull origin main
+            
+            # Tự động build lại Backend và chạy ngầm
+            cd cinema_backend
+            mvn clean package -DskipTests
+            # (Lệnh restart backend của ông tùy thuộc vào server)
+            
+            # Tự động build lại Frontend
+            cd ../frontend
+            npm install
+            npm run build
+            # (Lệnh copy frontend vào nginx)
