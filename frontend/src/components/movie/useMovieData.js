@@ -41,9 +41,6 @@ export const useMovieData = (id, datesData) => {
       .then(res => {
         const movieData = res.data;
         if (movieData && !movieData.trailer) {
-          if (String(id) === '1') movieData.trailer = 'M5m4bARNPOw';
-          if (String(id) === '2') movieData.trailer = 'uYPbbksxFbY';
-          if (String(id) === '3') movieData.trailer = '6ZfuNTqbHE8';
         }
         setMovie(movieData);
       })

@@ -22,27 +22,31 @@ public class Movie {
     private Long movieId;
 
     @NotBlank(message = "Tên phim không được để trống")
-    @Column(name = "title", nullable = false)
+    // 💡 Đã sửa: Ép kiểu NVARCHAR(255) cho tên phim
+    @Column(name = "title", nullable = false, columnDefinition = "NVARCHAR(255)")
     private String title;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    // 💡 Đã sửa: Ép kiểu NVARCHAR(MAX) thay cho TEXT cũ
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
     @Column(name = "trailer_url", columnDefinition = "TEXT")
     private String trailerUrl;
 
-    @Column(name = "movie_format", length = 50)
+    // 💡 Đã sửa: Định dạng phim (2D Lồng tiếng...) cũng cần tiếng Việt
+    @Column(name = "movie_format", columnDefinition = "NVARCHAR(50)")
     private String movieFormat;
 
     @Column(name = "status", nullable = false)
-    private int status ;
+    private int status;
 
     @Min(value = 1, message = "Thời lượng phải lớn hơn 0")
     @Column(name = "duration", nullable = false)
     private int duration;
 
     @NotBlank(message = "Thể loại không được để trống")
-    @Column(name = "genre", nullable = false, length = 100)
+    // 💡 Đã sửa: Ép kiểu NVARCHAR(100) cho thể loại
+    @Column(name = "genre", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String genre;
 
     @Column(name = "age_rating", length = 10)
@@ -54,6 +58,7 @@ public class Movie {
     @Column(name = "image", columnDefinition = "TEXT")
     private String image;
 
-    @Column(name = "author")
+    // 💡 Đã sửa: Ép kiểu NVARCHAR(255) cho tên tác giả/đạo diễn
+    @Column(name = "author", columnDefinition = "NVARCHAR(255)")
     private String author;
 }

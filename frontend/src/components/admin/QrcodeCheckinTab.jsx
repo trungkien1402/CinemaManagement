@@ -9,11 +9,11 @@ const QrcodeCheckinTab = ({ manualTicketId, setManualTicketId, fireConfirmChecki
     useEffect(() => {
         // Cấu hình máy quét QR
         const scanner = new Html5QrcodeScanner(
-            "qrtab-reader-view", // Phải trùng khớp với id của thẻ div bên dưới
-            { 
-                fps: 10,       // Số khung hình quét trên 1 giây
-                qrbox: { width: 250, height: 250 }, // Kích thước vùng ô vuông quét mã
-                rememberLastUsedCamera: true // Ghi nhớ camera đã chọn lần trước
+            "qrtab-reader-view",
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                rememberLastUsedCamera: true
             },
             /* verbose= */ false
         );
@@ -21,12 +21,26 @@ const QrcodeCheckinTab = ({ manualTicketId, setManualTicketId, fireConfirmChecki
         // Hàm xử lý khi quét mã QR THÀNH CÔNG
         const onScanSuccess = (decodedText, decodedResult) => {
             console.log(`Mã QR quét được: ${decodedText}`);
-            
-            // Tự động điền mã QR quét được vào ô input thủ công để tiện theo dõi
-            setManualTicketId(decodedText);
-            
-            // Kích hoạt hàm xác nhận check-in ngay lập tức
-            fireConfirmCheckin(decodedText);
+
+            // 💡 TUYỆT CHIÊU: Dùng Regex đi "săn" đúng cái mã vé (VD: TK-5BA059B2)
+            const match = decodedText.match(/TK-[A-Z0-9]{8}/);
+            let cleanTicketId = "";
+
+            if (match) {
+                // Nếu quét trúng cái sớ dài của QR cũ, móc đúng cái mã TK- ra
+                cleanTicketId = match[0];
+            } else {
+                // Nếu là QR mới (chỉ chứa mỗi mã vé) hoặc định dạng khác, cứ lấy nguyên chuỗi
+                cleanTicketId = decodedText.trim();
+            }
+
+            console.log(`Mã vé sạch sẽ dùng để gọi API: ${cleanTicketId}`);
+
+            // Tự động điền mã sạch vào ô input
+            setManualTicketId(cleanTicketId);
+
+            // Kích hoạt hàm xác nhận check-in với mã đã được lọc
+            fireConfirmCheckin(cleanTicketId);
         };
 
         // Hàm xử lý khi quét thất bại
@@ -37,7 +51,7 @@ const QrcodeCheckinTab = ({ manualTicketId, setManualTicketId, fireConfirmChecki
         // Bắt đầu khởi chạy camera quét mã
         scanner.render(onScanSuccess, onScanFailure);
 
-        // CLEANUP: Khi người dùng chuyển sang tab khác, tắt camera ngay lập tức để giải phóng thiết bị
+        // CLEANUP: Khi người dùng chuyển sang tab khác, tắt camera ngay lập tức
         return () => {
             scanner.clear().catch(err => console.error("Lỗi khi tắt camera quét QR:", err));
         };
@@ -48,22 +62,21 @@ const QrcodeCheckinTab = ({ manualTicketId, setManualTicketId, fireConfirmChecki
             <h2 className="qrtab-main-title tab-title">
                 {t('admin.adminDashboard.qrcodeCheckinTab.title') || "Cổng Soát Vé Tự Động (QR Gate)"}
             </h2>
-            
+
             {/* Khung bọc vùng Camera quét mã */}
             <div className="qrtab-scanner-frame qr-scanner-mock-frame">
-                {/* Thư viện sẽ tự render camera vào bên trong thẻ id này */}
                 <div id="qrtab-reader-view"></div>
             </div>
-            
+
             {/* Khu vực nhập mã thủ công */}
             <div className="qrtab-manual-box manual-checkin-box">
                 <p className="qrtab-divider-text divider-text">
                     {t('admin.adminDashboard.qrcodeCheckinTab.manualBox.divider') || "HOẶC NHẬP MÃ VÉ THỦ CÔNG"}
                 </p>
                 <div className="qrtab-input-group input-group-row">
-                    <input 
-                        type="text" 
-                        placeholder={t('admin.adminDashboard.qrcodeCheckinTab.manualBox.placeholder') || "Nhập mã Ticket ID (Ví dụ: 20)"} 
+                    <input
+                        type="text"
+                        placeholder={t('admin.adminDashboard.qrcodeCheckinTab.manualBox.placeholder') || "Nhập mã Ticket ID (Ví dụ: TK-12345678)"}
                         value={manualTicketId} 
                         onChange={e => setManualTicketId(e.target.value)} 
                     />

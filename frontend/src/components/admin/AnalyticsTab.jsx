@@ -95,7 +95,7 @@ const AnalyticsTab = ({ analytics }) => {
     return (
         <div className="antab-container tab-view">
             <h2 className="antab-main-title tab-title">
-                {t('Overview Analysis Report') || "Báo Cáo Phân Tích Tổng Quan"}
+                {t('admin.adminDashboard.analyticsTab.totalRevenue') || "Báo Cáo Phân Tích Tổng Quan"}
             </h2>
             
             {/* Hàng chứa các thẻ metric */}
@@ -149,7 +149,7 @@ const AnalyticsTab = ({ analytics }) => {
                 {/* Biểu đồ cột */}
                 <div className="antab-chart-wrapper chart-wrapper">
                     <h5 className="antab-chart-title">
-                        📈 {t('Monthly sales statistics (Year 2026)') || "Thống kê doanh số theo tháng (Năm 2026)"}
+                         {t('admin.adminDashboard.analyticsTab.monthlyChartTitle') || "Thống kê doanh số theo tháng (Năm 2026)"}
                     </h5>
                     <div className="antab-chart-render-box" style={{ flex: 1, position: 'relative', width: '100%', height: '100%' }}>
                         <Bar data={generatedBarChartData} options={chartOptions} />
@@ -159,7 +159,7 @@ const AnalyticsTab = ({ analytics }) => {
                 {/* Biểu đồ tròn */}
                 <div className="antab-chart-wrapper chart-wrapper">
                     <h5 className="antab-chart-title">
-                        🎯 {t('admin.adminDashboard.analyticsTab.movieChartTitle') || "Thị phần doanh số theo Phim"}
+                         {t('admin.adminDashboard.analyticsTab.movieChartTitle') || "Thị phần doanh số theo Phim"}
                     </h5>
                     {analytics?.topMovies?.length > 0 ? (
                         <div className="antab-chart-render-box">

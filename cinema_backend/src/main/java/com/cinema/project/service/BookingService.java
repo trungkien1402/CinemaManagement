@@ -104,6 +104,10 @@ public class BookingService {
     // HÀM PHỤ TRỢ (PRIVATE HELPERS) - CHỈ DÙNG NỘI BỘ TRONG SERVICE
     // =========================================================================
 
+    // =========================================================================
+    // HÀM PHỤ TRỢ (PRIVATE HELPERS) - CHỈ DÙNG NỘI BỘ TRONG SERVICE
+    // =========================================================================
+
     private void sendTicketEmailWithQR(String toEmail, List<Ticket> tickets, Showtime showtime) throws Exception {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -112,30 +116,33 @@ public class BookingService {
         helper.setSubject("🍿 [Cinema] Vé xem phim điện tử và Mã QR nhận vé 🍿");
 
         StringBuilder ticketListHtml = new StringBuilder();
-        StringBuilder qrContentText = new StringBuilder();
+        StringBuilder qrContentText = new StringBuilder(); // Khởi tạo builder chứa mã QR
         double grandTotal = 0;
 
-        qrContentText.append("--- THÔNG TIN VÉ XEM PHIM ---\n");
         String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim đã chọn";
         String dateString = showtime.getShowDate() != null ? showtime.getShowDate().toString() : "";
         String timeString = showtime.getStartTime() != null ? showtime.getStartTime().toString() : "";
 
-        qrContentText.append("Phim: ").append(movieTitle).append("\n");
-        qrContentText.append("Suất chiếu: ").append(timeString).append(" - Ngày: ").append(dateString).append("\n");
-        qrContentText.append("Danh sách vé:\n");
-
-        for (Ticket ticket : tickets) {
+        for (int i = 0; i < tickets.size(); i++) {
+            Ticket ticket = tickets.get(i);
             String seatDisplay = ticket.getSeat() != null ? ticket.getSeat().getSeatNumber() : ticket.getSeat().getSeatId();
+
+            // 1. Tạo HTML hiển thị trên Email
             ticketListHtml.append("<li style='margin-bottom: 8px;'>")
                     .append("🎫 <strong>Mã Vé:</strong> <span style='color: #ffcc00; font-weight: bold;'>").append(ticket.getTicketId()).append("</span>")
                     .append(" | 💺 <strong>Ghế:</strong> ").append(seatDisplay)
                     .append("</li>");
 
-            qrContentText.append("- Mã: ").append(ticket.getTicketId()).append(" (Ghế ").append(seatDisplay).append(")\n");
+            // 2. CHỈ THÊM MÃ VÉ VÀO NỘI DUNG QR
+            qrContentText.append(ticket.getTicketId());
+            if (i < tickets.size() - 1) {
+                qrContentText.append(", "); // Cách nhau bằng dấu phẩy nếu mua nhiều vé (Hoặc dùng "\n" nếu muốn xuống dòng)
+            }
+
             grandTotal += ticket.getTotalPrice();
         }
-        qrContentText.append("Trạng thái: ĐÃ THANH TOÁN\nTổng tiền: ").append(String.format("%,.0f", grandTotal)).append(" VNĐ");
 
+        // Tạo ảnh QR từ nội dung chỉ chứa mã vé
         byte[] qrCodeImage = generateQRCodeImage(qrContentText.toString(), 250, 250);
 
         String htmlBody = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>"

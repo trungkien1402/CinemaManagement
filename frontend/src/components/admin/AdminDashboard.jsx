@@ -274,7 +274,7 @@ const AdminDashboard = () => {
                     <button className={activeTab === 'vouchers' ? 'active' : ''} onClick={() => setActiveTab('vouchers')}>🎟️ {t('admin.adminDashboard.tabs.vouchers')}</button>
                     <button className={activeTab === 'qrcode-checkin' ? 'active' : ''} onClick={() => setActiveTab('qrcode-checkin')}>🔍 {t('admin.adminDashboard.tabs.qrcodeCheckin')}</button>
                     <div className="nav-divider"></div>
-                    <button onClick={() => navigate('/')} className="exit-panel-btn">🏠 {t('admin.adminDashboard.tabs.backToHome')}</button>
+                    <button onClick={() => navigate('/')} className="exit-panel-btn"> {t('admin.adminDashboard.tabs.backToHome')}</button>
                 </nav>
             </aside>
             

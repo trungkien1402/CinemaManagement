@@ -88,7 +88,7 @@ const BookingsTab = ({ bookings }) => {
                                         {(() => {
                                             // 1. ƯU TIÊN SỐ 1: Kiểm tra trạng thái Soát vé/Vào cửa trước (Dựa vào statusTk)
                                             if (b.statusTk === 1) {
-                                                return <span className="bktab-status status-label success">{t('admin.adminDashboard.bookingsTab.status.checkedIn') || "Đã Check-in"}</span>;
+                                                return <span className="bktab-status status-label success">{t('admin.adminDashboard.bookingsTab.status.statusTicked') || "Đã Check-in"}</span>;
                                             } 
                                             
                                             // 2. ƯU TIÊN SỐ 2: Nếu chưa Check-in, kiểm tra xem vé có bị HỦY không

@@ -15,7 +15,6 @@ const Theaters = () => {
   const [theaters, setTheaters] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 💡 STATE MỚI: Lưu Tỉnh/Thành phố đang được chọn
   const [selectedCity, setSelectedCity] = useState('all');
 
   useEffect(() => {
@@ -36,10 +35,8 @@ const Theaters = () => {
 
   if (loading) return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>{t('theaters.status.loading') || "Đang tải hệ thống rạp..."}</div>;
 
-  // 💡 LỌC DANH SÁCH THÀNH PHỐ DUY NHẤT TỪ DATA (Ưu tiên cột city hoặc fallback location nếu city trống)
   const cities = ['all', ...new Set(theaters.map(t => t.city || t.location).filter(Boolean))];
 
-  // 💡 LỌC RẠP THEO THÀNH PHỐ ĐƯỢC CHỌN
   const filteredTheaters = selectedCity === 'all'
     ? theaters
     : theaters.filter(t => (t.city === selectedCity || t.location === selectedCity));
@@ -50,14 +47,14 @@ const Theaters = () => {
         <h1>{t('theaters.header.title') || "Hệ Thống Rạp"}</h1>
         <p>{t('theaters.header.subtitle') || "Hệ thống rạp chiếu phim hiện đại trên toàn quốc"}</p>
 
-        {/* 💡 DROPDOWN CHỌN TỈNH THÀNH */}
         <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-start' }}>
+          {/* 💡 ĐÃ SỬA: Bỏ sạch style rác, chỉ dùng đúng className này */}
           <select
+            className="city-filter-select"
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
-            style={{ padding: '10px 20px', borderRadius: '8px', background: '#1c1c24', color: '#fff', border: '1px solid #333', fontSize: '16px', outline: 'none', cursor: 'pointer', minWidth: '250px' }}
           >
-            <option value="all">{t('theaters.filters.allCities') || "📍 -- Tất cả Tỉnh/Thành phố --"}</option>
+            <option value="all">{t('theaters.filters.allCities') || " Tất cả Tỉnh/Thành phố --"}</option>
             {cities.filter(c => c !== 'all').map((city, idx) => (
               <option key={idx} value={city}>{city}</option>
             ))}
@@ -76,8 +73,7 @@ const Theaters = () => {
           const displayImage = theater.image || fallbackImages[index % 4];
           const displayAmenities = theater.amenities || ['IMAX', 'VIP Lounge', 'Dolby Atmos'];
 
-          // Xử lý chuỗi địa chỉ hiển thị an toàn không bị lặp chữ
-          const fullAddress = theater.location 
+          const fullAddress = theater.location
             ? (theater.city && !theater.location.includes(theater.city) ? `${theater.location}, ${theater.city}` : theater.location)
             : (theater.address || t('theaters.card.fallbackAddress') || "Đang cập nhật địa chỉ");
 
@@ -93,29 +89,26 @@ const Theaters = () => {
               <div className="theater-info">
                 <h2 className="theater-name">{theater.name.startsWith('CinemaX') ? theater.name : `CinemaX ${theater.name}`}</h2>
 
-                {/* Địa chỉ với Icon đồng bộ Figma */}
                 <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '12px' }}>
-                  <img 
-                    src={cinemaAddressIcon} 
-                    alt="Address" 
-                    style={{ width: '18px', height: '18px', objectFit: 'contain', marginTop: '2px' }} 
+                  <img
+                    src={cinemaAddressIcon}
+                    alt="Address"
+                    style={{ width: '18px', height: '18px', objectFit: 'contain', marginTop: '2px' }}
                   />
                   <span style={{ whiteSpace: 'pre-line', flex: 1 }}>
                     {fullAddress}
                   </span>
                 </div>
 
-                {/* Số điện thoại */}
                 <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                  <img 
-                    src={phoneIcon} 
-                    alt="Phone" 
-                    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
+                  <img
+                    src={phoneIcon}
+                    alt="Phone"
+                    style={{ width: '18px', height: '18px', objectFit: 'contain' }}
                   />
                   <span>{theater.phone || t('theaters.card.fallbackPhone') || "1900 xxxx"}</span>
                 </div>
 
-                {/* Giờ hoạt động */}
                 <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <img 
                     src={clockIcon} 

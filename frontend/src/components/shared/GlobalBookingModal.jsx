@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate as useNav } from 'react-router-dom';
 import axios from 'axios';
 
-import cinemaAddressIcon from '../../assets/cinema address.png'; 
+import cinemaAddressIcon from '../../assets/cinema address.png';
 import calendarIcon from '../../assets/calendar.png';
 import clockIcon from '../../assets/clock.png';
 

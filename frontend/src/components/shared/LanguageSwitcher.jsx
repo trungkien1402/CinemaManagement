@@ -16,7 +16,7 @@ const LanguageSwitcher = () => {
   // 💡 MẢNG NGÔN NGỮ: Ông muốn thêm bao nhiêu nước thì cứ ném vào đây
   const languages = [
     { code: 'vi', flag: '🇻🇳', name: 'Tiếng Việt' },
-    { code: 'en', flag: '🇬🇧', name: 'English' },
+    { code: 'en', flag: 'en', name: 'English' },
     { code: 'ko', flag: '🇰🇷', name: '한국어' },
     { code: 'ja', flag: '🇯🇵', name: '日本語' }
   ];

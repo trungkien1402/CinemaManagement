@@ -37,7 +37,7 @@ const MovieSchedule = ({
 
       {/* FILTER BAR */}
       <div className="theaters-filter-bar" style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '30px', background: '#1c1c24', padding: '15px 20px', borderRadius: '12px', border: '1px solid #2a2a35' }}>
-        <span className="filter-label" style={{ color: '#fff', fontWeight: 'bold' }}>📍 {t('detail.schedule.filterLabel') || "Lọc rạp chiếu:"}</span>
+        <span className="filter-label" style={{ color: '#fff', fontWeight: 'bold' }}> {t('detail.schedule.filterLabel') || "Lọc rạp chiếu:"}</span>
         
         <select
           className="filter-select"

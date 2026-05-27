@@ -24,24 +24,30 @@ const MovieHero = ({ movie, isFavorite, setIsFavorite, shareText, handleShareMov
         </span>
 
         <h1 className="detail-movie-title">{movie.title}</h1>
-        <p className="detail-movie-sub">Mystic Shadows</p>
+
+
+        <p className="detail-movie-sub">{movie.genre || ''}</p>
 
         <div className="detail-quick-meta">
           <span>
             <img src={clockIcon} alt="" /> {movie.duration} {t('home.heroSlider.meta.minutes') || 'phút'}
           </span>
+
+
           <span>
-            <img src={calendarIcon} alt="" /> {movie.releaseDate || '2026'}
+            <img src={calendarIcon} alt="" /> {movie.releaseDate ? movie.releaseDate.substring(0, 4) : '2026'}
           </span>
+
+
           <span>
-            <img src={directorIcon} alt="" /> {t('detail.heroMeta.director') || 'Đạo diễn:'} Nguyễn Minh Tuấn
+            <img src={directorIcon} alt="" /> {t('detail.heroMeta.director') || 'Đạo diễn:'} {movie.author || 'Đang cập nhật'}
           </span>
         </div>
 
         <div className="detail-top-actions">
           {movie.status !== 2 && (
             <button className="detail-btn-red" onClick={scrollToBooking}>
-              <img src={ticketIcon} alt="" /> {t('home.heroSlider.buttons.bookNow') || 'Đặt Vé Ngay'}
+             {t('home.heroSlider.buttons.bookNow') || 'Đặt Vé Ngay'}
             </button>
           )}
 
@@ -52,7 +58,7 @@ const MovieHero = ({ movie, isFavorite, setIsFavorite, shareText, handleShareMov
           </button>
 
           <button className="detail-btn-dark" onClick={handleShareMovie}>
-            {shareText === (t('detail.buttons.share') || 'Chia Sẻ') && <img src={shareIcon} alt="" />}
+            {shareText === (t('detail.buttons.share') || 'Chia Sẻ') }
             {shareText}
           </button>
         </div>

@@ -26,9 +26,22 @@ const AuthModal = ({ isOpen, onClose }) => {
     });
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Nếu là trường số điện thoại, chỉ lấy các ký tự số (0-9)
+        if (name === 'phone') {
+            const onlyNums = value.replace(/[^0-9]/g, '');
+            setFormData({
+                ...formData,
+                [name]: onlyNums
+            });
+            return;
+        }
+
+        // Các trường khác xử lý bình thường
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: value
         });
     };
 
@@ -50,23 +63,9 @@ const AuthModal = ({ isOpen, onClose }) => {
                     })
                 );
 
-                console.log("RESULT ACTION:", resultAction);
-
                 if (login.fulfilled.match(resultAction)) {
 
                     const user = resultAction.payload;
-
-                    console.log(
-                        "Dữ liệu User nhận được từ Backend:",
-                        user
-                    );
-                    console.log("KEYS:", Object.keys(user));
-
-                    console.log(
-                        "Giá trị role là:",
-                        user.role
-                    );
-
 
                     alert(t('auth.authModal.alerts.loginSuccess'));
 
@@ -110,6 +109,17 @@ const AuthModal = ({ isOpen, onClose }) => {
             else {
 
                 if (step === 1) {
+
+                    // Kiểm tra định dạng số điện thoại Việt Nam trước khi gửi OTP
+                    const phoneRegex = /^(0)(3|5|7|8|9)([0-9]{8})$/;
+                    if (!phoneRegex.test(formData.phone)) {
+                        alert(
+                            t('auth.authModal.alerts.invalidPhone') ||
+                            "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 số điện thoại Việt Nam!"
+                        );
+                        setLoading(false);
+                        return; // Dừng lại, không gọi API
+                    }
 
                     await api.post('/auth/send-otp', {
                         email: formData.email
@@ -279,6 +289,9 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                                 <input
                                     name="phone"
+                                    type="tel"
+                                    pattern="[0-9]*"
+                                    maxLength="10"
                                     placeholder={t('auth.authModal.form.placeholders.phone')}
                                     onChange={handleChange}
                                     value={formData.phone || ''}
