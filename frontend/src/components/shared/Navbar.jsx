@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AuthModal from '../auth/AuthModal'; 
-import LanguageSwitcher from './LanguageSwitcher'; 
 import '../style/Navbar.css';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 const Navbar = () => {
-    // 🛠️ FIX CHÍNH TẠI ĐÂY: Thêm i18n vào để không còn bị lỗi đen màn hình
-    const { t, i18n } = useTranslation(); 
-    
+    const { t, i18n } = useTranslation();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null);
+    const [displayName, setDisplayName] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const dropdownRef = useRef(null);
 
-    // Xác định ngôn ngữ hiện tại để switch text nhanh
     const isEn = i18n.language?.startsWith('en');
 
-    // Xử lý hiệu ứng scroll để đổi nền Navbar
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
@@ -27,19 +25,36 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Kiểm tra login từ localStorage
     useEffect(() => {
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
             try {
-                setUser(JSON.parse(savedUser));
+                const parsedUser = JSON.parse(savedUser);
+                setUser(parsedUser);
+                setDisplayName(parsedUser.fullName || parsedUser.username || '');
             } catch (e) {
                 console.error("Lỗi parse user:", e);
             }
         }
     }, []);
 
-    // Click outside để đóng dropdown
+    useEffect(() => {
+        const userId = user?.id || user?.userId;
+        if (!userId) return;
+
+        const token = localStorage.getItem('token');
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
+        axios.get(`http://localhost:8080/api/users/${userId}`, config)
+            .then(response => {
+                const realName = response.data.fullName || response.data.username || user.username;
+                setDisplayName(realName);
+            })
+            .catch(error => {
+                console.error("Lỗi đồng bộ dữ liệu tươi cho Navbar:", error);
+            });
+    }, [user]);
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,7 +67,9 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         setUser(null);
+        setDisplayName('');
         setShowDropdown(false);
         window.location.reload();
     };
@@ -89,20 +106,17 @@ const Navbar = () => {
 
                 {/* Right Section */}
                 <div className="nav-right" ref={dropdownRef} style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    
-                    {/* NÚT CHUYỂN NGÔN NGỮ */}
-                    <LanguageSwitcher />
 
                     {user ? (
                         <div className="user-profile">
-                            <button 
-                                className={`profile-toggle ${showDropdown ? 'active' : ''}`} 
+                            <button
+                                className={`profile-toggle ${showDropdown ? 'active' : ''}`}
                                 onClick={() => setShowDropdown(!showDropdown)}
                             >
                                 <div className="avatar-wrapper">
-                                    {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                                    {displayName ? displayName.charAt(0).toUpperCase() : 'U'}
                                 </div>
-                                <span className="username-text">{user.username}</span>
+                                <span className="username-text">{displayName}</span>
                                 <i className="fa-solid fa-chevron-down arrow-icon"></i>
                             </button>
 
@@ -113,12 +127,11 @@ const Navbar = () => {
                                         <span>{user.email || 'Thành viên CinemaX'}</span>
                                     </div>
                                     <div className="dropdown-divider"></div>
-                                    
-                                    {/* Nút quay lại trang quản trị dành riêng cho ADMIN */}
+
                                     {(user.role === 'ROLE_ADMIN' || user.role === 'ADMIN' || user.role === 'admin') && (
                                         <>
                                             <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
-                                                <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i> 
+                                                <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i>
                                                 <span style={{fontWeight: 'bold', color: '#ffc107'}}>
                                                     {t('nav.dropdown.adminPage') || (isEn ? "Admin Dashboard" : "Trang Quản Trị")}
                                                 </span>
@@ -127,7 +140,6 @@ const Navbar = () => {
                                         </>
                                     )}
 
-                                    {/* Khách hàng thông thường */}
                                     {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
                                         <>
                                             <Link to="/ho-so" className="dropdown-item" onClick={() => setShowDropdown(false)}>

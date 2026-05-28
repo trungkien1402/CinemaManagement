@@ -37,10 +37,16 @@ public class User {
     @Column(name = "role", nullable = false, length = 20)
     private String role;
 
-    // 💡 ĐÃ THÊM 2 TRƯỜNG NÀY ĐỂ ĐỒNG BỘ VỚI FRONTEND VÀ HẾT ĐỎ CONTROLLER
     @Column(name = "full_name", length = 100)
     private String fullName;
 
     @Column(name = "date_of_birth")
     private String dateOfBirth;
+
+    // 🚀 ĐÃ THÊM 2 TRƯỜNG DÀNH CHO TÍNH NĂNG QUÊN MẬT KHẨU
+    @Column(name = "reset_otp", length = 10)
+    private String resetOtp;
+
+    @Column(name = "otp_expiry_time")
+    private java.time.LocalDateTime otpExpiryTime;
 }
