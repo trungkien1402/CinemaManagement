@@ -1,6 +1,6 @@
 :root {
   --primary-color: #ff2c1f; /* Màu đỏ thương hiệu Cinema */
-  --bg-dark: rgba(10, 10, 10, 0.95);
+  --bg-dark: rgba(10, 10, 10, 0.98);
   --text-main: #ffffff;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -10,58 +10,62 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
+  height: 75px; /* Chiều cao lý tưởng cho thanh Navbar */
   display: flex;
   align-items: center;
   z-index: 1000;
   transition: var(--transition);
-  padding: 0 5%;
-  background: transparent;
+  padding: 0 4%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
 }
 
-/* Hiệu ứng khi scroll xuống */
+/* Hiệu ứng nền khi cuộn chuột xuống */
 .navbar-main.scrolled {
   background: var(--bg-dark);
-  height: 60px;
+  height: 65px;
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
+/* 🛠️ CẤU TRÚC GRID 3 CỘT: Giúp menu chính nằm CHÍNH GIỮA tuyệt đối */
 .nav-container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* Cột 1: Logo, Cột 2: Menu (chiếm hết chỗ trống để căn giữa), Cột 3: Tính năng phải */
   align-items: center;
 }
 
-/* Logo chuyên nghiệp */
+/* Logo thương hiệu bên trái */
 .nav-brand {
   font-size: 1.8rem;
   font-weight: 800;
   color: #fff;
   text-decoration: none;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  flex-shrink: 0; 
 }
 
 .nav-brand span {
   color: var(--primary-color);
 }
 
-/* Menu links */
+/* 🛠️ MENU CHÍNH: Căn giữa theo chiều ngang */
 .nav-menu {
   display: flex;
-  gap: 30px;
+  gap: 30px; 
+  justify-content: center; /* Đẩy các chữ Trang chủ, Lịch chiếu... vào giữa */
+  margin: 0 auto;
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
   position: relative;
-  padding: 5px 0;
+  padding: 8px 0;
   transition: var(--transition);
 }
 
@@ -69,7 +73,7 @@
   color: #fff;
 }
 
-/* Gạch chân animation */
+/* Hiệu ứng gạch chân khi hover menu */
 .nav-link::after {
   content: '';
   position: absolute;
@@ -85,19 +89,29 @@
   width: 100%;
 }
 
-/* Login Button */
+/* 🛠️ KHU VỰC TÍNH NĂNG BÊN PHẢI: Giãn cách hợp lý, nép sát lề phải */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 22px !important; /* Khoảng cách lý tưởng giữa: Ô tìm kiếm - Chuông - Ngôn ngữ - Avatar */
+  justify-content: flex-end;
+}
+
+/* Nút đăng nhập */
 .login-button {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 22px;
+  padding: 10px 24px;
   border-radius: 50px;
   font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .login-button:hover {
@@ -106,15 +120,16 @@
   filter: brightness(1.1);
 }
 
-/* Profile Section */
+/* Khung bọc thông tin tài khoản */
 .user-profile {
   position: relative;
+  flex-shrink: 0;
 }
 
 .profile-toggle {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 5px 12px 5px 6px;
+  padding: 6px 14px 6px 6px;
   border-radius: 50px;
   display: flex;
   align-items: center;
@@ -125,7 +140,8 @@
 }
 
 .profile-toggle:hover, .profile-toggle.active {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .avatar-wrapper {
@@ -138,63 +154,77 @@
   justify-content: center;
   font-weight: bold;
   font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(255, 44, 31, 0.3);
+}
+
+.username-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
 }
 
 .arrow-icon {
   font-size: 0.7rem;
+  color: rgba(255,255,255,0.6);
   transition: var(--transition);
 }
 
 .profile-toggle.active .arrow-icon {
   transform: rotate(180deg);
+  color: #fff;
 }
 
-/* Dropdown Menu */
+/* Menu Dropdown đổ xuống của Tài khoản */
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 15px);
+  top: calc(100% + 12px);
   right: 0;
-  width: 220px;
-  background: #1a1a1a;
+  width: 230px;
+  background: #161616;
   border-radius: 12px;
-  padding: 10px 0;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.05);
-  animation: slideDown 0.3s ease-out;
+  padding: 8px 0;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.08);
+  animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
+  from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .dropdown-header {
-  padding: 10px 20px;
+  padding: 12px 20px;
 }
 
 .dropdown-header p {
   font-size: 0.75rem;
-  color: #888;
-  margin-bottom: 2px;
+  color: #777;
+  margin: 0 0 4px 0;
 }
 
 .dropdown-header span {
   font-weight: 600;
   font-size: 0.9rem;
+  color: #fff;
+  word-break: break-all;
 }
 
 .dropdown-divider {
   height: 1px;
-  background: rgba(255,255,255,0.05);
-  margin: 8px 0;
+  background: rgba(255,255,255,0.08);
+  margin: 6px 0;
 }
 
 .dropdown-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 20px;
-  color: #ccc;
+  padding: 11px 20px;
+  color: #bbb;
   text-decoration: none;
   font-size: 0.9rem;
   transition: var(--transition);
@@ -205,6 +235,12 @@
   text-align: left;
 }
 
+.dropdown-item i {
+  font-size: 1rem;
+  width: 18px; 
+  text-align: center;
+}
+
 .dropdown-item:hover {
   background: rgba(255,255,255,0.05);
   color: #fff;
@@ -212,38 +248,56 @@
 
 .dropdown-item.logout {
   color: var(--primary-color);
+  font-weight: 500;
 }
-/* Style cho class admin-link đặc biệt */
+
+/* Nút Trang Quản Trị đặc biệt cho ADMIN */
 .dropdown-menu .dropdown-item.admin-link {
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 44, 31, 0.05) 100%);
-    border-left: 3px solid #ffc107; /* Vạch màu vàng cam bên cạnh tạo điểm nhấn */
-    padding-left: 17px; /* Cân lại padding sau khi thêm border-left */
-    transition: var(--transition);
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.03) 0%, rgba(255, 44, 31, 0.03) 100%);
+  border-left: 3px solid #ffc107; 
+  padding-left: 17px; 
 }
 
-/* Hiệu ứng Hover riêng cho nút Admin */
 .dropdown-menu .dropdown-item.admin-link:hover {
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 44, 31, 0.15) 100%);
-    color: #fff !important;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.12) 0%, rgba(255, 44, 31, 0.12) 100%);
+  color: #fff !important;
 }
 
-/* Hiệu ứng lắc nhẹ icon bánh răng khi hover vào tạo cảm giác cơ khí/quản trị */
 .dropdown-menu .dropdown-item.admin-link:hover i {
-    animation: rotateGear 1.5s linear infinite;
-    filter: drop-shadow(0 0 5px #ffc107);
+  animation: rotateGear 2s linear infinite;
+  filter: drop-shadow(0 0 4px #ffc107);
 }
 
 @keyframes rotateGear {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .nav-menu {
-    display: none; /* Nên thêm Mobile Menu Toggle ở bước tiếp theo */
+/* 📱 RESPONSIVE - ĐÁP ỨNG CÁC LOẠI MÀN HÌNH */
+@media (max-width: 1200px) {
+  /* Màn hình laptop vừa: thu nhỏ bớt chiều rộng ô tìm kiếm để nhường chỗ */
+  .navbar-search-container {
+    width: 200px !important; 
+    margin: 0 5px !important;
   }
-  .username-text {
+  .nav-menu {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  /* Màn hình tablet: Ẩn bớt chữ tên user, chỉ giữ lại avatar tròn cho đỡ chật */
+  .username-text, .profile-toggle .arrow-icon {
     display: none;
+  }
+  .profile-toggle {
+    padding: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Màn hình điện thoại di động: Ẩn menu chữ */
+  .nav-menu {
+    display: none; 
   }
 }

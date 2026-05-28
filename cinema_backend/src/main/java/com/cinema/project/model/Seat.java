@@ -2,6 +2,7 @@ package com.cinema.project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.Date; // Sử dụng thư viện Date cũ để đồng bộ hệ thống
 
 @Entity
 @Table(name = "seats")
@@ -19,6 +20,11 @@ public class Seat {
 
     @Column(name = "is_occupied")
     private Boolean isOccupied;
+
+    // Thay đổi sang kiểu java.util.Date
+    @Column(name = "hold_expires_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date holdExpiresAt;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

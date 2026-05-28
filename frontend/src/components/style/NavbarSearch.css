@@ -1,0 +1,143 @@
+/* CONTAINER TỔNG CỦA THANH TÌM KIẾM */
+.navbar-search-container {
+  position: relative;
+  width: 250px; /* Độ rộng lý tưởng trên Navbar */
+  margin: 0 10px;
+}
+
+/* KHUNG NHẬP LIỆU (INPUT WRAPPER) */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08); /* Nền mờ sang trọng */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50px; /* Bo tròn viên thuốc cực mượt */
+  padding: 6px 16px;
+  transition: all 0.3s ease;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: #ff2c1f; /* Đổi sang màu đỏ thương hiệu khi nhấn vào */
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 8px rgba(255, 44, 31, 0.4);
+}
+
+/* Ô INPUT CHỮ */
+.search-input-wrapper input {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  outline: none;
+  font-size: 0.85rem;
+  width: 100%;
+  padding-right: 25px; /* Chừa chỗ cho icon kính lúp */
+}
+
+.search-input-wrapper input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ICON KÍNH LÚP */
+.search-icon {
+  position: absolute;
+  right: 16px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none; /* Tránh cản trở việc click vào input */
+}
+
+/* 📦 KHUNG DROPDOWN KẾT QUẢ THẢ XUỐNG */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 320px; /* Rộng hơn ô input một chút để hiển thị text rộng rãi */
+  background: #16161a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  max-height: 360px;
+  overflow-y: auto; /* Tự xuất hiện thanh cuộn nếu quá nhiều phim */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  z-index: 1010;
+  animation: searchFadeIn 0.2s ease-out;
+}
+
+@keyframes searchFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* THANH CUỘN DROPDOWN (CUSTOM SCROLLBAR) */
+.search-dropdown::-webkit-scrollbar {
+  width: 5px;
+}
+.search-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+/* TỪNG DÒNG PHIM TRONG KẾT QUẢ */
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  text-decoration: none; /* Xóa gạch chân mặc định */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-result-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.search-result-item:last-child {
+  border-bottom: none; /* Dòng cuối cùng xóa đường viền đáy */
+}
+
+/* 🖼️ ẢNH POSTER PHIM NHỎ */
+.search-item-img {
+  width: 42px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 14px;
+  background: #222;
+  flex-shrink: 0; /* Không cho ảnh bị bóp méo */
+}
+
+/* KHU VỰC CHỮ (TITLE & META) */
+.search-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+.search-item-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  /* Giới hạn đúng 1 dòng kèm dấu ... nếu tên phim quá dài */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-item-meta {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+/* TRẠNG THÁI KHÔNG TÌM THẤY KẾT QUẢ */
+.no-result {
+  padding: 20px 15px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+}

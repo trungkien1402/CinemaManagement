@@ -28,4 +28,11 @@ public class MovieService {
     public Optional<Movie> getMovieById(Long id) {
         return movieRepository.findById(id);
     }
+
+    public List<Movie> searchMoviesByTitle(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        return movieRepository.findByTitleContainingIgnoreCase(keyword.trim());
+    }
 }

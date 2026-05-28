@@ -8,6 +8,7 @@ D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\con
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\LoginRequest.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MovieController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\UserService.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\NotificationController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminCinemaController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Showtime.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\NewsRequest.java
@@ -20,6 +21,7 @@ D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\rep
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ReportRepository.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\UserController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NewsService.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NotificationService.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminMovieService.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Report.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MovieResponse.java
@@ -40,6 +42,7 @@ D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\pay
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\BookingService.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\JwtResponse.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ShowtimeService.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MoviePublicController.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\SeatResponse.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\RoomCreationRequest.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\EmailService.java
@@ -47,6 +50,8 @@ D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\mod
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminBookingService.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\UserRepository.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\SeatService.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Notification.java
+D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\NotificationRepository.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\VnpayConfig.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\AppConfig.java
 D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\SecurityConfig.java

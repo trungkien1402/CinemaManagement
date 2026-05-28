@@ -5,6 +5,8 @@ import com.cinema.project.repositories.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.cinema.project.service.NotificationService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +15,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AdminMovieService {
-
+    @Autowired
+    private NotificationService notificationService;
     private final MovieRepository movieRepository;
 
     // 1. Lấy tất cả phim
@@ -45,7 +48,14 @@ public class AdminMovieService {
         if (movie.getTitle() == null || movie.getTitle().trim().isEmpty()) {
             throw new IllegalArgumentException("Tên phim không được để trống!");
         }
-        return movieRepository.save(movie);
+        Movie savedMovie = movieRepository.save(movie);
+        notificationService.createNotification(
+                "Phim mới ra mắt",
+                "Bộ phim '" + savedMovie.getTitle() + "' đã có lịch chiếu. Đặt vé ngay!",
+                "MOVIE"
+        );
+        return savedMovie;
+
     }
 
     // 4. Cập nhật thông tin phim

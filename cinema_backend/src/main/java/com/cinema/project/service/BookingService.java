@@ -3,6 +3,7 @@ package com.cinema.project.service;
 import com.cinema.project.payload.request.BookingRequest;
 import com.cinema.project.model.*;
 import com.cinema.project.repositories.*;
+import com.cinema.project.service.NotificationService; // Tích hợp Service thông báo
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,11 @@ public class BookingService {
     private final SeatRepository seatRepository;
     private final JavaMailSender mailSender;
 
+    // TÍCH HỢP: Khai báo final để @RequiredArgsConstructor tự động inject
+    private final NotificationService notificationService;
+
     // =========================================================================
-    // CODE ĐẶT VÉ CHÍNH (Đã được giữ nguyên logic cốt lõi của bạn)
+    // CODE ĐẶT VÉ CHÍNH (Đã tích hợp thông báo chuyên nghiệp)
     // =========================================================================
     @Transactional
     public List<Ticket> processBooking(BookingRequest request) {
@@ -46,6 +51,7 @@ public class BookingService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Suất chiếu"));
 
         List<Ticket> savedTickets = new ArrayList<>();
+        List<String> seatNames = new ArrayList<>(); // Dùng để gom tên ghế tạo thông báo
 
         for (String seatId : request.getSeatIds()) {
             Seat seat = seatRepository.findById(seatId)
@@ -71,19 +77,52 @@ public class BookingService {
             ticket.setBookingDate(LocalDateTime.now());
 
             savedTickets.add(ticketRepository.save(ticket));
+            seatNames.add(seat.getSeatNumber()); // Lưu lại số ghế (ví dụ: A1, A2)
+        }
+
+        // TÍCH HỢP: Tự động bắn thông báo real-time lên hệ thống khi đặt vé thành công
+        try {
+            String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim";
+            String seatsString = String.join(", ", seatNames);
+
+            notificationService.createNotification(
+                    "Đặt vé và thành công 🎉",
+                    "Khách hàng " + user.getUsername() + " đã đặt và thành công vé phim '" + movieTitle + "' (Ghế: " + seatsString + ").",
+                    "BOOKING"
+            );
+        } catch (Exception e) {
+            System.err.println("Gặp sự cố khi tạo thông báo đặt vé: " + e.getMessage());
         }
 
         // Tự động gửi Email kèm mã QR
+        // Tự động gửi Email kèm mã QR
         try {
             if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                // 1. Gọi hàm gửi email cũ của bạn
                 sendTicketEmailWithQR(user.getEmail(), savedTickets, showtime);
+
+                // 2. CHÈN THÊM THÔNG BÁO NÀY: Báo tin gửi mã thành công lên Navbar
+                String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim";
+                notificationService.createNotification(
+                        "Đã gửi mã vé thành công ✉️",
+                        "Hệ thống đã gửi email chứa mã QR vé phim '" + movieTitle + "' đến địa chỉ: " + user.getEmail(),
+                        "EMAIL" // Loại EMAIL để sau này bạn thích cấu hình hiển thị icon hòm thư ở React
+                );
             }
         } catch (Exception e) {
             System.err.println("Gặp sự cố khi gửi email mã QR: " + e.getMessage());
             e.printStackTrace();
+
+            // (Tùy chọn) Bạn có thể bắn thông báo thất bại nếu muốn Admin kiểm tra hệ thống mail
+            notificationService.createNotification(
+                    "Gửi mã vé thất bại ⚠️",
+                    "Hệ thống gặp sự cố khi gửi email vé phim đến " + user.getEmail() + ". Lỗi: " + e.getMessage(),
+                    "ERROR"
+            );
         }
 
         return savedTickets;
+
     }
 
     // =========================================================================
@@ -104,10 +143,6 @@ public class BookingService {
     // HÀM PHỤ TRỢ (PRIVATE HELPERS) - CHỈ DÙNG NỘI BỘ TRONG SERVICE
     // =========================================================================
 
-    // =========================================================================
-    // HÀM PHỤ TRỢ (PRIVATE HELPERS) - CHỈ DÙNG NỘI BỘ TRONG SERVICE
-    // =========================================================================
-
     private void sendTicketEmailWithQR(String toEmail, List<Ticket> tickets, Showtime showtime) throws Exception {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -116,7 +151,7 @@ public class BookingService {
         helper.setSubject("🍿 [Cinema] Vé xem phim điện tử và Mã QR nhận vé 🍿");
 
         StringBuilder ticketListHtml = new StringBuilder();
-        StringBuilder qrContentText = new StringBuilder(); // Khởi tạo builder chứa mã QR
+        StringBuilder qrContentText = new StringBuilder();
         double grandTotal = 0;
 
         String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim đã chọn";
@@ -127,22 +162,19 @@ public class BookingService {
             Ticket ticket = tickets.get(i);
             String seatDisplay = ticket.getSeat() != null ? ticket.getSeat().getSeatNumber() : ticket.getSeat().getSeatId();
 
-            // 1. Tạo HTML hiển thị trên Email
             ticketListHtml.append("<li style='margin-bottom: 8px;'>")
                     .append("🎫 <strong>Mã Vé:</strong> <span style='color: #ffcc00; font-weight: bold;'>").append(ticket.getTicketId()).append("</span>")
                     .append(" | 💺 <strong>Ghế:</strong> ").append(seatDisplay)
                     .append("</li>");
 
-            // 2. CHỈ THÊM MÃ VÉ VÀO NỘI DUNG QR
             qrContentText.append(ticket.getTicketId());
             if (i < tickets.size() - 1) {
-                qrContentText.append(", "); // Cách nhau bằng dấu phẩy nếu mua nhiều vé (Hoặc dùng "\n" nếu muốn xuống dòng)
+                qrContentText.append(", ");
             }
 
             grandTotal += ticket.getTotalPrice();
         }
 
-        // Tạo ảnh QR từ nội dung chỉ chứa mã vé
         byte[] qrCodeImage = generateQRCodeImage(qrContentText.toString(), 250, 250);
 
         String htmlBody = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>"

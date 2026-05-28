@@ -22,31 +22,30 @@ public class Movie {
     private Long movieId;
 
     @NotBlank(message = "Tên phim không được để trống")
-    // 💡 Đã sửa: Ép kiểu NVARCHAR(255) cho tên phim
-    @Column(name = "title", nullable = false, columnDefinition = "NVARCHAR(255)")
+    // SỬA: Ép kiểu dữ liệu sang utf8mb4 để nhận tiếng Việt có dấu
+    @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String title;
 
-    // 💡 Đã sửa: Ép kiểu NVARCHAR(MAX) thay cho TEXT cũ
-    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
+    // SỬA: Ép kiểu dữ liệu sang utf8mb4 cho phần mô tả dài
+    @Column(name = "description", columnDefinition = "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String description;
 
     @Column(name = "trailer_url", columnDefinition = "TEXT")
     private String trailerUrl;
 
-    // 💡 Đã sửa: Định dạng phim (2D Lồng tiếng...) cũng cần tiếng Việt
-    @Column(name = "movie_format", columnDefinition = "NVARCHAR(50)")
+    @Column(name = "movie_format", length = 50)
     private String movieFormat;
 
     @Column(name = "status", nullable = false)
-    private int status;
+    private int status ;
 
     @Min(value = 1, message = "Thời lượng phải lớn hơn 0")
     @Column(name = "duration", nullable = false)
     private int duration;
 
     @NotBlank(message = "Thể loại không được để trống")
-    // 💡 Đã sửa: Ép kiểu NVARCHAR(100) cho thể loại
-    @Column(name = "genre", nullable = false, columnDefinition = "NVARCHAR(100)")
+    // SỬA: Đảm bảo thể loại phim (Hành động, Hài hước...) không lỗi font
+    @Column(name = "genre", nullable = false, columnDefinition = "VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String genre;
 
     @Column(name = "age_rating", length = 10)
@@ -58,7 +57,7 @@ public class Movie {
     @Column(name = "image", columnDefinition = "TEXT")
     private String image;
 
-    // 💡 Đã sửa: Ép kiểu NVARCHAR(255) cho tên tác giả/đạo diễn
-    @Column(name = "author", columnDefinition = "NVARCHAR(255)")
+    // SỬA: Hỗ trợ tên tác giả/đạo diễn bằng tiếng Việt có dấu
+    @Column(name = "author", columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String author;
 }

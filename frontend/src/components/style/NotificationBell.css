@@ -1,0 +1,111 @@
+.notification-bell-container {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.bell-icon {
+  font-size: 22px;
+  position: relative;
+}
+
+.bell-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff4d4d;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: 320px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 1000;
+  color: #fff;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #333;
+}
+
+.dropdown-header h3 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.dropdown-header button {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.dropdown-body {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  display: flex;
+  padding: 12px 15px;
+  border-bottom: 1px solid #262626;
+  transition: background 0.2s;
+}
+
+.notification-item.unread {
+  background-color: #261a1a; /* Màu nền hơi đỏ nhẹ cho thông báo chưa đọc */
+}
+
+.notification-item:hover {
+  background-color: #222;
+}
+
+.noti-icon {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.noti-content {
+  flex: 1;
+}
+
+.noti-title {
+  font-weight: bold;
+  font-size: 13px;
+  margin: 0 0 4px 0;
+}
+
+.noti-message {
+  font-size: 12px;
+  color: #ccc;
+  margin: 0 0 5px 0;
+  line-height: 1.4;
+}
+
+.noti-time {
+  font-size: 10px;
+  color: #777;
+}
+
+.no-notification {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+}
