@@ -140,21 +140,19 @@
   font-size: 0.9rem;
 }
 
-.status-badge {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.status-badge.success { background-color: #00b84c; color: #fff; }
-.status-badge.watched { background-color: #444444; color: #ddd; }
-
 .ticket-details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
   margin-bottom: 20px;
+}
+
+.detail-group-full {
+  grid-column: 1 / -1;
+}
+
+.calendar-icon {
+  margin-right: 5px;
 }
 
 .detail-label {
@@ -361,16 +359,9 @@ input:checked + .slider:before { transform: translateX(24px); }
   animation: ticketModalFadeIn 0.3s ease;
 }
 
-/* Hiệu ứng hiển thị mượt mà */
 @keyframes ticketModalFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .ticket-modal-close-btn {
@@ -385,10 +376,7 @@ input:checked + .slider:before { transform: translateX(24px); }
   transition: color 0.2s;
 }
 
-.ticket-modal-close-btn:hover {
-  color: #ffffff;
-}
-
+.ticket-modal-close-btn:hover { color: #ffffff; }
 .ticket-modal-title {
   color: #e50914;
   margin: 0 0 5px 0;
@@ -449,25 +437,14 @@ input:checked + .slider:before { transform: translateX(24px); }
   color: #eee;
 }
 
-.ticket-modal-value.movie-highlight {
-  font-weight: bold;
-  color: #ff4d4d;
-}
-
-.ticket-modal-value.time-highlight {
-  color: #4ade80;
-}
-
+.ticket-modal-value.movie-highlight { font-weight: bold; color: #ff4d4d; }
+.ticket-modal-value.time-highlight { color: #4ade80; }
 .ticket-modal-value.seat-highlight {
   font-weight: bold;
   color: #e50914;
   font-size: 1.1rem;
 }
-
-.ticket-modal-value.price-highlight {
-  font-weight: bold;
-  color: #facc15;
-}
+.ticket-modal-value.price-highlight { font-weight: bold; color: #facc15; }
 
 .ticket-modal-status-section {
   display: flex;
@@ -502,4 +479,45 @@ input:checked + .slider:before { transform: translateX(24px); }
   margin-top: 20px;
   font-style: italic;
   line-height: 1.4;
+}
+
+/* ========================================================================= */
+/* 🔐 CÁC CLASS MỚI CHO MODAL ĐỔI MẬT KHẨU                                   */
+/* ========================================================================= */
+.pwd-modal-content {
+  text-align: left !important;
+}
+
+.pwd-modal-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pwd-form-group {
+  margin-bottom: 15px;
+}
+
+.pwd-form-group.last {
+  margin-bottom: 25px;
+}
+
+.pwd-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+/* ========================================== */
+/* 🚀 CSS BỔ SUNG CHO PHẦN CHỌN NGÔN NGỮ      */
+/* ========================================== */
+.language-select {
+    width: auto !important;
+    min-width: 160px;
+    padding: 10px 14px !important;
+    cursor: pointer;
+    font-weight: 500;
+    appearance: auto; /* Hiển thị mũi tên dropdown chuẩn của trình duyệt */
+}
+
+.language-select:hover {
+    border-color: #e50914;
 }
