@@ -124,7 +124,9 @@ const SeatSelection = () => {
         setVoucherError("");
     };
 
-    // 🛠️ HÀM THANH TOÁN ĐÃ ĐƯỢC CẬP NHẬT ĐỂ ĐỒNG BỘ ROLLBACK
+    // =========================================================================
+    // 🛠️ HÀM THANH TOÁN ĐÃ ĐƯỢC FIX LỖI TRANH CHẤP / LỌT LƯỚI GHẾ
+    // =========================================================================
     const handlePayment = async () => {
         if (selectedSeats.length === 0) return;
 
@@ -132,22 +134,41 @@ const SeatSelection = () => {
         const pendingBooking = {
             showtimeId: showtimeId,
             userId: user?.id || null,
-            selectedSeats: selectedSeats, // Giữ danh sách ghế để đối chiếu nhả ghế khi hủy
+            selectedSeats: selectedSeats, 
             totalAmount: calculateTotal(),
             voucherCode: appliedVoucher ? appliedVoucher.voucherCode : null
         };
 
-        // Lưu vào localStorage trước khi chuyển hướng bay sang cổng VNPay
-        localStorage.setItem("pendingBooking", JSON.stringify(pendingBooking));
+        try {
+            // Bước 1: Bắn lệnh yêu cầu Giữ ghế tạm thời lên BE trước
+            // BE sẽ chạy hàm holdSeats() kiểm tra và ép flush() xuống SQL Server
+            await axiosClient.post('/seats/hold', {
+                showtimeId: showtimeId,
+                seatIds: selectedSeats.map(s => s.seatId),
+                userId: user?.id || null
+            });
 
-        handleVNPayPayment({
-            user,
-            showtimeId,
-            selectedSeats,
-            totalAmount: calculateTotal(), 
-            voucherCode: appliedVoucher ? appliedVoucher.voucherCode : null, 
-            navigate
-        });
+            // Bước 2: Nếu BE trả về 200 OK (Ghế trống) -> Tiến hành lưu localStorage và chuyển sang VNPay
+            localStorage.setItem("pendingBooking", JSON.stringify(pendingBooking));
+
+            handleVNPayPayment({
+                user,
+                showtimeId,
+                selectedSeats,
+                totalAmount: calculateTotal(), 
+                voucherCode: appliedVoucher ? appliedVoucher.voucherCode : null, 
+                navigate
+            });
+
+        } catch (err) {
+            console.error("Lỗi giữ ghế hệ thống:", err);
+            // Bước 3: Đón đầu lỗi 400 Bad Request từ BE đẩy về và quăng Alert cảnh báo cho Trình duyệt 2
+            if (err.response && err.response.data) {
+                alert(`⚠️ ${err.response.data}`);
+            } else {
+                alert("⚠️ Ghế bạn chọn hiện tại đang có người giữ hoặc đã được bán. Vui lòng thử lại!");
+            }
+        }
     };
 
     if (loading) {

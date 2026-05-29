@@ -97,8 +97,6 @@ const Navbar = () => {
                     {/* 🔔 TỰ XÓA SỐ ĐỎ: Quả chuông thông báo real-time */}
                     <NotificationBell />
                     
-                    {/* Nút chuyển đổi ngôn ngữ */}
-                    <LanguageSwitcher />
 
                     {/* Kiểm tra trạng thái đăng nhập để hiển thị Profile/Login */}
                     {user ? (

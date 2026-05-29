@@ -23,15 +23,21 @@ public class SeatService {
     private final TicketRepository ticketRepository;
     private final ShowtimeRepository showtimeRepository;
 
+    // 1. Lấy tất cả ghế vật lý theo mã phòng (Cấu hình Admin)
     public List<Seat> getSeatsByRoom(String roomId) {
         return seatRepository.findByRoom_RoomId(roomId);
     }
 
+    // 2. Lấy trạng thái khóa/mở ghế theo suất chiếu phục vụ Client đặt vé
     public List<Map<String, Object>> getSeatsStatusByShowtime(String showtimeId) {
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy suất chiếu với ID: " + showtimeId));
 
         String roomId = showtime.getRoom().getRoomId();
+
+        // 🛠️ Ép làm mới context để lấy dữ liệu thời gian thực từ SQL Server
+        seatRepository.flush();
+
         List<Seat> allSeats = seatRepository.findByRoom_RoomId(roomId);
         List<String> bookedSeatIds = ticketRepository.findBookedSeatIdsByShowtime(showtimeId);
 
@@ -43,7 +49,7 @@ public class SeatService {
             seatMap.put("seatNumber", seat.getSeatNumber());
             seatMap.put("seatType", seat.getSeatType());
 
-            // 🛠️ Dùng hàm .after() của java.util.Date để check hết hạn
+            // LOGIC KHÓA GHẾ: Ghế bị khóa (true) nếu đã thanh toán, admin bảo trì, hoặc đang trong lịch giữ tạm
             boolean isLocked = (seat.getSeatId() != null && bookedSeatIds.contains(seat.getSeatId()))
                     || Boolean.TRUE.equals(seat.getIsOccupied())
                     || (seat.getHoldExpiresAt() != null && seat.getHoldExpiresAt().after(now));
@@ -53,8 +59,14 @@ public class SeatService {
         }).collect(Collectors.toList());
     }
 
+    // =========================================================================
+    // 🛠️ LOGIC: GIỮ GHẾ TẠM THỜI TRONG 10 PHÚT (CÓ ÉP FLUSH ĐỂ CHẶN TRANH CHẤP)
+    // =========================================================================
     @Transactional
     public void holdSeats(List<String> seatIds) {
+        // 🛠️ Ép ghi nhận/đồng bộ các giao dịch trước đó xuống DB
+        seatRepository.flush();
+
         List<Seat> seats = seatRepository.findAllById(seatIds);
         Date now = new Date();
 
@@ -62,21 +74,28 @@ public class SeatService {
             if (Boolean.TRUE.equals(seat.getIsOccupied())) {
                 throw new RuntimeException("Ghế " + seat.getSeatNumber() + " đã được bán!");
             }
-            // 🛠️ Dùng hàm .after() để kiểm tra trùng ghế trùng lịch giữ tạm
+            // Kiểm tra lịch giữ tạm, nếu thời gian hết hạn nằm ở tương lai (after now) -> CHẶN NGAY
             if (seat.getHoldExpiresAt() != null && seat.getHoldExpiresAt().after(now)) {
                 throw new RuntimeException("Ghế " + seat.getSeatNumber() + " đã có người nhanh tay chọn trước!");
             }
         }
 
-        // 🛠️ Cộng thêm 10 phút (10 * 60 * 1000 mili-giây) theo kiểu Date chuẩn
+        // Đạt điều kiện trống hoàn toàn -> Tiến hành khóa tạm 10 phút
         Date expiresAt = new Date(System.currentTimeMillis() + 10 * 60 * 1000);
         for (Seat seat : seats) {
             seat.setHoldExpiresAt(expiresAt);
         }
 
         seatRepository.saveAll(seats);
+
+        // 🛠️ Ép ghi đè mốc thời gian khóa xuống SQL Server ngay lập tức
+        // Điều này đảm bảo Trình duyệt 2 khi gọi check sẽ dính lỗi chặn ngay lập tức
+        seatRepository.flush();
     }
 
+    // =========================================================================
+    // 🛠️ LOGIC: GIẢI PHÓNG GHẾ (ROLLBACK) KHI KHÁCH HỦY HOẶC GIAO DỊCH LỖI
+    // =========================================================================
     @Transactional
     public void releaseSeats(List<String> seatIds) {
         List<Seat> seats = seatRepository.findAllById(seatIds);
@@ -84,5 +103,6 @@ public class SeatService {
             seat.setHoldExpiresAt(null);
         }
         seatRepository.saveAll(seats);
+        seatRepository.flush();
     }
 }
