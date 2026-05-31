@@ -8,6 +8,7 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // 💡 State quản lý đóng/mở Sidebar trên Mobile
     const dropdownRef = useRef(null);
 
     // Xử lý hiệu ứng scroll để đổi nền Navbar
@@ -31,7 +32,7 @@ const Navbar = () => {
         }
     }, []);
 
-    // Click outside để đóng dropdown
+    // Click outside để đóng dropdown tài khoản VÀ đóng luôn cả mobile sidebar
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -46,40 +47,47 @@ const Navbar = () => {
         localStorage.removeItem("user");
         setUser(null);
         setShowDropdown(false);
+        setIsMenuOpen(false); // Đóng menu nếu đang mở
         window.location.reload();
     };
 
+    // 💡 Hàm tự động đóng Sidebar khi người dùng click chọn chuyển trang tin tức/phim
+    const closeMobileMenu = () => {
+        setIsMenuOpen(false);
+    };
+
     return (
+    <>
         <nav className={`navbar-main ${scrolled ? 'scrolled' : ''}`}>
             <div className="nav-container">
-                {/* Logo */}
-                <Link to="/" className="nav-brand">
+                {/* 1. Logo */}
+                <Link to="/" className="nav-brand" onClick={closeMobileMenu}>
                     CINEMA<span>X</span>
                 </Link>
 
-                {/* Navigation Links */}
-                <div className="nav-menu">
-                    <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                {/* 2. Navigation Links (Sidebar Mobile) */}
+                <div className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
+                    <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMobileMenu}>
                         Trang Chủ
                     </NavLink>
-                    <NavLink to="/dang-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                    <NavLink to="/dang-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMobileMenu}>
                         Phim Đang Chiếu
                     </NavLink>
-                    <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                    <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMobileMenu}>
                         Phim Sắp Chiếu
                     </NavLink>
-                    <NavLink to="/lich-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                    <NavLink to="/lich-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMobileMenu}>
                         Lịch Chiếu
                     </NavLink>
-                    <NavLink to="/rap" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                    <NavLink to="/rap" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMobileMenu}>
                         Rạp
                     </NavLink>
-                    <NavLink to="/tin-tuc" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                    <NavLink to="/tin-tuc" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMobileMenu}>
                         Tin Tức
                     </NavLink>
                 </div>
 
-                {/* Right Section */}
+                {/* 3. Right Section (Chỉ chứa Profile / Login) */}
                 <div className="nav-right" ref={dropdownRef}>
                     {user ? (
                         <div className="user-profile">
@@ -102,20 +110,19 @@ const Navbar = () => {
                                     </div>
                                     <div className="dropdown-divider"></div>
                                     
-                                    {/* Nút quay lại trang quản trị dành riêng cho ADMIN */}
                                     {(user.role === 'ROLE_ADMIN' || user.role === 'ADMIN' || user.role === 'admin') && (
                                         <>
-                                            <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
+                                            <Link to="/admin" className="dropdown-item admin-link" onClick={() => { setShowDropdown(false); closeMobileMenu(); }}>
                                                 <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i> 
                                                 <span style={{fontWeight: 'bold', color: '#ffc107'}}>Trang Quản Trị</span>
                                             </Link>
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
-                                    <Link to="/profile" className="dropdown-item">
+                                    <Link to="/profile" className="dropdown-item" onClick={() => { setShowDropdown(false); closeMobileMenu(); }}>
                                         <i className="fa-regular fa-user"></i> Hồ sơ của tôi
                                     </Link>
-                                    <Link to="/ve-da-dat" className="dropdown-item">
+                                    <Link to="/ve-da-dat" className="dropdown-item" onClick={() => { setShowDropdown(false); closeMobileMenu(); }}>
                                         <i className="fa-solid fa-ticket"></i> Lịch sử đặt vé
                                     </Link>
                                     <div className="dropdown-divider"></div>
@@ -126,17 +133,35 @@ const Navbar = () => {
                             )}
                         </div>
                     ) : (
-                        <button className="login-button" onClick={() => setIsModalOpen(true)}>
+                        <button className="login-button" onClick={() => { setIsModalOpen(true); closeMobileMenu(); }}>
                             <i className="fa-regular fa-circle-user"></i>
                             <span>Đăng Nhập</span>
                         </button>
                     )}
                 </div>
+
+                {/* 💡 ĐÃ ĐƯA RA NGOÀI: Nút Hamburger nằm độc lập cuối container */}
+                <button 
+                    className={`menu-toggle ${isMenuOpen ? 'open' : ''}`} 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label="Toggle navigation"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
 
             <AuthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </nav>
-    );
+
+        {/* Lớp phủ tối màn hình */}
+        <div 
+            className={`sidebar-overlay ${isMenuOpen ? 'open' : ''}`} 
+            onClick={closeMobileMenu}
+        ></div>
+    </>
+);
 };
 
 export default Navbar;
