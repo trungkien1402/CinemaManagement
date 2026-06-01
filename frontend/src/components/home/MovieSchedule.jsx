@@ -145,7 +145,7 @@ const MovieSchedule = () => {
           
           {/* Chọn Tỉnh/Thành */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <span className="figma-filter-label">🌍 {t('home.schedule.filters.cityLabel')}</span>
+            <span className="figma-filter-label"> {t('home.schedule.filters.cityLabel')}</span>
             <select
               value={selectedCity}
               onChange={handleCityChange}

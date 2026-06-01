@@ -63,6 +63,8 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
+    box-sizing: border-box;
+    width: 100%; /* Fix tràn viền */
 }
 
 .auth-btn-submit {
@@ -74,23 +76,43 @@
     font-weight: bold;
     cursor: pointer;
     font-size: 16px;
+    transition: 0.3s;
 }
 
 .auth-btn-submit:hover {
     background: #b20710;
 }
+
+.auth-btn-submit:disabled {
+    background: #e07a80;
+    cursor: not-allowed;
+}
+
 .otp-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 100%;
 }
 
+/* 🚀 ĐÃ FIX LẠI CSS Ô OTP CHO CHUẨN FORM */
 .otp-input {
     text-align: center;
-    font-size: 24px !important;
-    letter-spacing: 10px;
+    font-size: 20px !important;
+    letter-spacing: 8px; /* Giảm bớt giãn chữ để vừa vặn */
     font-weight: bold;
     border: 2px solid #e50914 !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    box-sizing: border-box;
+}
+
+/* 🚀 ÉP CHỮ MỜ (PLACEHOLDER) KHÔNG BỊ GIÃN */
+.otp-input::placeholder {
+    letter-spacing: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: #999;
 }
 
 .btn-back {
@@ -100,8 +122,41 @@
     cursor: pointer;
     text-decoration: underline;
     font-size: 14px;
+    margin-top: -5px;
 }
 
 .btn-back:hover {
-    color: #fff;
+    color: #333;
+}
+
+/* ======================================================== */
+/* 🚀 STYLE CHO PHẦN QUÊN MẬT KHẨU                          */
+/* ======================================================== */
+.forgot-password-link {
+    color: #e50914;
+    font-size: 14px;
+    text-align: right;
+    cursor: pointer;
+    margin-top: -8px;
+    margin-bottom: 5px;
+    transition: 0.2s;
+    font-weight: 500;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+    color: #b20710;
+}
+
+/* 🚀 ĐỔI TIÊU ĐỀ SANG MÀU ĐỎ */
+.auth-title {
+    color: #e50914;
+    font-size: 18px; /* Chỉnh size lại cho bằng với chữ Đăng Nhập */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 auto 20px auto; /* Căn giữa và tạo khoảng cách với form dưới */
+    padding-bottom: 5px; /* Khoảng cách từ chữ tới đường gạch ngang */
+    border-bottom: 3px solid #e50914; /* Đường gạch chân màu đỏ bự 3px */
+    width: max-content; /* 💡 Chiêu bài: Ép chiều rộng chỉ ôm sát chữ để đường gạch không bị kéo dài ra 2 bên */
+    display: block;
 }

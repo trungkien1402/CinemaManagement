@@ -33,9 +33,6 @@ const MovieDetail = () => {
     setAverageRating((avg * 2).toFixed(1));
   };
 
-  // =========================
-  // TẠO DANH SÁCH 7 NGÀY
-  // =========================
   const datesData = useMemo(() => {
     const daysOfWeek = [
       t('home.schedule.days.sun') || 'Chủ Nhật',
@@ -65,7 +62,7 @@ const MovieDetail = () => {
     return list;
   }, [t]);
 
-  // Sử dụng Custom Hook để lấy toàn bộ dữ liệu và logic liên quan API
+
   const {
     movie,
     showtimes,
@@ -80,14 +77,12 @@ const MovieDetail = () => {
     handleProvinceChange
   } = useMovieData(id, datesData);
 
-  // =========================
-  // XỬ LÝ SỰ KIỆN
-  // =========================
+
   const handleShareMovie = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl)
       .then(() => {
-        setShareText(t('detail.alerts.linkCopied') || "✅ Đã Copy Link!");
+        setShareText(t('') || "Đã sao chép");
         setTimeout(() => setShareText(t('detail.buttons.share') || "Chia Sẻ"), 2500);
       })
       .catch(err => console.error("Lỗi copy link:", err));
@@ -100,8 +95,7 @@ const MovieDetail = () => {
   if (loading && !movie) return <div className="detail-loading">{t('detail.status.loading') || "Đang tải thông tin phim..."}</div>;
   if (!movie) return <div className="detail-loading">{t('detail.status.notFound') || "Không tìm thấy phim yêu cầu."}</div>;
 
-  // =========================
-  // PHÂN NHÓM RẠP CHUẨN// =========================
+
   const theaterGroups = {};
   showtimes.forEach(st => {
     const tId = st.room?.theater?.theaterId || "T01";
@@ -148,7 +142,6 @@ const MovieDetail = () => {
 
             <div className="detail-meta-block">
               <strong>{t('detail.info.cast') || "Diễn viên:"}</strong>
-              <p>Trần Bảo Sơn, Ngô Thanh Vân, Hồng Ánh</p>
             </div>
           </div>
 

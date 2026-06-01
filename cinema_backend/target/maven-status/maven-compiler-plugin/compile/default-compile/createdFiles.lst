@@ -1,3 +1,4 @@
+com\cinema\project\controller\NotificationController.class
 com\cinema\project\payload\response\MovieResponse.class
 com\cinema\project\util\AppConstants.class
 com\cinema\project\model\Booking.class
@@ -6,6 +7,7 @@ com\cinema\project\service\UserService.class
 com\cinema\project\util\DateUtils.class
 com\cinema\project\service\ShowtimeService.class
 com\cinema\project\payload\response\SeatResponse.class
+com\cinema\project\controller\SeatController$SeatActionRequest.class
 com\cinema\project\payload\request\LoginRequest.class
 com\cinema\project\controller\AdminMovieController.class
 com\cinema\project\controller\ShowtimeController.class
@@ -29,9 +31,11 @@ com\cinema\project\service\TheaterService.class
 com\cinema\project\model\Voucher.class
 com\cinema\project\controller\SeatController.class
 com\cinema\project\controller\VnpayController.class
+com\cinema\project\controller\MoviePublicController.class
 com\cinema\project\model\Ticket.class
 com\cinema\project\model\Room.class
 com\cinema\project\repositories\RoomRepository.class
+com\cinema\project\repositories\NotificationRepository.class
 com\cinema\project\controller\AdminCinemaController.class
 com\cinema\project\controller\NewsController.class
 com\cinema\project\model\Theater.class
@@ -42,6 +46,7 @@ com\cinema\project\payload\request\NewsRequest.class
 com\cinema\project\config\SecurityConfig.class
 com\cinema\project\service\NewsService.class
 com\cinema\project\service\AdminCinemaService.class
+com\cinema\project\model\Notification.class
 com\cinema\project\model\Movie.class
 com\cinema\project\config\VnpayConfig.class
 com\cinema\project\repositories\SeatRepository.class
@@ -63,6 +68,7 @@ com\cinema\project\config\AppConfig.class
 com\cinema\project\controller\AuthController.class
 com\cinema\project\security\jwt\JwtUtils.class
 com\cinema\project\service\EmailService.class
+com\cinema\project\service\NotificationService.class
 com\cinema\project\model\Seat.class
 com\cinema\project\service\SeatService.class
 com\cinema\project\service\TicketService.class

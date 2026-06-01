@@ -4,21 +4,20 @@ import AuthModal from '../auth/AuthModal';
 import LanguageSwitcher from './LanguageSwitcher'; 
 import '../style/Navbar.css';
 import { useTranslation } from 'react-i18next';
+import NotificationBell from './NotificationBell';
+import NavbarSearch from './NavbarSearch';
 
 const Navbar = () => {
-    // 🛠️ FIX CHÍNH TẠI ĐÂY: Thêm i18n vào để không còn bị lỗi đen màn hình
     const { t, i18n } = useTranslation(); 
     
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const dropdownRef = useRef(null);
+    const userDropdownRef = useRef(null);
 
-    // Xác định ngôn ngữ hiện tại để switch text nhanh
     const isEn = i18n.language?.startsWith('en');
 
-    // Xử lý hiệu ứng scroll để đổi nền Navbar
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
@@ -27,7 +26,6 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Kiểm tra login từ localStorage
     useEffect(() => {
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
@@ -39,10 +37,9 @@ const Navbar = () => {
         }
     }, []);
 
-    // Click outside để đóng dropdown
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
                 setShowDropdown(false);
             }
         };
@@ -60,21 +57,21 @@ const Navbar = () => {
     return (
         <nav className={`navbar-main ${scrolled ? 'scrolled' : ''}`}>
             <div className="nav-container">
-                {/* Logo */}
+                {/* Logo thương hiệu */}
                 <Link to="/" className="nav-brand">
                     CINEMA<span>X</span>
                 </Link>
 
-                {/* Navigation Links */}
+                {/* Danh mục chuyển trang */}
                 <div className="nav-menu">
                     <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                         {t('nav.home') || "Trang Chủ"}
                     </NavLink>
                     <NavLink to="/dang-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        {t('nav.nowShowing') || "Phim Đang Chiếu"}
+                        {t('nav.nowShowing') || "Đang Chiếu"}
                     </NavLink>
                     <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        {t('nav.comingSoon') || "Phim Sắp Chiếu"}
+                        {t('nav.comingSoon') || "Sắp Chiếu"}
                     </NavLink>
                     <NavLink to="/lich-chieu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                         {t('nav.schedule') || "Lịch Chiếu"}
@@ -86,15 +83,19 @@ const Navbar = () => {
                         {t('nav.news') || "Tin Tức"}
                     </NavLink>
                 </div>
-
-                {/* Right Section */}
-                <div className="nav-right" ref={dropdownRef} style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+     
+                {/* Khu vực tính năng bên phải Navbar */}
+                <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                     
-                    {/* NÚT CHUYỂN NGÔN NGỮ */}
-                    <LanguageSwitcher />
-
+                    {/* 1. Ô tìm kiếm */}
+                    <NavbarSearch />
+                    
+                    {/* 2. Quả chuông thông báo */}
+                    <NotificationBell />
+                    
+                    {/* 3. Khối kiểm tra Trạng thái Tài khoản / Đăng Nhập */}
                     {user ? (
-                        <div className="user-profile">
+                        <div className="user-profile" ref={userDropdownRef}>
                             <button 
                                 className={`profile-toggle ${showDropdown ? 'active' : ''}`} 
                                 onClick={() => setShowDropdown(!showDropdown)}
@@ -114,7 +115,6 @@ const Navbar = () => {
                                     </div>
                                     <div className="dropdown-divider"></div>
                                     
-                                    {/* Nút quay lại trang quản trị dành riêng cho ADMIN */}
                                     {(user.role === 'ROLE_ADMIN' || user.role === 'ADMIN' || user.role === 'admin') && (
                                         <>
                                             <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
@@ -127,7 +127,6 @@ const Navbar = () => {
                                         </>
                                     )}
 
-                                    {/* Khách hàng thông thường */}
                                     {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
                                         <>
                                             <Link to="/ho-so" className="dropdown-item" onClick={() => setShowDropdown(false)}>
@@ -154,6 +153,9 @@ const Navbar = () => {
                             <span>{t('nav.login') || "Đăng Nhập"}</span>
                         </button>
                     )}
+
+                    {/* 4. 🌐 NÚT CHUYỂN NGÔN NGỮ: Đã đưa ra sau cùng */}
+                    <LanguageSwitcher />
                 </div>
             </div>
 

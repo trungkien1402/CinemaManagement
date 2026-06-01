@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Sử dụng axios trần để tránh lỗi import đồng bộ
+import axiosClient from '../../api/axiosClient'; 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +12,17 @@ const PaymentSuccess = () => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [processing, setProcessing] = useState(true);
 
+    const playSound = (type) => {
+        try {
+            const audioPath = type === 'success' ? '/success-sound.mp3' : '/fail-sound.mp3';
+            const audio = new Audio(audioPath);
+            audio.volume = 0.5;
+            audio.play();
+        } catch (error) {
+            console.log("Trình duyệt chặn phát âm thanh tự động:", error);
+        }
+    };
+
     useEffect(() => {
         let isCalled = false;
 
@@ -19,118 +30,204 @@ const PaymentSuccess = () => {
             if (isCalled) return;
             isCalled = true;
 
-            try {
-                // Bóc tách toàn bộ tham số VNPay trả về trên URL
-                const query = new URLSearchParams(location.search);
-                const responseCode = query.get("vnp_ResponseCode");
+            const query = new URLSearchParams(location.search);
+            const responseCode = query.get("vnp_ResponseCode");
+            const orderInfo = query.get("vnp_OrderInfo");
+            
+            // 🔍 ĐỌC DỮ LIỆU ĐỒNG BỘ TỪ LOCAL STORAGE
+            const localData = localStorage.getItem("pendingBooking");
+            console.log("=== MÃ PHẢN HỒI VNPAY ===", responseCode);
+            console.log("=== DỮ LIỆU LOCAL STORAGE THÔ ===", localData);
 
-                console.log("=== MÃ PHẢN HỒI VNPAY ===", responseCode);
+            let bookingData = null;
+            if (localData) {
+                try {
+                    bookingData = JSON.parse(localData);
+                } catch (e) {
+                    console.error("Lỗi parse JSON pendingBooking:", e);
+                }
+            }
 
-                // 1. TRƯỜNG HỢP NGƯỜI DÙNG BẤM HỦY THANH TOÁN (Mã 24)
+            // =========================================================================
+            // 1. ❌ TRƯỜNG HỢP HỦY THANH TOÁN (Mã 24) HOẶC LỖI KHÁC TỪ VNPAY (Khác 00)
+            // =========================================================================
+            if (responseCode !== "00") {
                 if (responseCode === "24") {
                     setMessage(t('payment.status.canceled') || "Bạn đã hủy bỏ giao dịch thanh toán vé phim.");
-                    setIsSuccess(false);
-                    setProcessing(false);
-                    
-                    // Xóa dữ liệu đặt vé lưu tạm ngay lập tức để làm sạch bộ nhớ
-                    localStorage.removeItem("pendingBooking");
-                    return;
+                } else {
+                    setMessage(t('payment.status.failed', { code: responseCode }) || `Giao dịch thất bại! Mã lỗi: VNPay_${responseCode}`);
                 }
-
-                // 2. TRƯỜNG HỢP CÁC LỖI KHÁC TỪ VNPAY (Không phải 00)
-                if (responseCode !== "00") {
-                    setMessage(t('payment.status.failed', { code: responseCode }) || `Giao dịch thất bại! Mã lỗi hệ thống: VNP_${responseCode}`);
-                    setIsSuccess(false);
-                    setProcessing(false);
-                    localStorage.removeItem("pendingBooking");
-                    return;
-                }
-
-                // 3. TRƯỜNG HỢP THÀNH CÔNG (Mã 00) -> Tiến hành lưu vé vào Database
-                const bookingData = JSON.parse(localStorage.getItem("pendingBooking"));
-                if (!bookingData) {
-                    setMessage(t('payment.status.noPendingData') || "Không tìm thấy thông tin vé phim lưu tạm (Có thể giao dịch đã được xử lý xong).");
-                    setIsSuccess(false);
-                    setProcessing(false);
-                    return;
-                }
-
-                console.log("=== ĐANG GỬI LỆNH TẠO VÉ SANG BACKEND ===", bookingData);
-
-                // Lấy token bảo mật từ bộ nhớ để chuẩn bị gửi kèm request
-                const token = localStorage.getItem('token');
-                const authHeader = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
-                // Gọi API tạo vé chính thức của bạn
-                await axios.post("http://localhost:8080/api/bookings/create", bookingData, authHeader);
                 
-                // ================= TỰ ĐỘNG CẬP NHẬT LƯỢT DÙNG VOUCHER VÀO DB =================
-                // Giả định bookingData của bạn có chứa trường voucherCode (hoặc couponCode tùy cấu hình object đặt vé của bạn)
-                const appliedVoucher = bookingData.voucherCode || bookingData.couponCode;
-                
-                if (appliedVoucher) {
-                    const cleanCode = appliedVoucher.trim().toUpperCase();
-                    console.log(`=== ĐANG ĐỒNG BỘ TRỪ LƯỢT VOUCHER CHÍNH THỨC: ${cleanCode} ===`);
-                    
-                    // Gọi sang Endpoint Client mà bạn đã tạo ở Java Controller
-                    await axios.post(`http://localhost:8080/api/vouchers/apply/${cleanCode}`, {}, authHeader);
-                }
-                // ===========================================================================
+                setIsSuccess(false);
+                playSound('fail');
 
-                // Giải phóng bộ nhớ tạm sau khi tạo vé và áp voucher thành công
+                let seatIds = [];
+                let showtimeId = "";
+
+                // 👉 Hướng xử lý ưu tiên 1: Lấy từ Local Storage (Sửa đổi tên trường khớp 100% với dữ liệu thô)
+                if (bookingData) {
+                    showtimeId = bookingData.showtimeId || "";
+                    if (bookingData.seatIds && Array.isArray(bookingData.seatIds)) {
+                        seatIds = bookingData.seatIds; // Chuẩn hóa theo định dạng JSON thô bạn lưu
+                    } else if (bookingData.selectedSeats && Array.isArray(bookingData.selectedSeats)) {
+                        seatIds = bookingData.selectedSeats.map(s => s.seatId || s);
+                    }
+                } 
+                
+                // 👉 Hướng xử lý ưu tiên 2 (Dự phòng cực kỳ an toàn): Bóc tách chuỗi từ vnp_OrderInfo trên URL
+                if (seatIds.length === 0 && orderInfo) {
+                    console.log("Thử thách bóc tách thông tin từ vnp_OrderInfo URL:", orderInfo);
+                    try {
+                        // Giả sử Backend trả về info chứa mã lịch chiếu và ghế dạng: "ThanhToanVe_ST-53230_P01-E01,P01-E02"
+                        const parts = orderInfo.split('_');
+                        if (parts.length >= 3) {
+                            showtimeId = parts[1];
+                            seatIds = parts[2].split(',');
+                        }
+                    } catch (err) {
+                        console.error("Lỗi bóc tách dữ liệu từ vnp_OrderInfo:", err);
+                    }
+                }
+
+                // 🛠️ THỰC THI GỌI API NHẢ GHẾ KHẨN CẤP
+                if (seatIds.length > 0 && showtimeId) {
+                    console.log("💥 [KÍCH HOẠT] Tiến hành nhả các ghế dưới DB lập tức:", seatIds);
+                    try {
+                        const res = await axiosClient.post('/seats/release', { 
+                            showtimeId: showtimeId, 
+                            seatIds: seatIds 
+                        });
+                        console.log("✅ Kết quả hồi ghế từ Backend:", res.data);
+                    } catch (err) {
+                        console.error("❌ Gọi API hồi ghế thất bại:", err);
+                    }
+                } else {
+                    console.warn("🛑 Không tìm thấy danh sách ID ghế từ Storage lẫn URL để tiến hành hồi ghế.");
+                }
+
+                // Luôn dọn dẹp bộ nhớ và giữ giao diện 2.5 giây cho khách hàng nhìn thông báo trước khi quay về
                 localStorage.removeItem("pendingBooking");
+                setProcessing(false);
+                setTimeout(() => { navigate('/'); }, 2500);
+                return;
+            }
 
-                setMessage(t('payment.status.success') || "Thanh toán thành công! Vé phim của bạn đã được khởi tạo hệ thống.");
+            // =========================================================================
+            // 2. ✅ TRƯỜNG HỢP THÀNH CÔNG (Mã 00)
+            // =========================================================================
+            try {
+                if (!bookingData) {
+                    setMessage(t('payment.status.noPendingData') || "Không tìm thấy thông tin vé phim lưu tạm.");
+                    setIsSuccess(false);
+                    setProcessing(false);
+                    playSound('fail');
+                    setTimeout(() => { navigate('/'); }, 2500);
+                    return;
+                }
+
+                // Đồng bộ cấu trúc dữ liệu nếu Backend yêu cầu `selectedSeats` thay vì `seatIds` khi tạo hóa đơn chính thức
+                const payloadToCreate = { ...bookingData };
+                if (payloadToCreate.seatIds && !payloadToCreate.selectedSeats) {
+                    payloadToCreate.selectedSeats = payloadToCreate.seatIds.map(id => ({ seatId: id }));
+                }
+
+                // Tạo hóa đơn chính thức ở Backend
+                await axiosClient.post("/bookings/create", payloadToCreate);
+                
+                const appliedVoucher = bookingData.voucherCode;
+                if (appliedVoucher) {
+                    await axiosClient.post(`/vouchers/apply/${appliedVoucher.trim().toUpperCase()}`);
+                }
+
+                localStorage.removeItem("pendingBooking");
+                setMessage(t('payment.status.success') || "Thanh toán thành công! Vé phim đã được khởi tạo.");
                 setIsSuccess(true);
+                setProcessing(false);
+                playSound('success'); 
+
+                setTimeout(() => { navigate('/ve-da-dat'); }, 2500);
 
             } catch (err) {
-                console.error("LỖI XỬ LÝ KẾT QUẢ:", err);
-                setMessage(err.response?.data?.message || err.response?.data || t('payment.status.systemError') || "Lỗi hệ thống trong quá trình khởi tạo dữ liệu vé!");
+                console.error("LỖI HỆ THỐNG KHI TẠO VÉ CHÍNH THỨC:", err);
+                setMessage(t('payment.status.systemError') || "Lỗi hệ thống khi khởi tạo vé!");
                 setIsSuccess(false);
-            } finally {
+                playSound('fail');
+
+                // Dự phòng trường hợp lỗi mạng khi tạo vé, vẫn cố nhả ghế ra
+                if (bookingData) {
+                    const fallbackSeats = bookingData.seatIds || (bookingData.selectedSeats ? bookingData.selectedSeats.map(s => s.seatId || s) : []);
+                    const fallbackShowtime = bookingData.showtimeId;
+                    
+                    if (fallbackSeats.length > 0 && fallbackShowtime) {
+                        try {
+                            await axiosClient.post('/seats/release', { 
+                                showtimeId: fallbackShowtime, 
+                                seatIds: fallbackSeats 
+                            });
+                        } catch (e) {
+                            console.log("Hủy giữ ghế dự phòng thất bại:", e);
+                        }
+                    }
+                }
+
+                localStorage.removeItem("pendingBooking");
                 setProcessing(false);
+                setTimeout(() => { navigate('/'); }, 2500);
             }
         };
 
         handlePaymentResult();
         return () => { isCalled = true; };
-    }, [location, t]);
+    }, [location, t, navigate]);
 
     return (
-        <div style={{ background: "#0d0d13", color: "#fff", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontFamily: "Arial, sans-serif" }}>
-            {/* Hiển thị Icon trạng thái động sinh động */}
-            <div style={{ fontSize: "70px", marginBottom: "20px" }}>
-                {processing ? "⏳" : isSuccess ? "✅" : "❌"}
-            </div>
-            
-            {/* Lời nhắn thông báo */}
-            <h2 style={{ textAlign: "center", maxWidth: "80%", fontWeight: "normal", lineHeight: "1.5" }}>
-                {message}
-            </h2>
+        <div style={{
+            position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+            background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(5px)', 
+            display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
+        }}>
+            <div style={{
+                background: '#161622', color: '#fff', padding: '30px 40px', borderRadius: '16px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.1)',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                maxWidth: '400px', width: '90%', textAlign: 'center',
+                animation: 'popupScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                fontFamily: 'Arial, sans-serif'
+            }}>
+                <style>{`
+                    @keyframes popupScale {
+                        from { opacity: 0; transform: scale(0.85); }
+                        to { opacity: 1; transform: scale(1); }
+                    }
+                `}</style>
 
-            {/* Nút bấm điều hướng quay trở lại */}
-            {!processing && (
-                <button 
-                    onClick={() => navigate(isSuccess ? '/ve-da-dat' : '/')} 
-                    style={{ 
-                        marginTop: 35, 
-                        padding: '12px 35px', 
-                        fontSize: '16px', 
-                        fontWeight: 'bold', 
-                        border: 'none', 
-                        borderRadius: 30, 
-                        background: isSuccess ? '#28a745' : '#dc3545', 
-                        color: '#fff', 
-                        cursor: 'pointer',
-                        boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                        transition: 'transform 0.2s'
-                    }}
-                    onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
-                    onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
-                >
-                    {isSuccess ? (t('payment.buttons.viewTicket') || "Vào rạp xem vé") : (t('payment.buttons.backHome') || "Quay lại trang chủ")}
-                </button>
-            )}
+                <div style={{ fontSize: '50px', marginBottom: '15px' }}>
+                    {processing ? "⏳" : isSuccess ? "✅" : "❌"}
+                </div>
+
+                <h3 style={{ 
+                    fontSize: '18px', fontWeight: '600', margin: 0, lineHeight: '1.5',
+                    color: processing ? '#ffc107' : isSuccess ? '#28a745' : '#dc3545'
+                }}>
+                    {processing ? "Đang xử lý" : isSuccess ? "Thành công" : "Thất bại"}
+                </h3>
+                
+                <p style={{ fontSize: '14px', color: '#aaa', marginTop: '10px', marginBottom: 0, lineHeight: '1.4' }}>
+                    {message}
+                </p>
+
+                {!processing && (
+                    <div style={{ marginTop: '20px', width: '100%', height: '3px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+                        <div style={{
+                            height: '100%', background: isSuccess ? '#28a745' : '#dc3545', width: '100%',
+                            animation: 'countdown 2.5s linear forwards'
+                        }} />
+                        <style>{`
+                            @keyframes countdown { from { width: 100%; } to { width: 0%; } }
+                        `}</style>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,10 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class AdminMovieController {
 
+
     private final AdminMovieService adminMovieService;
 
-    // ===================== LẤY TẤT CẢ PHIM =====================
+    // lay phim
     @GetMapping("/all")
     public ResponseEntity<?> getAllMovies() {
         try {
@@ -30,7 +32,7 @@ public class AdminMovieController {
         }
     }
 
-    // ===================== THỐNG KÊ KHO PHIM =====================
+    // thong ke kho phim
     @GetMapping("/stats")
     public ResponseEntity<?> getStats() {
         try {
@@ -42,7 +44,7 @@ public class AdminMovieController {
         }
     }
 
-    // ===================== THÊM PHIM MỚI =====================
+    // them phim moi
     @PostMapping("/create")
     public ResponseEntity<?> createMovie(@RequestBody Movie movie) {
         try {
@@ -54,9 +56,11 @@ public class AdminMovieController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi thêm phim: " + e.getMessage());
         }
+
+
     }
 
-    // ===================== SỬA PHIM =====================
+    // sua phim
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateMovie(
             @PathVariable Long id,

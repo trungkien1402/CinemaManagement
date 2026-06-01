@@ -44,25 +44,15 @@ public class SecurityConfig {
     // PASSWORD
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
     // AUTH PROVIDER
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-
-        DaoAuthenticationProvider authProvider =
-                new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(
-                userDetailsService
-        );
-
-        authProvider.setPasswordEncoder(
-                passwordEncoder()
-        );
-
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
@@ -71,92 +61,55 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authConfig
     ) throws Exception {
-
         return authConfig.getAuthenticationManager();
     }
 
     // CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
-        CorsConfiguration configuration =
-                new CorsConfiguration();
-
-        configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
-        );
-
-        configuration.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "OPTIONS"
-                )
-        );
-
-        configuration.setAllowedHeaders(
-                List.of("*")
-        );
-
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration(
-                "/**",
-                configuration
-        );
-
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
     // SECURITY
     @Bean
-    public SecurityFilterChain filterChain(
-            HttpSecurity http
-    ) throws Exception {
-
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(
-                        corsConfigurationSource()
-                ))
-
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
                 .authorizeHttpRequests(auth -> auth
+                        // 1. Nhóm API xác thực và cổng thanh toán công khai
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/payment/**").permitAll()
 
-                        .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
+                        // 2. Cho phép các API liên quan đến trạng thái ghế chạy tự do
+                        .requestMatchers("/api/seats/hold", "/api/seats/release").permitAll()
+                        .requestMatchers("/api/seats/showtime/**").permitAll()
 
-                        .requestMatchers(
-                                "/api/payment/**"
-                        ).permitAll()
+                        // 🛠️ ĐẶC CÁCH: Cho phép API lấy danh sách phim này chạy tự do (permitAll)
+                        // Lệnh này phải đứng TRƯỚC lệnh chặn /api/movies/admin/** của Admin bên dưới
+                        .requestMatchers("/api/movies/admin/all").permitAll()
 
-                        .requestMatchers(
-                                "/api/admin/**"
-                        ).hasAuthority("ROLE_ADMIN")
+                        // 3. Nhóm quyền bảo mật nghiêm ngặt của quản trị viên (Chỉ Admin thực sự mới được vào)
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/movies/admin/**").hasAuthority("ROLE_ADMIN")
 
+                        // 4. Mở khóa cho tất cả các API thông thường khác (Rạp, lịch chiếu, thông báo công khai...)
                         .anyRequest().permitAll()
                 );
 
-        http.authenticationProvider(
-                authenticationProvider()
-        );
-
-        http.addFilterBefore(
-                authTokenFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

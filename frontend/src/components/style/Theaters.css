@@ -22,9 +22,37 @@
   margin: 0;
 }
 
+/* ================= DROPDOWN CHỌN TỈNH/THÀNH PHỐ ================= */
+.city-filter-select {
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #1c1c24;
+  color: #fff;
+  border: 1px solid #333;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  min-width: 250px;
+
+  /* 💡 VŨ KHÍ HẠNG NẶNG: Ép buộc ẩn icon bằng !important */
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: none !important;
+}
+
+/* 💡 Đặc trị cho trình duyệt Edge */
+.city-filter-select::-ms-expand {
+  display: none !important;
+}
+
+.city-filter-select:hover {
+  border-color: #555;
+}
+
+/* ================= DANH SÁCH RẠP ================= */
 .theaters-grid {
   display: grid;
-  /* 💡 ĐÃ SỬA: Đổi auto-fit thành auto-fill để rạp không bị giãn to khi chỉ có 1 rạp */
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 30px;
 }

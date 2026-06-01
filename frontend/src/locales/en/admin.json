@@ -50,7 +50,8 @@
       },
       "bookingsTab": {
         "title": "System-Wide Ticket Booking Transaction Logs", "anonymous": "Anonymous", "empty": "No ticket booking transaction logs found!",
-        "table": { "ticketId": "Invoice Code", "username": "Account", "movieTitle": "Movie Title", "seats": "Seat No", "price": "Price", "date": "Booking Date", "status": "Status" }
+        "table": { "ticketId": "Invoice Code", "username": "Account", "movieTitle": "Movie Title", "seats": "Seat No", "price": "Price", "date": "Booking Date", "status": "Status"},
+          "status": {"statusTicked": "Checked-In","unused": "Unused"}
       },
       "moviesTab": {
         "title": "Cinema Movie Repository",

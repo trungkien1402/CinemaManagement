@@ -1,8 +1,8 @@
 {
   "nav": {
     "home": "Trang Chủ",
-    "nowShowing": "Phim Đang Chiếu",
-    "comingSoon": "Phim Sắp Chiếu",
+    "nowShowing": "Đang Chiếu",
+    "comingSoon": "Sắp Chiếu",
     "schedule": "Lịch Chiếu",
     "theaters": "Rạp",
     "news": "Tin Tức",

@@ -22,10 +22,12 @@ public class Movie {
     private Long movieId;
 
     @NotBlank(message = "Tên phim không được để trống")
-    @Column(name = "title", nullable = false)
+    // SỬA: Ép kiểu dữ liệu sang utf8mb4 để nhận tiếng Việt có dấu
+    @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String title;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    // SỬA: Ép kiểu dữ liệu sang utf8mb4 cho phần mô tả dài
+    @Column(name = "description", columnDefinition = "LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String description;
 
     @Column(name = "trailer_url", columnDefinition = "TEXT")
@@ -42,7 +44,8 @@ public class Movie {
     private int duration;
 
     @NotBlank(message = "Thể loại không được để trống")
-    @Column(name = "genre", nullable = false, length = 100)
+    // SỬA: Đảm bảo thể loại phim (Hành động, Hài hước...) không lỗi font
+    @Column(name = "genre", nullable = false, columnDefinition = "VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String genre;
 
     @Column(name = "age_rating", length = 10)
@@ -54,6 +57,7 @@ public class Movie {
     @Column(name = "image", columnDefinition = "TEXT")
     private String image;
 
-    @Column(name = "author")
+    // SỬA: Hỗ trợ tên tác giả/đạo diễn bằng tiếng Việt có dấu
+    @Column(name = "author", columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String author;
 }

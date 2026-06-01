@@ -11,6 +11,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    // Hàm gửi OTP dùng cho ĐĂNG KÝ
     public void sendOtpEmail(String toEmail, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("CinemaX <your-email@gmail.com>");
@@ -19,6 +20,21 @@ public class EmailService {
         message.setText("Chào bạn,\n\n"
                 + "Mã xác thực (OTP) của bạn là: " + otp + "\n"
                 + "Mã này có hiệu lực trong vòng 5 phút. Vui lòng không cung cấp mã này cho bất kỳ ai.\n\n"
+                + "Trân trọng,\nĐội ngũ CinemaX.");
+
+        mailSender.send(message);
+    }
+
+    // 🚀 HÀM MỚI: Gửi OTP dùng cho QUÊN MẬT KHẨU
+    public void sendForgotPasswordEmail(String toEmail, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("CinemaX <your-email@gmail.com>");
+        message.setTo(toEmail);
+        message.setSubject("MÃ OTP KHÔI PHỤC MẬT KHẨU - CINEMAX");
+        message.setText("Chào bạn,\n\n"
+                + "Mã OTP để khôi phục mật khẩu của bạn là: " + otp + "\n"
+                + "Mã này sẽ hết hạn trong vòng 5 phút.\n"
+                + "Vui lòng không chia sẻ mã này cho bất kỳ ai.\n\n"
                 + "Trân trọng,\nĐội ngũ CinemaX.");
 
         mailSender.send(message);

@@ -9,28 +9,28 @@
       },
       "buttons": {
         "bookNow": "Book Now",
-        "detail": "Detail"
+        "detail": "Details"
       }
     },
-    "nowShowing": {
+   "nowShowing": {
       "title": "Now Showing",
-      "subtitle": "Discover the blockbuster movies hitting theaters right now",
+      "subtitle": "Discover the blockbuster movies currently taking over the theaters",
       "status": {
-        "loading": "Loading current movies...",
-        "empty": "There are currently no showtimes for now showing movies."
+        "loading": "Loading now showing movies...",
+        "empty": "There are currently no now showing movies scheduled."
       }
     },
     "comingSoon": {
+      "subtitle":"Subtitle",
       "title": "Coming Soon",
-      "subtitle": "Anticipate the massive cinematic projects about to hit the box office",
       "status": {
         "loading": "Loading upcoming movies...",
-        "empty": "There are currently no showtimes for upcoming movies."
+        "empty": "There are currently no upcoming movies scheduled."
       }
     },
     "schedule": {
       "title": "Showtimes",
-      "subtitle": "Select a theater and date to view showtimes",
+      "subtitle": "Select cinema and date to view showtimes",
       "days": {
         "today": "Today",
         "sun": "Sunday",
@@ -42,10 +42,10 @@
         "sat": "Saturday"
       },
       "filters": {
-        "allTheaters": "All Theaters",
-        "cityLabel": "Select Location",
-        "allCities": "All Locations",
-        "theaterLabel": "Select Theater",
+        "allTheaters": "All Cinemas",
+        "cityLabel": "Select City",
+        "allCities": "All Cities",
+        "theaterLabel": "Select Cinema",
         "dateLabel": "Select Date"
       },
       "movieMeta": {
@@ -59,37 +59,29 @@
     "news": {
       "hero": {
         "title": "CINEMA NEWS",
-        "subtitle": "Update new movies, trailers, reviews and the cinematic world"
+        "subtitle": "Update new movies, trailers, reviews, and the cinematic universe"
       },
       "status": {
         "loading": "Loading news..."
       },
       "buttons": {
-        "readMore": "Read More →"
+        "readMore": "View details →"
       }
     },
     "shared": {
       "cinemaFilter": {
-        "label": "Select Theater"
+        "label": "Select Cinema"
       },
       "dateFilter": {
         "label": "Select Date"
       },
       "movieCard": {
-        "viewDetail": "View Detail",
+        "viewDetail": "Details",
         "bookBtn": "Book Now"
       },
       "sectionHeader": {
         "viewAll": "View All"
       }
     }
-  },
-  "genres": {
-    "Hành động": "Action",
-    "Viễn tưởng": "Sci-Fi",
-    "Action": "Action",
-    "Sci-Fi": "Sci-Fi",
-    "Hành động, Viễn tưởng": "Action, Sci-Fi",
-    "Action, Sci-Fi": "Action, Sci-Fi"
   }
 }

@@ -50,7 +50,9 @@
       },
       "bookingsTab": {
         "title": "Nhật ký giao dịch đặt vé toàn hệ thống", "anonymous": "Ẩn danh", "empty": "Hiện tại chưa có dữ liệu giao dịch đặt vé nào!",
-        "table": { "ticketId": "Mã hóa đơn", "username": "Tài khoản", "movieTitle": "Tên phim", "seats": "Số ghế", "price": "Giá vé", "date": "Ngày đặt", "status": "Trạng thái" }
+        "table": { "ticketId": "Mã hóa đơn", "username": "Tài khoản", "movieTitle": "Tên phim", "seats": "Số ghế", "price": "Giá vé", "date": "Ngày đặt", "status": "Trạng thái"},
+        "status": {"statusTicked": "Đã vào rạp","unused": "Chưa vào"}
+
       },
       "moviesTab": {
         "title": "Kho lưu trữ phim chiếu rạp",

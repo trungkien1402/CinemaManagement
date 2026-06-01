@@ -2,23 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
-// 💡 1. THÊM PROP onReviewsUpdate ĐỂ TRUYỀN DỮ LIỆU LÊN CHA
 const ReviewSection = ({ movieId, onReviewsUpdate }) => {
-    const { t } = useTranslation();
+    // 💡 SỬA CHỖ NÀY: Moi thêm i18n ra khỏi useTranslation
+    const { t, i18n } = useTranslation();
+
     const [reviews, setReviews] = useState([]);
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // TỰ ĐỘNG LẤY THÔNG TIN USER ĐANG ĐĂNG NHẬP (Từ LocalStorage)
     const currentUser = JSON.parse(localStorage.getItem('user'));
 
     const fetchReviews = () => {
         axios.get(`http://localhost:8080/api/reviews/movie/${movieId}`)
             .then(res => {
-                // 💡 MẸO: Thêm .reverse() để lật ngược mảng, đẩy bài mới nhất lên đầu
                 const reversedData = res.data.reverse();
-
                 setReviews(reversedData);
 
                 if (onReviewsUpdate) {
@@ -37,7 +35,6 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Chặn nếu khách vãng lai chưa đăng nhập
         if (!currentUser) {
             alert(t('detail.reviews.alerts.loginRequired') || "Vui lòng đăng nhập để bình luận!");
             return;
@@ -50,7 +47,6 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
 
         setIsSubmitting(true);
 
-        // GẮN TRỰC TIẾP ID CỦA TÀI KHOẢN ĐANG ĐĂNG NHẬP VÀO LỆNH GỬI
         const payload = {
             movie: { movieId: Number(movieId) },
             user: { userId: Number(currentUser.userId || currentUser.id) },
@@ -77,17 +73,15 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
                 {t('detail.reviews.title') || "Bình Luận & Đánh Giá"}
             </h2>
 
-            {/* NẾU CHƯA ĐĂNG NHẬP THÌ ẨN FORM, HIỆN THÔNG BÁO BẮT ĐĂNG NHẬP */}
             {!currentUser ? (
                 <div style={{ background: '#1c1c24', padding: '20px', borderRadius: '8px', textAlign: 'center', color: '#aaa', marginBottom: '30px' }}>
-                    {t('detail.reviews.loginPrompt.text1') || "Bạn cần "} 
-                    <strong>{t('detail.reviews.loginPrompt.boldText') || "Đăng nhập"}</strong> 
+                    {t('detail.reviews.loginPrompt.text1') || "Bạn cần "}
+                    <strong>{t('detail.reviews.loginPrompt.boldText') || "Đăng nhập"}</strong>
                     {t('detail.reviews.loginPrompt.text2') || " để có thể viết bình luận cho bộ phim này."}
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} className="review-input-box" style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '30px' }}>
                     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                        {/* Hiện tên người đang đăng nhập cho oai */}
                         <span style={{ color: '#aaa' }}>
                             {t('detail.reviews.form.yourRating', { name: currentUser.username || currentUser.fullName || "User" }) || `Đánh giá của bạn (${currentUser.username || currentUser.fullName || "User"}):`}
                         </span>
@@ -120,7 +114,6 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
                 </form>
             )}
 
-            {/* Danh sách hiển thị bình luận */}
             <div className="reviews-list" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {reviews.length === 0 ? (
                     <p style={{ color: '#666', fontStyle: 'italic' }}>{t('detail.reviews.list.empty') || "Chưa có bình luận nào. Hãy là người đầu tiên đánh giá phim này!"}</p>
@@ -135,7 +128,8 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
                             </div>
                             <p style={{ color: '#ccc', margin: 0, lineHeight: '1.5' }}>{rev.comment}</p>
                             <span style={{ fontSize: '0.85rem', color: '#666', marginTop: '10px', display: 'block' }}>
-                                {new Date(rev.createdAt).toLocaleDateString(i18n.language.startsWith('en') ? 'en-US' : 'vi-VN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                {/* Lúc này thằng i18n đã được định nghĩa, hàm chạy bao mượt */}
+                                {new Date(rev.createdAt).toLocaleDateString(i18n.language?.startsWith('en') ? 'en-US' : 'vi-VN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                             </span>
                         </div>
                     ))

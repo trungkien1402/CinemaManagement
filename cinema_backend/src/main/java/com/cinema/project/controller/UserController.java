@@ -3,19 +3,22 @@ package com.cinema.project.controller;
 import com.cinema.project.model.User;
 import com.cinema.project.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder; // 🚀 THÊM IMPORT NÀY
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api") // 💡 Thay đổi thành /api để linh hoạt phân quyền admin/user
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder; // 🚀 TIÊM BCryptPasswordEncoder VÀO ĐÂY (Sẽ tự điền nhờ @RequiredArgsConstructor)
 
     // ================= ENDPOINT CHO ADMIN =================
 
@@ -70,6 +73,54 @@ public class UserController {
             ));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Lỗi cập nhật: " + e.getMessage());
+        }
+    }
+
+    // 🚀 CHỨC NĂNG 1: ĐỔI MẬT KHẨU KHỚP VỚI FRONTEND ĐÃ SỬA -> URL: http://localhost:8080/api/users/change-password/{id}
+    @PutMapping("/users/change-password/{id}")
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        try {
+            String oldPassword = request.get("oldPassword");
+            String newPassword = request.get("newPassword");
+
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng!"));
+
+            // Dùng passwordEncoder so sánh pass thô giao diện gõ vs pass băm trong DB
+            if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Mật khẩu hiện tại không chính xác!"));
+            }
+
+            // Mã hóa mật khẩu mới trước khi lưu vào DB
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+
+            return ResponseEntity.ok(Map.of("message", "Đổi mật khẩu thành công!"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Có lỗi xảy ra: " + e.getMessage()));
+        }
+    }
+
+    // 🚀 CHỨC NĂNG 2: USER TỰ XÓA TÀI KHOẢN (HARD DELETE) -> URL: http://localhost:8080/api/users/delete/{id}
+    @DeleteMapping("/users/delete/{id}")
+    public ResponseEntity<?> userDeleteAccount(@PathVariable Long id) {
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản cần xóa!"));
+
+            // XÓA MỀM: Thay vì userRepository.delete(user);
+            // Mình sẽ xáo trộn dữ liệu để tài khoản này thành "phế nhân"
+            user.setRole("DELETED");
+            user.setPassword("da_bi_xoa_khong_the_login_" + Math.random());
+            // Nếu DB ông có cột trạng thái (ví dụ isActive) thì set isActive = false là chuẩn nhất
+
+            userRepository.save(user);
+
+            return ResponseEntity.ok(Map.of("message", "Tài khoản đã được xóa vĩnh viễn!"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Lỗi Server: " + e.getMessage()));
         }
     }
 }
