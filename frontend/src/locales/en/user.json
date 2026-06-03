@@ -1,0 +1,101 @@
+{
+  "user": {
+    "title": "Account",
+    "loading": "Loading...",
+    "loginRequired": "Please login.",
+    "defaultUser": "Member",
+    "defaultEmail": "Not updated",
+    "tabs": {
+      "myTickets": "My Tickets",
+      "personalInfo": "Personal Info",
+      "settings": "Settings"
+    },
+    "tickets": {
+      "title": "Booking History",
+      "empty": "You haven't booked any tickets yet.",
+      "movieTitleDefault": "Selected Movie",
+      "ticketCode": "Ticket ID: ",
+      "status": {
+        "watched": "Watched",
+        "pending": "Pending"
+      },
+      "details": {
+        "theater": "Theater",
+        "showtime": "Showtime",
+        "seats": "Seats",
+        "room": "Room",
+        "totalPrice": "Total Price"
+      },
+      "buttons": {
+        "viewDetail": "View Details"
+      },
+      "modal": {
+        "title": "ELECTRONIC MOVIE TICKET",
+        "subtitle": "CinemaX is pleased to serve you",
+        "qrLabel": "TICKET ID: ",
+        "statusWatched": "🟢 Checked-in (Watched)",
+        "statusPending": "🟡 Not used (Waiting for review)",
+        "note": "*Please show this QR code to the staff at the ticket counter to scan for admission to the screening room."
+      }
+    },
+    "info": {
+      "title": "Personal Information",
+      "labels": {
+        "fullName": "Full Name",
+        "email": "Email",
+        "phone": "Phone Number",
+        "dob": "Date of Birth"
+      },
+      "buttons": {
+        "save": "Save Changes"
+      },
+      "alerts": {
+        "success": "Information updated successfully!",
+        "fail": "Update failed. Please try again!"
+      }
+    },
+    "settings": {
+      "title": "Account Settings",
+      "notifications": {
+        "title": "Receive Email Notifications",
+        "desc": "Receive emails about booked tickets and promotions",
+        "alertTemp": "Temporary notification settings updated."
+      },
+      "language": {
+        "title": "Display Language",
+        "desc": "Customize the system interface language"
+      },
+      "password": {
+        "title": "Change Password",
+        "desc": "Protect your account with a strong password",
+        "button": "Change password"
+      },
+      "deleteAccount": {
+        "title": "Delete Account",
+        "desc": "Permanently delete account and transaction history",
+        "button": "Delete account",
+        "confirm1": "WARNING: Are you sure you want to PERMANENTLY DELETE this account?",
+        "confirm2": "All booking history will be lost. Are you absolutely sure?",
+        "success": "Account deleted successfully!",
+        "fail": "Failed to delete account!"
+      }
+    },
+    "pwdModal": {
+      "title": "CHANGE PASSWORD",
+      "labels": {
+        "current": "Current password",
+        "new": "New password",
+        "confirm": "Confirm new password"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "submit": "Update"
+      },
+      "alerts": {
+        "mismatch": "New password and Confirm password do not match!",
+        "success": "Password changed successfully!",
+        "failDefault": "Current password is incorrect!"
+      }
+    }
+  }
+}

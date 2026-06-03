@@ -16,6 +16,8 @@ import viPayment from './locales/vi/payment.json';
 import enPayment from './locales/en/payment.json';
 import viTheaters from './locales/vi/theaters.json';
 import enTheaters from './locales/en/theaters.json';
+import viUser from './locales/vi/user.json'; 
+import enUser from './locales/en/user.json';
 
 i18n
   .use(LanguageDetector)
@@ -24,6 +26,7 @@ i18n
     resources: {
       vi: {
         translation: {
+          ...viUser,
           ...viAuth,
           ...viNav,
           ...viAdmin,
@@ -35,6 +38,7 @@ i18n
       },
       en: {
         translation: {
+          ...enUser,
           ...enAuth,
           ...enNav,
           ...enAdmin,

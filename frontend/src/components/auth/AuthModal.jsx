@@ -20,7 +20,6 @@ const AuthModal = ({ isOpen, onClose }) => {
     const [step, setStep] = useState(1);
     const [otpInput, setOtpInput] = useState('');
 
-    // 🚀 THÊM STATE ĐỂ LƯU MẬT KHẨU NHẬP LẠI
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const [formData, setFormData] = useState({
@@ -54,7 +53,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                 if (login.fulfilled.match(resultAction)) {
                     const user = resultAction.payload;
-                    alert(t('auth.authModal.alerts.loginSuccess') || "Đăng nhập thành công!");
+                    alert(t('authModal.alerts.loginSuccess') || "Đăng nhập thành công!");
                     onClose();
 
                     const userRole = user.role ? user.role.toUpperCase() : "";
@@ -64,25 +63,25 @@ const AuthModal = ({ isOpen, onClose }) => {
                         window.location.reload();
                     }
                 } else {
-                    const errorMsg = resultAction.payload || t('auth.authModal.alerts.loginFail');
-                    alert((t('auth.authModal.alerts.failPrefix') || "Lỗi: ") + (typeof errorMsg === 'object' ? JSON.stringify(errorMsg) : errorMsg));
+                    const errorMsg = resultAction.payload || t('authModal.alerts.loginFail');
+                    alert((t('authModal.alerts.failPrefix') || "Lỗi: ") + (typeof errorMsg === 'object' ? JSON.stringify(errorMsg) : errorMsg));
                 }
             } else {
                 if (step === 1) {
                     const phoneRegex = /^(0)(3|5|7|8|9)([0-9]{8})$/;
                     if (!phoneRegex.test(formData.phone)) {
-                        alert(t('auth.authModal.alerts.invalidPhone') || "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 số!");
+                        alert(t('authModal.alerts.invalidPhone') || "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 số!");
                         setLoading(false);
                         return;
                     }
                     await api.post('/auth/send-otp', { email: formData.email });
-                    alert(t('auth.authModal.alerts.otpSent') || "Đã gửi mã OTP!");
+                    alert(t('authModal.alerts.otpSent') || "Đã gửi mã OTP!");
                     setStep(2);
                 }
             }
         } catch (error) {
             const msg = error.response?.data || error.message;
-            alert((t('auth.authModal.alerts.errorPrefix') || "Lỗi hệ thống: ") + (typeof msg === 'object' ? JSON.stringify(msg) : msg));
+            alert((t('authModal.alerts.errorPrefix') || "Lỗi hệ thống: ") + (typeof msg === 'object' ? JSON.stringify(msg) : msg));
         } finally {
             setLoading(false);
         }
@@ -97,7 +96,7 @@ const AuthModal = ({ isOpen, onClose }) => {
             setStep(1);
             setOtpInput('');
         } catch (error) {
-            alert(error.response?.data || t('auth.authModal.alerts.otpInvalid'));
+            alert(error.response?.data || t('authModal.alerts.otpInvalid'));
         } finally {
             setLoading(false);
         }
@@ -109,10 +108,10 @@ const AuthModal = ({ isOpen, onClose }) => {
         setLoading(true);
         try {
             const res = await api.post('/auth/forgot-password', { email: formData.email });
-            alert(res.data?.message || res.data || "Mã OTP khôi phục đã được gửi vào Email của bạn!");
+            alert(res.data?.message || res.data || t('authModal.alerts.forgotOtpSent'));
             setForgotStep(2);
         } catch (error) {
-            const msg = error.response?.data?.message || error.response?.data || "Email không tồn tại trong hệ thống!";
+            const msg = error.response?.data?.message || error.response?.data || t('authModal.alerts.emailNotFound');
             alert(typeof msg === 'object' ? JSON.stringify(msg) : msg);
         } finally {
             setLoading(false);
@@ -122,9 +121,8 @@ const AuthModal = ({ isOpen, onClose }) => {
     const handleResetPassword = async (e) => {
         e.preventDefault();
 
-        // 🚀 KIỂM TRA 2 MẬT KHẨU CÓ KHỚP KHÔNG
         if (formData.password !== confirmPassword) {
-            alert("Mật khẩu nhập lại không khớp!");
+            alert(t('authModal.alerts.mismatchPassword'));
             return;
         }
 
@@ -135,14 +133,14 @@ const AuthModal = ({ isOpen, onClose }) => {
                 otp: otpInput,
                 newPassword: formData.password
             });
-            alert(res.data?.message || res.data || "Đổi mật khẩu thành công! Bạn có thể đăng nhập ngay.");
+            alert(res.data?.message || res.data || t('authModal.alerts.resetPasswordSuccess'));
             setIsForgot(false);
             setIsLogin(true);
             setFormData({ ...formData, password: '' });
             setOtpInput('');
-            setConfirmPassword(''); // Reset lại trường confirm
+            setConfirmPassword('');
         } catch (error) {
-            const msg = error.response?.data?.message || error.response?.data || "Mã OTP không đúng hoặc đã hết hạn!";
+            const msg = error.response?.data?.message || error.response?.data || t('authModal.alerts.otpExpiredOrInvalid');
             alert(typeof msg === 'object' ? JSON.stringify(msg) : msg);
         } finally {
             setLoading(false);
@@ -159,28 +157,28 @@ const AuthModal = ({ isOpen, onClose }) => {
                 {isForgot ? (
                     forgotStep === 1 ? (
                         <form onSubmit={handleSendForgotOtp} className="auth-main-form">
-                            <h2 className="auth-title">Khôi Phục Mật Khẩu</h2>
+                            <h2 className="auth-title">{t('authModal.forgot.title1')}</h2>
                             <p style={{textAlign: 'center', fontSize: '14px', color: '#666', marginBottom: '10px'}}>
-                                Nhập Email đã đăng ký để nhận mã OTP
+                                {t('authModal.forgot.desc1')}
                             </p>
                             <input
                                 name="email"
                                 type="email"
-                                placeholder="Nhập email của bạn"
+                                placeholder={t('authModal.form.placeholders.emailPlaceholder')}
                                 onChange={handleChange}
                                 value={formData.email || ''}
                                 required
                             />
                             <button type="submit" className="auth-btn-submit" disabled={loading}>
-                                {loading ? "Đang gửi..." : "Gửi Mã OTP"}
+                                {loading ? t('authModal.form.buttons.sending') : t('authModal.form.buttons.sendOtp')}
                             </button>
                             <button type="button" onClick={() => setIsForgot(false)} className="btn-back">
-                                Quay lại Đăng Nhập
+                                {t('authModal.form.buttons.backToLogin')}
                             </button>
                         </form>
                     ) : (
                         <form onSubmit={handleResetPassword} className="auth-main-form">
-                            <h2 className="auth-title">Đặt Lại Mật Khẩu</h2>
+                            <h2 className="auth-title">{t('authModal.forgot.title2')}</h2>
                             <input
                                 name="email"
                                 type="email"
@@ -191,7 +189,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                             <div className="otp-container">
                                 <input
                                     type="text"
-                                    placeholder="Nhập mã OTP (6 số)"
+                                    placeholder={t('authModal.form.placeholders.otp6Digits')}
                                     className="otp-input"
                                     value={otpInput || ''}
                                     onChange={(e) => setOtpInput(e.target.value)}
@@ -202,26 +200,23 @@ const AuthModal = ({ isOpen, onClose }) => {
                             <input
                                 name="password"
                                 type="password"
-                                placeholder="Nhập mật khẩu mới" /* Đã sửa chữ MỚI */
+                                placeholder={t('authModal.form.placeholders.newPassword')}
                                 onChange={handleChange}
                                 value={formData.password || ''}
                                 required
                             />
-
-                            {/* 🚀 THÊM Ô NHẬP LẠI MẬT KHẨU */}
                             <input
                                 type="password"
-                                placeholder="Nhập lại mật khẩu mới"
+                                placeholder={t('authModal.form.placeholders.confirmNewPassword')}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 value={confirmPassword}
                                 required
                             />
-
                             <button type="submit" className="auth-btn-submit" disabled={loading}>
-                                {loading ? "Đang xử lý..." : "Xác Nhận Đổi Mật Khẩu"}
+                                {loading ? t('authModal.form.buttons.processing') : t('authModal.form.buttons.confirmReset')}
                             </button>
                             <button type="button" onClick={() => setForgotStep(1)} className="btn-back">
-                                Hủy / Nhập lại Email
+                                {t('authModal.form.buttons.cancelForgot')}
                             </button>
                         </form>
                     )
@@ -232,13 +227,13 @@ const AuthModal = ({ isOpen, onClose }) => {
                                 className={isLogin ? 'active' : ''}
                                 onClick={() => { setIsLogin(true); setStep(1); }}
                             >
-                                {t('auth.authModal.tabs.login') || "Đăng Nhập"}
+                                {t('authModal.tabs.login')}
                             </button>
                             <button
                                 className={!isLogin ? 'active' : ''}
                                 onClick={() => setIsLogin(false)}
                             >
-                                {t('auth.authModal.tabs.register') || "Đăng Ký"}
+                                {t('authModal.tabs.register')}
                             </button>
                         </div>
 
@@ -248,7 +243,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                     <input
                                         name="email"
                                         type="email"
-                                        placeholder={t('auth.authModal.form.placeholders.email') || "Email"}
+                                        placeholder={t('authModal.form.placeholders.email')}
                                         onChange={handleChange}
                                         value={formData.email || ''}
                                         required
@@ -256,49 +251,46 @@ const AuthModal = ({ isOpen, onClose }) => {
                                     <input
                                         name="password"
                                         type="password"
-                                        placeholder={t('auth.authModal.form.placeholders.password') || "Mật khẩu"}
+                                        placeholder={t('authModal.form.placeholders.password')}
                                         onChange={handleChange}
                                         value={formData.password || ''}
                                         required
                                     />
-
                                     <span className="forgot-password-link" onClick={() => {
                                         setIsForgot(true);
                                         setForgotStep(1);
                                         setFormData({ ...formData, password: '' });
-                                        setConfirmPassword(''); // Reset khi bấm vào quên MK
+                                        setConfirmPassword('');
                                     }}>
-                                        Quên mật khẩu?
+                                        {t('authModal.form.buttons.forgotPassword')}
                                     </span>
-
                                     <button type="submit" className="auth-btn-submit" disabled={loading}>
-                                        {loading ? (t('auth.authModal.form.buttons.processing') || "Đang xử lý...") : (t('auth.authModal.form.buttons.login') || "Đăng Nhập")}
+                                        {loading ? t('authModal.form.buttons.processing') : t('authModal.form.buttons.login')}
                                     </button>
                                 </>
                             ) : (
                                 step === 1 ? (
                                     <>
-                                        <input name="email" type="email" placeholder={t('auth.authModal.form.placeholders.email') || "Email"} onChange={handleChange} value={formData.email || ''} required />
-                                        <input name="username" placeholder={t('auth.authModal.form.placeholders.username') || "Tên hiển thị"} onChange={handleChange} value={formData.username || ''} required />
-                                        <input name="phone" type="tel" pattern="[0-9]*" maxLength="10" placeholder={t('auth.authModal.form.placeholders.phone') || "Số điện thoại"} onChange={handleChange} value={formData.phone || ''} required />
+                                        <input name="email" type="email" placeholder={t('authModal.form.placeholders.email')} onChange={handleChange} value={formData.email || ''} required />
+                                        <input name="username" placeholder={t('authModal.form.placeholders.username')} onChange={handleChange} value={formData.username || ''} required />
+                                        <input name="phone" type="tel" pattern="[0-9]*" maxLength="10" placeholder={t('authModal.form.placeholders.phone')} onChange={handleChange} value={formData.phone || ''} required />
                                         <select name="gender" onChange={handleChange} value={formData.gender || 'Nam'}>
-                                            <option value="Nam">{t('auth.authModal.form.options.gender.male') || "Nam"}</option>
-                                            <option value="Nữ">{t('auth.authModal.form.options.gender.female') || "Nữ"}</option>
+                                            <option value="Nam">{t('authModal.form.options.gender.male')}</option>
+                                            <option value="Nữ">{t('authModal.form.options.gender.female')}</option>
                                         </select>
-                                        <input name="password" type="password" placeholder={t('auth.authModal.form.placeholders.password') || "Mật khẩu"} onChange={handleChange} value={formData.password || ''} required />
-
+                                        <input name="password" type="password" placeholder={t('authModal.form.placeholders.password')} onChange={handleChange} value={formData.password || ''} required />
                                         <button type="submit" className="auth-btn-submit" disabled={loading}>
-                                            {loading ? (t('auth.authModal.form.buttons.sendingOtp') || "Đang gửi...") : (t('auth.authModal.form.buttons.continue') || "Tiếp Tục")}
+                                            {loading ? t('authModal.form.buttons.sendingOtp') : t('authModal.form.buttons.continue')}
                                         </button>
                                     </>
                                 ) : (
                                     <div className="otp-container">
-                                        <input type="text" placeholder={t('auth.authModal.form.placeholders.otp') || "Mã OTP"} className="otp-input" value={otpInput || ''} onChange={(e) => setOtpInput(e.target.value)} maxLength="6" />
+                                        <input type="text" placeholder={t('authModal.form.placeholders.otp')} className="otp-input" value={otpInput || ''} onChange={(e) => setOtpInput(e.target.value)} maxLength="6" />
                                         <button type="button" onClick={handleVerifyOtp} className="auth-btn-submit">
-                                            {t('auth.authModal.form.buttons.confirm') || "Xác Nhận"}
+                                            {t('authModal.form.buttons.confirm')}
                                         </button>
                                         <button type="button" onClick={() => setStep(1)} className="btn-back">
-                                            {t('auth.authModal.form.buttons.back') || "Quay lại"}
+                                            {t('authModal.form.buttons.back')}
                                         </button>
                                     </div>
                                 )
