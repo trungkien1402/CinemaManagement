@@ -1,7 +1,7 @@
 package com.cinema.project.controller;
 
 import com.cinema.project.model.User;
-import com.cinema.project.repositories.UserRepository; // 🚀 Thêm thư viện này
+import com.cinema.project.repositories.UserRepository;
 import com.cinema.project.security.jwt.JwtUtils;
 import com.cinema.project.service.EmailService;
 import com.cinema.project.service.UserService;
@@ -13,7 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder; // 🚀 Thêm thư viện này
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,45 +27,29 @@ import java.util.concurrent.ConcurrentHashMap;
         origins = "http://localhost:5173",
         allowCredentials = "true",
         allowedHeaders = "*",
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.POST,
-                RequestMethod.OPTIONS
-        }
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS}
 )
 @RequiredArgsConstructor
 public class AuthController {
 
     private final EmailService emailService;
     private final UserService userService;
-
-    // 🚀 Bổ sung 2 components cần thiết cho việc đổi mật khẩu
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
     private Map<String, String> otpCache = new ConcurrentHashMap<>();
 
-    // ================== CÁC API CŨ GIỮ NGUYÊN ==================
     @PostMapping("/send-otp")
     public ResponseEntity<?> sendOtp(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-        if (email == null || email.isEmpty()) {
-            return ResponseEntity.badRequest().body("Email không được trống!");
-        }
-        if (userService.existsByEmail(email)) {
-            return ResponseEntity.badRequest().body("Email này đã được đăng ký!");
-        }
+        if (email == null || email.isEmpty()) return ResponseEntity.badRequest().body("Email không được trống!");
+        if (userService.existsByEmail(email)) return ResponseEntity.badRequest().body("Email này đã được đăng ký!");
         String otp = String.format("%06d", new Random().nextInt(999999));
         otpCache.put(email, otp);
-        try {
-            emailService.sendOtpEmail(email, otp);
-            return ResponseEntity.ok("Mã OTP đã được gửi đến email của bạn.");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Lỗi gửi mail: " + e.getMessage());
-        }
+        emailService.sendOtpEmail(email, otp);
+        return ResponseEntity.ok("Mã OTP đã được gửi đến email của bạn.");
     }
 
     @PostMapping("/register-with-otp")
@@ -73,10 +57,7 @@ public class AuthController {
         String email = String.valueOf(request.get("email"));
         String otpInput = String.valueOf(request.get("otp"));
         String savedOtp = otpCache.get(email);
-
-        if (savedOtp == null || !savedOtp.equals(otpInput)) {
-            return ResponseEntity.badRequest().body("Mã OTP không chính xác hoặc đã hết hạn!");
-        }
+        if (savedOtp == null || !savedOtp.equals(otpInput)) return ResponseEntity.badRequest().body("Mã OTP không chính xác!");
 
         User user = new User();
         user.setEmail(email);
@@ -84,10 +65,8 @@ public class AuthController {
         user.setUsername(String.valueOf(request.get("username")));
         user.setPhone(String.valueOf(request.get("phone")));
         user.setGender(String.valueOf(request.get("gender")));
-
         userService.registerNewUser(user);
         otpCache.remove(email);
-
         return ResponseEntity.ok("Đăng ký tài khoản thành công!");
     }
 
@@ -104,9 +83,7 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
         User user = userService.login(email, password);
 
-        if (user == null) {
-            return ResponseEntity.status(401).body("Email hoặc mật khẩu không chính xác!");
-        }
+        if (user == null) return ResponseEntity.status(401).body("Email hoặc mật khẩu không chính xác!");
 
         Map<String, Object> response = new HashMap<>();
         response.put("token", jwt);
@@ -116,60 +93,38 @@ public class AuthController {
         response.put("phone", user.getPhone());
         response.put("gender", user.getGender());
         response.put("role", user.getRole());
+        // 🚀 ĐÃ BỔ SUNG TRẢ VỀ AVATAR
+        response.put("avatarUrl", user.getAvatarUrl());
 
         return ResponseEntity.ok(response);
     }
 
-    // ================== 🚀 TÍNH NĂNG QUÊN MẬT KHẨU MỚI ==================
-
-    // 1. GỬI MÃ OTP VỀ EMAIL
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-
         User user = userRepository.findByEmail(email).orElse(null);
-
-        if (user == null) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Email không tồn tại trong hệ thống!"));
-        }
-
-        String otp = String.format("%06d", new java.util.Random().nextInt(999999));
-
+        if (user == null) return ResponseEntity.badRequest().body(Map.of("message", "Email không tồn tại!"));
+        String otp = String.format("%06d", new Random().nextInt(999999));
         user.setResetOtp(otp);
         user.setOtpExpiryTime(java.time.LocalDateTime.now().plusMinutes(5));
         userRepository.save(user);
-
         emailService.sendForgotPasswordEmail(email, otp);
-
-        return ResponseEntity.ok(Map.of("message", "Mã OTP đã được gửi đến email của bạn!"));
+        return ResponseEntity.ok(Map.of("message", "Mã OTP đã được gửi!"));
     }
 
-    // 2. XÁC NHẬN OTP & ĐỔI MẬT KHẨU MỚI
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String otp = request.get("otp");
         String newPassword = request.get("newPassword");
-
         User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Người dùng không tồn tại!"));
-        }
-
-        if (user.getResetOtp() == null || !user.getResetOtp().equals(otp)) {
+        if (user == null || user.getResetOtp() == null || !user.getResetOtp().equals(otp))
             return ResponseEntity.badRequest().body(Map.of("message", "Mã OTP không chính xác!"));
-        }
 
-        if (user.getOtpExpiryTime().isBefore(java.time.LocalDateTime.now())) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Mã OTP đã hết hạn!"));
-        }
-
-        // Đổi pass mới & Xóa OTP cũ cho an toàn
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetOtp(null);
         user.setOtpExpiryTime(null);
         userRepository.save(user);
-
-        return ResponseEntity.ok(Map.of("message", "Khôi phục mật khẩu thành công! Bạn có thể đăng nhập ngay."));
+        return ResponseEntity.ok(Map.of("message", "Khôi phục mật khẩu thành công!"));
     }
 }

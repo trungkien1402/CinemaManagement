@@ -20,7 +20,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     const [step, setStep] = useState(1);
     const [otpInput, setOtpInput] = useState('');
 
-    // 🚀 THÊM STATE ĐỂ LƯU MẬT KHẨU NHẬP LẠI
+    // State lưu mật khẩu nhập lại
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const [formData, setFormData] = useState({
@@ -53,7 +53,34 @@ const AuthModal = ({ isOpen, onClose }) => {
                 );
 
                 if (login.fulfilled.match(resultAction)) {
-                    const user = resultAction.payload;
+                    let user = resultAction.payload;
+
+                    // 🚀 ĐOẠN FIX LỖI: Lấy full thông tin (Tên + Ảnh) ngay sau khi login thành công
+                    try {
+                        const token = user.token || user.accessToken || localStorage.getItem('token');
+                        const userId = user.id || user.userId;
+
+                        if (userId && token) {
+                            // Gọi API lấy thông tin chi tiết user
+                            const profileRes = await api.get(`/users/${userId}`, {
+                                headers: { Authorization: `Bearer ${token}` }
+                            });
+
+                            // Gộp dữ liệu từ DB (fullName, avatar) vào biến user hiện tại
+                            user = {
+                                ...user,
+                                fullName: profileRes.data.fullName || user.fullName,
+                                avatar: profileRes.data.avatar || profileRes.data.avatarUrl || user.avatar
+                            };
+
+                            // Cập nhật lại localStorage để Navbar lấy được ảnh và tên ngay lập tức
+                            localStorage.setItem('user', JSON.stringify(user));
+                        }
+                    } catch (err) {
+                        console.error("Không lấy được full profile lúc login:", err);
+                    }
+                    // 🚀 KẾT THÚC ĐOẠN FIX
+
                     alert(t('auth.authModal.alerts.loginSuccess') || "Đăng nhập thành công!");
                     onClose();
 
@@ -122,7 +149,6 @@ const AuthModal = ({ isOpen, onClose }) => {
     const handleResetPassword = async (e) => {
         e.preventDefault();
 
-        // 🚀 KIỂM TRA 2 MẬT KHẨU CÓ KHỚP KHÔNG
         if (formData.password !== confirmPassword) {
             alert("Mật khẩu nhập lại không khớp!");
             return;
@@ -140,7 +166,7 @@ const AuthModal = ({ isOpen, onClose }) => {
             setIsLogin(true);
             setFormData({ ...formData, password: '' });
             setOtpInput('');
-            setConfirmPassword(''); // Reset lại trường confirm
+            setConfirmPassword('');
         } catch (error) {
             const msg = error.response?.data?.message || error.response?.data || "Mã OTP không đúng hoặc đã hết hạn!";
             alert(typeof msg === 'object' ? JSON.stringify(msg) : msg);
@@ -202,13 +228,12 @@ const AuthModal = ({ isOpen, onClose }) => {
                             <input
                                 name="password"
                                 type="password"
-                                placeholder="Nhập mật khẩu mới" /* Đã sửa chữ MỚI */
+                                placeholder="Nhập mật khẩu mới"
                                 onChange={handleChange}
                                 value={formData.password || ''}
                                 required
                             />
 
-                            {/* 🚀 THÊM Ô NHẬP LẠI MẬT KHẨU */}
                             <input
                                 type="password"
                                 placeholder="Nhập lại mật khẩu mới"
@@ -266,7 +291,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                         setIsForgot(true);
                                         setForgotStep(1);
                                         setFormData({ ...formData, password: '' });
-                                        setConfirmPassword(''); // Reset khi bấm vào quên MK
+                                        setConfirmPassword('');
                                     }}>
                                         Quên mật khẩu?
                                     </span>

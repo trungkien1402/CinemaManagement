@@ -5,7 +5,7 @@ import com.cinema.project.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder; // 🚀 THÊM IMPORT NÀY
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +18,13 @@ import java.util.Map;
 public class UserController {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // 🚀 TIÊM BCryptPasswordEncoder VÀO ĐÂY (Sẽ tự điền nhờ @RequiredArgsConstructor)
+    private final PasswordEncoder passwordEncoder;
 
-    // ================= ENDPOINT CHO ADMIN =================
-
-    // URL: http://localhost:8080/api/admin/users/all
     @GetMapping("/admin/users/all")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
-    // URL: http://localhost:8080/api/admin/users/delete/{id}
     @DeleteMapping("/admin/users/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         return userRepository.findById(id).map(user -> {
@@ -37,10 +33,6 @@ public class UserController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-
-    // ================= ENDPOINT CHO USER THƯỜNG (FIX LỖI 403) =================
-
-    // 💡 Lấy thông tin cá nhân -> URL: http://localhost:8080/api/users/{id}
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         return userRepository.findById(id)
@@ -48,7 +40,6 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 💡 Cập nhật thông tin cá nhân -> URL: http://localhost:8080/api/users/update/{id}
     @PutMapping("/users/update/{id}")
     public ResponseEntity<?> updateUserProfile(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         try {
@@ -76,7 +67,6 @@ public class UserController {
         }
     }
 
-    // 🚀 CHỨC NĂNG 1: ĐỔI MẬT KHẨU KHỚP VỚI FRONTEND ĐÃ SỬA -> URL: http://localhost:8080/api/users/change-password/{id}
     @PutMapping("/users/change-password/{id}")
     public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody Map<String, String> request) {
         try {
@@ -86,12 +76,10 @@ public class UserController {
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng!"));
 
-            // Dùng passwordEncoder so sánh pass thô giao diện gõ vs pass băm trong DB
             if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
                 return ResponseEntity.badRequest().body(Map.of("message", "Mật khẩu hiện tại không chính xác!"));
             }
 
-            // Mã hóa mật khẩu mới trước khi lưu vào DB
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
 
@@ -102,18 +90,18 @@ public class UserController {
         }
     }
 
-    // 🚀 CHỨC NĂNG 2: USER TỰ XÓA TÀI KHOẢN (HARD DELETE) -> URL: http://localhost:8080/api/users/delete/{id}
     @DeleteMapping("/users/delete/{id}")
     public ResponseEntity<?> userDeleteAccount(@PathVariable Long id) {
         try {
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản cần xóa!"));
 
-            // XÓA MỀM: Thay vì userRepository.delete(user);
-            // Mình sẽ xáo trộn dữ liệu để tài khoản này thành "phế nhân"
             user.setRole("DELETED");
             user.setPassword("da_bi_xoa_khong_the_login_" + Math.random());
-            // Nếu DB ông có cột trạng thái (ví dụ isActive) thì set isActive = false là chuẩn nhất
+
+            long timestamp = System.currentTimeMillis();
+            user.setEmail("deleted_" + timestamp + "_" + user.getEmail());
+            user.setUsername("deleted_" + timestamp + "_" + user.getUsername());
 
             userRepository.save(user);
 
@@ -121,6 +109,34 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("message", "Lỗi Server: " + e.getMessage()));
+        }
+    }
+
+    // 🚀 API UPDATE AVATAR DÙNG JSON BASE64
+    @PutMapping("/users/update-avatar/{id}")
+    public ResponseEntity<?> updateAvatar(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        try {
+            // Hứng chuỗi Base64 từ React gửi lên
+            String base64Image = request.get("avatarUrl");
+
+            if (base64Image == null || base64Image.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Ảnh không hợp lệ!"));
+            }
+
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy User!"));
+
+            // Lưu trực tiếp vào DB
+            user.setAvatarUrl(base64Image);
+            userRepository.save(user);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Cập nhật ảnh đại diện thành công!",
+                    "avatarUrl", base64Image
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Lỗi lưu ảnh: " + e.getMessage()));
         }
     }
 }

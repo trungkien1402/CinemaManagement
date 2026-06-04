@@ -3,7 +3,7 @@ package com.cinema.project.service;
 import com.cinema.project.payload.request.BookingRequest;
 import com.cinema.project.model.*;
 import com.cinema.project.repositories.*;
-import com.cinema.project.service.NotificationService; // Tích hợp Service thông báo
+import com.cinema.project.service.NotificationService;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +33,10 @@ public class BookingService {
     private final ShowtimeRepository showtimeRepository;
     private final SeatRepository seatRepository;
     private final JavaMailSender mailSender;
-
-    // TÍCH HỢP: Khai báo final để @RequiredArgsConstructor tự động inject
     private final NotificationService notificationService;
 
     // =========================================================================
-    // CODE ĐẶT VÉ CHÍNH (Đã tích hợp thông báo chuyên nghiệp)
+    // CODE ĐẶT VÉ CHÍNH TÍCH HỢP ĐIỂM THƯỞNG
     // =========================================================================
     @Transactional
     public List<Ticket> processBooking(BookingRequest request) {
@@ -50,20 +47,36 @@ public class BookingService {
         Showtime showtime = showtimeRepository.findById(request.getShowtimeId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Suất chiếu"));
 
+        // 🚀 BƯỚC 1: XỬ LÝ SỬ DỤNG ĐIỂM GIẢM GIÁ
+        int pointsToUse = (request.getPointsToUse() != null) ? request.getPointsToUse() : 0;
+        if (user.getPoints() == null) user.setPoints(0);
+
+        if (user.getPoints() < pointsToUse) {
+            throw new RuntimeException("Số điểm thưởng không đủ để thực hiện giao dịch!");
+        }
+
+        // 1 Điểm = 100 VNĐ. Chia đều mức giảm giá cho tổng số vé đang mua
+        double totalDiscountAmount = pointsToUse * 100.0;
+        double discountPerTicket = request.getSeatIds().isEmpty() ? 0 : totalDiscountAmount / request.getSeatIds().size();
+
         List<Ticket> savedTickets = new ArrayList<>();
-        List<String> seatNames = new ArrayList<>(); // Dùng để gom tên ghế tạo thông báo
+        List<String> seatNames = new ArrayList<>();
+        double grandTotalPaid = 0; // Biến tính tổng tiền thực tế khách đã trả
 
         for (String seatId : request.getSeatIds()) {
             Seat seat = seatRepository.findById(seatId)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy Ghế"));
 
-            // Kiểm tra trùng ghế song song (Bảo vệ dữ liệu thời gian thực)
             boolean exists = ticketRepository.existsByShowtimeAndSeat(showtime, seat);
             if (exists) {
                 throw new RuntimeException("Ghế " + seat.getSeatNumber() + " đã được đặt!");
             }
 
-            double ticketPrice = calculateSeatPrice(seat);
+            // 🚀 ĐÃ SỬA: Xóa cái basePrice 100k cũ đi. Gọi hàm tính giá vé chuẩn khớp 100% với Frontend!
+            double ticketPrice = calculateSeatPrice(seat) - discountPerTicket;
+            if (ticketPrice < 0) ticketPrice = 0; // Chống lỗi âm tiền
+
+            grandTotalPaid += ticketPrice; // Cộng dồn để lát tính điểm thưởng
 
             Ticket ticket = new Ticket();
             String randomTicketId = "TK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -77,70 +90,57 @@ public class BookingService {
             ticket.setBookingDate(LocalDateTime.now());
 
             savedTickets.add(ticketRepository.save(ticket));
-            seatNames.add(seat.getSeatNumber()); // Lưu lại số ghế (ví dụ: A1, A2)
+            seatNames.add(seat.getSeatNumber());
         }
 
-        // TÍCH HỢP: Tự động bắn thông báo real-time lên hệ thống khi đặt vé thành công
+        // 🚀 BƯỚC 2: TÍCH ĐIỂM SAU KHI MUA (Cộng lại 5% hóa đơn)
+        int earnedPoints = (int) ((grandTotalPaid * 0.05) / 1000);
+
+        // Cập nhật lại số điểm của khách (Điểm cũ - Điểm đã xài + Điểm mới nhận)
+        user.setPoints(user.getPoints() - pointsToUse + earnedPoints);
+        userRepository.save(user); // LƯU VÀO DATABASE
+
+        // Tạo thông báo
         try {
             String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim";
             String seatsString = String.join(", ", seatNames);
+            String pointMsg = (pointsToUse > 0 ? " (Đã dùng " + pointsToUse + " điểm)" : "") + ". Được cộng thêm " + earnedPoints + " điểm thưởng.";
 
             notificationService.createNotification(
-                    "Đặt vé và thành công 🎉",
-                    "Khách hàng " + user.getUsername() + " đã đặt và thành công vé phim '" + movieTitle + "' (Ghế: " + seatsString + ").",
+                    "Đặt vé thành công 🎉",
+                    "Khách hàng " + user.getUsername() + " đã mua vé '" + movieTitle + "' (Ghế: " + seatsString + ")" + pointMsg,
                     "BOOKING"
             );
         } catch (Exception e) {
-            System.err.println("Gặp sự cố khi tạo thông báo đặt vé: " + e.getMessage());
+            System.err.println("Gặp sự cố khi tạo thông báo: " + e.getMessage());
         }
 
-        // Tự động gửi Email kèm mã QR
-        // Tự động gửi Email kèm mã QR
+        // Gửi Mail
         try {
             if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-                // 1. Gọi hàm gửi email cũ của bạn
                 sendTicketEmailWithQR(user.getEmail(), savedTickets, showtime);
-
-                // 2. CHÈN THÊM THÔNG BÁO NÀY: Báo tin gửi mã thành công lên Navbar
-                String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim";
-                notificationService.createNotification(
-                        "Đã gửi mã vé thành công ✉️",
-                        "Hệ thống đã gửi email chứa mã QR vé phim '" + movieTitle + "' đến địa chỉ: " + user.getEmail(),
-                        "EMAIL" // Loại EMAIL để sau này bạn thích cấu hình hiển thị icon hòm thư ở React
-                );
             }
         } catch (Exception e) {
-            System.err.println("Gặp sự cố khi gửi email mã QR: " + e.getMessage());
-            e.printStackTrace();
-
-            // (Tùy chọn) Bạn có thể bắn thông báo thất bại nếu muốn Admin kiểm tra hệ thống mail
-            notificationService.createNotification(
-                    "Gửi mã vé thất bại ⚠️",
-                    "Hệ thống gặp sự cố khi gửi email vé phim đến " + user.getEmail() + ". Lỗi: " + e.getMessage(),
-                    "ERROR"
-            );
+            System.err.println("Lỗi gửi mail: " + e.getMessage());
         }
 
         return savedTickets;
-
     }
 
     // =========================================================================
-    // CÁC HÀM ĐƯỢC CHUYỂN TỪ CONTROLLER VỀ (Đúng chuẩn kiến trúc)
+    // CÁC HÀM ĐƯỢC CHUYỂN TỪ CONTROLLER VỀ
     // =========================================================================
 
-    // Lấy danh sách ID ghế đã khóa theo suất chiếu
     public List<String> getBookedSeats(String showtimeId) {
         return ticketRepository.findBookedSeatIdsByShowtime(showtimeId);
     }
 
-    // Lấy lịch sử đặt vé của một khách hàng
     public List<Ticket> getBookingHistory(String userId) {
         return ticketRepository.findByUserId(userId);
     }
 
     // =========================================================================
-    // HÀM PHỤ TRỢ (PRIVATE HELPERS) - CHỈ DÙNG NỘI BỘ TRONG SERVICE
+    // HÀM PHỤ TRỢ (PRIVATE HELPERS)
     // =========================================================================
 
     private void sendTicketEmailWithQR(String toEmail, List<Ticket> tickets, Showtime showtime) throws Exception {
@@ -212,12 +212,18 @@ public class BookingService {
         }
     }
 
+    // 🚀 ĐÃ SỬA: Hàm tính giá ghế đã được làm lại cho đồng bộ 100% với Frontend (React)
     private double calculateSeatPrice(Seat seat) {
-        if (seat.getSeatType() == null) return 30000;
-        switch (seat.getSeatType().toUpperCase()) {
-            case "VIP": return 50000;
-            case "DOI": return 100000;
-            default: return 30000;
+        if (seat == null || seat.getSeatType() == null) return 30000;
+
+        switch (seat.getSeatType().trim().toUpperCase()) {
+            case "VIP":
+                return 50000;
+            case "DOUBLE":
+            case "DOI":
+                return 100000;
+            default:
+                return 30000;
         }
     }
 }

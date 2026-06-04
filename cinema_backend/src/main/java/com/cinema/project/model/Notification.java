@@ -18,10 +18,12 @@ public class Notification {
     @Column(name = "noti_id")
     private Long id;
 
-    @Column(name = "noti_title", nullable = false, columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    // 🚀 SỬA LẠI: Dùng NVARCHAR(255) chuẩn của SQL Server để lưu tiêu đề tiếng Việt
+    @Column(name = "noti_title", nullable = false, columnDefinition = "NVARCHAR(255)")
     private String title;
 
-    @Column(name = "noti_message", nullable = false, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    // 🚀 SỬA LẠI: Dùng NVARCHAR(MAX) chuẩn của SQL Server để lưu nội dung dài vô tư
+    @Column(name = "noti_message", nullable = false, columnDefinition = "NVARCHAR(MAX)")
     private String message;
 
     @Column(name = "noti_is_read", nullable = false)

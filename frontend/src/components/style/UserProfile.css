@@ -38,13 +38,62 @@
   margin-bottom: 25px;
 }
 
-.avatar-img {
+/* KHU VỰC AVATAR (MỚI THÊM CSS HOVER) */
+.avatar-container {
+  position: relative;
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  object-fit: cover;
   margin-bottom: 15px;
+  cursor: pointer;
+  overflow: hidden; /* Quan trọng: để overlay không bị tràn ra ngoài viền tròn */
+  border: 2px solid transparent;
+  transition: border 0.3s ease;
 }
+
+.avatar-container:hover {
+  border: 2px solid #e50914; /* Highlight viền khi hover */
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay hiển thị khi hover giống FB/Google */
+.avatar-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 0.3s ease;
+}
+
+.avatar-container:hover .avatar-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.avatar-overlay i {
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.avatar-overlay span {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+/* KẾT THÚC KHU VỰC AVATAR */
 
 .user-profile-info h2 {
   margin: 0 0 5px 0;
@@ -328,7 +377,6 @@
 input:checked + .slider { background-color: #e50914; }
 input:checked + .slider:before { transform: translateX(24px); }
 
-
 /* ========================================================================= */
 /* 🍿 POPUP MODAL CHI TIẾT VÉ VÀ MÃ QR CODES                                */
 /* ========================================================================= */
@@ -506,6 +554,7 @@ input:checked + .slider:before { transform: translateX(24px); }
   gap: 10px;
   justify-content: flex-end;
 }
+
 /* ========================================== */
 /* 🚀 CSS BỔ SUNG CHO PHẦN CHỌN NGÔN NGỮ      */
 /* ========================================== */
@@ -515,9 +564,69 @@ input:checked + .slider:before { transform: translateX(24px); }
     padding: 10px 14px !important;
     cursor: pointer;
     font-weight: 500;
-    appearance: auto; /* Hiển thị mũi tên dropdown chuẩn của trình duyệt */
+    appearance: auto;
 }
 
 .language-select:hover {
     border-color: #e50914;
+}
+
+/* ========================================================================= */
+/* 🚀 CSS MỚI CHO HUY HIỆU VIP VÀ THẺ ĐIỂM THƯỞNG                             */
+/* ========================================================================= */
+
+.vip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.vip-badge.gold {
+  background-color: #d49a1c;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(212, 154, 28, 0.3);
+}
+
+.vip-badge.standard {
+  background-color: #333;
+  color: #ccc;
+}
+
+.points-card-container {
+  background-color: #242528;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.points-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.points-value {
+  color: #ffc107;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.points-footer {
+  color: #777;
+  font-size: 0.85rem;
 }

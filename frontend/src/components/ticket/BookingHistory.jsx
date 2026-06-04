@@ -173,7 +173,8 @@ const BookingHistory = () => {
                                         {t('auth.history.card.paid') || "ĐÃ THANH TOÁN"}
                                     </span>
                                     <h3 style={{ color: '#28a745', margin: '10px 0 0 0', fontSize: '22px', fontWeight: 'bold' }}>
-                                        {ticket.totalPrice ? ticket.totalPrice.toLocaleString('vi-VN') : 0} VNĐ
+                                        {/* CẬP NHẬT: Dự phòng kiểm tra thêm ticket.price hoặc ticket.amount */}
+                                        {(ticket.totalPrice || ticket.price || ticket.amount || 0).toLocaleString('vi-VN')} VNĐ
                                     </h3>
                                 </div>
                             </div>

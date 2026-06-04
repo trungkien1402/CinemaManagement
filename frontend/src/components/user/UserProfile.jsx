@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../style/UserProfile.css';
-import { useTranslation } from 'react-i18next'; // Khởi tạo thư viện dịch
+import { useTranslation } from 'react-i18next';
 
 const UserProfile = () => {
   const { t, i18n } = useTranslation();
@@ -12,6 +12,10 @@ const UserProfile = () => {
   const [profileData, setProfileData] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // State quản lý avatar
+  const [avatarPreview, setAvatarPreview] = useState("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop");
+  const [showTooltip, setShowTooltip] = useState(false);
 
   // State quản lý Modal xem chi tiết vé
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -26,7 +30,7 @@ const UserProfile = () => {
   // State quản lý phần cài đặt
   const [emailNotify, setEmailNotify] = useState(true);
   const [showPwdModal, setShowPwdModal] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState(''); // Lưu mật khẩu nhập lại
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [pwdForm, setPwdForm] = useState({
     oldPassword: '',
     newPassword: '',
@@ -46,6 +50,11 @@ const UserProfile = () => {
     ])
     .then(([userRes, ticketsRes]) => {
       setProfileData(userRes.data);
+
+      // Cập nhật avatar từ Database nếu có
+      if (userRes.data.avatarUrl || userRes.data.avatar) {
+        setAvatarPreview(userRes.data.avatarUrl || userRes.data.avatar);
+      }
 
       setEditForm({
         fullName: userRes.data.fullName || userRes.data.username || '',
@@ -74,6 +83,54 @@ const UserProfile = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditForm({ ...editForm, [name]: value });
+  };
+
+  // ----------------------------------------------------------------
+  // Helper function chuyển file thành Base64
+  // ----------------------------------------------------------------
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => resolve(fileReader.result);
+      fileReader.onerror = (error) => reject(error);
+    });
+  };
+
+  // ----------------------------------------------------------------
+  // XỬ LÝ UPLOAD ẢNH ĐẠI DIỆN LÊN SERVER BẰNG JSON BASE64
+  // ----------------------------------------------------------------
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const base64Image = await convertBase64(file);
+        setAvatarPreview(base64Image);
+
+        const userId = authUser?.id || authUser?.userId;
+        const token = localStorage.getItem('token');
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
+        const response = await axios.put(
+          `http://localhost:8080/api/users/update-avatar/${userId}`,
+          { avatarUrl: base64Image },
+          config
+        );
+
+        alert("Cập nhật ảnh đại diện thành công!");
+
+        let storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser && response.data?.avatarUrl) {
+          storedUser.avatar = response.data.avatarUrl;
+          localStorage.setItem('user', JSON.stringify(storedUser));
+          window.location.reload();
+        }
+
+      } catch (error) {
+        console.error("Lỗi upload ảnh:", error);
+        alert("Lưu ảnh thất bại! Vui lòng thử lại.");
+      }
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -137,7 +194,7 @@ const UserProfile = () => {
       alert("Đổi mật khẩu thành công!");
       setShowPwdModal(false);
       setPwdForm({ oldPassword: '', newPassword: '' });
-      setConfirmPassword(''); // Xóa mật khẩu xác nhận
+      setConfirmPassword('');
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.message || "Mật khẩu cũ không chính xác!");
@@ -173,6 +230,10 @@ const UserProfile = () => {
   const displayName = profileData?.fullName || authUser?.username || "Thành viên";
   const displayEmail = profileData?.email || authUser?.email || "Chưa cập nhật";
 
+  // 🚀 LẤY ĐIỂM TỪ BACKEND
+  const userPoints = profileData?.points || 0;
+  const isVip = userPoints >= 1000;
+
   return (
     <div className="profile-page-wrapper">
       <div className="profile-header-top">
@@ -183,13 +244,50 @@ const UserProfile = () => {
         {/* ================= SIDEBAR ================= */}
         <aside className="profile-sidebar">
           <div className="user-profile-info">
-            <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
-              alt="avatar"
-              className="avatar-img"
-            />
+
+            <div className="avatar-container" onClick={() => document.getElementById('avatar-upload').click()}>
+              <img
+                src={avatarPreview}
+                alt="avatar"
+                className="avatar-img"
+              />
+              <div className="avatar-overlay">
+                <i className="fa-solid fa-camera"></i>
+                <span>Cập nhật</span>
+              </div>
+              <input
+                type="file"
+                id="avatar-upload"
+                accept="image/*"
+                style={{display: 'none'}}
+                onChange={handleAvatarChange}
+              />
+            </div>
+
             <h2>{displayName}</h2>
             <p className="user-email">{displayEmail}</p>
+
+            {/* 🚀 THÊM HUY HIỆU VIP */}
+            {isVip ? (
+              <div className="vip-badge gold">
+                <i className="fa-solid fa-ribbon"></i> Thành viên VIP
+              </div>
+            ) : (
+              <div className="vip-badge standard">
+                <i className="fa-solid fa-star"></i> Thành viên Thường
+              </div>
+            )}
+          </div>
+
+          {/* 🚀 THÊM THẺ ĐIỂM THƯỞNG */}
+          <div className="points-card-container">
+            <div className="points-header">
+              <span>Điểm thưởng</span>
+              <i className="fa-solid fa-star text-warning"></i>
+            </div>
+            <div className="points-value">
+              {userPoints.toLocaleString('vi-VN')}
+            </div>
           </div>
 
           <nav className="sidebar-nav">
@@ -332,7 +430,6 @@ const UserProfile = () => {
                 </div>
                 <div className="setting-divider"></div>
 
-                {/* 🚀 ĐÃ XÓA MẤY CÁI CHỮ VIẾT TẮT VN, GB, KR, JP */}
                 <div className="setting-item">
                   <div className="setting-info">
                     <h4>Ngôn ngữ hiển thị</h4>
@@ -449,7 +546,6 @@ const UserProfile = () => {
                 />
               </div>
 
-              {/* 🚀 ĐÃ CÓ Ô NHẬP LẠI MẬT KHẨU */}
               <div className="form-group pwd-form-group last">
                 <label>Nhập lại mật khẩu mới</label>
                 <input

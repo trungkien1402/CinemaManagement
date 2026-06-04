@@ -8,18 +8,16 @@ import NotificationBell from './NotificationBell';
 import NavbarSearch from './NavbarSearch';
 
 const Navbar = () => {
-    // 🛠️ Đã kiểm tra: Tích hợp i18n mượt mà, không lo lỗi đen màn hình
-    const { t, i18n } = useTranslation(); 
-    
+    const { t, i18n } = useTranslation();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const userDropdownRef = useRef(null); // Tách biệt ref dành riêng cho thực đơn User Profile
+    const userDropdownRef = useRef(null);
 
     const isEn = i18n.language?.startsWith('en');
 
-    // Xử lý hiệu ứng scroll để đổi nền Navbar
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
@@ -28,7 +26,6 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Kiểm tra thông tin đăng nhập từ localStorage
     useEffect(() => {
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
@@ -40,7 +37,6 @@ const Navbar = () => {
         }
     }, []);
 
-    // Click bên ngoài menu Avatar thì chỉ đóng menu Avatar (Không ảnh hưởng chuông/tìm kiếm)
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
@@ -61,12 +57,10 @@ const Navbar = () => {
     return (
         <nav className={`navbar-main ${scrolled ? 'scrolled' : ''}`}>
             <div className="nav-container">
-                {/* Logo thương hiệu */}
                 <Link to="/" className="nav-brand">
                     CINEMA<span>X</span>
                 </Link>
 
-                {/* Danh mục chuyển trang */}
                 <div className="nav-menu">
                     <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                         {t('nav.home') || "Trang Chủ"}
@@ -87,28 +81,29 @@ const Navbar = () => {
                         {t('nav.news') || "Tin Tức"}
                     </NavLink>
                 </div>
-     
-                {/* Khu vực tính năng bên phải Navbar */}
-                <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    
-                    {/* 🔍 1 CHỮ CŨNG LỌC: Thanh tìm kiếm thông minh */}
-                    <NavbarSearch />
-                    
-                    {/* 🔔 TỰ XÓA SỐ ĐỎ: Quả chuông thông báo real-time */}
-                    <NotificationBell />
-                    
 
-                    {/* Kiểm tra trạng thái đăng nhập để hiển thị Profile/Login */}
+                <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+
+                    <NavbarSearch />
+
+                    <NotificationBell />
+
                     {user ? (
                         <div className="user-profile" ref={userDropdownRef}>
-                            <button 
-                                className={`profile-toggle ${showDropdown ? 'active' : ''}`} 
+                            <button
+                                className={`profile-toggle ${showDropdown ? 'active' : ''}`}
                                 onClick={() => setShowDropdown(!showDropdown)}
                             >
                                 <div className="avatar-wrapper">
-                                    {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                                    {/* 🚀 ĐÃ SỬA: Ưu tiên lấy avatar hoặc avatarUrl, nếu không có thì lấy chữ cái đầu của Tên (fullName hoặc username) */}
+                                    {(user.avatar || user.avatarUrl) ? (
+                                        <img src={user.avatar || user.avatarUrl} alt="avatar" style={{width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover'}} />
+                                    ) : (
+                                        (user.fullName || user.username) ? (user.fullName || user.username).charAt(0).toUpperCase() : 'U'
+                                    )}
                                 </div>
-                                <span className="username-text">{user.username}</span>
+                                {/* 🚀 ĐÃ SỬA: Ưu tiên hiển thị fullName (Họ và Tên), nếu chưa có mới hiển thị username */}
+                                <span className="username-text">{user.fullName || user.username}</span>
                                 <i className="fa-solid fa-chevron-down arrow-icon"></i>
                             </button>
 
@@ -119,12 +114,11 @@ const Navbar = () => {
                                         <span>{user.email || 'Thành viên CinemaX'}</span>
                                     </div>
                                     <div className="dropdown-divider"></div>
-                                    
-                                    {/* Quyền quản trị viên */}
+
                                     {(user.role === 'ROLE_ADMIN' || user.role === 'ADMIN' || user.role === 'admin') && (
                                         <>
                                             <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
-                                                <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i> 
+                                                <i className="fa-solid fa-user-gear" style={{color: '#ffc107'}}></i>
                                                 <span style={{fontWeight: 'bold', color: '#ffc107'}}>
                                                     {t('nav.dropdown.adminPage') || (isEn ? "Admin Dashboard" : "Trang Quản Trị")}
                                                 </span>
@@ -133,7 +127,6 @@ const Navbar = () => {
                                         </>
                                     )}
 
-                                    {/* Quyền thành viên thường */}
                                     {(user.role === 'ROLE_USER' || user.role === 'USER' || user.role === 'user') && (
                                         <>
                                             <Link to="/ho-so" className="dropdown-item" onClick={() => setShowDropdown(false)}>

@@ -43,10 +43,17 @@ public class User {
     @Column(name = "date_of_birth")
     private String dateOfBirth;
 
-    // 🚀 ĐÃ THÊM 2 TRƯỜNG DÀNH CHO TÍNH NĂNG QUÊN MẬT KHẨU
     @Column(name = "reset_otp", length = 10)
     private String resetOtp;
 
     @Column(name = "otp_expiry_time")
     private java.time.LocalDateTime otpExpiryTime;
+
+    @Lob
+    @Column(name = "avatar_url", columnDefinition = "NVARCHAR(MAX)")
+    private String avatarUrl;
+
+    // 🚀 CỘT LƯU TRỮ ĐIỂM THƯỞNG
+    @Column(name = "points", columnDefinition = "int default 0")
+    private Integer points = 0;
 }
