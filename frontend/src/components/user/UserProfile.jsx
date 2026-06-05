@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../style/UserProfile.css';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'; // Khởi tạo thư viện dịch
 
 const UserProfile = () => {
   const { t, i18n } = useTranslation();
-
   const [activeTab, setActiveTab] = useState('tickets');
   const { user: authUser } = useSelector((state) => state.auth);
   const [profileData, setProfileData] = useState(null);
@@ -15,7 +14,6 @@ const UserProfile = () => {
 
   // State quản lý avatar
   const [avatarPreview, setAvatarPreview] = useState("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop");
-  const [showTooltip, setShowTooltip] = useState(false);
 
   // State quản lý Modal xem chi tiết vé
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -39,39 +37,33 @@ const UserProfile = () => {
   useEffect(() => {
     const userId = authUser?.id || authUser?.userId;
     if (!userId) { setLoading(false); return; }
-
     setLoading(true);
     const token = localStorage.getItem('token');
     const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
+    
     Promise.all([
       axios.get(`http://localhost:8080/api/users/${userId}`, config),
       axios.get(`http://localhost:8080/api/bookings/history/${userId}`, config).catch(() => ({ data: [] }))
     ])
     .then(([userRes, ticketsRes]) => {
       setProfileData(userRes.data);
-
       // Cập nhật avatar từ Database nếu có
       if (userRes.data.avatarUrl || userRes.data.avatar) {
         setAvatarPreview(userRes.data.avatarUrl || userRes.data.avatar);
       }
-
       setEditForm({
         fullName: userRes.data.fullName || userRes.data.username || '',
         phone: userRes.data.phone || '',
         dateOfBirth: userRes.data.dateOfBirth ? userRes.data.dateOfBirth.substring(0, 10) : ''
       });
-
       if (userRes.data.emailNotify !== undefined) {
         setEmailNotify(userRes.data.emailNotify);
       }
-
       let listTickets = [];
       if (Array.isArray(ticketsRes.data)) listTickets = ticketsRes.data;
       else if (ticketsRes.data?.data) listTickets = ticketsRes.data.data;
       else if (ticketsRes.data?.content) listTickets = ticketsRes.data.content;
       setTickets(listTickets);
-
       setLoading(false);
     })
     .catch((err) => {
@@ -85,9 +77,7 @@ const UserProfile = () => {
     setEditForm({ ...editForm, [name]: value });
   };
 
-  // ----------------------------------------------------------------
   // Helper function chuyển file thành Base64
-  // ----------------------------------------------------------------
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -97,35 +87,28 @@ const UserProfile = () => {
     });
   };
 
-  // ----------------------------------------------------------------
   // XỬ LÝ UPLOAD ẢNH ĐẠI DIỆN LÊN SERVER BẰNG JSON BASE64
-  // ----------------------------------------------------------------
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       try {
         const base64Image = await convertBase64(file);
         setAvatarPreview(base64Image);
-
         const userId = authUser?.id || authUser?.userId;
         const token = localStorage.getItem('token');
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
         const response = await axios.put(
           `http://localhost:8080/api/users/update-avatar/${userId}`,
           { avatarUrl: base64Image },
           config
         );
-
         alert("Cập nhật ảnh đại diện thành công!");
-
         let storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser && response.data?.avatarUrl) {
           storedUser.avatar = response.data.avatarUrl;
           localStorage.setItem('user', JSON.stringify(storedUser));
           window.location.reload();
         }
-
       } catch (error) {
         console.error("Lỗi upload ảnh:", error);
         alert("Lưu ảnh thất bại! Vui lòng thử lại.");
@@ -138,11 +121,9 @@ const UserProfile = () => {
       const userId = Number(authUser?.id || authUser?.userId);
       const token = localStorage.getItem('token');
       const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
       await axios.put(`http://localhost:8080/api/users/update/${userId}`, editForm, config);
-      alert("Cập nhật thông tin thành công!");
+      alert(t('user.info.alerts.success'));
       setProfileData({ ...profileData, ...editForm });
-
       let storedUser = JSON.parse(localStorage.getItem('user'));
       if (storedUser) {
         storedUser.fullName = editForm.fullName;
@@ -152,7 +133,7 @@ const UserProfile = () => {
       window.location.reload();
     } catch (error) {
       console.error("Lỗi cập nhật DB:", error);
-      alert("Cập nhật thất bại. Vui lòng thử lại!");
+      alert(t('user.info.alerts.fail'));
     }
   };
 
@@ -177,80 +158,67 @@ const UserProfile = () => {
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
     if (pwdForm.newPassword !== confirmPassword) {
-      alert("Mật khẩu mới và Nhập lại mật khẩu không trùng khớp!");
+      alert(t('user.pwdModal.alerts.mismatch'));
       return;
     }
-
     try {
       const userId = authUser?.id || authUser?.userId;
       const token = localStorage.getItem('token');
       const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
       await axios.put(`http://localhost:8080/api/users/change-password/${userId}`, {
         oldPassword: pwdForm.oldPassword,
         newPassword: pwdForm.newPassword
       }, config);
-
-      alert("Đổi mật khẩu thành công!");
+      alert(t('user.pwdModal.alerts.success'));
       setShowPwdModal(false);
       setPwdForm({ oldPassword: '', newPassword: '' });
-      setConfirmPassword('');
+      setConfirmPassword(''); 
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.message || "Mật khẩu cũ không chính xác!");
+      alert(error.response?.data?.message || t('user.pwdModal.alerts.failDefault'));
     }
   };
 
   const handleDeleteAccount = async () => {
-    const firstConfirm = window.confirm("CẢNH BÁO: Bạn có chắc chắn muốn XÓA VĨNH VIỄN tài khoản này không?");
+    const firstConfirm = window.confirm(t('user.settings.deleteAccount.confirm1'));
     if (!firstConfirm) return;
-
-    const secondConfirm = window.confirm("Lịch sử đặt vé sẽ mất hết. Chắc chắn chứ ông?");
+    const secondConfirm = window.confirm(t('user.settings.deleteAccount.confirm2'));
     if (secondConfirm) {
       try {
         const userId = authUser?.id || authUser?.userId;
         const token = localStorage.getItem('token');
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
         await axios.delete(`http://localhost:8080/api/users/delete/${userId}`, config);
-        alert("Xóa tài khoản thành công!");
+        alert(t('user.settings.deleteAccount.success'));
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         window.location.href = "/";
       } catch (error) {
         console.error(error);
-        alert("Xóa tài khoản thất bại!");
+        alert(t('user.settings.deleteAccount.fail'));
       }
     }
   };
 
-  if (loading) return <div className="loading-text">Đang tải...</div>;
-  if (!authUser) return <div className="error-text">Vui lòng đăng nhập.</div>;
+  if (loading) return <div className="loading-text">{t('user.loading')}</div>;
+  if (!authUser) return <div className="error-text">{t('user.loginRequired')}</div>;
 
-  const displayName = profileData?.fullName || authUser?.username || "Thành viên";
-  const displayEmail = profileData?.email || authUser?.email || "Chưa cập nhật";
-
-  // 🚀 LẤY ĐIỂM TỪ BACKEND
+  const displayName = profileData?.fullName || authUser?.username || t('user.defaultUser');
+  const displayEmail = profileData?.email || authUser?.email || t('user.defaultEmail');
   const userPoints = profileData?.points || 0;
   const isVip = userPoints >= 1000;
 
   return (
     <div className="profile-page-wrapper">
       <div className="profile-header-top">
-        <h1>Tài Khoản</h1>
+        <h1>{t('user.title')}</h1>
       </div>
-
       <div className="profile-container">
         {/* ================= SIDEBAR ================= */}
         <aside className="profile-sidebar">
           <div className="user-profile-info">
-
             <div className="avatar-container" onClick={() => document.getElementById('avatar-upload').click()}>
-              <img
-                src={avatarPreview}
-                alt="avatar"
-                className="avatar-img"
-              />
+              <img src={avatarPreview} alt="avatar" className="avatar-img" />
               <div className="avatar-overlay">
                 <i className="fa-solid fa-camera"></i>
                 <span>Cập nhật</span>
@@ -259,15 +227,12 @@ const UserProfile = () => {
                 type="file"
                 id="avatar-upload"
                 accept="image/*"
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 onChange={handleAvatarChange}
               />
             </div>
-
             <h2>{displayName}</h2>
             <p className="user-email">{displayEmail}</p>
-
-            {/* 🚀 THÊM HUY HIỆU VIP */}
             {isVip ? (
               <div className="vip-badge gold">
                 <i className="fa-solid fa-ribbon"></i> Thành viên VIP
@@ -278,8 +243,7 @@ const UserProfile = () => {
               </div>
             )}
           </div>
-
-          {/* 🚀 THÊM THẺ ĐIỂM THƯỞNG */}
+          
           <div className="points-card-container">
             <div className="points-header">
               <span>Điểm thưởng</span>
@@ -291,149 +255,113 @@ const UserProfile = () => {
           </div>
 
           <nav className="sidebar-nav">
-            <button
-              className={`nav-item ${activeTab === 'tickets' ? 'active' : ''}`}
-              onClick={() => setActiveTab('tickets')}
-            >
-              <i className="fa-solid fa-ticket-simple"></i> Vé Của Tôi
+            <button className={`nav-item ${activeTab === 'tickets' ? 'active' : ''}`} onClick={() => setActiveTab('tickets')}>
+              <i className="fa-solid fa-ticket-simple"></i> {t('user.tabs.myTickets')}
             </button>
-            <button
-              className={`nav-item ${activeTab === 'info' ? 'active' : ''}`}
-              onClick={() => setActiveTab('info')}
-            >
-              <i className="fa-regular fa-user"></i> Thông Tin Cá Nhân
+            <button className={`nav-item ${activeTab === 'info' ? 'active' : ''}`} onClick={() => setActiveTab('info')}>
+              <i className="fa-regular fa-user"></i> {t('user.tabs.personalInfo')}
             </button>
-            <button
-              className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
-              onClick={() => setActiveTab('settings')}
-            >
-              <i className="fa-solid fa-gear"></i> Cài Đặt
+            <button className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
+              <i className="fa-solid fa-gear"></i> {t('user.tabs.settings')}
             </button>
           </nav>
         </aside>
 
         {/* ================= MAIN CONTENT ================= */}
         <main className="profile-main-content">
-
-          {/* ---------------- TAB 1: VÉ CỦA TÔI ---------------- */}
+          {/* TAB 1: VÉ CỦA TÔI */}
           {activeTab === 'tickets' && (
             <>
-              <h2>Lịch Sử Đặt Vé</h2>
-              {tickets.length > 0 ? tickets.map((t, index) => (
-                <div className="ticket-card" key={t.ticketId || index}>
-                  <img src={t.showtime?.movie?.image || "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=300&auto=format&fit=crop"} alt="poster" className="ticket-poster" />
+              <h2>{t('user.tickets.title')}</h2>
+              {tickets.length > 0 ? tickets.map((tItem, index) => (
+                <div className="ticket-card" key={tItem.ticketId || index}>
+                  <img src={tItem.showtime?.movie?.image || "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=300&auto=format&fit=crop"} alt="poster" className="ticket-poster" />
                   <div className="ticket-info">
                     <div className="ticket-header">
                       <div>
-                        <h3 className="movie-title">{t.showtime?.movie?.title || "Phim đã chọn"}</h3>
-                        <p className="booking-code">Mã vé: {t.ticketId}</p>
+                        <h3 className="movie-title">{tItem.showtime?.movie?.title || t('user.tickets.movieTitleDefault')}</h3>
+                        <p className="booking-code">{t('user.tickets.ticketCode')}{tItem.ticketId}</p>
                       </div>
-
-                      {t.statusTk === 1 ? (
-                        <span className="status-badge-checked">Đã xem</span>
+                      {tItem.statusTk === 1 ? (
+                        <span className="status-badge-checked">{t('user.tickets.status.watched')}</span>
                       ) : (
-                        <span className="status-badge-pending">Chưa xem</span>
+                        <span className="status-badge-pending">{t('user.tickets.status.pending')}</span>
                       )}
                     </div>
-
                     <div className="ticket-details-grid">
-                      <div><span className="detail-label">Rạp</span><span className="detail-value">{t.showtime?.room?.theater?.name || "CinemaX"}</span></div>
+                      <div><span className="detail-label">{t('user.tickets.details.theater')}</span><span className="detail-value">{tItem.showtime?.room?.theater?.name || "CinemaX"}</span></div>
                       <div>
-                        <span className="detail-label">Suất chiếu</span>
+                        <span className="detail-label">{t('user.tickets.details.showtime')}</span>
                         <span className="detail-value">
-                          <i className="fa-regular fa-calendar calendar-icon"></i> {t.showtime?.showDate} • {t.showtime?.startTime}
+                          <i className="fa-regular fa-calendar calendar-icon"></i> {tItem.showtime?.showDate} • {tItem.showtime?.startTime}
                         </span>
                       </div>
                       <div className="detail-group-full">
-                        <span className="detail-label">Ghế</span>
-                        <span className="detail-value seat-highlight">
-                          {t.seat?.seatNumber || "Chưa rõ"}
-                        </span>
+                        <span className="detail-label">{t('user.tickets.details.seats')}</span>
+                        <span className="detail-value seat-highlight">{tItem.seat?.seatNumber || "Chưa rõ"}</span>
                       </div>
                     </div>
-
                     <div className="ticket-action-right">
-                      <button className="btn-detail" onClick={() => setSelectedTicket(t)}>
-                        Xem Chi Tiết
+                      <button className="btn-detail" onClick={() => setSelectedTicket(tItem)}>
+                        {t('user.tickets.buttons.viewDetail')}
                       </button>
                     </div>
                   </div>
                 </div>
-              )) : <p className="booking-code">Bạn chưa đặt vé nào.</p>}
+              )) : <p className="booking-code">{t('user.tickets.empty')}</p>}
             </>
           )}
 
-          {/* ---------------- TAB 2: THÔNG TIN CÁ NHÂN ---------------- */}
+          {/* TAB 2: THÔNG TIN CÁ NHÂN */}
           {activeTab === 'info' && (
             <>
-              <h2>Thông Tin Cá Nhân</h2>
+              <h2>{t('user.info.title')}</h2>
               <div className="form-card">
                 <div className="form-grid">
                   <div className="form-group">
-                    <label>Họ và Tên</label>
-                    <input
-                      type="text"
-                      name="fullName"
-                      value={editForm.fullName}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
+                    <label>{t('user.info.labels.fullName')}</label>
+                    <input type="text" name="fullName" value={editForm.fullName} onChange={handleInputChange} className="form-input" />
                   </div>
                   <div className="form-group">
-                    <label>Email</label>
+                    <label>{t('user.info.labels.email')}</label>
                     <input type="email" value={displayEmail} className="form-input" disabled />
                   </div>
                   <div className="form-group">
-                    <label>Số điện thoại</label>
-                    <input
-                      type="text"
-                      name="phone"
-                      value={editForm.phone}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
+                    <label>{t('user.info.labels.phone')}</label>
+                    <input type="text" name="phone" value={editForm.phone} onChange={handleInputChange} className="form-input" />
                   </div>
                   <div className="form-group">
-                    <label>Ngày sinh</label>
-                    <input
-                      type="date"
-                      name="dateOfBirth"
-                      value={editForm.dateOfBirth}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
+                    <label>{t('user.info.labels.dob')}</label>
+                    <input type="date" name="dateOfBirth" value={editForm.dateOfBirth} onChange={handleInputChange} className="form-input" />
                   </div>
                 </div>
-                <button className="btn-save-primary" onClick={handleSaveProfile}>Lưu Thay Đổi</button>
+                <button className="btn-save-primary" onClick={handleSaveProfile}>{t('user.info.buttons.save')}</button>
               </div>
             </>
           )}
 
-          {/* ---------------- TAB 3: CÀI ĐẶT ---------------- */}
+          {/* TAB 3: CÀI ĐẶT */}
           {activeTab === 'settings' && (
             <>
-              <h2>Cài Đặt Tài Khoản</h2>
+              <h2>{t('user.settings.title')}</h2>
               <div className="settings-card">
                 <div className="setting-item">
                   <div className="setting-info">
-                    <h4>Nhận thông báo qua Email</h4>
-                    <p>Nhận email về vé đã đặt và các chương trình khuyến mãi</p>
+                    <h4>{t('user.settings.notifications.title')}</h4>
+                    <p>{t('user.settings.notifications.desc')}</p>
                   </div>
                   <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={emailNotify}
-                      onChange={handleToggleNotification}
-                    />
+                    <input type="checkbox" checked={emailNotify} onChange={handleToggleNotification} />
                     <span className="slider"></span>
                   </label>
                 </div>
+                
                 <div className="setting-divider"></div>
-
+                
                 <div className="setting-item">
                   <div className="setting-info">
-                    <h4>Ngôn ngữ hiển thị</h4>
-                    <p>Tùy chỉnh ngôn ngữ giao diện của hệ thống</p>
+                    <h4>{t('user.settings.language.title')}</h4>
+                    <p>{t('user.settings.language.desc')}</p>
                   </div>
                   <select
                     className="form-input language-select"
@@ -446,126 +374,92 @@ const UserProfile = () => {
                     <option value="ja">日本語</option>
                   </select>
                 </div>
+                
                 <div className="setting-divider"></div>
-
+                
                 <div className="setting-item">
                   <div className="setting-info">
-                    <h4>Đổi Mật Khẩu</h4>
-                    <p>Bảo vệ tài khoản của bạn bằng mật khẩu mạnh</p>
+                    <h4>{t('user.settings.password.title')}</h4>
+                    <p>{t('user.settings.password.desc')}</p>
                   </div>
                   <button className="btn-outline" onClick={() => setShowPwdModal(true)}>
-                    Đổi mật khẩu
+                    {t('user.settings.password.button')}
                   </button>
                 </div>
+                
                 <div className="setting-divider"></div>
+                
                 <div className="setting-item">
                   <div className="setting-info">
-                    <h4 className="error-text">Xóa Tài Khoản</h4>
-                    <p>Xóa vĩnh viễn tài khoản và lịch sử giao dịch</p>
+                    <h4 className="error-text">{t('user.settings.deleteAccount.title')}</h4>
+                    <p>{t('user.settings.deleteAccount.desc')}</p>
                   </div>
                   <button className="btn-danger-outline" onClick={handleDeleteAccount}>
-                    Xóa tài khoản
+                    {t('user.settings.deleteAccount.button')}
                   </button>
                 </div>
               </div>
             </>
           )}
-
         </main>
       </div>
 
-      {/* ========================================================================= */}
-      {/* 🍿 POPUP MODAL CHI TIẾT VÉ */}
-      {/* ========================================================================= */}
+      {/* POPUP MODAL CHI TIẾT VÉ */}
       {selectedTicket && (
         <div className="ticket-modal-overlay" onClick={() => setSelectedTicket(null)}>
           <div className="ticket-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="ticket-modal-close-btn" onClick={() => setSelectedTicket(null)}>&times;</button>
-            <h2 className="ticket-modal-title">VÉ XEM PHIM ĐIỆN TỬ</h2>
-            <p className="ticket-modal-subtitle">CinemaX hân hạnh phục vụ bạn</p>
+            <h2 className="ticket-modal-title">{t('user.tickets.modal.title')}</h2>
+            <p className="ticket-modal-subtitle">{t('user.tickets.modal.subtitle')}</p>
             <div className="ticket-modal-qr-container">
-              <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${selectedTicket.ticketId}`}
-                alt="Ticket QR Code"
-                className="ticket-modal-qr-image"
-              />
+              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${selectedTicket.ticketId}`} alt="Ticket QR Code" className="ticket-modal-qr-image" />
             </div>
-            <p className="ticket-modal-code">MÃ VÉ: {selectedTicket.ticketId}</p>
+            <p className="ticket-modal-code">{t('user.tickets.modal.qrLabel')}{selectedTicket.ticketId}</p>
             <div className="ticket-modal-details">
               <div className="ticket-modal-row"><span className="ticket-modal-label">🎬 Phim:</span><span className="ticket-modal-value movie-highlight">{selectedTicket.showtime?.movie?.title}</span></div>
-              <div className="ticket-modal-row"><span className="ticket-modal-label">📍 Rạp:</span><span className="ticket-modal-value">{selectedTicket.showtime?.room?.theater?.name || "CinemaX Vincom"}</span></div>
-              <div className="ticket-modal-row"><span className="ticket-modal-label">🚪 Phòng:</span><span className="ticket-modal-value">{selectedTicket.showtime?.room?.name || "Phòng chiếu mặc định"}</span></div>
-              <div className="ticket-modal-row"><span className="ticket-modal-label">🗓️ Suất chiếu:</span><span className="ticket-modal-value time-highlight">{selectedTicket.showtime?.showDate} • {selectedTicket.showtime?.startTime}</span></div>
-              <div className="ticket-modal-row"><span className="ticket-modal-label">💺 Ghế đã chọn:</span><span className="ticket-modal-value seat-highlight">{selectedTicket.seat?.seatNumber}</span></div>
-              <div className="ticket-modal-row"><span className="ticket-modal-label">💰 Tổng tiền:</span><span className="ticket-modal-value price-highlight">{String(selectedTicket.totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ</span></div>
+              <div className="ticket-modal-row"><span className="ticket-modal-label">📍 {t('user.tickets.details.theater')}:</span><span className="ticket-modal-value">{selectedTicket.showtime?.room?.theater?.name || "CinemaX Vincom"}</span></div>
+              <div className="ticket-modal-row"><span className="ticket-modal-label">🚪 {t('user.tickets.details.room')}:</span><span className="ticket-modal-value">{selectedTicket.showtime?.room?.name || "Phòng chiếu mặc định"}</span></div>
+              <div className="ticket-modal-row"><span className="ticket-modal-label">🗓️ {t('user.tickets.details.showtime')}:</span><span className="ticket-modal-value time-highlight">{selectedTicket.showtime?.showDate} • {selectedTicket.showtime?.startTime}</span></div>
+              <div className="ticket-modal-row"><span className="ticket-modal-label">💺 {t('user.tickets.details.seats')}:</span><span className="ticket-modal-value seat-highlight">{selectedTicket.seat?.seatNumber}</span></div>
+              <div className="ticket-modal-row"><span className="ticket-modal-label">💰 {t('user.tickets.details.totalPrice')}:</span><span className="ticket-modal-value price-highlight">{String(selectedTicket.totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ</span></div>
               <div className="ticket-modal-status-section">
                 <span className="ticket-modal-label">Trạng thái:</span>
                 {selectedTicket.statusTk === 1 ? (
-                  <span className="status-badge-checked">🟢 Đã Check-in (Đã xem)</span>
+                  <span className="status-badge-checked">{t('user.tickets.modal.statusWatched')}</span>
                 ) : (
-                  <span className="status-badge-pending">🟡 Chưa sử dụng (Chờ soát vé)</span>
+                  <span className="status-badge-pending">{t('user.tickets.modal.statusPending')}</span>
                 )}
               </div>
             </div>
-            <p className="ticket-modal-footer-note">*Vui lòng đưa mã QR này cho nhân viên tại quầy soát vé để quét nhận diện vào phòng chiếu.</p>
+            <p className="ticket-modal-footer-note">{t('user.tickets.modal.note')}</p>
           </div>
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* 🔐 POPUP MODAL ĐỔI MẬT KHẨU */}
-      {/* ========================================================================= */}
+      {/* POPUP MODAL ĐỔI MẬT KHẨU */}
       {showPwdModal && (
         <div className="ticket-modal-overlay" onClick={() => setShowPwdModal(false)}>
           <div className="ticket-modal-content pwd-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="ticket-modal-close-btn" onClick={() => setShowPwdModal(false)}>&times;</button>
-            <h2 className="ticket-modal-title pwd-modal-title">ĐỔI MẬT KHẨU</h2>
-
+            <h2 className="ticket-modal-title pwd-modal-title">{t('user.pwdModal.title')}</h2>
             <form onSubmit={handleUpdatePassword}>
               <div className="form-group pwd-form-group">
-                <label>Mật khẩu hiện tại</label>
-                <input
-                  type="password"
-                  name="oldPassword"
-                  value={pwdForm.oldPassword}
-                  onChange={handlePasswordChangeInput}
-                  className="form-input"
-                  required
-                />
+                <label>{t('user.pwdModal.labels.current')}</label>
+                <input type="password" name="oldPassword" value={pwdForm.oldPassword} onChange={handlePasswordChangeInput} className="form-input" required />
               </div>
-
               <div className="form-group pwd-form-group">
-                <label>Mật khẩu mới</label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={pwdForm.newPassword}
-                  onChange={handlePasswordChangeInput}
-                  className="form-input"
-                  required
-                />
+                <label>{t('user.pwdModal.labels.new')}</label>
+                <input type="password" name="newPassword" value={pwdForm.newPassword} onChange={handlePasswordChangeInput} className="form-input" required />
               </div>
-
-              <div className="form-group pwd-form-group last">
+              <div className="form-group pwd-form-group">
                 <label>Nhập lại mật khẩu mới</label>
-                <input
-                  type="password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  value={confirmPassword}
-                  className="form-input"
-                  required
-                />
+                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="form-input" required />
               </div>
-
-              <div className="pwd-modal-actions">
-                <button type="button" className="btn-outline" onClick={() => setShowPwdModal(false)}>Hủy</button>
-                <button type="submit" className="btn-save-primary">Cập Nhật</button>
-              </div>
+              <button type="submit" className="btn-save-primary pwd-btn-save">{t('user.pwdModal.buttons.save')}</button>
             </form>
           </div>
         </div>
       )}
-
     </div>
   );
 };

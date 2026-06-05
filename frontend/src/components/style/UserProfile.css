@@ -377,6 +377,10 @@
 input:checked + .slider { background-color: #e50914; }
 input:checked + .slider:before { transform: translateX(24px); }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/chuyen-doi-ngon-ngu
 /* ========================================================================= */
 /* 🍿 POPUP MODAL CHI TIẾT VÉ VÀ MÃ QR CODES                                */
 /* ========================================================================= */
@@ -554,7 +558,10 @@ input:checked + .slider:before { transform: translateX(24px); }
   gap: 10px;
   justify-content: flex-end;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/chuyen-doi-ngon-ngu
 /* ========================================== */
 /* 🚀 CSS BỔ SUNG CHO PHẦN CHỌN NGÔN NGỮ      */
 /* ========================================== */
@@ -564,11 +571,16 @@ input:checked + .slider:before { transform: translateX(24px); }
     padding: 10px 14px !important;
     cursor: pointer;
     font-weight: 500;
+<<<<<<< HEAD
     appearance: auto;
+=======
+    appearance: auto; /* Hiển thị mũi tên dropdown chuẩn của trình duyệt */
+>>>>>>> origin/chuyen-doi-ngon-ngu
 }
 
 .language-select:hover {
     border-color: #e50914;
+<<<<<<< HEAD
 }
 
 /* ========================================================================= */
@@ -629,4 +641,6 @@ input:checked + .slider:before { transform: translateX(24px); }
 .points-footer {
   color: #777;
   font-size: 0.85rem;
+=======
+>>>>>>> origin/chuyen-doi-ngon-ngu
 }

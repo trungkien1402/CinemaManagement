@@ -114,7 +114,6 @@ const Navbar = () => {
                                         <span>{user.email || 'Thành viên CinemaX'}</span>
                                     </div>
                                     <div className="dropdown-divider"></div>
-
                                     {(user.role === 'ROLE_ADMIN' || user.role === 'ADMIN' || user.role === 'admin') && (
                                         <>
                                             <Link to="/admin" className="dropdown-item admin-link" onClick={() => setShowDropdown(false)}>
@@ -153,6 +152,8 @@ const Navbar = () => {
                             <span>{t('nav.login') || "Đăng Nhập"}</span>
                         </button>
                     )}
+
+        
                 </div>
             </div>
 

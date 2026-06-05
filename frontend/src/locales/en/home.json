@@ -21,6 +21,7 @@
       }
     },
     "comingSoon": {
+      "subtitle":"Subtitle",
       "title": "Coming Soon",
       "status": {
         "loading": "Loading upcoming movies...",

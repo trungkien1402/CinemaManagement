@@ -21,6 +21,7 @@
       }
     },
     "comingSoon": {
+      "subtitle":"Phụ đề",
       "title": "Phim Sắp Chiếu",
       "status": {
         "loading": "Đang tải phim sắp chiếu...",

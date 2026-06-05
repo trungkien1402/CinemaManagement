@@ -13,10 +13,10 @@ const LanguageSwitcher = () => {
 
   const currentLng = i18n.language || 'vi';
 
-  // 💡 MẢNG NGÔN NGỮ: Ông muốn thêm bao nhiêu nước thì cứ ném vào đây
+  // 🌐 MẢNG NGÔN NGỮ: Đã đồng bộ đầy đủ cả 4 ngôn ngữ giống như cấu hình trong UserProfile
   const languages = [
     { code: 'vi', flag: '🇻🇳', name: 'Tiếng Việt' },
-    { code: 'en', flag: 'en', name: 'English' },
+    { code: 'en', flag: '🇬🇧', name: 'English' },
     { code: 'ko', flag: '🇰🇷', name: '한국어' },
     { code: 'ja', flag: '🇯🇵', name: '日本語' }
   ];
@@ -64,7 +64,6 @@ const LanguageSwitcher = () => {
       padding: '8px 0',
       minWidth: '150px',
       boxShadow: '0 8px 20px rgba(0,0,0,0.5)',
-      // 💡 ĐÂY LÀ CHỖ TẠO SCROLL
       maxHeight: '160px', 
       overflowY: 'auto',
       zIndex: 1000,
@@ -96,8 +95,7 @@ const LanguageSwitcher = () => {
         title="Chọn ngôn ngữ"
       >
         <span>{activeLang.flag}</span>
-        {/* Nếu ông có dùng FontAwesome thì mở comment dòng dưới để hiện mũi tên */}
-        {/* <i className={`fa-solid fa-chevron-${isOpen ? 'up' : 'down'}`} style={{ fontSize: '10px', opacity: 0.7 }}></i> */}
+        <i className="fa-solid fa-chevron-down arrow-icon" style={{ fontSize: '10px', opacity: 0.7, marginLeft: '4px', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}></i>
       </button>
 
       {/* DANH SÁCH DROPDOWN CÓ SCROLL */}
@@ -114,7 +112,7 @@ const LanguageSwitcher = () => {
         ))}
       </div>
       
-      {/* 💡 CSS Tùy chỉnh làm đẹp thanh cuộn */}
+      {/* CSS Tùy chỉnh làm đẹp thanh cuộn và hiệu ứng hover */}
       <style>{`
         .lang-scroll-menu::-webkit-scrollbar {
           width: 5px;
@@ -129,6 +127,7 @@ const LanguageSwitcher = () => {
         }
         .lang-scroll-menu button:hover {
           background: rgba(255, 77, 77, 0.2) !important;
+          color: #ff4d4d !important;
         }
       `}</style>
     </div>

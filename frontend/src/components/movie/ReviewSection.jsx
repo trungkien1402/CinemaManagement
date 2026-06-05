@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
 const ReviewSection = ({ movieId, onReviewsUpdate }) => {
-    // 💡 SỬA CHỖ NÀY: Moi thêm i18n ra khỏi useTranslation
     const { t, i18n } = useTranslation();
 
     const [reviews, setReviews] = useState([]);
@@ -18,7 +17,6 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
             .then(res => {
                 const reversedData = res.data.reverse();
                 setReviews(reversedData);
-
                 if (onReviewsUpdate) {
                     onReviewsUpdate(reversedData);
                 }
@@ -65,6 +63,19 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
                 alert(t('detail.reviews.alerts.submitError') || "Lỗi khi đăng bình luận! Xem lại console nhé.");
             })
             .finally(() => setIsSubmitting(false));
+    };
+
+    const handleDelete = (reviewId) => {
+        if (!window.confirm("Bạn có chắc muốn xóa bình luận này không?")) return;
+
+        axios.delete(`http://localhost:8080/api/reviews/${reviewId}`)
+            .then(() => {
+                fetchReviews();
+            })
+            .catch(err => {
+                console.error("Lỗi xóa bình luận:", err);
+                alert("Xóa bình luận thất bại!");
+            });
     };
 
     return (
@@ -118,21 +129,33 @@ const ReviewSection = ({ movieId, onReviewsUpdate }) => {
                 {reviews.length === 0 ? (
                     <p style={{ color: '#666', fontStyle: 'italic' }}>{t('detail.reviews.list.empty') || "Chưa có bình luận nào. Hãy là người đầu tiên đánh giá phim này!"}</p>
                 ) : (
-                    reviews.map((rev) => (
-                        <div key={rev.reviewId} className="review-item" style={{ background: '#1c1c24', padding: '20px', borderRadius: '8px', border: '1px solid #2a2a35' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                                <strong style={{ color: '#fff' }}>{rev.user?.fullName || rev.user?.username || t('detail.reviews.list.anonymous')}</strong>
-                                <span style={{ color: '#ffc107' }}>
-                                    {"⭐".repeat(rev.rating)}
+                    reviews.map((rev) => {
+                        const isOwner = currentUser &&
+                            Number(currentUser.userId || currentUser.id) === Number(rev.user?.userId);
+
+                        return (
+                            <div key={rev.reviewId} className="review-item" style={{ background: '#1c1c24', padding: '20px', borderRadius: '8px', border: '1px solid #2a2a35', position: 'relative' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', alignItems: 'center' }}>
+                                    <strong style={{ color: '#fff' }}>{rev.user?.fullName || rev.user?.username || t('detail.reviews.list.anonymous')}</strong>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span style={{ color: '#ffc107' }}>{"⭐".repeat(rev.rating)}</span>
+                                        {isOwner && (
+                                            <button
+                                                onClick={() => handleDelete(rev.reviewId)}
+                                                style={{ background: 'transparent', border: '1px solid #ff3333', color: '#ff3333', padding: '3px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
+                                            >
+                                                Xóa
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                <p style={{ color: '#ccc', margin: 0, lineHeight: '1.5' }}>{rev.comment}</p>
+                                <span style={{ fontSize: '0.85rem', color: '#666', marginTop: '10px', display: 'block' }}>
+                                    {new Date(rev.createdAt).toLocaleDateString(i18n.language?.startsWith('en') ? 'en-US' : 'vi-VN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             </div>
-                            <p style={{ color: '#ccc', margin: 0, lineHeight: '1.5' }}>{rev.comment}</p>
-                            <span style={{ fontSize: '0.85rem', color: '#666', marginTop: '10px', display: 'block' }}>
-                                {/* Lúc này thằng i18n đã được định nghĩa, hàm chạy bao mượt */}
-                                {new Date(rev.createdAt).toLocaleDateString(i18n.language?.startsWith('en') ? 'en-US' : 'vi-VN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                            </span>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
         </div>

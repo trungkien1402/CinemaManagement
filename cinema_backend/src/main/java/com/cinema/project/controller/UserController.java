@@ -33,6 +33,10 @@ public class UserController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+
+    // ================= ENDPOINT CHO USER THƯỜNG (FIX LỖI 403) =================
+
+    // 💡 Lấy thông tin cá nhân -> URL: http://localhost:8080/api/users/{id}
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         return userRepository.findById(id)
@@ -40,6 +44,7 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 💡 Cập nhật thông tin cá nhân -> URL: http://localhost:8080/api/users/update/{id}
     @PutMapping("/users/update/{id}")
     public ResponseEntity<?> updateUserProfile(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         try {
@@ -64,79 +69,6 @@ public class UserController {
             ));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Lỗi cập nhật: " + e.getMessage());
-        }
-    }
-
-    @PutMapping("/users/change-password/{id}")
-    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody Map<String, String> request) {
-        try {
-            String oldPassword = request.get("oldPassword");
-            String newPassword = request.get("newPassword");
-
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng!"));
-
-            if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-                return ResponseEntity.badRequest().body(Map.of("message", "Mật khẩu hiện tại không chính xác!"));
-            }
-
-            user.setPassword(passwordEncoder.encode(newPassword));
-            userRepository.save(user);
-
-            return ResponseEntity.ok(Map.of("message", "Đổi mật khẩu thành công!"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Có lỗi xảy ra: " + e.getMessage()));
-        }
-    }
-
-    @DeleteMapping("/users/delete/{id}")
-    public ResponseEntity<?> userDeleteAccount(@PathVariable Long id) {
-        try {
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản cần xóa!"));
-
-            user.setRole("DELETED");
-            user.setPassword("da_bi_xoa_khong_the_login_" + Math.random());
-
-            long timestamp = System.currentTimeMillis();
-            user.setEmail("deleted_" + timestamp + "_" + user.getEmail());
-            user.setUsername("deleted_" + timestamp + "_" + user.getUsername());
-
-            userRepository.save(user);
-
-            return ResponseEntity.ok(Map.of("message", "Tài khoản đã được xóa vĩnh viễn!"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Lỗi Server: " + e.getMessage()));
-        }
-    }
-
-    // 🚀 API UPDATE AVATAR DÙNG JSON BASE64
-    @PutMapping("/users/update-avatar/{id}")
-    public ResponseEntity<?> updateAvatar(@PathVariable Long id, @RequestBody Map<String, String> request) {
-        try {
-            // Hứng chuỗi Base64 từ React gửi lên
-            String base64Image = request.get("avatarUrl");
-
-            if (base64Image == null || base64Image.isEmpty()) {
-                return ResponseEntity.badRequest().body(Map.of("message", "Ảnh không hợp lệ!"));
-            }
-
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy User!"));
-
-            // Lưu trực tiếp vào DB
-            user.setAvatarUrl(base64Image);
-            userRepository.save(user);
-
-            return ResponseEntity.ok(Map.of(
-                    "message", "Cập nhật ảnh đại diện thành công!",
-                    "avatarUrl", base64Image
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Lỗi lưu ảnh: " + e.getMessage()));
         }
     }
 }

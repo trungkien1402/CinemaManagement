@@ -14,6 +14,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
 
     @Modifying
-    @Query("UPDATE Notification n SET n.read = true WHERE n.read = false")
+    @Query(value = "UPDATE notification SET read = 1 WHERE read = 0", nativeQuery = true)
     int markAllAsReadByCustomQuery();
 }

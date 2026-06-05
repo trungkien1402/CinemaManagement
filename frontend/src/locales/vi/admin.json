@@ -1,4 +1,20 @@
 {
+  "nav": {
+    "home": "Trang Chủ",
+    "nowShowing": "Đang Chiếu",
+    "comingSoon": "Sắp Chiếu",
+    "schedule": "Lịch Chiếu",
+    "theaters": "Rạp",
+    "news": "Tin Tức",
+    "login": "Đăng Nhập",
+    "dropdown": {
+      "personalAccount": "Tài khoản cá nhân",
+      "adminPage": "Trang Quản Trị",
+      "myProfile": "Hồ sơ của tôi",
+      "bookingHistory": "Lịch sử đặt vé",
+      "logout": "Đăng xuất"
+    }
+  },
   "auth": {
     "authModal": {
       "tabs": { "login": "ĐĂNG NHẬP", "register": "ĐĂNG KÝ" },
@@ -52,7 +68,6 @@
         "title": "Nhật ký giao dịch đặt vé toàn hệ thống", "anonymous": "Ẩn danh", "empty": "Hiện tại chưa có dữ liệu giao dịch đặt vé nào!",
         "table": { "ticketId": "Mã hóa đơn", "username": "Tài khoản", "movieTitle": "Tên phim", "seats": "Số ghế", "price": "Giá vé", "date": "Ngày đặt", "status": "Trạng thái"},
         "status": {"statusTicked": "Đã vào rạp","unused": "Chưa vào"}
-
       },
       "moviesTab": {
         "title": "Kho lưu trữ phim chiếu rạp",

@@ -35,6 +35,8 @@
   display: grid;
   grid-template-columns: auto 1fr auto; /* Cột 1: Logo, Cột 2: Menu (chiếm hết chỗ trống để căn giữa), Cột 3: Tính năng phải */
   align-items: center;
+  justify-content: space-between; /* Đẩy Logo qua trái, Cụm phải qua phải */
+  gap: 20px;
 }
 
 /* Logo thương hiệu bên trái */
@@ -67,6 +69,7 @@
   position: relative;
   padding: 8px 0;
   transition: var(--transition);
+  display: inline-block;
 }
 
 .nav-link:hover, .nav-link.active {
