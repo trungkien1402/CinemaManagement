@@ -118,4 +118,10 @@ public class ShowtimeService {
 
         return stats;
     }
+    // ==========================================
+    // 6. CLIENT LẤY CHI TIẾT 1 SUẤT CHIẾU THEO ID (MỚI THÊM)
+    // ==========================================
+    public Showtime findById(String showtimeId) {
+        return showtimeRepository.findById(showtimeId).orElse(null);
+    }
 }

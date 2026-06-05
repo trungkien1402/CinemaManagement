@@ -12,7 +12,7 @@
     "seat": {
       "status": { "loading": "Đang tải sơ đồ ghế..." },
       "screen": "MÀN HÌNH CHÍNH",
-      "legend": { "standard": "Thường (30K)", "vip": "VIP (50K)", "double": "Ghế đôi (100K)", "selecting": "Đang chọn", "sold": "Đã bán" },
+      "legend": { "standard": "Thường", "vip": "VIP", "double": "Ghế đôi", "selecting": "Đang chọn", "sold": "Đã bán" },
       "info": { "showtimeId": "Mã suất chiếu:", "selectedSeats": "Ghế đã chọn:", "none": "Chưa chọn", "seatCount": "Số lượng ghế:", "totalAmount": "Tổng tiền:" },
       "buttons": { "pay": "THANH TOÁN VNPAY", "processing": "ĐANG CHUYỂN THANH TOÁN..." },
       "voucher": { "title": "Ưu đãi & Mã giảm giá", "placeholder": "Nhập mã giảm giá của bạn...", "buttons": { "apply": "Áp dụng" } }

@@ -3,36 +3,54 @@ package com.cinema.project.service;
 import com.cinema.project.model.Notification;
 import com.cinema.project.repositories.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-    // Lấy toàn bộ danh sách thông báo mới nhất xếp lên đầu
+    @Transactional(readOnly = true)
     public List<Notification> getAllNotifications() {
         return notificationRepository.findAllByOrderByCreatedAtDesc();
     }
 
-    // Hàm tạo nhanh thông báo từ các logic tính năng khác
+    @Transactional
     public void createNotification(String title, String message, String type) {
-        Notification noti = new Notification();
-        noti.setTitle(title);
-        noti.setMessage(message);
-        noti.setType(type);
-        noti.setCreatedAt(LocalDateTime.now());
-        noti.setRead(false);
-        notificationRepository.save(noti);
+        try {
+            Notification noti = new Notification();
+            noti.setTitle(title);
+            noti.setMessage(message);
+            noti.setType(type);
+            noti.setCreatedAt(LocalDateTime.now());
+            noti.setRead(false);
+
+            notificationRepository.save(noti);
+            log.info("Tạo thông báo thành công: [{}] - Loại: {}", title, type);
+
+
+        } catch (Exception e) {
+            log.error("Gặp sự cố khi lưu thông báo vào database: ", e);
+            throw new RuntimeException("Không thể tạo thông báo: " + e.getMessage());
+        }
     }
 
-    // Đánh dấu toàn bộ thông báo trong hệ thống là đã đọc
+
+    @Transactional
     public void markAllAsRead() {
-        List<Notification> list = notificationRepository.findAll();
-        list.forEach(noti -> noti.setRead(true));
-        notificationRepository.saveAll(list);
+        try {
+            int updatedCount = notificationRepository.markAllAsReadByCustomQuery();
+            log.info("Đã đánh dấu đã đọc cho toàn bộ thông báo thành công. Số lượng ảnh hưởng: {}", updatedCount);
+        } catch (Exception e) {
+            log.error("Lỗi khi thực hiện cập nhật trạng thái đã đọc: ", e);
+            throw new RuntimeException("Cập nhật trạng thái thông báo thất bại!");
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.cinema.project.service;
 import com.cinema.project.payload.request.BookingRequest;
 import com.cinema.project.model.*;
 import com.cinema.project.repositories.*;
-import com.cinema.project.service.NotificationService;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -11,6 +10,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookingService {
@@ -35,8 +36,12 @@ public class BookingService {
     private final JavaMailSender mailSender;
     private final NotificationService notificationService;
 
+    // Kích thước cố định cho việc tạo ảnh mã QR (Biến thành hằng số static final)
+    private static final int QR_WIDTH = 250;
+    private static final int QR_HEIGHT = 250;
+
     // =========================================================================
-    // CODE ĐẶT VÉ CHÍNH TÍCH HỢP ĐIỂM THƯỞNG
+    // CODE ĐẶT VÉ CHÍNH TÍCH HỢP ĐIỂM THƯỞNG & GIÁ ĐỘNG
     // =========================================================================
     @Transactional
     public List<Ticket> processBooking(BookingRequest request) {
@@ -61,9 +66,11 @@ public class BookingService {
 
         List<Ticket> savedTickets = new ArrayList<>();
         List<String> seatNames = new ArrayList<>();
-        double grandTotalPaid = 0; // Biến tính tổng tiền thực tế khách đã trả
+        double grandTotalPaid = 0; // Biến tính tổng tiền thực tế khách đã trả sau giảm giá
 
         for (String seatId : request.getSeatIds()) {
+            if (seatId == null) continue;
+
             Seat seat = seatRepository.findById(seatId)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy Ghế"));
 
@@ -72,11 +79,14 @@ public class BookingService {
                 throw new RuntimeException("Ghế " + seat.getSeatNumber() + " đã được đặt!");
             }
 
-            // 🚀 ĐÃ SỬA: Xóa cái basePrice 100k cũ đi. Gọi hàm tính giá vé chuẩn khớp 100% với Frontend!
-            double ticketPrice = calculateSeatPrice(seat) - discountPerTicket;
+            // ĐỒNG BỘ 100% VỚI FRONTEND: Tính giá gốc của loại ghế theo suất chiếu trước
+            double baseSeatPrice = calculateSeatPrice(seat, showtime.getTicketPrice());
+
+            // Trừ đi phần giảm giá được chia đều từ điểm thưởng
+            double ticketPrice = baseSeatPrice - discountPerTicket;
             if (ticketPrice < 0) ticketPrice = 0; // Chống lỗi âm tiền
 
-            grandTotalPaid += ticketPrice; // Cộng dồn để lát tính điểm thưởng
+            grandTotalPaid += ticketPrice; // Cộng dồn tổng số tiền thực trả để tính điểm thưởng được tặng
 
             Ticket ticket = new Ticket();
             String randomTicketId = "TK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -93,35 +103,52 @@ public class BookingService {
             seatNames.add(seat.getSeatNumber());
         }
 
-        // 🚀 BƯỚC 2: TÍCH ĐIỂM SAU KHI MUA (Cộng lại 5% hóa đơn)
+        // 🚀 BƯỚC 2: TÍCH ĐIỂM SAU KHI MUA (Cộng lại 5% dựa trên số tiền thực trả)
         int earnedPoints = (int) ((grandTotalPaid * 0.05) / 1000);
 
         // Cập nhật lại số điểm của khách (Điểm cũ - Điểm đã xài + Điểm mới nhận)
         user.setPoints(user.getPoints() - pointsToUse + earnedPoints);
-        userRepository.save(user); // LƯU VÀO DATABASE
+        userRepository.save(user); // LƯU XUỐNG DATABASE
 
-        // Tạo thông báo
+        // 🚀 BƯỚC 3: TẠO THÔNG BÁO HỆ THỐNG REAL-TIME
+        String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim";
+        String seatsString = String.join(", ", seatNames);
+
         try {
-            String movieTitle = showtime.getMovie() != null ? showtime.getMovie().getTitle() : "Phim";
-            String seatsString = String.join(", ", seatNames);
             String pointMsg = (pointsToUse > 0 ? " (Đã dùng " + pointsToUse + " điểm)" : "") + ". Được cộng thêm " + earnedPoints + " điểm thưởng.";
-
             notificationService.createNotification(
                     "Đặt vé thành công 🎉",
-                    "Khách hàng " + user.getUsername() + " đã mua vé '" + movieTitle + "' (Ghế: " + seatsString + ")" + pointMsg,
+                    "Khách hàng " + user.getUsername() + " đã mua vé phim '" + movieTitle + "' (Ghế: " + seatsString + ")" + pointMsg,
                     "BOOKING"
             );
         } catch (Exception e) {
-            System.err.println("Gặp sự cố khi tạo thông báo: " + e.getMessage());
+            log.error("Gặp sự cố khi tạo thông báo đặt vé: ", e);
         }
 
-        // Gửi Mail
+        // 🚀 BƯỚC 4: TỰ ĐỘNG GỬI EMAIL KÈM MÃ QR
         try {
             if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                // 1. Gửi email
                 sendTicketEmailWithQR(user.getEmail(), savedTickets, showtime);
+
+                // 2. Thông báo gửi mail thành công lên Navbar hệ thống
+                notificationService.createNotification(
+                        "Đã gửi mã vé thành công ✉️",
+                        "Hệ thống đã gửi email chứa mã QR vé phim '" + movieTitle + "' đến địa chỉ: " + user.getEmail(),
+                        "EMAIL"
+                );
             }
         } catch (Exception e) {
-            System.err.println("Lỗi gửi mail: " + e.getMessage());
+            log.error("Gặp sự cố khi gửi email mã QR cho người dùng {}: ", user.getEmail(), e);
+            try {
+                notificationService.createNotification(
+                        "Gửi mã vé thất bại ⚠️",
+                        "Hệ thống gặp sự cố khi gửi email vé phim đến " + user.getEmail() + ". Lỗi: " + e.getMessage(),
+                        "ERROR"
+                );
+            } catch (Exception ex) {
+                log.error("Không thể tạo thông báo lỗi hệ thống: ", ex);
+            }
         }
 
         return savedTickets;
@@ -160,7 +187,7 @@ public class BookingService {
 
         for (int i = 0; i < tickets.size(); i++) {
             Ticket ticket = tickets.get(i);
-            String seatDisplay = ticket.getSeat() != null ? ticket.getSeat().getSeatNumber() : ticket.getSeat().getSeatId();
+            String seatDisplay = (ticket.getSeat() != null) ? ticket.getSeat().getSeatNumber() : "Không rõ";
 
             ticketListHtml.append("<li style='margin-bottom: 8px;'>")
                     .append("🎫 <strong>Mã Vé:</strong> <span style='color: #ffcc00; font-weight: bold;'>").append(ticket.getTicketId()).append("</span>")
@@ -175,7 +202,7 @@ public class BookingService {
             grandTotal += ticket.getTotalPrice();
         }
 
-        byte[] qrCodeImage = generateQRCodeImage(qrContentText.toString(), 250, 250);
+        byte[] qrCodeImage = generateQRCodeImage(qrContentText.toString(), QR_WIDTH, QR_HEIGHT);
 
         String htmlBody = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>"
                 + "  <h2 style='color: #28a745; text-align: center;'>🎉 ĐẶT VÉ THÀNH CÔNG! 🎉</h2>"
@@ -212,18 +239,17 @@ public class BookingService {
         }
     }
 
-    // 🚀 ĐÃ SỬA: Hàm tính giá ghế đã được làm lại cho đồng bộ 100% với Frontend (React)
-    private double calculateSeatPrice(Seat seat) {
-        if (seat == null || seat.getSeatType() == null) return 30000;
-
-        switch (seat.getSeatType().trim().toUpperCase()) {
-            case "VIP":
-                return 50000;
-            case "DOUBLE":
-            case "DOI":
-                return 100000;
-            default:
-                return 30000;
+    // 🚀 ĐÃ SỬA: Hàm tính toán giá vé động chính xác theo tỷ lệ phần trăm và cấu hình giá gốc từ suất chiếu
+    private double calculateSeatPrice(Seat seat, double baseTicketPrice) {
+        if (seat == null || seat.getSeatType() == null) {
+            return baseTicketPrice; // Ghế thường = 100% giá gốc
         }
+
+        // Sử dụng cú pháp Enhanced Switch (Java 14+) siêu gọn, tránh trùng lặp
+        return switch (seat.getSeatType().trim().toUpperCase()) {
+            case "VIP" -> baseTicketPrice * 1.2;          // Ghế VIP = +20% (Nhân 1.2)
+            case "DOI", "DOUBLE" -> baseTicketPrice * 2.0; // Ghế đôi = Gấp đôi (Nhân 2.0)
+            default -> baseTicketPrice;                    // Các trường hợp mặc định còn lại
+        };
     }
 }

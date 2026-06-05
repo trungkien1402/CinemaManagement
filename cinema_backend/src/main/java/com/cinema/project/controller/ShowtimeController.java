@@ -87,4 +87,20 @@ public class ShowtimeController {
                     .body("Lỗi hệ thống khi tải báo cáo thống kê: " + e.getMessage());
         }
     }
+    // ==========================================
+    // 6. CLIENT LẤY CHI TIẾT 1 SUẤT CHIẾU THEO ID (SỬA LỖI 404 FRONTEND)
+    // ==========================================
+    @GetMapping("/showtimes/{showtimeId}")
+    public ResponseEntity<?> getShowtimeById(@PathVariable String showtimeId) {
+        try {
+            Showtime showtime = showtimeService.findById(showtimeId); // Hãy chắc chắn ShowtimeService của bạn có hàm findById hoặc tương đương
+            if (showtime == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy suất chiếu có ID: " + showtimeId);
+            }
+            return ResponseEntity.ok(showtime);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi tải chi tiết suất chiếu: " + e.getMessage());
+        }
+    }
 }

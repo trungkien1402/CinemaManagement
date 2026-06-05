@@ -12,7 +12,7 @@
     "seat": {
       "status": { "loading": "Loading seat map..." },
       "screen": "MAIN SCREEN",
-      "legend": { "standard": "Standard (30K)", "vip": "VIP (50K)", "double": "Double Seat (100K)", "selecting": "Selecting", "sold": "Sold" },
+      "legend": { "standard": "Standard", "vip": "VIP", "double": "Double Seat", "selecting": "Selecting", "sold": "Sold" },
       "info": { "showtimeId": "Showtime ID:", "selectedSeats": "Selected Seats:", "none": "None", "seatCount": "Seat Count:", "totalAmount": "Total Amount:" },
       "buttons": { "pay": "PAY WITH VNPAY", "processing": "REDIRECTING TO PAYMENT..." },
       "voucher": { "title": "Promotions & Discounts", "placeholder": "Enter your promo code...", "buttons": { "apply": "Apply" } }

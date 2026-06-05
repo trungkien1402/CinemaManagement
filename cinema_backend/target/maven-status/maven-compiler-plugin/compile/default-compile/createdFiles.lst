@@ -12,6 +12,7 @@ com\cinema\project\payload\request\LoginRequest.class
 com\cinema\project\controller\AdminMovieController.class
 com\cinema\project\controller\ShowtimeController.class
 com\cinema\project\repositories\UserRepository.class
+com\cinema\project\payload\response\JwtResponse.class
 com\cinema\project\security\services\UserDetailsServiceImpl.class
 com\cinema\project\service\RoomService.class
 com\cinema\project\model\Review.class
@@ -19,6 +20,7 @@ com\cinema\project\controller\TheaterController.class
 com\cinema\project\model\Report.class
 com\cinema\project\model\Payment.class
 com\cinema\project\service\VoucherService.class
+com\cinema\project\service\ReportService.class
 com\cinema\project\service\MovieService.class
 com\cinema\project\repositories\TheaterRepository.class
 com\cinema\project\model\Showtime.class
