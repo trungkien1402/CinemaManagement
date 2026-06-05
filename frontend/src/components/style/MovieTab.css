@@ -1,24 +1,26 @@
 /* ==========================================================================
-   Movie Tab Stylesheet (Prefix: mvtab-)
+   Movie Tab Stylesheet (Prefix: mvtab-) - CINEMATIC DARK RED & BLACK
    ========================================================================== */
 
 .mvtab-container {
     padding: 30px;
-    background-color: #0d0d0c;
+    background-color: #050505; /* Đồng bộ nền xám đen bóng đêm siêu sâu */
     min-height: 100vh;
     color: #e5e5e5;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
     box-sizing: border-box;
 }
 
 .mvtab-main-title {
     font-size: 24px;
-    font-weight: 700;
-    color: #ffffff;
+    font-weight: 800;
+    color: #e50914; /* Đổi hẳn sang Đỏ thương hiệu */
     margin-bottom: 24px;
     letter-spacing: 0.5px;
     position: relative;
     padding-left: 15px;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(229, 9, 20, 0.2);
 }
 
 .mvtab-main-title::before {
@@ -28,7 +30,7 @@
     top: 20%;
     height: 60%;
     width: 4px;
-    background-color: #26dc78;
+    background-color: #e50914; /* Vạch định vị đổi sang màu Đỏ */
     border-radius: 2px;
 }
 
@@ -39,19 +41,19 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
-    background-color: #141416;
-    border: 1px solid #27272a;
+    background-color: #0a0a0a; /* Đen carbon đồng bộ */
+    border: 1px solid #1f1f1f;
     padding: 24px;
     border-radius: 16px;
     margin-bottom: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
 }
 
 .mvtab-interactive-grid input,
 .mvtab-interactive-grid select,
 .mvtab-interactive-grid textarea {
-    background-color: #1c1c1e;
-    border: 1px solid #2d2d30;
+    background-color: #171717;
+    border: 1px solid #262626;
     border-radius: 8px;
     padding: 12px 16px;
     color: #ffffff;
@@ -63,9 +65,9 @@
 .mvtab-interactive-grid input:focus,
 .mvtab-interactive-grid select:focus,
 .mvtab-interactive-grid textarea:focus {
-    border-color: #26dc78;
-    background-color: #222224;
-    box-shadow: 0 0 0 2px rgba(38, 220, 120, 0.15);
+    border-color: #e50914; /* Focus đổi sang viền đỏ */
+    background-color: #1f1f1f;
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.15);
 }
 
 /* Các ô trải rộng toàn bộ hàng */
@@ -75,11 +77,11 @@
     resize: vertical;
 }
 
-/* Nút Submit Form */
+/* Nút Submit Form (form-submit-btn-main) */
 .mvtab-submit-btn {
     grid-column: 1 / -1;
-    background-color: #26dc78;
-    color: #0d0d0c;
+    background-color: #4de137; /* Đổi nút sang Đỏ Cinema */
+    color: #ffffff; /* Chữ trắng cho nổi bật trên nền đỏ */
     font-weight: 700;
     border: none;
     padding: 14px;
@@ -87,11 +89,25 @@
     cursor: pointer;
     font-size: 15px;
     transition: all 0.2s ease;
+    
+    /* Thuộc tính flex giúp căn chỉnh icon add/save thẳng hàng với chữ */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .mvtab-submit-btn:hover {
-    background-color: #1a9664;
+    background-color: #13cfd2; /* Đỏ sậm hơn khi hover */
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(6, 142, 192, 0.607);
+}
+
+/* Đảm bảo kích thước icon bên trong nút submit chuẩn chỉnh */
+.mvtab-submit-btn .nav-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
 }
 
 /* ==========================================================================
@@ -99,10 +115,11 @@
    ========================================================================== */
 .mvtab-table-responsive {
     width: 100%;
-    background-color: #141416;
-    border: 1px solid #27272a;
+    background-color: #0a0a0a;
+    border: 1px solid #1f1f1f;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
 }
 
 .mvtab-data-table {
@@ -113,19 +130,19 @@
 }
 
 .mvtab-data-table th {
-    background-color: #18181b;
-    color: #a1a1aa;
+    background-color: #171717;
+    color: #a3a3a3;
     font-weight: 600;
     padding: 16px 20px;
-    border-bottom: 2px solid #27272a;
+    border-bottom: 2px solid #1f1f1f;
     text-transform: uppercase;
     font-size: 12px;
 }
 
 .mvtab-data-table td {
     padding: 16px 20px;
-    border-bottom: 1px solid #27272a;
-    color: #e4e4e7;
+    border-bottom: 1px solid #1f1f1f;
+    color: #e5e5e5;
     vertical-align: middle;
 }
 
@@ -134,13 +151,13 @@
 }
 
 .mvtab-data-table tbody tr:hover {
-    background-color: #1f1f23;
+    background-color: #171717;
 }
 
 /* Mã phim */
 .mvtab-id-code {
     font-family: monospace;
-    color: #a1a1aa;
+    color: #a3a3a3;
     font-size: 13px;
 }
 
@@ -150,12 +167,13 @@
     height: 68px;
     object-fit: cover;
     border-radius: 6px;
-    border: 1px solid #27272a;
-    background-color: #1c1c1e;
+    border: 1px solid #262626;
+    background-color: #171717;
 }
 
 .mvtab-movie-title {
     max-width: 200px;
+    font-weight: 600;
 }
 
 /* Badges phân loại */
@@ -169,9 +187,9 @@
 }
 
 .mvtab-badge-age {
-    background-color: rgba(235, 94, 40, 0.1);
-    color: #eb5e28;
-    border: 1px solid rgba(235, 94, 40, 0.2);
+    background-color: rgba(229, 9, 20, 0.1); /* Đổi sang tông đỏ nhẹ phù hợp với tuổi */
+    color: #ef4444;
+    border: 1px solid rgba(229, 9, 20, 0.2);
     padding: 2px 6px;
     border-radius: 4px;
     font-weight: 700;
@@ -204,14 +222,26 @@
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 
-.mvtab-action-btn.edit { background-color: #27272a; color: #e4e4e7; }
-.mvtab-action-btn.edit:hover { background-color: #3f3f46; }
+.mvtab-action-btn.edit { 
+    background-color: #262626; 
+    color: #e5e5e5; 
+}
+.mvtab-action-btn.edit:hover { 
+    background-color: #404040; 
+    color: #ffffff;
+}
 
-.mvtab-action-btn.delete { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
-.mvtab-action-btn.delete:hover { background-color: #ef4444; color: #ffffff; }
+.mvtab-action-btn.delete { 
+    background-color: rgba(229, 9, 20, 0.1); 
+    color: #ef4444; 
+}
+.mvtab-action-btn.delete:hover { 
+    background-color: #e50914; 
+    color: #ffffff; 
+}
 
 /* ==========================================================================
    RESPONSIVE DESIGN (Tự động chuyển từ bảng sang thẻ trên mobile)
@@ -229,8 +259,8 @@
 
     .mvtab-data-table tbody tr {
         display: block;
-        background-color: #141416;
-        border: 1px solid #27272a;
+        background-color: #0a0a0a;
+        border: 1px solid #1f1f1f;
         border-radius: 12px;
         margin-bottom: 16px;
         padding: 12px 16px;
@@ -241,7 +271,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 10px 0;
-        border-bottom: 1px dashed #27272a;
+        border-bottom: 1px dashed #1f1f1f;
         text-align: right;
     }
 
@@ -250,7 +280,7 @@
     /* Tạo nhãn tiêu đề động ở bên trái */
     .mvtab-data-table td::before {
         font-weight: 600;
-        color: #a1a1aa;
+        color: #a3a3a3;
         text-transform: uppercase;
         font-size: 11px;
     }

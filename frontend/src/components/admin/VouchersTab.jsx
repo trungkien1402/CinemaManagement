@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import '../style/VouchersTab.css';
-
+//import ICon
+import giftIcon from '../../assets/gift-card.png';
 const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, deleteVoucherObj }) => {
     const { t } = useTranslation();
     
@@ -111,9 +112,10 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
                 </div>
 
                 <div className="vctab-form-item vctab-btn-align-bottom">
-                    <button type="submit" className="vctab-submit-btn form-submit-btn-main">
-                        🎁 {t('admin.adminDashboard.vouchersTab.form.buttons.submit') || "Phát Hành Mã Quà Tặng"}
-                    </button>
+                   <button type="submit" className="vctab-submit-btn form-submit-btn-main">
+    <img src={giftIcon} alt="Gift" className="nav-icon" /> 
+    {t('admin.adminDashboard.vouchersTab.form.buttons.submit') || "Phát Hành Mã Quà Tặng"}
+</button>
                 </div>
             </form>
 

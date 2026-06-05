@@ -1,24 +1,26 @@
 /* ==========================================================================
-   Theaters & Seats Design System (Prefix: thtab-)
+   Theaters & Seats Design System (Prefix: thtab-) - CINEMATIC DARK RED & BLACK
    ========================================================================== */
 
 .thtab-container {
     padding: 30px;
-    background-color: #0d0d0c;
+    background-color: #050505; /* Nền xám đen bóng đêm siêu sâu đồng bộ */
     min-height: 100vh;
     color: #e5e5e5;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
     box-sizing: border-box;
 }
 
 .thtab-main-title {
     font-size: 24px;
-    font-weight: 700;
-    color: #ffffff;
+    font-weight: 800;
+    color: #e50914; /* Màu đỏ thương hiệu gắt */
     margin-bottom: 24px;
     letter-spacing: 0.5px;
     position: relative;
     padding-left: 15px;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(229, 9, 20, 0.2);
 }
 
 .thtab-main-title::before {
@@ -28,7 +30,7 @@
     top: 20%;
     height: 60%;
     width: 4px;
-    background-color: #26dc78;
+    background-color: #e50914; /* Vạch định vị màu đỏ */
     border-radius: 2px;
 }
 
@@ -40,17 +42,25 @@
     font-size: 14px;
     font-weight: 500;
 }
-.thtab-alert.success { background-color: rgba(38, 220, 120, 0.15); color: #26dc78; border: 1px solid rgba(38, 220, 120, 0.2); }
-.thtab-alert.error { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+.thtab-alert.success { 
+    background-color: rgba(38, 220, 120, 0.1); /* Giữ sắc xanh dịu cho thông báo thành công */
+    color: #26dc78; 
+    border: 1px solid rgba(38, 220, 120, 0.2); 
+}
+.thtab-alert.error { 
+    background-color: rgba(239, 68, 68, 0.1); 
+    color: #ef4444; 
+    border: 1px solid rgba(239, 68, 68, 0.2); 
+}
 
 /* Cấu trúc Khối Thẻ (Card Box) */
 .thtab-card {
-    background-color: #141416;
-    border: 1px solid #27272a;
+    background-color: #0a0a0a; /* Đen carbon */
+    border: 1px solid #1f1f1f;
     padding: 24px;
     border-radius: 16px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
 }
 
 .thtab-card-title {
@@ -59,10 +69,24 @@
     letter-spacing: 1px;
     margin-top: 0;
     margin-bottom: 20px;
+    text-transform: uppercase;
+    
+    /* Hỗ trợ chứa icon hình ảnh thẳng hàng */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
 }
-.thtab-card-title.title-green { color: #26dc78; }
+.thtab-card-title.title-green { color: #ffffff; } /* Chuyển tiêu đề thêm mới sang màu trắng cho sang trọng */
 .thtab-card-title.title-red { color: #ef4444; }
 .thtab-card-title.title-blue { color: #38bdf8; }
+
+/* Đảm bảo kích thước icon trong tiêu đề chuẩn chỉnh */
+.thtab-card-title .nav-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
 
 /* Lưới Form phân bố linh hoạt */
 .thtab-form-grid {
@@ -79,16 +103,28 @@
 
 .thtab-form-item label {
     font-size: 13px;
-    color: #a1a1aa;
+    color: #a3a3a3;
     font-weight: 500;
+    
+    /* Flexbox hỗ trợ nhãn chứa icon */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.thtab-form-item label .nav-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .thtab-form-grid input,
 .thtab-form-grid select,
 .thtab-target-bar select,
 .thtab-filter-item select {
-    background-color: #1c1c1e;
-    border: 1px solid #2d2d30;
+    background-color: #171717;
+    border: 1px solid #262626;
     border-radius: 8px;
     padding: 12px 14px;
     color: #ffffff;
@@ -98,11 +134,15 @@
 }
 
 .thtab-form-grid input:focus,
-.thtab-form-grid select:focus {
-    border-color: #26dc78;
+.thtab-form-grid select:focus,
+.thtab-target-bar select:focus,
+.thtab-filter-item select:focus {
+    border-color: #e50914; /* Focus đổi sang viền đỏ rực */
+    background-color: #1f1f1f;
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.15);
 }
 
-/* Đẩy nút bấm sát đáy hàng ngang */
+/* Căn nút bấm khớp hàng ngang */
 .thtab-btn-align-bottom {
     justify-content: flex-end;
 }
@@ -117,11 +157,32 @@
     cursor: pointer;
     transition: all 0.2s ease;
 }
-.thtab-btn.submit.green { background-color: #26dc78; color: #0d0d0c; }
-.thtab-btn.submit.green:hover { background-color: #1a9664; transform: translateY(-1px); }
-.thtab-btn.submit.red { background-color: #ef4444; color: #ffffff; }
-.thtab-btn.submit.red:hover { background-color: #dc2626; transform: translateY(-1px); }
-.thtab-btn.submit:disabled { background-color: #27272a; color: #71717a; cursor: not-allowed; }
+.thtab-btn.submit.green { 
+    background-color: #e50914; /* Chuyển nút màu xanh cũ thành Đỏ rực */
+    color: #ffffff; 
+}
+.thtab-btn.submit.green:hover { 
+    background-color: #b91c1c; 
+    transform: translateY(-1px); 
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+}
+.thtab-btn.submit.red { 
+    background-color: rgba(239, 68, 68, 0.1); 
+    color: #ef4444; 
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+.thtab-btn.submit.red:hover { 
+    background-color: #ef4444; 
+    color: #ffffff; 
+    transform: translateY(-1px); 
+}
+.thtab-btn.submit:disabled { 
+    background-color: #262626; 
+    color: #737373; 
+    cursor: not-allowed; 
+    transform: none !important;
+    box-shadow: none !important;
+}
 
 /* Thanh chọn mục tiêu rạp (Block 2) */
 .thtab-target-bar {
@@ -129,15 +190,27 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
-    background-color: #1c1c1e;
+    background-color: #171717;
     padding: 12px 16px;
     border-radius: 8px;
-    border: 1px dashed #3f3f46;
+    border: 1px dashed #404040;
 }
-.thtab-target-bar label { font-size: 14px; font-weight: 600; color: #f4f4f5; }
+.thtab-target-bar label { 
+    font-size: 14px; 
+    font-weight: 600; 
+    color: #f5f5f5; 
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.thtab-target-bar label .nav-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
 .thtab-target-bar select { flex: 1; }
 
-/* Dòng bộ lọc hiển thị tuyền tính (Block 3) */
+/* Dòng bộ lọc hiển thị tuyến tính (Block 3) */
 .thtab-filter-row {
     display: flex;
     gap: 20px;
@@ -148,21 +221,21 @@
     gap: 8px;
     flex: 1;
 }
-.thtab-filter-item label { font-size: 13px; color: #a1a1aa; font-weight: 500; }
-.thtab-filter-item select.disabled { background-color: #141416; border-color: #27272a; color: #52525b; cursor: not-allowed; }
+.thtab-filter-item label { font-size: 13px; color: #a3a3a3; font-weight: 500; }
+.thtab-filter-item select.disabled { background-color: #0a0a0a; border-color: #1f1f1f; color: #52525b; cursor: not-allowed; }
 
 /* ==========================================================================
    Cinema Seats Matrix Layout (Mô phỏng phòng chiếu thực tế)
    ========================================================================== */
 .thtab-matrix-card {
-    background-color: #141416;
-    border: 1px solid #27272a;
+    background-color: #0a0a0a;
+    border: 1px solid #1f1f1f;
     border-radius: 16px;
     padding: 40px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
     overflow-x: auto; /* Cuộn ngang nếu ma trận ghế quá lớn trên Mobile */
 }
 
@@ -187,7 +260,7 @@
 
 .thtab-note-success {
     font-size: 13px;
-    color: #a1a1aa;
+    color: #a3a3a3;
     margin-bottom: 32px;
     text-align: center;
 }
@@ -218,15 +291,15 @@
 }
 
 /* Phân định màu sắc loại ghế rạp */
-.thtab-seat-btn.normal { background-color: #3f3f46; border: 1px solid #52525b; }
+.thtab-seat-btn.normal { background-color: #404040; border: 1px solid #525252; }
 .thtab-seat-btn.vip { background-color: #eb5e28; border: 1px solid #ff7a45; }
-.thtab-seat-btn.double { background-color: #ef4444; border: 1px solid #f87171; }
+.thtab-seat-btn.double { background-color: #e50914; border: 1px solid #ef4444; } /* Ghế đôi nâng sang tone đỏ neon đậm rạp phim */
 
 /* Bảng chú giải màu sắc các loại ghế */
 .thtab-legend {
     display: flex;
     gap: 24px;
-    border-top: 1px dashed #27272a;
+    border-top: 1px dashed #1f1f1f;
     padding-top: 20px;
     width: 100%;
     justify-content: center;
@@ -237,7 +310,7 @@
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #e4e4e7;
+    color: #e5e5e5;
 }
 
 .thtab-legend-box {
@@ -245,9 +318,9 @@
     height: 16px;
     border-radius: 4px;
 }
-.thtab-legend-box.normal { background-color: #3f3f46; }
+.thtab-legend-box.normal { background-color: #404040; }
 .thtab-legend-box.vip { background-color: #eb5e28; }
-.thtab-legend-box.double { background-color: #ef4444; }
+.thtab-legend-box.double { background-color: #e50914; }
 
 /* ==========================================================================
    RESPONSIVE DESIGN

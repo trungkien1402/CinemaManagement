@@ -62,7 +62,7 @@
 .nav-menu-list button {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 12px; /* Khoảng cách chuẩn giữa icon và chữ */
     width: 100%;
     padding: 12px 16px;
     background: transparent;
@@ -87,6 +87,14 @@
     background: linear-gradient(135deg, #e50914, #991b1b) !important; /* Gradient Đỏ rực sang Đỏ đô */
     color: #ffffff !important;
     box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+}
+
+/* Cấu hình hiển thị bình thường cho các Icon PNG mới */
+.nav-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain; /* Đảm bảo hình ảnh icon không bị móp méo */
+    flex-shrink: 0; /* Không để icon bị thu nhỏ khi chữ quá dài */
 }
 
 .nav-divider {
@@ -242,7 +250,7 @@
 }
 
 /* LOADING OVERLAY */
-.loading-spinner-overlay {
+/* .loading-spinner-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(0, 0, 0, 0.95);
@@ -253,4 +261,4 @@
     font-weight: bold;
     font-size: 16px;
     z-index: 999;
-}
+} */

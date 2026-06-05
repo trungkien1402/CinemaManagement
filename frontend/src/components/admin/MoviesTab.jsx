@@ -1,6 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next'; 
 import '../style/MovieTab.css';
+//import Icon
+import addIcon from '../../assets/add.png';
+import saveIcon from '../../assets/save.png';
 
 const MoviesTab = ({ movieForm, setMovieForm, saveOrUpdateMovie, editingMovieId, movies, triggerEditMovie, deleteMovieObj }) => {
     const { t } = useTranslation(); 
@@ -84,11 +87,18 @@ const MoviesTab = ({ movieForm, setMovieForm, saveOrUpdateMovie, editingMovieId,
                 />
                 
                 <button type="submit" className="mvtab-submit-btn form-submit-btn-main">
-                    {editingMovieId 
-                        ? `💾 ${t('admin.adminDashboard.moviesTab.form.buttons.update') || "Cập Nhật Phim"}` 
-                        : `➕ ${t('admin.adminDashboard.moviesTab.form.buttons.create') || "Thêm Phim Mới"}`
-                    }
-                </button>
+    {editingMovieId ? (
+        <>
+            <img src={saveIcon} alt="Save" className="nav-icon" />
+            {t('admin.adminDashboard.moviesTab.form.buttons.update') || "Cập Nhật Phim"}
+        </>
+    ) : (
+        <>
+            <img src={addIcon} alt="Add" className="nav-icon" />
+            {t('admin.adminDashboard.moviesTab.form.buttons.create') || "Thêm Phim Mới"}
+        </>
+    )}
+</button>
             </form>
             
             {/* Bảng danh sách phim */}

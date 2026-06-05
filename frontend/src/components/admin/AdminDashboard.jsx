@@ -13,6 +13,15 @@ import BookingsTab from './BookingsTab';
 import VouchersTab from './VouchersTab';
 import QrcodeCheckinTab from './QrcodeCheckinTab';
 import { useTranslation } from 'react-i18next'; 
+//import Icon
+import doanhthuIcon from '../../assets/doanhthu.png';
+import filmIcon from '../../assets/film.png';
+import calendarIcon from '../../assets/calendar.png';
+import settingIcon from '../../assets/setting.png';
+import billIcon from '../../assets/bill.png';
+import voucherIcon from '../../assets/voucher.png';
+import QRIcon from '../../assets/qr-scan.png';
+import homepageIcon from '../../assets/homepage.png';
 
 const AdminDashboard = () => {
     const { t, i18n } = useTranslation(); 
@@ -266,16 +275,72 @@ const AdminDashboard = () => {
                 </div>
 
                 <nav className="nav-menu-list">
-                    <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => setActiveTab('analytics')}>📊 {t('admin.adminDashboard.tabs.analytics')}</button>
-                    <button className={activeTab === 'movies' ? 'active' : ''} onClick={() => setActiveTab('movies')}>🎬 {t('admin.adminDashboard.tabs.movies')}</button>
-                    <button className={activeTab === 'theaters' ? 'active' : ''} onClick={() => setActiveTab('theaters')}>🏢 {t('admin.adminDashboard.tabs.theaters')}</button>
-                    <button className={activeTab === 'showtimes' ? 'active' : ''} onClick={() => setActiveTab('showtimes')}>📅 {t('admin.adminDashboard.tabs.showtimes')}</button>
-                    <button className={activeTab === 'bookings' ? 'active' : ''} onClick={() => setActiveTab('bookings')}>🎟️ {t('admin.adminDashboard.tabs.bookings')}</button>
-                    <button className={activeTab === 'vouchers' ? 'active' : ''} onClick={() => setActiveTab('vouchers')}>🎟️ {t('admin.adminDashboard.tabs.vouchers')}</button>
-                    <button className={activeTab === 'qrcode-checkin' ? 'active' : ''} onClick={() => setActiveTab('qrcode-checkin')}>🔍 {t('admin.adminDashboard.tabs.qrcodeCheckin')}</button>
-                    <div className="nav-divider"></div>
-                    <button onClick={() => navigate('/')} className="exit-panel-btn"> {t('admin.adminDashboard.tabs.backToHome')}</button>
-                </nav>
+    <button 
+        className={activeTab === 'analytics' ? 'active' : ''} 
+        onClick={() => setActiveTab('analytics')}
+    >
+        <img src={doanhthuIcon} alt="Analytics" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.analytics')}
+    </button>
+    
+    <button 
+        className={activeTab === 'movies' ? 'active' : ''} 
+        onClick={() => setActiveTab('movies')}
+    >
+        <img src={filmIcon} alt="Movies" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.movies')}
+    </button>
+    
+    <button 
+        className={activeTab === 'theaters' ? 'active' : ''} 
+        onClick={() => setActiveTab('theaters')}
+    >
+        <img src={settingIcon} alt="Theaters" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.theaters')}
+    </button>
+    
+    <button 
+        className={activeTab === 'showtimes' ? 'active' : ''} 
+        onClick={() => setActiveTab('showtimes')}
+    >
+        <img src={calendarIcon} alt="Showtimes" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.showtimes')}
+    </button>
+    
+    <button 
+        className={activeTab === 'bookings' ? 'active' : ''} 
+        onClick={() => setActiveTab('bookings')}
+    >
+        <img src={billIcon} alt="Bookings" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.bookings')}
+    </button>
+    
+    <button 
+        className={activeTab === 'vouchers' ? 'active' : ''} 
+        onClick={() => setActiveTab('vouchers')}
+    >
+        <img src={voucherIcon} alt="Vouchers" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.vouchers')}
+    </button>
+    
+    <button 
+        className={activeTab === 'qrcode-checkin' ? 'active' : ''} 
+        onClick={() => setActiveTab('qrcode-checkin')}
+    >
+        <img src={QRIcon} alt="QR Checkin" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.qrcodeCheckin')}
+    </button>
+    
+    <div className="nav-divider"></div>
+    
+    <button 
+        onClick={() => navigate('/')} 
+        className="exit-panel-btn"
+    >
+        <img src={homepageIcon} alt="Home" className="nav-icon" /> 
+        {t('admin.adminDashboard.tabs.backToHome')}
+    </button>
+</nav>
             </aside>
             
             {/* KHU VỰC NỘI DUNG CHÍNH BÊN PHẢI */}

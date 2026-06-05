@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import '../style/TheatersTab.css';
-
+//import Icon
+import addIcon from '../../assets/add.png';
+import settingIcon from '../../assets/setting.png';
+import addressIcon from '../../assets/cinema address.png';
+import searchIcon from '../../assets/search.png';
 const TheatersTab = () => {
     const { t } = useTranslation();
 
@@ -194,7 +198,10 @@ const TheatersTab = () => {
 
             {/* BLOCK 1: THÊM CỤM RẠP CHIẾU MỚI */}
             <div className="thtab-card">
-                <h3 className="thtab-card-title title-green">➕ {t('admin.adminDashboard.theatersTab.addTheater.title') || "THÊM CỤM RẠP CHIẾU MỚI"}</h3>
+                <h3 className="thtab-card-title title-green">
+    <img src={addIcon} alt="Add" className="nav-icon" /> 
+    {t('admin.adminDashboard.theatersTab.addTheater.title') || "THÊM CỤM RẠP CHIẾU MỚI"}
+</h3>
                 <form onSubmit={handleAddTheater} className="thtab-form-grid">
                     <div className="thtab-form-item">
                         <label>{t('admin.adminDashboard.theatersTab.addTheater.labels.cinemaId') || "Mã Rạp (VD: T01):"}</label>
@@ -229,10 +236,16 @@ const TheatersTab = () => {
 
                 {/* CỘT TRÁI: KHỞI TẠO PHÒNG CHIẾU */}
                 <div className="form-settings-panel thtab-card">
-                    <h3 className="thtab-card-title title-red">⚙️ {t('admin.adminDashboard.theatersTab.leftPanel.formTitle') || "THÊM PHÒNG CHIẾU"}</h3>
+                   <h3 className="thtab-card-title title-red">
+    <img src={settingIcon} alt="Setting" className="nav-icon" /> 
+    {t('admin.adminDashboard.theatersTab.leftPanel.formTitle') || "THÊM PHÒNG CHIẾU"}
+</h3>
 
                     <div className="thtab-target-bar" style={{ marginBottom: '15px' }}>
-                        <label>📍 {t('admin.adminDashboard.theatersTab.leftPanel.title') || "Bước 1 - Chọn cụm rạp mục tiêu:"} </label>
+                       <label>
+    <img src={addressIcon} alt="Address" className="nav-icon" /> 
+    {t('admin.adminDashboard.theatersTab.leftPanel.title') || "Bước 1 - Chọn cụm rạp mục tiêu:"} 
+</label>
                         <select value={selectedTheaterId} onChange={(e) => setSelectedTheaterId(e.target.value)}>
                             <option value="">{t('admin.adminDashboard.theatersTab.leftPanel.selectTheaterPlaceholder') || "-- Click chọn rạp chiếu --"}</option>
                             {theaters.map(tItem => (
@@ -269,7 +282,10 @@ const TheatersTab = () => {
 
                 {/* CỘT PHẢI: TRÌNH QUẢN LÝ MA TRẬN GHẾ TRỰC QUAN */}
                 <div className="visualization-settings-panel thtab-card">
-                    <h3 className="thtab-card-title title-blue">🔍 {t('admin.adminDashboard.theatersTab.rightPanel.title') || "TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG"}</h3>
+                  <h3 className="thtab-card-title title-blue">
+    <img src={searchIcon} alt="Search" className="nav-icon" /> 
+    {t('admin.adminDashboard.theatersTab.rightPanel.title') || "TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG"}
+</h3>
 
                     <div className="thtab-filter-row" style={{ marginBottom: '15px' }}>
                         <label style={{ display: 'block', marginBottom: '5px' }}>{t('admin.adminDashboard.theatersTab.rightPanel.selectRoomPlaceholder') || "Chọn phòng xem sơ đồ:"}</label>
