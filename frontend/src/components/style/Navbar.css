@@ -1,10 +1,13 @@
 :root {
-  --primary-color: #ff2c1f; /* Màu đỏ thương hiệu Cinema */
-  --bg-dark: rgba(10, 10, 10, 0.98);
+  --primary-color: #ff2c1f;
+  --bg-dark: rgba(10, 10, 10, 0.95);
   --text-main: #ffffff;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ==========================================================================
+   STRUCTURE FRAMEWORK
+   ========================================================================== */
 .navbar-main {
   position: sticky;
   top: 0;
@@ -15,11 +18,11 @@
   align-items: center;
   z-index: 1000;
   transition: var(--transition);
-  padding: 0 4%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+  padding: 0 5%;
+  background: transparent;
+  box-sizing: border-box;
 }
 
-/* Hiệu ứng nền khi cuộn chuột xuống */
 .navbar-main.scrolled {
   background: var(--bg-dark);
   height: 65px;
@@ -39,25 +42,24 @@
   gap: 20px;
 }
 
-/* Logo thương hiệu bên trái */
+/* Logo */
 .nav-brand {
   font-size: 1.8rem;
   font-weight: 800;
   color: #fff;
   text-decoration: none;
-  letter-spacing: 1.5px;
-  flex-shrink: 0; 
+  letter-spacing: 1px;
+  flex-shrink: 0;
 }
 
 .nav-brand span {
   color: var(--primary-color);
 }
 
-/* 🛠️ MENU CHÍNH: Căn giữa theo chiều ngang */
+/* Menu links trên PC */
 .nav-menu {
   display: flex;
-  gap: 30px; 
-  justify-content: center; /* Đẩy các chữ Trang chủ, Lịch chiếu... vào giữa */
+  gap: 30px;
   margin: 0 auto;
 }
 
@@ -69,14 +71,14 @@
   position: relative;
   padding: 8px 0;
   transition: var(--transition);
-  display: inline-block;
+  white-space: nowrap;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
   color: #fff;
 }
 
-/* Hiệu ứng gạch chân khi hover menu */
 .nav-link::after {
   content: '';
   position: absolute;
@@ -88,19 +90,20 @@
   transition: var(--transition);
 }
 
-.nav-link:hover::after, .nav-link.active::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 100%;
 }
 
-/* 🛠️ KHU VỰC TÍNH NĂNG BÊN PHẢI: Giãn cách hợp lý, nép sát lề phải */
+/* Góc phải */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 22px !important; /* Khoảng cách lý tưởng giữa: Ô tìm kiếm - Chuông - Ngôn ngữ - Avatar */
-  justify-content: flex-end;
+  gap: 15px;
+  flex-shrink: 0;
 }
 
-/* Nút đăng nhập */
+/* Login Button */
 .login-button {
   background: var(--primary-color);
   color: white;
@@ -123,7 +126,7 @@
   filter: brightness(1.1);
 }
 
-/* Khung bọc thông tin tài khoản */
+/* Profile Toggle */
 .user-profile {
   position: relative;
   flex-shrink: 0;
@@ -142,9 +145,9 @@
   transition: var(--transition);
 }
 
-.profile-toggle:hover, .profile-toggle.active {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.2);
+.profile-toggle:hover,
+.profile-toggle.active {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .avatar-wrapper {
@@ -188,15 +191,15 @@
   width: 230px;
   background: #161616;
   border-radius: 12px;
-  padding: 8px 0;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  border: 1px solid rgba(255,255,255,0.08);
-  animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 10px 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .dropdown-header {
@@ -218,8 +221,8 @@
 
 .dropdown-divider {
   height: 1px;
-  background: rgba(255,255,255,0.08);
-  margin: 6px 0;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 8px 0;
 }
 
 .dropdown-item {
@@ -245,7 +248,7 @@
 }
 
 .dropdown-item:hover {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   color: #fff;
 }
 
@@ -254,53 +257,187 @@
   font-weight: 500;
 }
 
-/* Nút Trang Quản Trị đặc biệt cho ADMIN */
+/* Admin Link */
 .dropdown-menu .dropdown-item.admin-link {
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.03) 0%, rgba(255, 44, 31, 0.03) 100%);
-  border-left: 3px solid #ffc107; 
-  padding-left: 17px; 
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 44, 31, 0.05) 100%);
+  border-left: 3px solid #ffc107;
+  padding-left: 17px;
+  transition: var(--transition);
 }
 
 .dropdown-menu .dropdown-item.admin-link:hover {
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.12) 0%, rgba(255, 44, 31, 0.12) 100%);
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 44, 31, 0.15) 100%);
   color: #fff !important;
 }
 
 .dropdown-menu .dropdown-item.admin-link:hover i {
-  animation: rotateGear 2s linear infinite;
-  filter: drop-shadow(0 0 4px #ffc107);
+  animation: rotateGear 1.5s linear infinite;
+  filter: drop-shadow(0 0 5px #ffc107);
 }
 
 @keyframes rotateGear {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
 }
 
-/* 📱 RESPONSIVE - ĐÁP ỨNG CÁC LOẠI MÀN HÌNH */
-@media (max-width: 1200px) {
-  /* Màn hình laptop vừa: thu nhỏ bớt chiều rộng ô tìm kiếm để nhường chỗ */
-  .navbar-search-container {
-    width: 200px !important; 
-    margin: 0 5px !important;
-  }
-  .nav-menu {
-    gap: 20px;
-  }
+/* Ẩn Hamburger trên PC */
+.menu-toggle {
+  display: none;
 }
 
+/* ==========================================================================
+   SIDEBAR OVERLAY
+   ─ KHÔNG dùng backdrop-filter ở đây vì blur sẽ ăn lên cả sidebar
+     dù sidebar có z-index cao hơn. Thay vào đó dùng class
+     'sidebar-open' trên <body> để blur phần nội dung trang riêng.
+   ========================================================================== */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100% - 280px); /* Chỉ phủ phần NGOÀI sidebar (bên trái) */
+  height: 100vh;
+  background: rgba(0, 0, 0, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  z-index: 9998;
+}
+
+.sidebar-overlay.open {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   BLUR PHẦN NỘI DUNG TRANG KHI SIDEBAR MỞ
+   Thêm class 'sidebar-open' vào <body> bằng JS khi mở sidebar.
+   Cách này blur đúng nội dung, không đụng tới sidebar.
+   ========================================================================== */
+body.sidebar-open .page-content,
+body.sidebar-open main,
+body.sidebar-open .hero-section,
+body.sidebar-open .content-wrapper {
+  filter: blur(3px);
+  transition: filter 0.3s ease;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE — MOBILE / TABLET
+   ========================================================================== */
 @media (max-width: 992px) {
-  /* Màn hình tablet: Ẩn bớt chữ tên user, chỉ giữ lại avatar tròn cho đỡ chật */
-  .username-text, .profile-toggle .arrow-icon {
-    display: none;
-  }
-  .profile-toggle {
-    padding: 5px;
+  .nav-menu {
+    gap: 15px;
   }
 }
 
 @media (max-width: 768px) {
-  /* Màn hình điện thoại di động: Ẩn menu chữ */
+  .navbar-main {
+    padding: 0 20px;
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .nav-right {
+    margin-left: auto;
+    margin-right: 15px;
+  }
+
+  .username-text {
+    display: none;
+  }
+
+  /* Sidebar trượt từ phải */
   .nav-menu {
-    display: none; 
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    height: 100vh;
+    background: #141416;
+    flex-direction: column;
+    padding: 90px 24px 30px 24px;
+    gap: 12px;
+    margin: 0;
+    box-sizing: border-box;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    pointer-events: auto;
+    /* KHÔNG có backdrop-filter ở đây */
+  }
+
+  .nav-menu.open {
+    transform: translateX(-280px);
+  }
+
+  .nav-link {
+    font-size: 1.05rem;
+    padding: 14px 16px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.75);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+
+  .nav-link::after {
+    display: none !important;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding-left: 20px;
+  }
+
+  /* Hamburger Button */
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10000;
+    flex-shrink: 0;
+  }
+
+  .menu-toggle span {
+    width: 100%;
+    height: 2.5px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    transition: var(--transition);
+  }
+
+  /* Hiệu ứng X khi mở */
+  .menu-toggle.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .menu-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Overlay chỉ phủ bên trái, không chạm sidebar */
+  .sidebar-overlay {
+    width: calc(100% - 280px);
   }
 }

@@ -1,9 +1,16 @@
-/* Toàn bộ trang tin tức */
+/* ==========================================================================
+   TOÀN BỘ TRANG TIN TỨC (Đã sửa lỗi lệch dòng do Navbar đè)
+   ========================================================================== */
 .news-page {
-  background-color: var(--bg-page);
-  color: var(--text-main);
+  background-color: var(--bg-page, #0a0a0a); /* Fallback nếu chưa định nghĩa biến */
+  color: var(--text-main, #ffffff);
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* 💡 SỬA LỖI LỆCH: Thêm margin-top bằng đúng chiều cao của Navbar (70px) 
+     để đẩy toàn bộ nội dung trang xuống dưới, không bị Navbar đè lên */
+  margin-top: 0px; 
+  padding-top: 10px; 
 }
 
 /* ==========================================================================
@@ -11,13 +18,15 @@
    ========================================================================== */
 .news-hero {
   position: relative;
-  height: 300px;
+  height: 380px; /* Tăng nhẹ chiều cao tạo độ thoáng */
   background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1920') no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
+  /* Giảm khoảng cách phía trên của padding trong hero để cân bằng với thanh điều hướng */
+  padding-top: 20px; 
 }
 
 /* Lớp phủ mờ giúp chữ nổi bật */
@@ -27,7 +36,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(18, 18, 18, 1));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), #0a0a0a);
   z-index: 1;
 }
 
@@ -38,50 +47,55 @@
 }
 
 .hero-content h1 {
-  font-size: 2.5rem;
+  font-size: 3rem; 
   font-weight: 800;
   letter-spacing: 2px;
-  margin-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 16px;
   color: #fff;
   text-transform: uppercase;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .hero-content p {
-  font-size: 1.1rem;
-  color: var(--text-sub);
-  max-width: 600px;
+  font-size: 1.2rem;
+  color: var(--text-sub, #b3b3b3);
+  max-width: 650px;
   margin: 0 auto;
+  line-height: 1.5;
 }
 
 /* ==========================================================================
    2. LAYOUT GRID & CARDS
    ========================================================================== */
 .news-container {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px 60px 20px;
+  padding: 0 24px 80px 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+  gap: 35px;
 }
 
 .news-card {
-  background-color: var(--bg-card);
-  border-radius: 12px;
+  background-color: var(--bg-card, #16161a);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .news-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(255, 77, 77, 0.15); /* Hơi ứng đỏ nhẹ khi hover */
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(255, 44, 31, 0.15); /* Ửng đỏ thương hiệu */
+  border-color: rgba(255, 44, 31, 0.2);
 }
 
 .news-content {
-  padding: 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -94,17 +108,17 @@
 .news-description {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-sub);
+  color: var(--text-sub, #cccccc);
   margin-bottom: 20px;
 }
 
 /* Định dạng nếu trong description có thẻ chứa ảnh */
 .news-description img {
   width: 100%;
-  height: 200px;
+  height: 210px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  border-radius: 10px;
+  margin-bottom: 18px;
   display: block;
 }
 
@@ -112,15 +126,16 @@
 .news-description h2, 
 .news-description h3, 
 .news-description .title {
-  color: var(--text-main);
-  font-size: 1.25rem;
-  font-weight: 600;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   line-height: 1.4;
-  /* Giới hạn tiêu đề 2 dòng */
+  /* Giới hạn tiêu đề 2 dòng kèm dấu ... */
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -129,51 +144,116 @@
 .news-description p {
   display: -webkit-box;
   -webkit-line-clamp: 3; /* Hiện tối đa 3 dòng mô tả */
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin-bottom: 0;
+  color: #aaa;
 }
 
 /* ==========================================================================
    4. NÚT XEM CHI TIẾT
    ========================================================================== */
 .read-more {
-  color: var(--primary-color);
+  color: var(--primary-color, #ff2c1f);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   transition: color 0.2s ease, transform 0.2s ease;
-  align-self: flex-start; /* Nút nằm gọn bên trái */
+  align-self: flex-start;
+  margin-top: auto; /* Đẩy nút luôn nằm sát đáy card */
 }
 
 .read-more:hover {
-  color: var(--primary-hover);
-  transform: translateX(5px); /* Hiệu ứng dịch mũi tên sang phải nhẹ */
+  color: #ff5247;
+  transform: translateX(6px); 
 }
 
 /* ==========================================================================
-   5. LOADING STATE & RESPONSIVE
+   5. LOADING STATE
    ========================================================================== */
 .loading {
   text-align: center;
-  padding: 40px;
+  padding: 100px 40px;
   font-size: 1.2rem;
-  color: var(--text-sub);
+  color: var(--text-sub, #888);
   font-style: italic;
 }
 
-/* Responsive cho màn hình điện thoại nhỏ */
-@media (max-width: 480px) {
+/* ==========================================================================
+   6. RESPONSIVE MEDIA QUERIES (Cân bằng khoảng cách trên thiết bị nhỏ)
+   ========================================================================== */
+
+/* Màn hình Laptop nhỏ & Máy tính bảng lớn (Dưới 1024px) */
+@media (max-width: 1024px) {
   .news-hero {
-    height: 200px;
+    height: 300px;
+    margin-bottom: 35px;
   }
   .hero-content h1 {
-    font-size: 1.8rem;
+    font-size: 2.4rem;
+  }
+  .news-container {
+    gap: 25px;
+    padding: 0 20px 60px 20px;
+  }
+}
+
+/* Màn hình Máy tính bảng vừa và nhỏ (Dưới 768px) */
+@media (max-width: 768px) {
+  .news-page {
+    /* 💡 Trên mobile Navbar đổi chiều cao thành 60px */
+    padding-top: 0px; 
+  }
+  .news-hero {
+    height: 260px;
+    margin-bottom: 30px;
+  }
+  .hero-content h1 {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  .hero-content p {
+    font-size: 1rem;
+    max-width: 80%;
+  }
+  .news-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 cột trên tablet */
+    gap: 20px;
+    padding: 0 16px 40px 16px;
+  }
+}
+
+/* Màn hình Điện thoại di động (Dưới 576px) */
+@media (max-width: 576px) {
+  .news-hero {
+    height: 200px;
+    margin-bottom: 25px;
+  }
+  .hero-content h1 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  .hero-content p {
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .news-container {
     grid-template-columns: 1fr; /* 1 cột trên mobile */
     gap: 20px;
+    padding: 0 16px 40px 16px;
+  }
+  .news-content {
+    padding: 20px; 
+  }
+  .news-description img {
+    height: 190px; 
   }
 }
