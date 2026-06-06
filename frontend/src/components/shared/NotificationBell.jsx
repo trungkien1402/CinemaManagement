@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../style/NotificationBell.css'; 
+//import icon
+import bellIcon from '../../assets/bell.png';
+import movieIcon from '../../assets/film.png';
+import payIcon from '../../assets/checked.png';
+import bookingIcon from '../../assets/booking.png';
+import emailIcon from '../../assets/email.png';
 
 const NotificationBell = () => {
   const [notifications, setNotifications] = useState([]);
@@ -75,13 +81,23 @@ const NotificationBell = () => {
 
   // Hàm hiển thị Icon tương ứng với từng loại loại thông báo
   const getIcon = (type) => {
-    if (type === 'MOVIE') return '🎬';
-    if (type === 'PAYMENT') return '✅';
-    if (type === 'BOOKING') return '🎫';
-    if (type === 'EMAIL') return '✉️';   
-    if (type === 'ERROR') return '⚠️';   
-    return '🔔';
-  };
+    if (type === 'MOVIE') {
+        return <img src={movieIcon} alt="Movie" className="nav-icon" />;
+    }
+    if (type === 'PAYMENT') {
+        return <img src={payIcon} alt="Payment" className="nav-icon" />;
+    }
+    if (type === 'BOOKING') {
+        return <img src={bookingIcon} alt="Booking" className="nav-icon" />;
+    }
+    if (type === 'EMAIL') {
+        return <img src={emailIcon} alt="Email" className="nav-icon" />;
+    }   
+    if (type === 'ERROR') {
+        return <span className="nav-icon-emoji">⚠️</span>; // Giữ emoji hoặc thay thế nếu có asset sau này
+    }   
+    return <img src={bellIcon} alt="Notification" className="nav-icon" />;
+};
 
   const handleOpenBell = () => {
     const nextState = !isOpen;
@@ -97,12 +113,14 @@ const NotificationBell = () => {
   };
 
   return (
-    <div className="notification-bell-container" ref={bellRef}>
-      {/* Biểu tượng quả chuông trên Navbar */}
-      <div className="bell-icon" onClick={handleOpenBell}>
-        <span>🔔</span>
-        {unreadCount > 0 && <span className="bell-badge">{unreadCount}</span>}
-      </div>
+  <div className="notification-bell-container" ref={bellRef}>
+    {/* Biểu tượng quả chuông trên Navbar */}
+    <div className="bell-icon" onClick={handleOpenBell}>
+        <img src={bellIcon} alt="Notification Bell" />
+        {unreadCount > 0 && (
+            <span className="bell-badge">{unreadCount}</span>
+        )}
+    </div>
 
       {/* Khung danh sách thông báo thả xuống khi click vào chuông */}
       {isOpen && (

@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Notification Bell & Dropdown Stylesheet - CINEMATIC DARK RED & BLACK
+   ========================================================================= */
+
 .notification-bell-container {
   position: relative;
   cursor: pointer;
@@ -5,107 +9,177 @@
   margin-right: 20px;
 }
 
+/* Biểu tượng chuông thông báo chính */
 .bell-icon {
-  font-size: 22px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Khống chế kích thước ảnh chuông chính nếu bạn dùng ảnh */
+.bell-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* Chấm đỏ đếm số thông báo */
 .bell-badge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background-color: #ff4d4d;
+  background-color: #e50914; /* Đổi sang đỏ rạp phim gắt hơn */
   color: white;
   font-size: 11px;
   padding: 2px 6px;
   border-radius: 50%;
   font-weight: bold;
+  box-shadow: 0 0 8px rgba(229, 9, 20, 0.6);
 }
 
+/* Khung Dropdown xổ xuống */
 .notification-dropdown {
   position: absolute;
-  top: 35px;
+  top: 40px; /* Tăng khoảng cách một chút cho thoáng */
   right: 0;
-  width: 320px;
-  background-color: #1a1a1a;
-  border: 1px solid #333;
+  width: 340px; /* Nới rộng nhẹ để hiển thị nội dung thoải mái hơn */
+  background-color: #0a0a0a; /* Đen Carbon siêu tối đồng bộ */
+  border: 1px solid #1f1f1f; /* Đường viền mờ tối */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
   z-index: 1000;
-  color: #fff;
+  color: #ffffff;
 }
 
+/* Tiêu đề Dropdown */
 .dropdown-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  border-bottom: 1px solid #333;
+  padding: 12px 16px;
+  border-bottom: 1px solid #1f1f1f;
 }
 
 .dropdown-header h3 {
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 700;
   margin: 0;
+  color: #e5e5e5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .dropdown-header button {
   background: none;
   border: none;
-  color: #ff4d4d;
+  color: #ef4444; /* Đỏ neon nhẹ */
   cursor: pointer;
   font-size: 12px;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
+.dropdown-header button:hover {
+  color: #e50914; /* Hover chuyển sang đỏ đậm rực rỡ */
+}
+
+/* Thân Dropdown cuộn thông báo */
 .dropdown-body {
-  max-height: 350px;
+  max-height: 380px; /* Tăng nhẹ không gian chứa */
   overflow-y: auto;
 }
 
-.notification-item {
-  display: flex;
-  padding: 12px 15px;
-  border-bottom: 1px solid #262626;
-  transition: background 0.2s;
+/* Tùy chỉnh thanh cuộn cho đúng chất Cinema mượt mà */
+.dropdown-body::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-body::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+.dropdown-body::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 3px;
+}
+.dropdown-body::-webkit-scrollbar-thumb:hover {
+  background: #404040;
 }
 
+/* Từng item thông báo lẻ */
+.notification-item {
+  display: flex;
+  align-items: flex-start; /* Căn lề trên để tin nhắn dài không làm lệch icon */
+  padding: 14px 16px;
+  border-bottom: 1px solid #171717;
+  transition: background 0.2s ease;
+}
+
+/* Trạng thái chưa đọc (Unread) */
 .notification-item.unread {
-  background-color: #261a1a; /* Màu nền hơi đỏ nhẹ cho thông báo chưa đọc */
+  background-color: rgba(229, 9, 20, 0.05); /* Đỏ bóng đêm siêu mờ quý phái */
+  border-left: 3px solid #e50914; /* Vạch đỏ định vị thông báo mới */
+  padding-left: 13px; /* Bù trừ lại phần padding do border trái chiếm dụng */
 }
 
 .notification-item:hover {
-  background-color: #222;
+  background-color: #171717; /* Đen sáng hơn một chút khi hover */
 }
 
+/* Khối bọc Icon của từng item lấy từ hàm getIcon */
 .noti-icon {
-  font-size: 20px;
   margin-right: 12px;
+  margin-top: 2px; /* Đẩy nhẹ xuống cho cân đối dọc với dòng tiêu đề */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Khóa cứng không cho icon bị bóp méo */
 }
 
+/* Cấu hình kích thước ảnh PNG của getIcon */
+.noti-icon img,
+.noti-icon .nav-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* Cấu hình nếu hiển thị emoji lỗi ERROR (⚠️) để không bị lệch */
+.noti-icon .nav-icon-emoji {
+  font-size: 16px;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Khối nội dung chữ bên phải */
 .noti-content {
   flex: 1;
 }
 
 .noti-title {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 13px;
   margin: 0 0 4px 0;
+  color: #ffffff;
 }
 
 .noti-message {
   font-size: 12px;
-  color: #ccc;
-  margin: 0 0 5px 0;
+  color: #a3a3a3; /* Chuyển sang xám trung tính sáng */
+  margin: 0 0 6px 0;
   line-height: 1.4;
 }
 
 .noti-time {
   font-size: 10px;
-  color: #777;
+  color: #525252; /* Màu thời gian mờ tinh tế */
+  font-weight: 500;
 }
 
+/* Khi không có thông báo nào */
 .no-notification {
-  padding: 20px;
+  padding: 40px 20px;
   text-align: center;
-  color: #777;
+  color: #525252;
   font-size: 14px;
+  font-style: italic;
 }
