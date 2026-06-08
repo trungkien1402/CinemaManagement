@@ -3,24 +3,26 @@ version: '3.8'
 services:
   database:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: cinema-database
+    container_name: cinema-database-prod
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD:-StrongPassword123!}
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
       - MSSQL_PID=Developer
-    ports:
-      - "1433:1433"
+    # We do NOT expose port 1433 to the public internet for security in production.
+    # It remains accessible within the docker bridge network to other services.
+    expose:
+      - "1433"
     volumes:
-      - mssql-data:/var/opt/mssql
+      - mssql-data-prod:/var/opt/mssql
     restart: always
 
   db-init:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: cinema-db-init
+    container_name: cinema-db-init-prod
     depends_on:
       - database
     environment:
-      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD:-StrongPassword123!}
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
     entrypoint:
       - /bin/bash
       - -c
@@ -35,22 +37,23 @@ services:
     build:
       context: ./cinema_backend
       dockerfile: Dockerfile
-    container_name: cinema-backend
-    ports:
-      - "8080:8080"
+    container_name: cinema-backend-prod
+    # We do NOT expose port 8080 to the public host since Nginx handles forwarding
+    expose:
+      - "8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:sqlserver://database:1433;databaseName=DATABASECNM;encrypt=true;trustServerCertificate=true;characterEncoding=UTF-8;
       - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=${MSSQL_SA_PASSWORD:-StrongPassword123!}
-      - SPRING_MAIL_HOST=${SPRING_MAIL_HOST:-smtp.gmail.com}
-      - SPRING_MAIL_PORT=${SPRING_MAIL_PORT:-587}
-      - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME:-example@gmail.com}
-      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD:-abcdefghijklmnop}
-      - NEWS_API_KEY=${NEWS_API_KEY:-your_news_api_key_here}
-      - VNPAY_TMNCODE=${VNPAY_TMNCODE:-FAGMI56M}
-      - VNPAY_HASHSECRET=${VNPAY_HASHSECRET:-090VO9PDCB7OO5W12BKW98UV2RLFG92N}
-      - VNPAY_PAYURL=${VNPAY_PAYURL:-https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
-      - VNPAY_RETURNURL=${VNPAY_RETURNURL:-http://localhost/payment-success}
+      - SPRING_DATASOURCE_PASSWORD=${MSSQL_SA_PASSWORD}
+      - SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
+      - SPRING_MAIL_PORT=${SPRING_MAIL_PORT}
+      - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
+      - NEWS_API_KEY=${NEWS_API_KEY}
+      - VNPAY_TMNCODE=${VNPAY_TMNCODE}
+      - VNPAY_HASHSECRET=${VNPAY_HASHSECRET}
+      - VNPAY_PAYURL=${VNPAY_PAYURL}
+      - VNPAY_RETURNURL=${VNPAY_RETURNURL}
     depends_on:
       database:
         condition: service_started
@@ -62,7 +65,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: cinema-frontend
+    container_name: cinema-frontend-prod
     ports:
       - "80:80"
     depends_on:
@@ -70,4 +73,4 @@ services:
     restart: always
 
 volumes:
-  mssql-data:
+  mssql-data-prod:
