@@ -40,6 +40,9 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    public boolean existsByPhone(String phone) {
+        return userRepository.existsByPhone(phone);
+    }
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);

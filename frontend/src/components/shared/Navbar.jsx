@@ -86,7 +86,9 @@ const Navbar = () => {
 
                     <NavbarSearch />
 
-                    <NotificationBell />
+                    {user && (
+                        <NotificationBell />
+                    )}
 
                     {user ? (
                         <div className="user-profile" ref={userDropdownRef}>
@@ -95,14 +97,14 @@ const Navbar = () => {
                                 onClick={() => setShowDropdown(!showDropdown)}
                             >
                                 <div className="avatar-wrapper">
-                                    {/* 🚀 ĐÃ SỬA: Ưu tiên lấy avatar hoặc avatarUrl, nếu không có thì lấy chữ cái đầu của Tên (fullName hoặc username) */}
+                                    {/* ưu tiên lấy avatar hoặc avatarurl, nếu không có thì lấy chữ cái đầu của tên (fullname hoặc username) */}
                                     {(user.avatar || user.avatarUrl) ? (
                                         <img src={user.avatar || user.avatarUrl} alt="avatar" style={{width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover'}} />
                                     ) : (
                                         (user.fullName || user.username) ? (user.fullName || user.username).charAt(0).toUpperCase() : 'U'
                                     )}
                                 </div>
-                                {/* 🚀 ĐÃ SỬA: Ưu tiên hiển thị fullName (Họ và Tên), nếu chưa có mới hiển thị username */}
+                                {/* ưu tiên hiển thị fullname (họ và tên), nếu chưa có mới hiển thị username */}
                                 <span className="username-text">{user.fullName || user.username}</span>
                                 <i className="fa-solid fa-chevron-down arrow-icon"></i>
                             </button>
@@ -122,6 +124,10 @@ const Navbar = () => {
                                                 <span style={{fontWeight: 'bold', color: '#ffc107'}}>
                                                     {t('nav.dropdown.adminPage') || (isEn ? "Admin Dashboard" : "Trang Quản Trị")}
                                                 </span>
+                                            </Link>
+                                            <Link to="/ho-so" className="dropdown-item" onClick={() => setShowDropdown(false)}>
+                                                <i className="fa-regular fa-user"></i>{' '}
+                                                {isEn ? 'My Profile' : 'Hồ sơ của tôi'}
                                             </Link>
                                             <div className="dropdown-divider"></div>
                                         </>

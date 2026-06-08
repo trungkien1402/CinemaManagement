@@ -378,7 +378,7 @@ input:checked + .slider { background-color: #e50914; }
 input:checked + .slider:before { transform: translateX(24px); }
 
 /* ========================================================================= */
-/* 🍿 POPUP MODAL CHI TIẾT VÉ VÀ MÃ QR CODES                                */
+/* popup modal chi tiết vé và mã qr codes */
 /* ========================================================================= */
 .ticket-modal-overlay {
   position: fixed;
@@ -530,7 +530,7 @@ input:checked + .slider:before { transform: translateX(24px); }
 }
 
 /* ========================================================================= */
-/* 🔐 CÁC CLASS MỚI CHO MODAL ĐỔI MẬT KHẨU                                   */
+/* các class mới cho modal đổi mật khẩu */
 /* ========================================================================= */
 .pwd-modal-content {
   text-align: left !important;
@@ -556,7 +556,7 @@ input:checked + .slider:before { transform: translateX(24px); }
 }
 
 /* ========================================== */
-/* 🚀 CSS BỔ SUNG CHO PHẦN CHỌN NGÔN NGỮ      */
+/* css bổ sung cho phần chọn ngôn ngữ */
 /* ========================================== */
 .language-select {
     width: auto !important;
@@ -572,7 +572,7 @@ input:checked + .slider:before { transform: translateX(24px); }
 }
 
 /* ========================================================================= */
-/* 🚀 CSS MỚI CHO HUY HIỆU VIP VÀ THẺ ĐIỂM THƯỞNG                             */
+/* css mới cho huy hiệu vip và thẻ điểm thưởng */
 /* ========================================================================= */
 
 .vip-badge {

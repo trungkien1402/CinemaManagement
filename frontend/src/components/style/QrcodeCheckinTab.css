@@ -1,21 +1,21 @@
 /* ==========================================================================
-   QR Code Checkin Tab Stylesheet (Prefix: qrtab-)
+   QR Code Checkin Tab Stylesheet - Cinematic Dark-Tech / Minimalist-UI
    ========================================================================== */
 
 .qrtab-container {
     padding: 30px;
-    background-color: #0d0d0c;
+    background-color: #050505;
     min-height: 100vh;
     color: #e5e5e5;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Căn giữa toàn bộ tab theo chiều ngang */
+    align-items: center;
 }
 
 .qrtab-main-title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 32px;
@@ -31,22 +31,22 @@
     left: 0;
     top: 20%;
     height: 60%;
-    width: 4px;
-    background-color: #26dc78;
-    border-radius: 2px;
+    width: 3px;
+    background-color: #e50914;
+    border-radius: 1px;
 }
 
 /* ==========================================================================
-   QR Scanner Frame & Html5Qrcode Override (Cấu hình Camera)
+   QR Scanner Frame & Html5Qrcode Override
    ========================================================================== */
 .qrtab-scanner-frame {
     width: 100%;
-    max-width: 500px; /* Giới hạn chiều rộng khung quét */
-    background-color: #141416;
-    border: 1px solid #27272a;
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    background-color: #0c0c0e;
+    border: 1px solid #1f1f23;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 }
 
@@ -58,8 +58,8 @@
 
 /* Định dạng các nút bấm tự sinh từ thư viện html5-qrcode */
 #qrtab-reader-view button {
-    background-color: #26dc78 !important;
-    color: #0d0d0c !important;
+    background-color: #e50914 !important;
+    color: #ffffff !important;
     font-weight: 600 !important;
     border: none !important;
     padding: 10px 20px !important;
@@ -71,14 +71,14 @@
 }
 
 #qrtab-reader-view button:hover {
-    background-color: #1a9664 !important;
+    background-color: #b91c1c !important;
     transform: translateY(-1px);
 }
 
 /* Định dạng thẻ select chọn Camera của thư viện */
 #qrtab-reader-view select {
-    background-color: #1c1c1e !important;
-    border: 1px solid #2d2d30 !important;
+    background-color: #161619 !important;
+    border: 1px solid #1f1f23 !important;
     color: #ffffff !important;
     padding: 8px 12px !important;
     border-radius: 6px !important;
@@ -88,7 +88,7 @@
 
 /* Thẻ text thông báo quét thành công/thất bại của thư viện */
 #qrtab-reader-view__status_span {
-    color: #a1a1aa !important;
+    color: #8f8f9e !important;
     font-size: 13px !important;
 }
 
@@ -103,12 +103,13 @@
 }
 
 .qrtab-divider-text {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    color: #71717a;
-    letter-spacing: 1.5px;
+    color: #8f8f9e;
+    letter-spacing: 0.15em;
     margin-bottom: 20px;
     position: relative;
+    text-transform: uppercase;
 }
 
 /* Nhóm kết hợp input và button trên 1 hàng */
@@ -120,27 +121,28 @@
 
 .qrtab-input-group input {
     flex: 1;
-    background-color: #141416;
-    border: 1px solid #27272a;
+    background-color: #0c0c0e;
+    border: 1px solid #1f1f23;
     border-radius: 8px;
     padding: 14px 16px;
     color: #ffffff;
     font-size: 14px;
     outline: none;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .qrtab-input-group input:focus {
-    border-color: #26dc78;
-    box-shadow: 0 0 0 2px rgba(38, 220, 120, 0.15);
+    border-color: #e50914;
+    background-color: #161619;
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.15);
 }
 
 /* Nút xác nhận check-in thủ công */
 .qrtab-action-btn {
-    background-color: #27272a;
-    color: #f4f4f5;
+    background-color: #e50914;
+    color: #ffffff;
     font-weight: 600;
-    border: 1px solid #3f3f46;
+    border: none;
     padding: 0 24px;
     border-radius: 8px;
     cursor: pointer;
@@ -150,8 +152,8 @@
 }
 
 .qrtab-action-btn:hover {
-    background-color: #3f3f46;
-    border-color: #52525b;
+    background-color: #b91c1c;
+    transform: translateY(-1px);
 }
 
 /* ==========================================================================
@@ -166,7 +168,6 @@
         font-size: 20px;
     }
 
-    /* Trên mobile hẹp, chuyển cụm input thành hàng dọc */
     .qrtab-input-group {
         flex-direction: column;
         gap: 10px;
@@ -175,7 +176,7 @@
     .qrtab-input-group input,
     .qrtab-action-btn {
         width: 100%;
-        padding: 14px; /* Đồng đều độ dày nút */
+        padding: 14px;
         box-sizing: border-box;
     }
 }

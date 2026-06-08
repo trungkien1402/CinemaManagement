@@ -6,7 +6,10 @@
       "failed": "Giao dịch thất bại! Mã lỗi hệ thống: VNP_{{code}}",
       "noPendingData": "Không tìm thấy thông tin vé phim lưu tạm (Có thể giao dịch đã được xử lý xong).",
       "success": "Thanh toán thành công! Vé phim của bạn đã được khởi tạo hệ thống.",
-      "systemError": "Lỗi hệ thống trong quá trình khởi tạo dữ liệu vé!"
+      "systemError": "Lỗi hệ thống trong quá trình khởi tạo dữ liệu vé!",
+      "processing": "Đang xử lý",
+      "successTitle": "Thành công",
+      "failedTitle": "Thất bại"
     },
     "buttons": {
       "viewTicket": "Vào rạp xem vé",

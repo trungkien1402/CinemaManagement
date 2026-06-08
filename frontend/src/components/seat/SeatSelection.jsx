@@ -26,6 +26,9 @@ const SeatSelection = () => {
     const [availablePoints, setAvailablePoints] = useState(0);
     const [pointsToUse, setPointsToUse] = useState(0);
 
+    // state lưu giá niêm yết từ admin
+    const [basePrice, setBasePrice] = useState(30000);
+
     const { handleVNPayPayment, processing } = useVNPayPayment();
 
     useEffect(() => {
@@ -46,13 +49,23 @@ const SeatSelection = () => {
 
         setSelectedSeats([]);
         setLoading(true);
-
         setVoucherCode("");
         setAppliedVoucher(null);
         setVoucherError("");
         setVoucherSuccess("");
         setPointsToUse(0);
 
+        // api lấy thông tin suất chiếu bóc tách giá niêm yết
+        axiosClient.get(`/showtimes/${showtimeId}`)
+            .then((res) => {
+                if (res.data) {
+                    const fetchedPrice = res.data.ticketPrice || res.data.price || res.data.ticket_price || 30000;
+                    setBasePrice(fetchedPrice);
+                }
+            })
+            .catch((err) => console.error("Lỗi lấy giá suất chiếu:", err));
+
+        // API LẤY GHẾ
         axiosClient
             .get(`/seats/showtime/${showtimeId}`)
             .then((res) => {
@@ -84,12 +97,13 @@ const SeatSelection = () => {
         }
     };
 
+    // tính toán số tiền dựa trên baseprice
     const calculateSubTotal = () => {
         return selectedSeats.reduce((total, seat) => {
             const type = seat.seatType ? seat.seatType.toUpperCase() : 'NORMAL';
-            if (type === 'VIP') return total + 50000;
-            if (type === 'DOUBLE' || type === 'DOI') return total + 100000;
-            return total + 30000;
+            if (type === 'VIP') return total + (basePrice + 20000);
+            if (type === 'DOUBLE' || type === 'DOI') return total + (basePrice * 2);
+            return total + basePrice;
         }, 0);
     };
 
@@ -106,7 +120,6 @@ const SeatSelection = () => {
         return discount > subTotal ? subTotal : discount;
     };
 
-    // 🚀 ĐÃ SỬA: Nhân 100 để tính ra tiền
     const calculateTotal = () => {
         const afterVoucher = calculateSubTotal() - calculateDiscount();
         const finalPrice = afterVoucher - (pointsToUse * 100);
@@ -194,6 +207,22 @@ const SeatSelection = () => {
         );
     }
 
+    // Nhóm ghế theo dòng (ký tự đầu của seatNumber, ví dụ: 'A', 'B'...)
+    const seatsByRow = seats.reduce((groups, seat) => {
+        const row = seat.seatNumber ? seat.seatNumber.charAt(0) : 'A';
+        if (!groups[row]) {
+            groups[row] = [];
+        }
+        groups[row].push(seat);
+        return groups;
+    }, {});
+
+    // Tính số lượng cột tối đa trong một dòng dựa trên số lượng ghế của hàng đó
+    const calculatedMaxCols = Math.max(
+        ...Object.values(seatsByRow).map(seatsInRow => seatsInRow.length),
+        10
+    );
+
     return (
         <div className="booking-wrapper">
             <div className="screen-container">
@@ -201,46 +230,67 @@ const SeatSelection = () => {
                 <div className="screen-glow"></div>
             </div>
 
-            <div
-                className="seat-grid"
-                style={{ gridTemplateColumns: `repeat(${maxCols}, minmax(45px, 65px))` }}
-            >
-                {seats.map((seat) => {
-                    const isSelected = selectedSeats.some((s) => s.seatId === seat.seatId);
-                    const isOccupied = seat.isBooked;
-                    const currentType = seat.seatType ? seat.seatType.toUpperCase() : 'NORMAL';
-
-                    let seatClass = "seat-box";
-                    if (isOccupied) {
-                        seatClass += " occupied";
-                    } else if (isSelected) {
-                        seatClass += " selected";
-                    } else {
-                        if (currentType === 'DOUBLE' || currentType === 'DOI') {
-                            seatClass += " double";
-                        } else if (currentType === 'VIP') {
-                            seatClass += " vip";
-                        } else {
-                            seatClass += " normal";
-                        }
-                    }
-
+            <div className="seat-layout-container" style={{ '--max-cols': calculatedMaxCols }}>
+                {Object.keys(seatsByRow).sort().map((rowLetter) => {
+                    let currentCol = 1; // Khởi tạo cột chạy từ 1 cho mỗi hàng ghế
                     return (
-                        <div
-                            key={seat.seatId}
-                            className={seatClass}
-                            onClick={() => toggleSeat(seat)}
-                        >
-                            {isOccupied ? <span className="cancel-x">✕</span> : seat.seatNumber}
+                        <div className="seat-row" key={rowLetter}>
+                            <div className="row-label">{rowLetter}</div>
+                            <div className="row-seats">
+                                {seatsByRow[rowLetter].map((seat) => {
+                                    const isSelected = selectedSeats.some((s) => s.seatId === seat.seatId);
+                                    const isOccupied = seat.isBooked;
+                                    const currentType = seat.seatType ? seat.seatType.toUpperCase() : 'NORMAL';
+
+                                     let seatClass = "seat-box";
+                                     
+                                     // Áp dụng loại ghế trước để giữ nguyên cấu trúc (Thường, VIP, Đôi)
+                                     if (currentType === 'DOUBLE' || currentType === 'DOI') {
+                                         seatClass += " double";
+                                     } else if (currentType === 'VIP') {
+                                         seatClass += " vip";
+                                     } else {
+                                         seatClass += " normal";
+                                     }
+
+                                     // Áp dụng trạng thái đè lên
+                                     if (isOccupied) {
+                                         seatClass += " occupied";
+                                     } else if (isSelected) {
+                                         seatClass += " selected";
+                                     }
+
+                                     // Đặt vị trí cột dồn toa đều đặn 1 ô mỗi ghế
+                                     const seatStyle = {
+                                         gridRow: 1,
+                                         gridColumn: `${currentCol} / span 1`
+                                     };
+
+                                     // Tăng biến đếm cột cho ghế tiếp theo
+                                     currentCol += 1;
+
+                                    return (
+                                        <div
+                                            key={seat.seatId}
+                                            className={seatClass}
+                                            style={seatStyle}
+                                            onClick={() => toggleSeat(seat)}
+                                        >
+                                            {isOccupied ? <span className="cancel-x">✕</span> : seat.seatNumber}
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
                     );
                 })}
             </div>
 
+            {/* chú thích legend hiển thị động theo baseprice từ admin */}
             <div className="legend-area">
-                <div className="legend-item"><span className="box normal"></span>{t('auth.seat.legend.standard') || "Thường (30K)"}</div>
-                <div className="legend-item"><span className="box vip"></span>{t('auth.seat.legend.vip') || "VIP (50K)"}</div>
-                <div className="legend-item"><span className="box doi"></span>{t('auth.seat.legend.double') || "Ghế đôi (100K)"}</div>
+                <div className="legend-item"><span className="box normal"></span>{t('auth.seat.legend.standard') || `Thường (${basePrice.toLocaleString()}đ)`}</div>
+                <div className="legend-item"><span className="box vip"></span>{t('auth.seat.legend.vip') || `VIP (${(basePrice + 20000).toLocaleString()}đ)`}</div>
+                <div className="legend-item"><span className="box doi"></span>{t('auth.seat.legend.double') || `Ghế đôi (${(basePrice * 2).toLocaleString()}đ)`}</div>
                 <div className="legend-item"><span className="box selected"></span>{t('auth.seat.legend.selecting') || "Đang chọn"}</div>
                 <div className="legend-item"><span className="box occupied"></span>{t('auth.seat.legend.sold') || "Đã bán"}</div>
             </div>
@@ -272,25 +322,23 @@ const SeatSelection = () => {
                 {voucherSuccess && <p style={{ color: "#10b981", marginTop: "8px", fontSize: "14px" }}>✅ {voucherSuccess}</p>}
             </div>
 
-            {/* ================= 🚀 KHUNG NHẬP ĐIỂM THƯỞNG ĐÃ ĐƯỢC FIX ================= */}
             {availablePoints >= 0 && (
                 <div className="points-section" style={{ margin: "0 auto 20px auto", maxWidth: "600px", background: "#1f293d", padding: "15px", borderRadius: "8px" }}>
                     <h4 style={{ color: "#ffc107", marginBottom: "5px", fontSize: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
-                        <i className="fa-solid fa-star"></i> Đổi Điểm Thưởng
+                        <i className="fa-solid fa-star"></i> {t('auth.seat.points.title') || "Đổi Điểm Thưởng"}
                     </h4>
                     <p style={{ color: "#9ca3af", fontSize: "14px", marginBottom: "12px" }}>
-                        Bạn đang có: <strong style={{color: "#fff"}}>{availablePoints.toLocaleString()}</strong> điểm (10 điểm = 1.000 VNĐ)
+                        {t('auth.seat.points.balance', { points: availablePoints.toLocaleString() }) || `Bạn đang có: ${availablePoints.toLocaleString()} điểm (10 điểm = 1.000 VNĐ)`}
                     </p>
                     <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                         <input
                             type="number"
                             min="0"
                             max={availablePoints}
-                            placeholder={selectedSeats.length === 0 ? "Vui lòng chọn ghế trước..." : "Nhập số điểm..."}
+                            placeholder={selectedSeats.length === 0 ? (t('auth.seat.points.placeholderSelectSeat') || "Vui lòng chọn ghế trước...") : (t('auth.seat.points.placeholderEnterPoints') || "Nhập số điểm...")}
                             value={pointsToUse === 0 ? '' : pointsToUse}
                             onChange={(e) => {
                                 let val = parseInt(e.target.value) || 0;
-                                // 🚀 ĐÃ SỬA: Chia 100 (vì 1 điểm = 100đ)
                                 const maxAllowed = Math.min(availablePoints, Math.floor((calculateSubTotal() - calculateDiscount()) / 100));
                                 if (val > maxAllowed) val = maxAllowed;
                                 setPointsToUse(val);
@@ -302,12 +350,11 @@ const SeatSelection = () => {
                                 color: "#fff", cursor: selectedSeats.length === 0 ? "not-allowed" : "text"
                             }}
                         />
-                        <span style={{ color: "#fff", fontWeight: "bold" }}>điểm</span>
+                        <span style={{ color: "#fff", fontWeight: "bold" }}>{t('auth.seat.points.unit') || "điểm"}</span>
                     </div>
                     {pointsToUse > 0 && (
                         <p style={{ color: "#4ade80", marginTop: "10px", fontSize: "14px", fontWeight: "bold" }}>
-                            {/* 🚀 ĐÃ SỬA: Nhân 100 */}
-                            ✅ Được giảm: -{(pointsToUse * 100).toLocaleString()} VNĐ
+                            ✅ {t('auth.seat.points.discountMsg', { amount: (pointsToUse * 100).toLocaleString() }) || `Được giảm: -${(pointsToUse * 100).toLocaleString()} VNĐ`}
                         </p>
                     )}
                 </div>
@@ -329,7 +376,6 @@ const SeatSelection = () => {
                         <div style={{ fontSize: "14px", color: "#9ca3af", textAlign: "right", marginBottom: "8px" }}>
                             <p style={{ margin: "4px 0" }}>{t('auth.seat.info.subTotal') || "Tạm tính:"} {calculateSubTotal().toLocaleString()} VNĐ</p>
                             {appliedVoucher && <p style={{ margin: "4px 0", color: "#60a5fa" }}>Voucher: -{calculateDiscount().toLocaleString()} VNĐ</p>}
-                            {/* 🚀 ĐÃ SỬA: Nhân 100 */}
                             {pointsToUse > 0 && <p style={{ margin: "4px 0", color: "#4ade80" }}>Dùng điểm: -{(pointsToUse * 100).toLocaleString()} VNĐ</p>}
                         </div>
                     )}

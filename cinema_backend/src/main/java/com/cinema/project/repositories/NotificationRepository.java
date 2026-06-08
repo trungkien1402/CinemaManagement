@@ -10,4 +10,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     // Tìm kiếm và tự động sắp xếp theo biến cục bộ mang tính Java (createdAt) lên hàng đầu
     List<Notification> findAllByOrderByCreatedAtDesc();
+
+    List<Notification> findByUserIdIsNullOrderByCreatedAtDesc();
+
+    List<Notification> findByUserIdOrUserIdIsNullOrderByCreatedAtDesc(Long userId);
 }

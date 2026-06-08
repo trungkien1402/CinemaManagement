@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
 const ReviewSection = ({ movieId, onReviewsUpdate }) => {
-    // 💡 SỬA CHỖ NÀY: Moi thêm i18n ra khỏi useTranslation
+    // sửa chỗ này: moi thêm i18n ra khỏi usetranslation
     const { t, i18n } = useTranslation();
 
     const [reviews, setReviews] = useState([]);

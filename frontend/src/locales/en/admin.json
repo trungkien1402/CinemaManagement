@@ -40,7 +40,25 @@
     "shared": { "cinemaFilter": { "label": "Select Theater" }, "dateFilter": { "label": "Select Date" }, "movieCard": { "viewDetail": "View Detail", "bookBtn": "Book Now" }, "sectionHeader": { "viewAll": "View All" } }
   },
   "genres": {
-    "Hành động": "Action", "Viễn tưởng": "Sci-Fi", "Action": "Action", "Sci-Fi": "Sci-Fi", "Hành động, Viễn tưởng": "Action, Sci-Fi", "Action, Sci-Fi": "Action, Sci-Fi"
+    "Hành động": "Action",
+    "Viễn tưởng": "Sci-Fi",
+    "Tình cảm": "Romance",
+    "Kinh dị": "Horror",
+    "Hài hước": "Comedy",
+    "Hoạt hình": "Animation",
+    "Tâm lý": "Drama",
+    "Phiêu lưu": "Adventure",
+    "Hình sự": "Thriller",
+    "Cổ trang": "Historical",
+    "Gia đình": "Family",
+    "Action": "Action",
+    "Sci-Fi": "Sci-Fi",
+    "Romance": "Romance",
+    "Horror": "Horror",
+    "Comedy": "Comedy",
+    "Animation": "Animation",
+    "Drama": "Drama",
+    "Adventure": "Adventure"
   },
   "admin": {
     "adminDashboard": {
@@ -56,7 +74,7 @@
       "moviesTab": {
         "title": "Cinema Movie Repository",
         "form": {
-          "placeholders": { "title": "Movie Title", "genre": "Genre (Action, Romance...)", "duration": "Duration (Minutes)", "author": "Director / Author", "image": "Poster Image URL", "trailerUrl": "YouTube Trailer URL", "description": "Plot Summary...", "maxUses": "Enter issue quantity (e.g., 100)" },
+          "placeholders": { "title": "Movie Title", "genre": "Genre (Action, Romance...)", "duration": "Duration (Minutes)", "author": "Director / Author", "releaseDate": "Release Date", "image": "Poster Image", "trailerUrl": "Trailer Video", "description": "Plot Summary...", "maxUses": "Enter issue quantity (e.g., 100)" },
           "options": {
             "formats": { "2d": "2D Format", "3d": "3D Format", "imax": "IMAX Format" },
             "age": { "p": "P - General Audiences", "t13": "T13 - Over 13 years old", "t16": "T16 - Over 16 years old", "t18": "T18 - Restricted 18+" },
@@ -93,7 +111,7 @@
           "selectTheaterPlaceholder": "-- Click to select cinema --",
           "formTitle": "Add New Screen Room & Auto-generate Seats",
           "placeholders": { "roomId": "Independent Room ID (e.g., P1, P2):", "roomIdPlaceholder": "Max 3 letters", "roomNumber": "Display Room Name:", "roomNumberPlaceholder": "e.g., IMAX Screen Room 01" },
-          "labels": { "rowsCount": "Physical Seat Rows (A-Z):", "colsCount": "Seats per row (1-30):" },
+          "labels": { "rowsCount": "Physical Seat Rows (A-Z):", "colsCount": "Seats per row (1-10):" },
           "buttons": { "loading": "Creating...", "submit": "Generate Room Seat Layout" }
         },
         "rightPanel": {

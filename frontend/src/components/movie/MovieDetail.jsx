@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import '../style/MovieDetail.css';
 import ReviewSection from './ReviewSection';
@@ -21,6 +22,41 @@ const MovieDetail = () => {
   const [shareText, setShareText] = useState(t('detail.buttons.share') || 'Chia Sẻ');
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviewCount, setTotalReviewCount] = useState(0);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser && id) {
+      const user = JSON.parse(storedUser);
+      const userId = user.id || user.userId;
+      axios.get(`http://localhost:8080/api/favorites/check?userId=${userId}&movieId=${id}`)
+        .then(res => {
+          setIsFavorite(res.data.isFavorite);
+        })
+        .catch(err => console.error("Lỗi kiểm tra yêu thích:", err));
+    } else {
+      setIsFavorite(false);
+    }
+  }, [id]);
+
+  const handleToggleFavorite = () => {
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      alert(t('detail.auth.loginRequired') || 'Vui lòng đăng nhập để thực hiện tính năng này!');
+      return;
+    }
+    const user = JSON.parse(storedUser);
+    const userId = user.id || user.userId;
+    axios.post('http://localhost:8080/api/favorites/toggle', {
+      userId: userId,
+      movieId: parseInt(id)
+    })
+    .then(res => {
+      setIsFavorite(res.data.isFavorite);
+    })
+    .catch(err => {
+      console.error("Lỗi toggle yêu thích:", err);
+    });
+  };
 
   const handleReviewsUpdate = (reviewsList) => {
     setTotalReviewCount(reviewsList.length);
@@ -114,7 +150,7 @@ const MovieDetail = () => {
       <MovieHero 
         movie={movie}
         isFavorite={isFavorite}
-        setIsFavorite={setIsFavorite}
+        setIsFavorite={handleToggleFavorite}
         shareText={shareText}
         handleShareMovie={handleShareMovie}
         scrollToBooking={scrollToBooking}

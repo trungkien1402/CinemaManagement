@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Bỏ qua thư mục tải lên chứa file nặng
+uploads/

@@ -2,10 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate as useNav } from 'react-router-dom';
 import axios from 'axios';
 
-import cinemaAddressIcon from '../../assets/cinema address.png';
-import calendarIcon from '../../assets/calendar.png';
-import clockIcon from '../../assets/clock.png';
-
 import '../style/GlobalBookingModal.css';
 import { useTranslation } from 'react-i18next';
 
@@ -15,9 +11,6 @@ const GlobalBookingModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [movie, setMovie] = useState(null);
 
-  // =========================
-  // TẠO DANH SÁCH 7 NGÀY
-  // =========================
   const datesData = useMemo(() => {
     const daysOfWeek = [
       t('home.schedule.days.sun'),
@@ -45,9 +38,6 @@ const GlobalBookingModal = () => {
     return list;
   }, [t]);
 
-  // =======================================================================
-  // 💡 STATE & LOGIC LỌC ĐỊA ĐIỂM / RẠP CHIẾU
-  // =======================================================================
   const [allTheaters, setAllTheaters] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedTheater, setSelectedTheater] = useState('all');
@@ -75,10 +65,9 @@ const GlobalBookingModal = () => {
 
   const handleProvinceChange = (e) => {
     setSelectedProvince(e.target.value);
-    setSelectedTheater('all'); // Reset rạp khi đổi tỉnh thành
+    setSelectedTheater('all');
   };
 
-  // Lắng nghe Event từ Global Bus để mở Modal
   useEffect(() => {
     const handleOpenModal = (event) => {
       setMovie(event.detail);
@@ -89,22 +78,38 @@ const GlobalBookingModal = () => {
   }, []);
 
   // =======================================================================
-  // 🕒 LẤY SUẤT CHIẾU THỰC TẾ DỰA TRÊN NGÀY VÀ RẠP ĐÃ CHỌN
+  // gửi chuỗi chứa các rạp xuống cho backend lọc thẳng từ database
   // =======================================================================
   useEffect(() => {
     if (!isOpen || !movie) return;
     const rawId = movie.movieId || movie.id;
     setLoadingSlots(true);
 
-    const theaterQuery = selectedTheater === 'all' && filteredTheaters.length > 0
-      ? filteredTheaters.map(t => t.theaterId || t.theater_id || t.id).join(',')
-      : selectedTheater;
+    // Xử lý tạo Query để ném xuống Backend
+    let queryTheaterId = selectedTheater;
+    if (selectedTheater === 'all') {
+        if (selectedProvince && filteredTheaters.length > 0) {
+            // Gom tất cả ID Rạp của Tỉnh được chọn lại thành chuỗi "R01,R02,R03"
+            queryTheaterId = filteredTheaters.map(t => t.theaterId || t.theater_id || t.id).join(',');
+        } else {
+            // Nếu không chọn tỉnh nào, lấy tất cả trên toàn quốc
+            queryTheaterId = 'all';
+        }
+    }
+
+    // Nếu có chọn Tỉnh mà tỉnh đó trống trơn không có rạp, thì bỏ qua không gọi API
+    if (selectedProvince && filteredTheaters.length === 0) {
+        setSlots([]);
+        setLoadingSlots(false);
+        return;
+    }
 
     axios.get(`http://localhost:8080/api/showtimes/filter`, {
-      params: { theaterId: theaterQuery || 'all', date: selectedDate }
+      params: { theaterId: queryTheaterId, date: selectedDate }
     })
     .then(res => {
       const safeData = Array.isArray(res.data) ? res.data : [];
+      // Backend đã trả về list suất chiếu đúng rạp, Frontend chỉ việc lọc ra bộ phim hiện tại
       const movieSlots = safeData.filter(st => st.movie && String(st.movie.movieId || st.movie.id) === String(rawId));
       setSlots(movieSlots);
       setLoadingSlots(false);
@@ -114,7 +119,7 @@ const GlobalBookingModal = () => {
       setSlots([]);
       setLoadingSlots(false);
     });
-  }, [isOpen, selectedTheater, selectedDate, movie, filteredTheaters]);
+  }, [isOpen, selectedTheater, selectedDate, movie, filteredTheaters, selectedProvince]);
 
   const handleTimeSlotClick = (showtimeId) => {
     setIsOpen(false);
@@ -132,13 +137,13 @@ const GlobalBookingModal = () => {
           {t('detail.quickModal.title')} <span style={{color: '#ff4d4d'}}>{movie.title}</span>
         </h2>
 
-        {/* ================= KHỐI 1: CHỌN ĐỊA ĐIỂM / RẠP CHIẾU ================= */}
         <div style={{marginBottom: '20px'}}>
-          <span className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
-            <img src={cinemaAddressIcon} alt="Cinema Icon" className="figma-label-icon" style={{ width: '18px', height: '18px' }} /> 
+          <label className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
+            <i className="fa-solid fa-location-dot" style={{ color: '#ff2c1f', fontSize: '16px', marginRight: '12px' }}></i>
+            <span>&nbsp;&nbsp;</span>
             {t('detail.quickModal.labels.selectTheater')}
-          </span>
-          
+          </label>
+
           <div className="quick-modal-flex-row" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             <select
               className="filter-select"
@@ -182,13 +187,13 @@ const GlobalBookingModal = () => {
           </div>
         </div>
 
-        {/* ================= KHỐI 2: CHỌN NGÀY CHIẾU ================= */}
         <div style={{marginBottom: '20px'}}>
-          <span className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
-            <img src={calendarIcon} alt="Calendar Icon" className="figma-label-icon" style={{ width: '18px', height: '18px' }} /> 
+          <label className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
+            <i className="fa-regular fa-calendar-days" style={{ color: '#ff2c1f', fontSize: '16px', marginRight: '12px' }}></i>
+            <span>&nbsp;&nbsp;</span>
             {t('detail.quickModal.labels.selectDate')}
-          </span>
-          
+          </label>
+
           <div className="quick-modal-flex-row" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             {datesData.map(d => (
               <button
@@ -204,12 +209,12 @@ const GlobalBookingModal = () => {
           </div>
         </div>
 
-        {/* ================= KHỐI 3: KHUNG GIỜ CHIẾU THỰC TẾ ================= */}
         <div>
-          <span className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
-            <img src={clockIcon} alt="Clock Icon" className="figma-label-icon" style={{ width: '18px', height: '18px' }} /> 
+          <label className="figma-filter-label" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', color: '#fff', fontWeight: 'bold' }}>
+            <i className="fa-regular fa-clock" style={{ color: '#ff2c1f', fontSize: '16px', marginRight: '12px' }}></i> 
+            <span>&nbsp;&nbsp;</span>
             {t('detail.quickModal.labels.availableSlots')}
-          </span>
+          </label>
 
           {loadingSlots ? (
             <div style={{color: '#888', textAlign: 'center', padding: '15px'}}>{t('detail.quickModal.status.scanning')}</div>

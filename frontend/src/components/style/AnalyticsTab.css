@@ -1,20 +1,20 @@
 /* ==========================================================================
-   Analytics Tab Stylesheet (Prefix: antab-)
+   Analytics Tab Stylesheet - Cinematic Dark-Tech / Minimalist-UI
    ========================================================================== */
 
 /* Khung bọc toàn bộ trang phân tích */
 .antab-container {
     padding: 30px;
-    background-color: #0d0d0c; /* Nền tối sâu hơn, tạo cảm giác rạp phim */
+    background-color: #050505; /* Black Canvas */
     min-height: 100vh;
     color: #e5e5e5;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     box-sizing: border-box;
 }
 
 /* Tiêu đề chính */
 .antab-main-title {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 28px;
@@ -23,134 +23,133 @@
     padding-left: 15px;
 }
 
-/* Thêm một vệt màu đỏ rạp phim nhỏ ở bên cạnh tiêu đề làm điểm nhấn */
+/* Vệt màu đỏ Cinema làm điểm nhấn */
 .antab-main-title::before {
     content: '';
     position: absolute;
     left: 0;
     top: 15%;
     height: 70%;
-    width: 4px;
-    background-color: #26dc78; /* Đồng bộ với màu chủ đạo của biểu đồ */
-    border-radius: 2px;
+    width: 3px;
+    background-color: #e50914;
+    border-radius: 1px;
 }
 
 /* ==========================================================================
-   Metric Cards Section (Hàng hiển thị các con số tổng quan)
+   Metric Cards Section
    ========================================================================== */
 .antab-metrics-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     margin-bottom: 35px;
 }
 
-/* Thẻ thông số chung */
+/* Thẻ thông số */
 .antab-card {
-    background: linear-gradient(145deg, #18181b, #202024); /* Hiệu ứng khối chìm nhẹ */
-    border: 1px solid #27272a;
-    border-radius: 16px; /* Bo góc mềm mại hơn */
+    background-color: #0c0c0e; /* Flat Carbon Gray */
+    border: 1px solid #1f1f23;
+    border-radius: 12px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .antab-card:hover {
-    transform: translateY(-5px);
-    border-color: #3f3f46;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    transform: translateY(-2px);
+    border-color: rgba(229, 9, 20, 0.5); /* Hover border is Cinema Crimson */
+    box-shadow: 0 8px 24px rgba(229, 9, 20, 0.12);
 }
 
 /* Tiêu đề nhỏ trong thẻ */
 .antab-card-label {
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
-    color: #a1a1aa;
-    text-transform: uppercase; /* Viết hoa để nhìn giống Dashboard chuyên nghiệp */
-    letter-spacing: 0.5px;
-    margin: 0 0 16px 0;
+    color: #8f8f9e;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 12px 0;
 }
 
 /* Số hiển thị lớn */
 .antab-card-number {
-    font-size: 28px; /* Tăng kích thước số cho dễ đọc */
+    font-size: 32px;
     font-weight: 700;
+    color: #ffffff;
     margin: 0;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.02em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Màu sắc nhấn cho từng con số tùy theo danh mục */
+/* Màu sắc nhấn cho từng con số (Chỉ highlight Revenue để tạo hierarchy) */
 .antab-card-revenue .antab-card-number {
-    color: #26dc78; /* Xanh lục neon nổi bật trên nền tối */
+    color: #e50914; /* Sắc đỏ Cinema */
 }
-
-.antab-card-tickets .antab-card-number {
-    color: #38bdf8; /* Xanh dương nhẹ */
-}
-
-.antab-card-movies .antab-card-number {
-    color: #fbbf24; /* Vàng hổ phách */
-}
-
-.antab-card-users .antab-card-number {
-    color: #c084fc; /* Tím nhẹ */
-}
-
 
 /* ==========================================================================
-   Charts Section (Khu vực biểu đồ)
+   Charts Section
    ========================================================================== */
 
-/* Lưới chia 2 cột cho biểu đồ */
 .antab-charts-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Hai biểu đồ nằm cạnh nhau bằng nhau */
+    grid-template-columns: 1fr 1fr;
     gap: 28px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .antab-charts-grid {
-        grid-template-columns: 1fr; /* Xuống hàng trên thiết bị di động */
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 }
 
 /* Khung bọc từng biểu đồ */
 .antab-chart-wrapper {
-    background-color: #141416;
-    border: 1px solid #27272a;
-    border-radius: 16px;
+    background-color: #0c0c0e;
+    border: 1px solid #1f1f23;
+    border-radius: 12px;
     padding: 24px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.25s ease;
+}
+
+.antab-chart-wrapper:hover {
+    border-color: rgba(229, 9, 20, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 /* Tiêu đề của biểu đồ */
 .antab-chart-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    color: #f4f4f5;
+    color: #ffffff;
     margin: 0 0 24px 0;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* Khung cố định chiều cao để Chart.js căn đều */
+.antab-chart-title::before {
+    content: "●";
+    color: #e50914;
+    font-size: 8px;
+    margin-right: 2px;
+}
+
+/* Khung cố định chiều cao cho chart */
 .antab-chart-render-box {
     position: relative;
     width: 100%;
-    height: 340px; /* Tăng nhẹ chiều cao để cột biểu đồ thoáng hơn */
+    height: 340px;
     margin: auto 0;
 }
 
-/* Trạng thái trống khi không có dữ liệu */
+/* Trạng thái trống */
 .antab-chart-empty {
     color: #71717a;
     font-size: 14px;
@@ -158,7 +157,7 @@
     margin: auto 0;
     padding: 60px 0;
     font-style: italic;
-    border: 1px dashed #27272a;
+    border: 1px dashed #1f1f23;
     border-radius: 8px;
-    background-color: #18181b;
+    background-color: #0c0c0e;
 }

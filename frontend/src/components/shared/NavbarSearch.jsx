@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import '../style/NavbarSearch.css';
 
 const NavbarSearch = () => {
+  const { t } = useTranslation();
   const [keyword, setKeyword] = useState('');
   const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -40,7 +42,7 @@ const NavbarSearch = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 🛠️ XỬ LÝ CHUYỂN HƯỚNG KHI CLICK VÀO PHIM
+  // ️ xử lý chuyển hướng khi click vào phim
   const handleSelectMovie = (movieId) => {
     setKeyword(''); // Reset ô nhập liệu về rỗng
     setShowDropdown(false); // Đóng ngay menu đổ xuống
@@ -55,7 +57,7 @@ const NavbarSearch = () => {
       <div className="search-input-wrapper">
         <input
           type="text"
-          placeholder="Tìm tên phim..."
+          placeholder={t('nav.search.placeholder') || "Tìm tên phim..."}
           value={keyword}
           onChange={(e) => {
             setKeyword(e.target.value);
@@ -70,7 +72,7 @@ const NavbarSearch = () => {
       {showDropdown && keyword.trim().length >= 1 && (
         <div className="search-dropdown">
           {results.length === 0 ? (
-            <div className="no-result">Không tìm thấy phim nào 😢</div>
+            <div className="no-result">{t('nav.search.noResult') || "Không tìm thấy phim nào 😢"}</div>
           ) : (
             results.map(movie => (
               <div 
@@ -86,7 +88,7 @@ const NavbarSearch = () => {
                 <div className="search-item-info">
                   <p className="search-item-title">{movie.title}</p>
                   <span className="search-item-meta">
-                    {movie.genre ? movie.genre.split(',')[0] : 'Phim'} • {movie.duration} phút
+                    {movie.genre ? (t(`genres.${movie.genre.split(',')[0].trim()}`) || movie.genre.split(',')[0].trim()) : (t('nav.search.movieDefault') || 'Phim')} • {movie.duration} {t('nav.search.minutes') || 'phút'}
                   </span>
                 </div>
               </div>

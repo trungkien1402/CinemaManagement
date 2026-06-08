@@ -3,6 +3,8 @@ package com.cinema.project.controller;
 import com.cinema.project.model.Showtime;
 import com.cinema.project.payload.response.SeatResponse;
 import com.cinema.project.service.ShowtimeService;
+// thêm import repository để tìm suất chiếu
+import com.cinema.project.repositories.ShowtimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,8 @@ import java.util.Map;
 public class ShowtimeController {
 
     private final ShowtimeService showtimeService;
+    // khai báo thêm repository vào đây để lấy data
+    private final ShowtimeRepository showtimeRepository;
 
     // ==========================================
     // 1. CLIENT LỌC SUẤT CHIẾU THEO CỤM RẠP VÀ NGÀY
@@ -46,6 +50,21 @@ public class ShowtimeController {
         // Giữ nguyên kiểu trả về ResponseEntity<List<SeatResponse>> để không làm gãy code Frontend cũ
         List<SeatResponse> response = showtimeService.getSeatsForShowtime(showtimeId);
         return ResponseEntity.ok(response);
+    }
+
+    // ==========================================
+    // client lấy thông tin 1 suất chiếu (để frontend lấy giá 85k)
+    // ==========================================
+    @GetMapping("/showtimes/{id}")
+    public ResponseEntity<?> getShowtimeById(@PathVariable String id) {
+        try {
+            Showtime showtime = showtimeRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy suất chiếu"));
+            return ResponseEntity.ok(showtime);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Lỗi: " + e.getMessage());
+        }
     }
 
     // ==========================================

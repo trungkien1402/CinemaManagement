@@ -25,18 +25,18 @@ public class AdminBookingService {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy mã vé #" + ticketId + " trên hệ thống!"));
 
-        // BƯỚC 1: Kiểm tra trạng thái thanh toán của vé
+        // kiểm tra trạng thái thanh toán của vé
         String payStatus = ticket.getStatusTicket();
         if (!"BOOKED".equals(payStatus) && !"SUCCESS".equals(payStatus)) {
             throw new IllegalStateException("Vé này chưa thanh toán thành công hoặc đã bị hủy (" + payStatus + ")!");
         }
 
-        // BƯỚC 2: Kiểm tra xem vé đã quét trước đó chưa
+        // kiểm tra xem vé đã quét trước đó chưa
         if (ticket.getStatusTk() != null && ticket.getStatusTk() == 1) {
             throw new IllegalStateException("Vé này đã được quét soát vé và vào cửa trước đó rồi!");
         }
 
-        // BƯỚC 3: Cập nhật trạng thái thành Đã dùng (1) và lưu lại
+        // cập nhật trạng thái thành đã dùng (1) và lưu lại
         ticket.setStatusTk(1);
         ticketRepository.save(ticket);
 

@@ -88,6 +88,9 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/uploads/**").permitAll() 
+                        .requestMatchers("/api/auth/**").permitAll()
+
                         // 1. Nhóm API xác thực và cổng thanh toán công khai
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/payment/**").permitAll()
@@ -96,7 +99,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/seats/hold", "/api/seats/release").permitAll()
                         .requestMatchers("/api/seats/showtime/**").permitAll()
 
-                        // 🛠️ ĐẶC CÁCH: Cho phép API lấy danh sách phim này chạy tự do (permitAll)
+                        // ️ đặc cách: cho phép api lấy danh sách phim này chạy tự do (permitall)
                         // Lệnh này phải đứng TRƯỚC lệnh chặn /api/movies/admin/** của Admin bên dưới
                         .requestMatchers("/api/movies/admin/all").permitAll()
 

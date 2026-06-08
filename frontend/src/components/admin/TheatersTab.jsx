@@ -194,7 +194,10 @@ const TheatersTab = () => {
 
             {/* BLOCK 1: THÊM CỤM RẠP CHIẾU MỚI */}
             <div className="thtab-card">
-                <h3 className="thtab-card-title title-green">➕ {t('admin.adminDashboard.theatersTab.addTheater.title') || "THÊM CỤM RẠP CHIẾU MỚI"}</h3>
+                <h3 className="thtab-card-title title-red">
+                    <i className="fa-solid fa-map-location-dot" style={{ marginRight: '8px' }}></i>
+                    {t('admin.adminDashboard.theatersTab.addTheater.title') || "THÊM CỤM RẠP CHIẾU MỚI"}
+                </h3>
                 <form onSubmit={handleAddTheater} className="thtab-form-grid">
                     <div className="thtab-form-item">
                         <label>{t('admin.adminDashboard.theatersTab.addTheater.labels.cinemaId') || "Mã Rạp (VD: T01):"}</label>
@@ -229,10 +232,16 @@ const TheatersTab = () => {
 
                 {/* CỘT TRÁI: KHỞI TẠO PHÒNG CHIẾU */}
                 <div className="form-settings-panel thtab-card">
-                    <h3 className="thtab-card-title title-red">⚙️ {t('admin.adminDashboard.theatersTab.leftPanel.formTitle') || "THÊM PHÒNG CHIẾU"}</h3>
+                    <h3 className="thtab-card-title title-red">
+                        <i className="fa-solid fa-circle-plus" style={{ marginRight: '8px' }}></i>
+                        {t('admin.adminDashboard.theatersTab.leftPanel.formTitle') || "THÊM PHÒNG CHIẾU"}
+                    </h3>
 
                     <div className="thtab-target-bar" style={{ marginBottom: '15px' }}>
-                        <label>📍 {t('admin.adminDashboard.theatersTab.leftPanel.title') || "Bước 1 - Chọn cụm rạp mục tiêu:"} </label>
+                        <label>
+                            <i className="fa-solid fa-filter" style={{ marginRight: '8px' }}></i>
+                            {t('admin.adminDashboard.theatersTab.leftPanel.title') || "Bước 1 - Chọn cụm rạp mục tiêu:"}
+                        </label>
                         <select value={selectedTheaterId} onChange={(e) => setSelectedTheaterId(e.target.value)}>
                             <option value="">{t('admin.adminDashboard.theatersTab.leftPanel.selectTheaterPlaceholder') || "-- Click chọn rạp chiếu --"}</option>
                             {theaters.map(tItem => (
@@ -242,22 +251,22 @@ const TheatersTab = () => {
                     </div>
 
                     {selectedTheaterId && (
-                        <form onSubmit={handleCreateRoom} className="sub-form-box thtab-form-grid" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                            <div>
+                        <form onSubmit={handleCreateRoom} className="sub-form-box" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div className="thtab-form-item">
                                 <label>{t('admin.adminDashboard.theatersTab.leftPanel.placeholders.roomId') || "Mã phòng độc lập (VD: P1, P2):"}</label>
                                 <input type="text" value={inputRoomId} onChange={(e) => setInputRoomId(e.target.value)} placeholder={t('admin.adminDashboard.theatersTab.leftPanel.placeholders.roomIdPlaceholder') || "Tối đa 3 chữ"} required />
                             </div>
-                            <div>
+                            <div className="thtab-form-item">
                                 <label>{t('admin.adminDashboard.theatersTab.leftPanel.placeholders.roomNumber') || "Tên hiển thị phòng:"}</label>
                                 <input type="text" value={roomNumber} onChange={(e) => setRoomNumber(e.target.value)} placeholder={t('admin.adminDashboard.theatersTab.leftPanel.placeholders.roomNumberPlaceholder') || "VD: Phòng Chiếu IMAX 01"} required />
                             </div>
-                            <div>
+                            <div className="thtab-form-item">
                                 <label>{t('admin.adminDashboard.theatersTab.leftPanel.labels.rowsCount') || "Số hàng dọc (A-Z):"}</label>
                                 <input type="number" min="1" max="26" value={rowsCount} onChange={(e) => setRowsCount(e.target.value)} required />
                             </div>
-                            <div>
-                                <label>{t('admin.adminDashboard.theatersTab.leftPanel.labels.colsCount') || "Số cột ngang (1-30):"}</label>
-                                <input type="number" min="1" max="30" value={colsCount} onChange={(e) => setColsCount(e.target.value)} required />
+                            <div className="thtab-form-item">
+                                <label>{t('admin.adminDashboard.theatersTab.leftPanel.labels.colsCount') || "Số cột ngang (1-10):"}</label>
+                                <input type="number" min="1" max="10" value={colsCount} onChange={(e) => setColsCount(Math.min(parseInt(e.target.value) || 10, 10))} required />
                             </div>
 
                             <button type="submit" disabled={loading} className="thtab-btn submit red form-submit-btn-main" style={{ marginTop: '10px' }}>
@@ -269,7 +278,10 @@ const TheatersTab = () => {
 
                 {/* CỘT PHẢI: TRÌNH QUẢN LÝ MA TRẬN GHẾ TRỰC QUAN */}
                 <div className="visualization-settings-panel thtab-card">
-                    <h3 className="thtab-card-title title-blue">🔍 {t('admin.adminDashboard.theatersTab.rightPanel.title') || "TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG"}</h3>
+                    <h3 className="thtab-card-title title-blue">
+                        <i className="fa-solid fa-chess-board" style={{ marginRight: '8px' }}></i>
+                        {t('admin.adminDashboard.theatersTab.rightPanel.title') || "TRÌNH QUẢN LÝ SƠ ĐỒ GHẾ THEO PHÒNG"}
+                    </h3>
 
                     <div className="thtab-filter-row" style={{ marginBottom: '15px' }}>
                         <label style={{ display: 'block', marginBottom: '5px' }}>{t('admin.adminDashboard.theatersTab.rightPanel.selectRoomPlaceholder') || "Chọn phòng xem sơ đồ:"}</label>
@@ -295,7 +307,7 @@ const TheatersTab = () => {
                                 {t('admin.adminDashboard.theatersTab.rightPanel.screenBar') || "MÀN HÌNH CHÍNH TẠI PHÒNG"}
                             </p>
 
-                            <p className="thtab-note-success" style={{ fontSize: '12px', color: '#48bb78', fontStyle: 'italic', marginBottom: '10px', textAlign: 'center' }}>
+                            <p className="thtab-note-success" style={{ fontSize: '12px', color: '#e50914', fontStyle: 'italic', marginBottom: '10px', textAlign: 'center' }}>
                                 {t('admin.adminDashboard.theatersTab.rightPanel.hintText') || "✓ Click tự do vào từng ghế để đổi loại cấu trúc (Thường ➔ VIP ➔ Đôi)"}
                             </p>
 

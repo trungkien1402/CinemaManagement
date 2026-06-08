@@ -2,12 +2,31 @@
   position: relative;
   cursor: pointer;
   display: inline-block;
-  margin-right: 20px;
 }
 
 .bell-icon {
   font-size: 22px;
   position: relative;
+  transition: transform 0.3s ease;
+}
+
+.notification-bell-container:hover .bell-icon {
+  animation: bellRing 0.6s ease-in-out;
+}
+
+.bell-icon:hover i {
+  color: #ff2c1f !important;
+}
+
+@keyframes bellRing {
+  0% { transform: rotate(0); }
+  15% { transform: rotate(15deg); }
+  30% { transform: rotate(-15deg); }
+  45% { transform: rotate(10deg); }
+  60% { transform: rotate(-10deg); }
+  75% { transform: rotate(4deg); }
+  90% { transform: rotate(-4deg); }
+  100% { transform: rotate(0); }
 }
 
 .bell-badge {
@@ -20,32 +39,48 @@
   padding: 2px 6px;
   border-radius: 50%;
   font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.8);
+  animation: pulseBadge 2s infinite alternate;
+}
+
+@keyframes pulseBadge {
+  0% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 77, 77, 0.6); }
+  100% { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 77, 77, 1); }
 }
 
 .notification-dropdown {
   position: absolute;
-  top: 35px;
-  right: 0;
-  width: 320px;
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  top: calc(100% + 12px);
+  right: -10px;
+  width: 340px;
+  background-color: rgba(22, 22, 22, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
   z-index: 1000;
   color: #fff;
+  overflow: hidden;
+  animation: dropdownSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes dropdownSlideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .dropdown-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  border-bottom: 1px solid #333;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .dropdown-header h3 {
   font-size: 15px;
   margin: 0;
+  font-weight: 600;
 }
 
 .dropdown-header button {
@@ -54,6 +89,13 @@
   color: #ff4d4d;
   cursor: pointer;
   font-size: 12px;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.dropdown-header button:hover {
+  color: #ff2c1f;
+  text-decoration: underline;
 }
 
 .dropdown-body {
@@ -61,24 +103,35 @@
   overflow-y: auto;
 }
 
+.dropdown-body::-webkit-scrollbar {
+  width: 5px;
+}
+.dropdown-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
 .notification-item {
   display: flex;
-  padding: 12px 15px;
-  border-bottom: 1px solid #262626;
-  transition: background 0.2s;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.25s ease;
 }
 
 .notification-item.unread {
-  background-color: #261a1a; /* Màu nền hơi đỏ nhẹ cho thông báo chưa đọc */
+  background-color: rgba(255, 44, 31, 0.04); /* Màu nền đỏ nhẹ tinh tế */
+  border-left: 3px solid #ff2c1f;
 }
 
 .notification-item:hover {
-  background-color: #222;
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateX(4px);
 }
 
 .noti-icon {
   font-size: 20px;
   margin-right: 12px;
+  color: #ff2c1f;
 }
 
 .noti-content {
@@ -86,26 +139,26 @@
 }
 
 .noti-title {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 13px;
   margin: 0 0 4px 0;
 }
 
 .noti-message {
   font-size: 12px;
-  color: #ccc;
+  color: #bbb;
   margin: 0 0 5px 0;
   line-height: 1.4;
 }
 
 .noti-time {
   font-size: 10px;
-  color: #777;
+  color: #666;
 }
 
 .no-notification {
-  padding: 20px;
+  padding: 30px 20px;
   text-align: center;
-  color: #777;
-  font-size: 14px;
+  color: #666;
+  font-size: 13px;
 }

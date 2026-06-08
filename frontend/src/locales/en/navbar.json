@@ -13,6 +13,17 @@
       "myProfile": "My Profile",
       "bookingHistory": "Booking History",
       "logout": "Logout"
+    },
+    "notifications": {
+      "title": "New Notifications",
+      "readAll": "Read All",
+      "empty": "No notifications yet"
+    },
+    "search": {
+      "placeholder": "Search movie name...",
+      "noResult": "No movies found 😢",
+      "movieDefault": "Movie",
+      "minutes": "mins"
     }
   },
   "footer": {

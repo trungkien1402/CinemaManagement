@@ -1,6 +1,6 @@
 /* ================= TRANG HỆ THỐNG RẠP ================= */
 .theaters-wrapper {
-  padding: 40px 20px;
+  padding: 40px 20px 80px;
   max-width: 1200px;
   margin: 0 auto;
   color: #ffffff;
@@ -24,30 +24,34 @@
 
 /* ================= DROPDOWN CHỌN TỈNH/THÀNH PHỐ ================= */
 .city-filter-select {
-  padding: 10px 20px;
+  padding: 12px 40px 12px 20px;
   border-radius: 8px;
-  background: #1c1c24;
+  background: #16161a;
   color: #fff;
-  border: 1px solid #333;
-  font-size: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 15px;
   outline: none;
   cursor: pointer;
   min-width: 250px;
-
-  /* 💡 VŨ KHÍ HẠNG NẶNG: Ép buộc ẩn icon bằng !important */
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  background-image: none !important;
-}
-
-/* 💡 Đặc trị cho trình duyệt Edge */
-.city-filter-select::-ms-expand {
-  display: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 15px center !important;
+  background-size: 16px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .city-filter-select:hover {
-  border-color: #555;
+  border-color: #ff3d00;
+  box-shadow: 0 8px 30px rgba(255, 61, 0, 0.15);
+}
+
+.city-filter-select:focus {
+  border-color: #ff3d00;
+  box-shadow: 0 0 0 3px rgba(255, 61, 0, 0.2);
 }
 
 /* ================= DANH SÁCH RẠP ================= */
@@ -59,26 +63,27 @@
 
 /* Thẻ Rạp (Card) */
 .theater-card {
-  background: #1c1c20;
-  border-radius: 12px;
+  background: #141416;
+  border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #2d2d35;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .theater-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  border-color: #3a3a45;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 61, 0, 0.1);
+  border-color: rgba(255, 61, 0, 0.35);
 }
 
 /* Khung ảnh rạp */
 .theater-img-box {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 240px;
   overflow: hidden;
 }
 
@@ -86,11 +91,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .theater-card:hover .theater-img-box img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 /* Nhãn IMAX góc trái */
@@ -98,55 +103,59 @@
   position: absolute;
   top: 15px;
   left: 15px;
-  background: #e50914;
+  background: #ff3d00;
   color: #fff;
   font-size: 0.75rem;
-  font-weight: bold;
-  padding: 4px 10px;
-  border-radius: 4px;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 6px;
   z-index: 2;
+  box-shadow: 0 4px 10px rgba(255, 61, 0, 0.4);
 }
 
 /* Khu vực thông tin */
 .theater-info {
-  padding: 24px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .theater-name {
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin: 0 0 16px 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+  margin: 0 0 18px 0;
+  line-height: 1.2;
 }
 
 .theater-detail-row {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  color: #aaa;
-  font-size: 0.9rem;
-  margin-bottom: 12px;
+  color: #c5c5d2;
+  font-size: 0.92rem;
+  margin-bottom: 14px;
   line-height: 1.5;
 }
 
 .theater-detail-row i {
-  color: #e50914;
+  color: #ff3d00;
   font-style: normal;
   font-size: 1rem;
 }
 
 /* Tiện ích (Amenities) */
 .amenities-section {
-  margin-top: 10px;
-  margin-bottom: 24px;
+  margin-top: 15px;
+  margin-bottom: 28px;
 }
 
 .amenities-title {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 8px;
+  font-size: 0.82rem;
+  color: #727282;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .amenities-tags {
@@ -156,18 +165,26 @@
 }
 
 .amenity-tag {
-  background: #2a2a32;
-  color: #ccc;
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d1d1db;
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border-radius: 30px;
   display: flex;
   align-items: center;
   gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.amenity-tag:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }
 
 .amenity-tag .star {
-  color: #f5c518;
+  color: #ffc107;
 }
 
 /* Khu vực Nút bấm */
@@ -177,34 +194,75 @@
   margin-top: auto;
 }
 
+.btn-primary-theater,
+.btn-secondary-theater {
+  border: none;
+  padding: 13px 0;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .btn-primary-theater {
   flex: 2;
-  background: #e50914;
+  background: #ff3d00;
   color: #fff;
-  border: none;
-  padding: 12px 0;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 61, 0, 0.3);
+}
+
+.btn-primary-theater::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(30deg);
+  opacity: 0;
+  transition: none;
+}
+
+.btn-primary-theater:hover::after {
+  opacity: 1;
+  left: 130%;
+  transition: left 0.85s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .btn-primary-theater:hover {
-  background: #b81d24;
+  background: #ff5722;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(255, 61, 0, 0.5);
+}
+
+.btn-primary-theater:active {
+  transform: translateY(0) scale(0.96);
 }
 
 .btn-secondary-theater {
   flex: 1;
-  background: #2a2a32;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  border: none;
-  padding: 12px 0;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
 }
 
 .btn-secondary-theater:hover {
-  background: #3a3a45;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.05);
+}
+
+.btn-secondary-theater:active {
+  transform: translateY(0) scale(0.96);
+}
+
+@media (max-width: 480px) {
+  .theaters-grid {
+    grid-template-columns: 1fr;
+  }
 }

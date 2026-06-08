@@ -57,21 +57,21 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
     // 3. NHÓM TÍNH NĂNG THỐNG KÊ DOANH THU (ADMIN)
     // ==========================================
 
-    // 🛠️ ĐÃ FIX: Tính doanh thu của TẤT CẢ các vé (Ngoại trừ vé Hủy)
+    // ️ tính doanh thu của tất cả các vé (ngoại trừ vé hủy)
     @Query("""
         SELECT COALESCE(SUM(t.totalPrice), 0) FROM Ticket t 
         WHERE UPPER(TRIM(t.statusTicket)) NOT IN ('CANCELED', 'CANCELLED')
     """)
     Double calculateTotalRevenue();
 
-    // 🛠️ ĐÃ FIX: Đếm TẤT CẢ số lượng vé hợp lệ (Ngoại trừ vé Hủy) -> Sẽ lên đủ 14 vé
+    // ️ đếm tất cả số lượng vé hợp lệ (ngoại trừ vé hủy) -> sẽ lên đủ 14 vé
     @Query("""
         SELECT COUNT(t) FROM Ticket t 
         WHERE UPPER(TRIM(t.statusTicket)) NOT IN ('CANCELED', 'CANCELLED')
     """)
     Long countAllTickets();
 
-    // 🛠️ ĐÃ FIX: Trả về thêm cột thứ 3 SUM(t.totalPrice) để đồng bộ dữ liệu động với Controller
+    // ️ trả về thêm cột thứ 3 sum(t.totalprice) để đồng bộ dữ liệu động với controller
     @Query("""
         SELECT m.title, COUNT(t), SUM(t.totalPrice)
         FROM Ticket t 
@@ -83,7 +83,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
     """)
     List<Object[]> findTopMovies();
 
-    // 🛠️ ĐÃ FIX: Thống kê doanh thu theo tháng tự động loại trừ vé hủy
+    // ️ thống kê doanh thu theo tháng tự động loại trừ vé hủy
     @Query("""
         SELECT FUNCTION('MONTH', t.bookingDate), SUM(t.totalPrice) 
         FROM Ticket t 

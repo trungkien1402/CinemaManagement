@@ -9,7 +9,7 @@ export const login = createAsyncThunk(
 
             console.log("RESPONSE LOGIN BAN ĐẦU:", response.data);
 
-            // ĐÃ SỬA: Tùy theo API Login của bạn, dữ liệu trả về thường nằm trong response.data.result hoặc response.data.data
+            // tùy theo api login của bạn, dữ liệu trả về thường nằm trong response.data.result hoặc response.data.data
             // Đoạn này kiểm tra nếu có tầng .result hoặc .data thì lấy, không thì lấy trực tiếp response.data
             const serverData = response.data;
             const userData = serverData.result || serverData.data || serverData;
@@ -17,7 +17,7 @@ export const login = createAsyncThunk(
             // Tiến hành lưu thông tin user vào localStorage
             localStorage.setItem('user', JSON.stringify(userData));
 
-            // ĐÃ SỬA: Tìm kiếm token ở cả tầng ngoài lẫn tầng trong của object trả về
+            // tìm kiếm token ở cả tầng ngoài lẫn tầng trong của object trả về
             const token = userData.token || serverData.token || userData.accessToken || serverData.accessToken;
 
             if (token) {

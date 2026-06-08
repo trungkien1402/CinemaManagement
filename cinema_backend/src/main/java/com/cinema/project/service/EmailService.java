@@ -25,7 +25,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    // 🚀 HÀM MỚI: Gửi OTP dùng cho QUÊN MẬT KHẨU
+    // hàm mới: gửi otp dùng cho quên mật khẩu
     public void sendForgotPasswordEmail(String toEmail, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("CinemaX <your-email@gmail.com>");

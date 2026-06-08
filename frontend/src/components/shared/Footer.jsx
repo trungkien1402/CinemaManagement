@@ -1,6 +1,7 @@
 import React from 'react';
 import '../style/Footer.css';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -10,10 +11,12 @@ const Footer = () => {
       <div className="footer-content">
         
         <div className="footer-logo-section">
-          <div className="logo-wrapper">
-            <div className="logo-icon">C</div>
-            <span className="brand-name">CinemaX</span>
-          </div>
+          <Link to="/" className="logo-wrapper-link" style={{ textDecoration: 'none' }}>
+            <div className="logo-wrapper">
+              <div className="logo-icon">C</div>
+              <span className="brand-name">CinemaX</span>
+            </div>
+          </Link>
           <p className="slogan">
             {t('footer.slogan')}
           </p>
@@ -22,27 +25,35 @@ const Footer = () => {
         <div>
           <h3 className="footer-title">{t('footer.titles.movies')}</h3>
           <ul className="footer-list">
-            <li>{t('nav.nowShowing')}</li>
-            <li>{t('nav.comingSoon')}</li>
-            <li>{t('nav.schedule')}</li>
+            <li><Link to="/dang-chieu">{t('nav.nowShowing')}</Link></li>
+            <li><Link to="/sap-chieu">{t('nav.comingSoon')}</Link></li>
+            <li><Link to="/lich-chieu">{t('nav.schedule')}</Link></li>
           </ul>
         </div>
 
         <div>
           <h3 className="footer-title">{t('footer.titles.services')}</h3>
           <ul className="footer-list">
-            <li>{t('nav.theaters')}</li>
-            <li>{t('nav.dropdown.personalAccount')}</li>
-            <li>{t('nav.news')}</li>
+            <li><Link to="/rap">{t('nav.theaters')}</Link></li>
+            <li><Link to="/ho-so">{t('nav.dropdown.personalAccount')}</Link></li>
+            <li><Link to="/tin-tuc">{t('nav.news')}</Link></li>
           </ul>
         </div>
 
         <div>
           <h3 className="footer-title">{t('footer.titles.support')}</h3>
           <ul className="footer-list">
-            <li>{t('footer.links.faq')}</li>
-            <li>{t('footer.links.hotline')} <span className="hotline-num">1900 xxxx</span></li>
-            <li style={{ textTransform: 'lowercase' }}>support@cinemax.vn</li>
+            <li><Link to="#">{t('footer.links.faq')}</Link></li>
+            <li>
+              <a href="tel:1900xxxx">
+                {t('footer.links.hotline')} <span className="hotline-num">1900 xxxx</span>
+              </a>
+            </li>
+            <li style={{ textTransform: 'lowercase' }}>
+              <a href="mailto:support@cinemax.vn">
+                support@cinemax.vn
+              </a>
+            </li>
           </ul>
         </div>
       </div>

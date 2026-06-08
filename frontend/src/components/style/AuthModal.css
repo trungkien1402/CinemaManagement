@@ -65,6 +65,14 @@
     font-size: 16px;
     box-sizing: border-box;
     width: 100%; /* Fix tràn viền */
+    transition: all 0.3s ease;
+}
+
+.auth-main-form input:focus, .auth-main-form select:focus {
+    border-color: #e50914;
+    outline: none;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.25);
+    background: #fff;
 }
 
 .auth-btn-submit {
@@ -76,16 +84,46 @@
     font-weight: bold;
     cursor: pointer;
     font-size: 16px;
-    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+.auth-btn-submit::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(30deg);
+  opacity: 0;
+  transition: none;
+}
+
+.auth-btn-submit:hover::after {
+  opacity: 1;
+  left: 130%;
+  transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .auth-btn-submit:hover {
     background: #b20710;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(229, 9, 20, 0.5);
+}
+
+.auth-btn-submit:active {
+    transform: translateY(0) scale(0.97);
 }
 
 .auth-btn-submit:disabled {
     background: #e07a80;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .otp-container {
@@ -95,7 +133,7 @@
     width: 100%;
 }
 
-/* 🚀 ĐÃ FIX LẠI CSS Ô OTP CHO CHUẨN FORM */
+/* css ô otp cho chuẩn form */
 .otp-input {
     text-align: center;
     font-size: 20px !important;
@@ -107,7 +145,7 @@
     box-sizing: border-box;
 }
 
-/* 🚀 ÉP CHỮ MỜ (PLACEHOLDER) KHÔNG BỊ GIÃN */
+/* ép chữ mờ (placeholder) không bị giãn */
 .otp-input::placeholder {
     letter-spacing: normal;
     font-weight: normal;
@@ -130,7 +168,7 @@
 }
 
 /* ======================================================== */
-/* 🚀 STYLE CHO PHẦN QUÊN MẬT KHẨU                          */
+/* style cho phần quên mật khẩu */
 /* ======================================================== */
 .forgot-password-link {
     color: #e50914;
@@ -148,7 +186,7 @@
     color: #b20710;
 }
 
-/* 🚀 ĐỔI TIÊU ĐỀ SANG MÀU ĐỎ */
+/* đổi tiêu đề sang màu đỏ */
 .auth-title {
     color: #e50914;
     font-size: 18px; /* Chỉnh size lại cho bằng với chữ Đăng Nhập */
@@ -157,6 +195,6 @@
     margin: 0 auto 20px auto; /* Căn giữa và tạo khoảng cách với form dưới */
     padding-bottom: 5px; /* Khoảng cách từ chữ tới đường gạch ngang */
     border-bottom: 3px solid #e50914; /* Đường gạch chân màu đỏ bự 3px */
-    width: max-content; /* 💡 Chiêu bài: Ép chiều rộng chỉ ôm sát chữ để đường gạch không bị kéo dài ra 2 bên */
+    width: max-content; /* ép chiều rộng chỉ ôm sát chữ để đường gạch không bị kéo dài ra 2 bên */
     display: block;
 }

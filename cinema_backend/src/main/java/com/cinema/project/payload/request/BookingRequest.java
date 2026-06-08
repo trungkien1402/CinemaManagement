@@ -11,6 +11,9 @@ public class BookingRequest {
     private Long pricePerSeat;
     private Long totalPrice;
 
-    // 🚀 THÊM MỚI: Số điểm khách hàng muốn sử dụng để giảm giá
+    // số điểm khách hàng muốn sử dụng để giảm giá
     private Integer pointsToUse;
+
+    // mã voucher giảm giá áp dụng
+    private String voucherCode;
 }

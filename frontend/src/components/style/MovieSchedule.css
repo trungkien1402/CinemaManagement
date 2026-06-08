@@ -34,10 +34,15 @@
 .figma-filter-label {
   display: flex !important;       /* Ép icon và chữ xếp hàng ngang */
   align-items: center !important; /* Căn giữa icon và chữ theo chiều dọc */
-  gap: 8px !important;            /* Khoảng cách nhỏ giữa icon và chữ */
   font-size: 0.85rem;
   color: #6c6c73;
   font-weight: 500;
+  margin-bottom: 12px !important; /* Tạo khoảng cách dọc với phần tử bên dưới */
+}
+
+.figma-filter-label i {
+  margin-right: 12px !important;  /* Khoảng cách rộng rãi giữa icon và chữ */
+  font-size: 1.1rem;
 }
 
 /* Ép icon định vị khổng lồ thu nhỏ lại */

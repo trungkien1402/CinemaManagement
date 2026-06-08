@@ -56,7 +56,7 @@ public class AdminCinemaService {
         room.setTheater(theater);
 
         int rows = (dto.getRowsCount() != null) ? dto.getRowsCount() : 8;
-        int cols = (dto.getColsCount() != null) ? dto.getColsCount() : 10;
+        int cols = (dto.getColsCount() != null) ? Math.min(dto.getColsCount(), 10) : 10;
         int totalSeats = rows * cols;
         room.setTotalSeats(totalSeats);
 

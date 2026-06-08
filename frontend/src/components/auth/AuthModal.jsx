@@ -55,7 +55,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                 if (login.fulfilled.match(resultAction)) {
                     let user = resultAction.payload;
 
-                    // 🚀 ĐOẠN FIX LỖI: Lấy full thông tin (Tên + Ảnh) ngay sau khi login thành công
+                    // lấy full thông tin (tên + ảnh) ngay sau khi login thành công
                     try {
                         const token = user.token || user.accessToken || localStorage.getItem('token');
                         const userId = user.id || user.userId;
@@ -79,7 +79,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                     } catch (err) {
                         console.error("Không lấy được full profile lúc login:", err);
                     }
-                    // 🚀 KẾT THÚC ĐOẠN FIX
+                    
 
                     alert(t('auth.authModal.alerts.loginSuccess') || "Đăng nhập thành công!");
                     onClose();
@@ -102,7 +102,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                         setLoading(false);
                         return;
                     }
-                    await api.post('/auth/send-otp', { email: formData.email });
+                    await api.post('/auth/send-otp', { email: formData.email, phone: formData.phone });
                     alert(t('auth.authModal.alerts.otpSent') || "Đã gửi mã OTP!");
                     setStep(2);
                 }

@@ -47,7 +47,7 @@ public class SeatController {
     }
 
     // =========================================================================
-    // 🛠️ API: GIỮ GHẾ TẠM THỜI (Gọi trước khi React chuyển hướng sang VNPay)
+    // ️ api: giữ ghế tạm thời (gọi trước khi react chuyển hướng sang vnpay)
     // =========================================================================
     @PostMapping("/hold")
     public ResponseEntity<?> holdSeats(@RequestBody SeatActionRequest request) {
@@ -66,7 +66,7 @@ public class SeatController {
     }
 
     // =========================================================================
-    // 🛠️ API: GIẢI PHÓNG GHẾ (Rollback khi nhận mã phản hồi hủy từ VNPay)
+    // ️ api: giải phóng ghế (rollback khi nhận mã phản hồi hủy từ vnpay)
     // =========================================================================
     @PostMapping("/release")
     public ResponseEntity<?> releaseSeats(@RequestBody SeatActionRequest request) {

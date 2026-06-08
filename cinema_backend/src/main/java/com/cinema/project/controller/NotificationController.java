@@ -16,13 +16,20 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<List<Notification>> getNotifications() {
+    public ResponseEntity<List<Notification>> getNotifications(@RequestParam(required = false) Long userId) {
+        if (userId != null) {
+            return ResponseEntity.ok(notificationService.getNotificationsForUser(userId));
+        }
         return ResponseEntity.ok(notificationService.getAllNotifications());
     }
 
     @PutMapping("/read-all")
-    public ResponseEntity<?> readAll() {
-        notificationService.markAllAsRead();
+    public ResponseEntity<?> readAll(@RequestParam(required = false) Long userId) {
+        if (userId != null) {
+            notificationService.markAllAsReadForUser(userId);
+        } else {
+            notificationService.markAllAsRead();
+        }
         return ResponseEntity.ok("Đã đọc tất cả thông báo");
     }
 }

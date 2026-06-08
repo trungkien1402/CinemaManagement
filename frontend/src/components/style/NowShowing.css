@@ -17,7 +17,7 @@
     font-size: 1.8rem;
 }
 
-/* 💡 LỚP LƯỚI MỚI: Cưỡng ép luôn hiển thị đủ 4 phim đều nhau trên hàng rộng rãi */
+/* lớp lưới mới: cưỡng ép luôn hiển thị đủ 4 phim đều nhau trên hàng rộng rãi */
 .movie-grid-layout {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;

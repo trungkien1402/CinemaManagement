@@ -22,7 +22,7 @@ const QrcodeCheckinTab = ({ manualTicketId, setManualTicketId, fireConfirmChecki
         const onScanSuccess = (decodedText, decodedResult) => {
             console.log(`Mã QR quét được: ${decodedText}`);
 
-            // 💡 TUYỆT CHIÊU: Dùng Regex đi "săn" đúng cái mã vé (VD: TK-5BA059B2)
+            // dùng regex đi "săn" đúng cái mã vé (vd: tk-5ba059b2)
             const match = decodedText.match(/TK-[A-Z0-9]{8}/);
             let cleanTicketId = "";
 

@@ -1,0 +1,119 @@
+{
+  "loading": "Loading...",
+  "loginRequired": "Please log in.",
+  "defaultUser": "Member",
+  "defaultEmail": "Not updated",
+  "title": "Account",
+  "badges": {
+    "vip": "VIP Member",
+    "standard": "Standard Member"
+  },
+  "points": "Reward Points",
+  "avatar": {
+    "update": "Update",
+    "alerts": {
+      "success": "Avatar updated successfully!",
+      "fail": "Failed to save avatar! Please try again."
+    }
+  },
+  "tabs": {
+    "myTickets": "My Tickets",
+    "personalInfo": "Personal Info",
+    "settings": "Settings"
+  },
+  "tickets": {
+    "title": "Booking History",
+    "movieTitleDefault": "Selected Movie",
+    "ticketCode": "Ticket Code: ",
+    "status": {
+      "watched": "Watched",
+      "pending": "Pending"
+    },
+    "details": {
+      "theater": "Theater",
+      "showtime": "Showtime",
+      "seats": "Seat",
+      "unknown": "Unknown",
+      "room": "Room",
+      "defaultRoom": "Default Room",
+      "selectedSeats": "Selected Seats",
+      "totalPrice": "Total Price"
+    },
+    "buttons": {
+      "viewDetail": "View Details"
+    },
+    "empty": "You haven't booked any tickets yet.",
+    "modal": {
+      "title": "E-TICKET",
+      "subtitle": "CinemaX is pleased to serve you",
+      "movieLabel": "Movie:",
+      "qrLabel": "TICKET CODE: ",
+      "statusLabel": "Status",
+      "statusWatched": "Checked-in (Watched)",
+      "statusPending": "Unused (Waiting for check-in)",
+      "note": "*Please present this QR code to the staff at the ticket counter to scan for entry."
+    }
+  },
+  "info": {
+    "title": "Personal Information",
+    "labels": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "dob": "Date of Birth"
+    },
+    "buttons": {
+      "save": "Save Changes"
+    },
+    "alerts": {
+      "success": "Information updated successfully!",
+      "fail": "Update failed. Please try again!",
+      "invalidDob": "Invalid date of birth!",
+      "dobFuture": "Date of birth cannot be in the future!",
+      "dobTooOld": "Invalid birth year (must be from 1900 onwards)!"
+    }
+  },
+  "settings": {
+    "title": "Account Settings",
+    "notifications": {
+      "title": "Email Notifications",
+      "desc": "Receive emails about booked tickets and promotions",
+      "alertTemp": "Notification settings updated temporarily."
+    },
+    "language": {
+      "title": "Display Language",
+      "desc": "Customize the system's interface language"
+    },
+    "password": {
+      "title": "Change Password",
+      "desc": "Protect your account with a strong password",
+      "button": "Change Password"
+    },
+    "deleteAccount": {
+      "title": "Delete Account",
+      "desc": "Permanently delete your account and transaction history",
+      "button": "Delete Account",
+      "confirm1": "WARNING: Are you sure you want to PERMANENTLY DELETE this account?",
+      "confirm2": "All booking history will be lost. Are you absolutely sure?",
+      "success": "Account deleted successfully!",
+      "fail": "Failed to delete account!"
+    }
+  },
+  "pwdModal": {
+    "title": "CHANGE PASSWORD",
+    "labels": {
+      "current": "Current Password",
+      "new": "New Password",
+      "confirm": "Confirm New Password"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "submit": "Update"
+    },
+    "alerts": {
+      "mismatch": "New password and confirmation do not match!",
+      "success": "Password changed successfully!",
+      "failDefault": "Incorrect current password!"
+    }
+  }
+}

@@ -35,7 +35,7 @@ public class SeatService {
 
         String roomId = showtime.getRoom().getRoomId();
 
-        // 🛠️ Ép làm mới context để lấy dữ liệu thời gian thực từ SQL Server
+        // ️ ép làm mới context để lấy dữ liệu thời gian thực từ sql server
         seatRepository.flush();
 
         List<Seat> allSeats = seatRepository.findByRoom_RoomId(roomId);
@@ -60,11 +60,11 @@ public class SeatService {
     }
 
     // =========================================================================
-    // 🛠️ LOGIC: GIỮ GHẾ TẠM THỜI TRONG 10 PHÚT (CÓ ÉP FLUSH ĐỂ CHẶN TRANH CHẤP)
+    // ️ logic: giữ ghế tạm thời trong 10 phút (có ép flush để chặn tranh chấp)
     // =========================================================================
     @Transactional
     public void holdSeats(List<String> seatIds) {
-        // 🛠️ Ép ghi nhận/đồng bộ các giao dịch trước đó xuống DB
+        // ️ ép ghi nhận/đồng bộ các giao dịch trước đó xuống db
         seatRepository.flush();
 
         List<Seat> seats = seatRepository.findAllById(seatIds);
@@ -88,13 +88,13 @@ public class SeatService {
 
         seatRepository.saveAll(seats);
 
-        // 🛠️ Ép ghi đè mốc thời gian khóa xuống SQL Server ngay lập tức
+        // ️ ép ghi đè mốc thời gian khóa xuống sql server ngay lập tức
         // Điều này đảm bảo Trình duyệt 2 khi gọi check sẽ dính lỗi chặn ngay lập tức
         seatRepository.flush();
     }
 
     // =========================================================================
-    // 🛠️ LOGIC: GIẢI PHÓNG GHẾ (ROLLBACK) KHI KHÁCH HỦY HOẶC GIAO DỊCH LỖI
+    // ️ logic: giải phóng ghế (rollback) khi khách hủy hoặc giao dịch lỗi
     // =========================================================================
     @Transactional
     public void releaseSeats(List<String> seatIds) {

@@ -18,11 +18,11 @@ public class Notification {
     @Column(name = "noti_id")
     private Long id;
 
-    // 🚀 SỬA LẠI: Dùng NVARCHAR(255) chuẩn của SQL Server để lưu tiêu đề tiếng Việt
+    // sửa lại: dùng nvarchar(255) chuẩn của sql server để lưu tiêu đề tiếng việt
     @Column(name = "noti_title", nullable = false, columnDefinition = "NVARCHAR(255)")
     private String title;
 
-    // 🚀 SỬA LẠI: Dùng NVARCHAR(MAX) chuẩn của SQL Server để lưu nội dung dài vô tư
+    // sửa lại: dùng nvarchar(max) chuẩn của sql server để lưu nội dung dài vô tư
     @Column(name = "noti_message", nullable = false, columnDefinition = "NVARCHAR(MAX)")
     private String message;
 
@@ -34,4 +34,7 @@ public class Notification {
 
     @Column(name = "noti_type", length = 50)
     private String type;
+
+    @Column(name = "user_id")
+    private Long userId;
 }

@@ -22,6 +22,7 @@
     },
     "comingSoon": {
       "title": "Coming Soon",
+      "subtitle": "Anticipate the massive cinematic projects about to hit the box office",
       "status": {
         "loading": "Loading upcoming movies...",
         "empty": "There are currently no upcoming movies scheduled."

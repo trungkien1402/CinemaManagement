@@ -21,6 +21,9 @@ const ShowtimesTab = ({ createShowtimeObj, stForm, setStForm, movies, selectedTh
                showDate.includes(searchLower);
     });
 
+    // Lọc danh sách phim chỉ lấy các phim đang chiếu (status = 1)
+    const nowShowingMovies = movies ? movies.filter(m => m.status === 1) : [];
+
     return (
         <div className="sttab-container tab-view">
             <h2 className="sttab-main-title tab-title">
@@ -31,7 +34,7 @@ const ShowtimesTab = ({ createShowtimeObj, stForm, setStForm, movies, selectedTh
             <form onSubmit={createShowtimeObj} className="sttab-interactive-grid interactive-form-grid">
                 <select value={stForm.movieId} onChange={e => setStForm({...stForm, movieId: e.target.value})} required>
                     <option value="">{t('admin.adminDashboard.showtimesTab.form.steps.step1') || "Bước 1: Chọn phim"}</option>
-                    {movies.map(m => <option key={m.movieId} value={m.movieId}>{m.title}</option>)}
+                    {nowShowingMovies.map(m => <option key={m.movieId} value={m.movieId}>{m.title}</option>)}
                 </select>
                 <select value={selectedTheaterId} onChange={e => setSelectedTheaterId(e.target.value)}>
                     <option value="">{t('admin.adminDashboard.showtimesTab.form.steps.step2') || "Bước 2: Chọn rạp cụm"}</option>
@@ -112,7 +115,7 @@ const ShowtimesTab = ({ createShowtimeObj, stForm, setStForm, movies, selectedTh
                                 <tr key={st.showtimeId}>
                                     <td><code className="sttab-id-code">#{st.showtimeId}</code></td>
                                     <td className="sttab-movie-title"><strong>{st.movie?.title}</strong></td>
-                                    <td><span className="sttab-room-badge">Phòng {st.room?.roomNumber}</span></td>
+                                    <td><span className="sttab-room-badge">{st.room?.roomNumber}</span></td>
                                     <td className="sttab-date-text">{st.showDate}</td>
                                     <td><span className="sttab-time-badge">{st.startTime}</span></td>
                                     <td className="sttab-price-text">{st.ticketPrice?.toLocaleString()}đ</td>

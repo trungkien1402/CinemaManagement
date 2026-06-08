@@ -22,6 +22,7 @@
     },
     "comingSoon": {
       "title": "Phim Sắp Chiếu",
+      "subtitle": "Chờ đón những siêu phẩm điện ảnh bom tấn sắp sửa đổ bộ phòng vé",
       "status": {
         "loading": "Đang tải phim sắp chiếu...",
         "empty": "Hiện tại chưa có lịch phim sắp chiếu."

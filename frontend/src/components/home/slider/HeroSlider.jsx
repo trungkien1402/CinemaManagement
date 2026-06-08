@@ -1,33 +1,42 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom'; // 💡 1. IMPORT HOOK ĐIỀU HƯỚNG
+import { useNavigate } from 'react-router-dom';
 import '../../style/HeroSlider.css';
 import { useTranslation } from 'react-i18next';
 
 const HeroSlider = ({ movies }) => {
   const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const navigate = useNavigate(); // 💡 2. KHỞI TẠO HOOK NAVIGATE
+  const navigate = useNavigate();
 
+  // chuyen den slide tiep theo
   const nextSlide = useCallback(() => {
     if (movies && movies.length > 0) {
       setCurrentIndex((prev) => (prev === movies.length - 1 ? 0 : prev + 1));
     }
   }, [movies]);
 
+  // quay lai slide truoc
+  const prevSlide = useCallback(() => {
+    if (movies && movies.length > 0) {
+      setCurrentIndex((prev) => (prev === 0 ? movies.length - 1 : prev - 1));
+    }
+  }, [movies]);
+
+  // tu dong chuyen slide sau 5 giay
   useEffect(() => {
     if (!movies || movies.length === 0) return;
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
-  }, [nextSlide, movies]);
+  }, [movies, nextSlide]);
 
-  // Hàm phát tín hiệu mở Popup Đặt Vé Nhanh
+  // xu ly dat ve nhanh
   const handleQuickBooking = (movieItem) => {
     if (!movieItem) return;
     const event = new CustomEvent('open-booking-modal', { detail: movieItem });
     window.dispatchEvent(event);
   };
 
-  // 💡 3. HÀM CHUYỂN SANG TRANG CHI TIẾT PHIM TỪ BANNER TOP
+  // xem chi tiet phim
   const handleGoToDetail = (movieItem) => {
     if (!movieItem) return;
     const id = movieItem.movieId || movieItem.id;
@@ -51,7 +60,17 @@ const HeroSlider = ({ movies }) => {
         <div className="hero-overlay-cinema"></div>
       </div>
 
-      {/* Nội dung chữ gọn gàng */}
+      {/* nut trai */}
+      <button className="hero-arrow hero-arrow-left" onClick={prevSlide} aria-label="Phim trước">
+        <i className="fa-solid fa-chevron-left"></i>
+      </button>
+
+      {/* nut phai */}
+      <button className="hero-arrow hero-arrow-right" onClick={nextSlide} aria-label="Phim tiếp theo">
+        <i className="fa-solid fa-chevron-right"></i>
+      </button>
+
+      {/* phan thong tin phim */}
       <div className="hero-slider-content" key={`content-${movie.movieId}`}>
         <div className="hero-slider-tags">
           <span className="hero-tag-status">{t('home.heroSlider.tags.nowShowing')}</span>
@@ -67,11 +86,10 @@ const HeroSlider = ({ movies }) => {
             <i className="far fa-calendar-alt"></i> {movie.release_date ? new Date(movie.release_date).getFullYear() : "2026"}
           </span>
           <span className="hero-separator">|</span>
-          <span className="meta-item">{movie.genre}</span>
+          <span className="meta-item">{movie.genre?.split(',').map(g => t(`genres.${g.trim()}`) || g.trim()).join(', ')}</span>
         </div>
 
         <div className="hero-slider-actions">
-          {/* Nút Đặt Vé Ngay giữ nguyên tính năng bật Popup */}
           <button
             className="hero-btn-red"
             onClick={() => handleQuickBooking(movie)}
@@ -79,7 +97,6 @@ const HeroSlider = ({ movies }) => {
             {t('home.heroSlider.buttons.bookNow')}
           </button>
 
-          {/* 💡 4. ĐÃ GẮN SỰ KIỆN CLICK VÀO NÚT CHI TIẾT */}
           <button
             className="hero-btn-outline"
             onClick={() => handleGoToDetail(movie)}
@@ -89,15 +106,17 @@ const HeroSlider = ({ movies }) => {
         </div>
       </div>
 
+      {/* slider dot indicators */}
       <div className="hero-slider-dots-container">
-        {movies.map((_, index) => (
-          <div 
-            key={index} 
-            className={`hero-dot-bar ${index === currentIndex ? 'active' : ''}`}
-            onClick={() => setCurrentIndex(index)}
-          ></div>
+        {movies.map((item, idx) => (
+          <div
+            key={item.movieId || idx}
+            className={`hero-dot-bar ${idx === currentIndex ? 'active' : ''}`}
+            onClick={() => setCurrentIndex(idx)}
+          />
         ))}
       </div>
+
     </div>
   );
 };

@@ -21,13 +21,14 @@
 
 /* Hiệu ứng nền khi cuộn chuột xuống */
 .navbar-main.scrolled {
-  background: var(--bg-dark);
+  background: rgba(10, 10, 10, 0.85);
   height: 65px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* 🛠️ CẤU TRÚC GRID 3 CỘT: Giúp menu chính nằm CHÍNH GIỮA tuyệt đối */
+/* ️ cấu trúc grid 3 cột: giúp menu chính nằm chính giữa tuyệt đối */
 .nav-container {
   width: 100%;
   max-width: 1440px;
@@ -51,7 +52,7 @@
   color: var(--primary-color);
 }
 
-/* 🛠️ MENU CHÍNH: Căn giữa theo chiều ngang */
+/* ️ menu chính: căn giữa theo chiều ngang */
 .nav-menu {
   display: flex;
   gap: 30px; 
@@ -89,7 +90,7 @@
   width: 100%;
 }
 
-/* 🛠️ KHU VỰC TÍNH NĂNG BÊN PHẢI: Giãn cách hợp lý, nép sát lề phải */
+/* ️ khu vực tính năng bên phải: giãn cách hợp lý, nép sát lề phải */
 .nav-right {
   display: flex;
   align-items: center;
@@ -182,7 +183,7 @@
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  width: 230px;
+  width: 270px;
   background: #161616;
   border-radius: 12px;
   padding: 8px 0;
@@ -210,7 +211,7 @@
   font-weight: 600;
   font-size: 0.9rem;
   color: #fff;
-  word-break: break-all;
+  word-break: normal;
 }
 
 .dropdown-divider {
@@ -273,7 +274,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* 📱 RESPONSIVE - ĐÁP ỨNG CÁC LOẠI MÀN HÌNH */
+/* responsive - đáp ứng các loại màn hình */
 @media (max-width: 1200px) {
   /* Màn hình laptop vừa: thu nhỏ bớt chiều rộng ô tìm kiếm để nhường chỗ */
   .navbar-search-container {

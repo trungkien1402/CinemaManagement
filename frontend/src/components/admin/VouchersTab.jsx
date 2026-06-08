@@ -112,7 +112,8 @@ const VouchersTab = ({ saveVoucherObj, voucherForm, setVoucherForm, vouchers, de
 
                 <div className="vctab-form-item vctab-btn-align-bottom">
                     <button type="submit" className="vctab-submit-btn form-submit-btn-main">
-                        🎁 {t('admin.adminDashboard.vouchersTab.form.buttons.submit') || "Phát Hành Mã Quà Tặng"}
+                        <i className="fa-solid fa-gift"></i>
+                        <span>{t('admin.adminDashboard.vouchersTab.form.buttons.submit') || "Phát Hành Mã Quà Tặng"}</span>
                     </button>
                 </div>
             </form>

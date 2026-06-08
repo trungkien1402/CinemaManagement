@@ -47,18 +47,21 @@
   color: #fff;
 }
 
-/* ==========================================================================
-   💡 ĐÃ THÊM: Đồng bộ nhãn tiêu đề chứa icon giống trang Lịch Chiếu
-   ========================================================================== */
+/* ========================================================================== đã thêm: đồng bộ nhãn tiêu đề chứa icon giống trang lịch chiếu ========================================================================== */
 .figma-filter-label {
   display: flex !important;       /* Ép icon và chữ xếp hàng ngang */
   align-items: center !important; /* Căn giữa icon và chữ theo chiều dọc */
-  gap: 8px !important;            /* Khoảng cách giữa icon và chữ */
   font-size: 0.85rem;
   color: #888;                    /* Giữ màu xám đặc trưng của Modal */
   font-weight: 500;
   text-transform: uppercase;      /* Viết hoa chuẩn modal */
   letter-spacing: 0.5px;
+  margin-bottom: 12px !important; /* Tạo khoảng cách dọc với phần tử bên dưới */
+}
+
+.figma-filter-label i {
+  margin-right: 12px !important;  /* Khoảng cách rộng rãi giữa icon và chữ */
+  font-size: 1.1rem;
 }
 
 /* Khống chế kích thước hình ảnh icon không bị phóng to */
@@ -150,9 +153,7 @@
   border-color: #e50914;
 }
 
-/* ==========================================================================
-   🔥 ĐÃ SỬA CHUẨN: HIỆU ỨNG TƯƠNG TÁC ICON THEO VÙNG TRONG MODAL
-   ========================================================================== */
+/* ========================================================================== đã sửa chuẩn: hiệu ứng tương tác icon theo vùng trong modal ========================================================================== */
 
 /* 1. Khi di chuột vào vùng Chọn Rạp hoặc có nút Rạp đang Active -> Icon rạp đổi sang TRẮNG
 .quick-modal-chip-btn:hover .figma-label-icon,

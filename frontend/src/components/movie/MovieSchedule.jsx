@@ -1,5 +1,4 @@
 import React from 'react';
-import cinemaAddressIcon from '../../assets/cinema address.png';
 import { useTranslation } from 'react-i18next';
 
 const MovieSchedule = ({
@@ -84,7 +83,7 @@ const MovieSchedule = ({
             <div key={idx} className="detail-theater-card-block">
               <h3 className="detail-theater-name">CinemaX {theater.name}</h3>
               <p className="detail-theater-address">
-                <img src={cinemaAddressIcon} alt="" />
+                <i className="fa-solid fa-location-dot" style={{ color: '#ff2c1f', marginRight: '6px' }}></i>
                 {theater.address}
               </p>
 

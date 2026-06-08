@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class BookingService {
     private final SeatRepository seatRepository;
     private final JavaMailSender mailSender;
     private final NotificationService notificationService;
+    private final VoucherRepository voucherRepository;
 
     // =========================================================================
     // CODE ĐẶT VÉ CHÍNH TÍCH HỢP ĐIỂM THƯỞNG
@@ -47,7 +49,7 @@ public class BookingService {
         Showtime showtime = showtimeRepository.findById(request.getShowtimeId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Suất chiếu"));
 
-        // 🚀 BƯỚC 1: XỬ LÝ SỬ DỤNG ĐIỂM GIẢM GIÁ
+        // xử lý sử dụng điểm giảm giá
         int pointsToUse = (request.getPointsToUse() != null) ? request.getPointsToUse() : 0;
         if (user.getPoints() == null) user.setPoints(0);
 
@@ -55,9 +57,48 @@ public class BookingService {
             throw new RuntimeException("Số điểm thưởng không đủ để thực hiện giao dịch!");
         }
 
-        // 1 Điểm = 100 VNĐ. Chia đều mức giảm giá cho tổng số vé đang mua
-        double totalDiscountAmount = pointsToUse * 100.0;
-        double discountPerTicket = request.getSeatIds().isEmpty() ? 0 : totalDiscountAmount / request.getSeatIds().size();
+        // 1. Tính tổng tạm tính trước (subtotal)
+        double baseSubtotal = 0;
+        for (String seatId : request.getSeatIds()) {
+            Seat seat = seatRepository.findById(seatId)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy Ghế"));
+            double basePrice = 30000;
+            try {
+                if (showtime.getTicketPrice() > 0) {
+                    basePrice = showtime.getTicketPrice();
+                }
+            } catch (Exception e) {
+                System.out.println("Lỗi lấy giá suất chiếu, sử dụng giá mặc định 30000");
+            }
+            baseSubtotal += calculateSeatPrice(seat, basePrice);
+        }
+
+        // 2. Tính giảm giá từ Voucher
+        double voucherDiscount = 0;
+        if (request.getVoucherCode() != null && !request.getVoucherCode().trim().isEmpty()) {
+            String cleanCode = request.getVoucherCode().trim().toUpperCase();
+            Voucher voucher = voucherRepository.findById(cleanCode).orElse(null);
+            if (voucher != null) {
+                if (voucher.getExpiryDate() == null || !voucher.getExpiryDate().isBefore(LocalDate.now())) {
+                    if (voucher.getUsedCount() < voucher.getMaxUses()) {
+                        if ("PERCENT".equalsIgnoreCase(voucher.getDiscountType())) {
+                            voucherDiscount = (baseSubtotal * voucher.getDiscountValue()) / 100.0;
+                        } else {
+                            voucherDiscount = voucher.getDiscountValue();
+                        }
+                        if (voucherDiscount > baseSubtotal) {
+                            voucherDiscount = baseSubtotal;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Tính giảm giá từ Điểm
+        double pointsDiscount = pointsToUse * 100.0;
+
+        // 4. Chia đều mức giảm giá cho tổng số vé đang mua
+        double totalDiscountPerTicket = request.getSeatIds().isEmpty() ? 0 : (voucherDiscount + pointsDiscount) / request.getSeatIds().size();
 
         List<Ticket> savedTickets = new ArrayList<>();
         List<String> seatNames = new ArrayList<>();
@@ -72,8 +113,18 @@ public class BookingService {
                 throw new RuntimeException("Ghế " + seat.getSeatNumber() + " đã được đặt!");
             }
 
-            // 🚀 ĐÃ SỬA: Xóa cái basePrice 100k cũ đi. Gọi hàm tính giá vé chuẩn khớp 100% với Frontend!
-            double ticketPrice = calculateSeatPrice(seat) - discountPerTicket;
+            // lấy giá niêm yết từ suất chiếu thay vì fix cứng 30k
+            double basePrice = 30000;
+            try {
+                if (showtime.getTicketPrice() > 0) {
+                    basePrice = showtime.getTicketPrice();
+                }
+            } catch (Exception e) {
+                System.out.println("Lỗi lấy giá suất chiếu, sử dụng giá mặc định 30000");
+            }
+
+            // Truyền basePrice vào hàm để tính toán ghế VIP/Ghế Đôi và trừ đi tổng giảm giá mỗi vé
+            double ticketPrice = calculateSeatPrice(seat, basePrice) - totalDiscountPerTicket;
             if (ticketPrice < 0) ticketPrice = 0; // Chống lỗi âm tiền
 
             grandTotalPaid += ticketPrice; // Cộng dồn để lát tính điểm thưởng
@@ -93,7 +144,7 @@ public class BookingService {
             seatNames.add(seat.getSeatNumber());
         }
 
-        // 🚀 BƯỚC 2: TÍCH ĐIỂM SAU KHI MUA (Cộng lại 5% hóa đơn)
+        // tích điểm sau khi mua (cộng lại 5% hóa đơn)
         int earnedPoints = (int) ((grandTotalPaid * 0.05) / 1000);
 
         // Cập nhật lại số điểm của khách (Điểm cũ - Điểm đã xài + Điểm mới nhận)
@@ -212,18 +263,18 @@ public class BookingService {
         }
     }
 
-    // 🚀 ĐÃ SỬA: Hàm tính giá ghế đã được làm lại cho đồng bộ 100% với Frontend (React)
-    private double calculateSeatPrice(Seat seat) {
-        if (seat == null || seat.getSeatType() == null) return 30000;
+    // hàm tính giá ghế đã nhận thêm tham số baseprice
+    private double calculateSeatPrice(Seat seat, double basePrice) {
+        if (seat == null || seat.getSeatType() == null) return basePrice;
 
         switch (seat.getSeatType().trim().toUpperCase()) {
             case "VIP":
-                return 50000;
+                return basePrice + 20000;
             case "DOUBLE":
             case "DOI":
-                return 100000;
+                return basePrice * 2;
             default:
-                return 30000;
+                return basePrice;
         }
     }
 }

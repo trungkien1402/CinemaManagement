@@ -72,7 +72,7 @@
     width: 85%; 
     margin: 0 auto;
     transform: rotateX(-30deg); 
-    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 6px 25px rgba(255, 61, 0, 0.65);
     text-align: center; 
     font-size: 11px; 
     color: rgba(0,0,0,0.3);
@@ -80,16 +80,62 @@
     letter-spacing: 6px;
     padding-top: 12px;
     border-radius: 50% / 100% 100% 0 0;
+    animation: screenGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes screenGlow {
+  0% {
+    box-shadow: 0 4px 20px rgba(255, 61, 0, 0.45);
+    background: #f8fafc;
+  }
+  100% {
+    box-shadow: 0 8px 32px rgba(255, 61, 0, 0.85);
+    background: #ffffff;
+  }
 }
 
 /* ================= 3. LƯỚI GRID MA TRẬN GHẾ KHÔNG BỊ VỠ HÀNG ================= */
-.seat-grid {
-    display: grid; /* 🌟 QUAN TRỌNG: Chuyển sang Grid thay cho Flexbox */
-    gap: 12px;
-    justify-content: center;
+.seat-layout-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     margin: 0 auto 35px auto;
-    width: auto; /* Xóa bỏ width 450px cứng */
+    width: 100%;
+    align-items: center;
+    overflow-x: auto;
+    max-width: 100%;
     padding: 10px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.seat-layout-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.seat-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    min-width: max-content;
+}
+
+.row-label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #94a3b8;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.row-seats {
+    display: grid;
+    grid-template-columns: repeat(var(--max-cols, 10), 44px);
+    gap: 8px;
+    width: max-content;
+    min-width: max-content;
 }
 
 /* Cấu trúc thiết kế 1 ô ghế 3D cao cấp (Neumorphism) */
@@ -133,9 +179,8 @@
     transform: translateY(-2px); 
 }
 
-/* Ghế Đôi Sweetbox: Chiếm đúng 2 ô cột thẳng hàng không lệch dòng */
+/* Ghế Đôi Sweetbox: Rộng gấp đôi cộng thêm gap */
 .seat-box.double { 
-    grid-column: span 2; /* 🌟 CHIẾM ĐÚNG 2 Ô TRÊN LƯỚI */
     background: linear-gradient(145deg, #dc2626, #7f1d1d); 
     border: 1px solid #991b1b; 
     color: #ffffff; 
@@ -230,10 +275,31 @@
     margin-top: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     width: 100%;
     font-size: 14px;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.confirm-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: rotate(30deg);
+  opacity: 0;
+  transition: none;
+}
+
+.confirm-btn:hover:not(:disabled)::after {
+  opacity: 1;
+  left: 130%;
+  transition: left 0.75s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .confirm-btn:hover:not(:disabled) { 

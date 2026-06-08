@@ -56,9 +56,9 @@ const AnalyticsTab = ({ analytics }) => {
             datasets: [{
                 label: t('admin.adminDashboard.analyticsTab.revenueLabel') || 'Doanh thu (đ)',
                 data: revenueValues,
-                backgroundColor: '#26dc78', 
-                hoverBackgroundColor: '#1a9664', 
-                borderRadius: 4
+                backgroundColor: 'rgba(229, 9, 20, 0.8)', 
+                hoverBackgroundColor: 'rgba(229, 9, 20, 1)', 
+                borderRadius: 6
             }]
         };
     }, [analytics, t]);
@@ -69,7 +69,7 @@ const AnalyticsTab = ({ analytics }) => {
             labels: analytics?.topMovies?.map(m => m.title) || [],
             datasets: [{
                 data: analytics?.topMovies?.map(m => m.ticketsSold) || [],
-                backgroundColor: ['#1bdc7c', '#991b1b', '#404040', '#171717', '#525252'], 
+                backgroundColor: ['#e50914', '#e2b714', '#0ea5e9', '#10b981', '#a855f7', '#f43f5e', '#fb923c', '#94a3b8'], 
                 borderWidth: 1,
                 borderColor: '#121212'
             }]

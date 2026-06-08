@@ -13,9 +13,13 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-    // Lấy toàn bộ danh sách thông báo mới nhất xếp lên đầu
+    // Lấy toàn bộ danh sách thông báo mới nhất xếp lên đầu (chỉ lấy thông báo chung)
     public List<Notification> getAllNotifications() {
-        return notificationRepository.findAllByOrderByCreatedAtDesc();
+        return notificationRepository.findByUserIdIsNullOrderByCreatedAtDesc();
+    }
+
+    public List<Notification> getNotificationsForUser(Long userId) {
+        return notificationRepository.findByUserIdOrUserIdIsNullOrderByCreatedAtDesc(userId);
     }
 
     // Hàm tạo nhanh thông báo từ các logic tính năng khác
@@ -29,9 +33,26 @@ public class NotificationService {
         notificationRepository.save(noti);
     }
 
-    // Đánh dấu toàn bộ thông báo trong hệ thống là đã đọc
+    public void createNotificationForUser(String title, String message, String type, Long userId) {
+        Notification noti = new Notification();
+        noti.setTitle(title);
+        noti.setMessage(message);
+        noti.setType(type);
+        noti.setUserId(userId);
+        noti.setCreatedAt(LocalDateTime.now());
+        noti.setRead(false);
+        notificationRepository.save(noti);
+    }
+
+    // Đánh dấu toàn bộ thông báo chung là đã đọc
     public void markAllAsRead() {
-        List<Notification> list = notificationRepository.findAll();
+        List<Notification> list = notificationRepository.findByUserIdIsNullOrderByCreatedAtDesc();
+        list.forEach(noti -> noti.setRead(true));
+        notificationRepository.saveAll(list);
+    }
+
+    public void markAllAsReadForUser(Long userId) {
+        List<Notification> list = notificationRepository.findByUserIdOrUserIdIsNullOrderByCreatedAtDesc(userId);
         list.forEach(noti -> noti.setRead(true));
         notificationRepository.saveAll(list);
     }

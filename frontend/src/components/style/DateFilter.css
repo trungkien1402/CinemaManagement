@@ -38,7 +38,19 @@
 .date-card.active {
   background: #e50914; /* Đỏ thương hiệu */
   border-color: #e50914;
-  box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3);
+  box-shadow: 0 8px 20px rgba(229, 9, 20, 0.35);
+  animation: activePulse 2s infinite alternate;
+}
+
+@keyframes activePulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+    border-color: #e50914;
+  }
+  100% {
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.65);
+    border-color: #ff4d4d;
+  }
 }
 
 /* Chữ thứ (Th 2, Th 3...) */

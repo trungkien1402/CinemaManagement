@@ -19,7 +19,7 @@ const Home = () => {
         dispatch(fetchMovie());
     }, [dispatch]);
 
-    // 💡 TÁCH BIỆT DỮ LIỆU: Lọc đúng trạng thái từ Database (1: Đang chiếu, 2: Sắp chiếu)
+    // tách biệt dữ liệu: lọc đúng trạng thái từ database (1: đang chiếu, 2: sắp chiếu)
     const nowShowingMovies = listMovies ? listMovies.filter(movie => movie.status === 1) : [];
     const comingSoonMovies = listMovies ? listMovies.filter(movie => movie.status === 2) : [];
 

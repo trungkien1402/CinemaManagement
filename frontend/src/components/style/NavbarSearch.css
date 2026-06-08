@@ -47,7 +47,7 @@
   pointer-events: none; /* Tránh cản trở việc click vào input */
 }
 
-/* 📦 KHUNG DROPDOWN KẾT QUẢ THẢ XUỐNG */
+/* khung dropdown kết quả thả xuống */
 .search-dropdown {
   position: absolute;
   top: calc(100% + 10px);
@@ -96,7 +96,7 @@
   border-bottom: none; /* Dòng cuối cùng xóa đường viền đáy */
 }
 
-/* 🖼️ ẢNH POSTER PHIM NHỎ */
+/* ️ ảnh poster phim nhỏ */
 .search-item-img {
   width: 42px;
   height: 58px;

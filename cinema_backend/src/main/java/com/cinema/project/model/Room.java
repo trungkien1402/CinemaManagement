@@ -21,7 +21,7 @@ public class Room {
     @JsonIgnoreProperties("rooms")
     private Theater theater;
 
-    @Column(name = "room_number")
+    @Column(name = "room_number", columnDefinition = "NVARCHAR(100)")
     private String roomNumber;
 
     @Column(name = "total_seats")

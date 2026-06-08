@@ -1,18 +1,18 @@
 /* ==========================================================================
-   Movie Tab Stylesheet (Prefix: mvtab-)
+   Movie Tab Stylesheet - Cinematic Dark-Tech / Minimalist-UI
    ========================================================================== */
 
 .mvtab-container {
     padding: 30px;
-    background-color: #0d0d0c;
+    background-color: #050505;
     min-height: 100vh;
     color: #e5e5e5;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     box-sizing: border-box;
 }
 
 .mvtab-main-title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 24px;
@@ -27,45 +27,73 @@
     left: 0;
     top: 20%;
     height: 60%;
-    width: 4px;
-    background-color: #26dc78;
-    border-radius: 2px;
+    width: 3px;
+    background-color: #e50914;
+    border-radius: 1px;
 }
 
 /* ==========================================================================
-   Interactive Form Layout (Grid hệ thống nhập liệu)
+   Interactive Form Layout (Grid)
    ========================================================================== */
 .mvtab-interactive-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-    background-color: #141416;
-    border: 1px solid #27272a;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background-color: #0c0c0e;
+    border: 1px solid #1f1f23;
     padding: 24px;
-    border-radius: 16px;
+    border-radius: 12px;
     margin-bottom: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 1024px) {
+    .mvtab-interactive-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .mvtab-interactive-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .mvtab-interactive-grid input,
 .mvtab-interactive-grid select,
 .mvtab-interactive-grid textarea {
-    background-color: #1c1c1e;
-    border: 1px solid #2d2d30;
+    background-color: #161619;
+    border: 1px solid #1f1f23;
     border-radius: 8px;
     padding: 12px 16px;
     color: #ffffff;
     font-size: 14px;
     outline: none;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mvtab-interactive-grid input:focus,
 .mvtab-interactive-grid select:focus,
 .mvtab-interactive-grid textarea:focus {
-    border-color: #26dc78;
-    background-color: #222224;
-    box-shadow: 0 0 0 2px rgba(38, 220, 120, 0.15);
+    border-color: #e50914;
+    background-color: #1a1a1e;
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.15);
+}
+
+.mvtab-form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.mvtab-form-item label {
+    font-size: 12px;
+    color: #8f8f9e;
+    font-weight: 500;
+}
+
+.mvtab-span-all {
+    grid-column: 1 / -1;
 }
 
 /* Các ô trải rộng toàn bộ hàng */
@@ -78,8 +106,8 @@
 /* Nút Submit Form */
 .mvtab-submit-btn {
     grid-column: 1 / -1;
-    background-color: #26dc78;
-    color: #0d0d0c;
+    background-color: #e50914;
+    color: #ffffff;
     font-weight: 700;
     border: none;
     padding: 14px;
@@ -87,22 +115,30 @@
     cursor: pointer;
     font-size: 15px;
     transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 .mvtab-submit-btn:hover {
-    background-color: #1a9664;
-    transform: translateY(-2px);
+    background-color: #b91c1c;
+    transform: translateY(-1px);
+}
+
+.mvtab-submit-btn:active {
+    transform: translateY(0);
 }
 
 /* ==========================================================================
-   Data Table Layout (Danh sách phim)
+   Data Table Layout
    ========================================================================== */
 .mvtab-table-responsive {
     width: 100%;
-    background-color: #141416;
-    border: 1px solid #27272a;
+    background-color: #0c0c0e;
+    border: 1px solid #1f1f23;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 .mvtab-data-table {
@@ -113,18 +149,19 @@
 }
 
 .mvtab-data-table th {
-    background-color: #18181b;
-    color: #a1a1aa;
+    background-color: #121214;
+    color: #8f8f9e;
     font-weight: 600;
     padding: 16px 20px;
-    border-bottom: 2px solid #27272a;
+    border-bottom: 2px solid #1f1f23;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
 }
 
 .mvtab-data-table td {
     padding: 16px 20px;
-    border-bottom: 1px solid #27272a;
+    border-bottom: 1px solid #1f1f23;
     color: #e4e4e7;
     vertical-align: middle;
 }
@@ -134,24 +171,24 @@
 }
 
 .mvtab-data-table tbody tr:hover {
-    background-color: #1f1f23;
+    background-color: #161619;
 }
 
 /* Mã phim */
 .mvtab-id-code {
     font-family: monospace;
-    color: #a1a1aa;
+    color: #8f8f9e;
     font-size: 13px;
 }
 
 /* Ảnh thu nhỏ của phim (Poster) */
 .mvtab-thumbnail-img {
-    width: 48px;
-    height: 68px;
+    width: 44px;
+    height: 62px;
     object-fit: cover;
     border-radius: 6px;
-    border: 1px solid #27272a;
-    background-color: #1c1c1e;
+    border: 1px solid #1f1f23;
+    background-color: #161619;
 }
 
 .mvtab-movie-title {
@@ -160,7 +197,7 @@
 
 /* Badges phân loại */
 .mvtab-badge-format {
-    background-color: rgba(56, 189, 248, 0.1);
+    background-color: rgba(14, 165, 233, 0.1);
     color: #38bdf8;
     padding: 4px 8px;
     border-radius: 4px;
@@ -169,9 +206,9 @@
 }
 
 .mvtab-badge-age {
-    background-color: rgba(235, 94, 40, 0.1);
-    color: #eb5e28;
-    border: 1px solid rgba(235, 94, 40, 0.2);
+    background-color: rgba(226, 183, 20, 0.1);
+    color: #e2b714;
+    border: 1px solid rgba(226, 183, 20, 0.2);
     padding: 2px 6px;
     border-radius: 4px;
     font-weight: 700;
@@ -187,8 +224,8 @@
     border-radius: 12px;
 }
 
-.mvtab-status-badge.green { background-color: rgba(38, 220, 120, 0.15); color: #26dc78; }
-.mvtab-status-badge.yellow { background-color: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+.mvtab-status-badge.green { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+.mvtab-status-badge.yellow { background-color: rgba(226, 183, 20, 0.15); color: #e2b714; }
 .mvtab-status-badge.red { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
 /* Khu vực nút hành động */
@@ -207,10 +244,10 @@
     transition: background-color 0.2s;
 }
 
-.mvtab-action-btn.edit { background-color: #27272a; color: #e4e4e7; }
-.mvtab-action-btn.edit:hover { background-color: #3f3f46; }
+.mvtab-action-btn.edit { background-color: #222226; color: #e4e4e7; border: 1px solid #2e2e33; }
+.mvtab-action-btn.edit:hover { background-color: #2e2e33; }
 
-.mvtab-action-btn.delete { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
+.mvtab-action-btn.delete { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
 .mvtab-action-btn.delete:hover { background-color: #ef4444; color: #ffffff; }
 
 /* ==========================================================================
@@ -229,8 +266,8 @@
 
     .mvtab-data-table tbody tr {
         display: block;
-        background-color: #141416;
-        border: 1px solid #27272a;
+        background-color: #0c0c0e;
+        border: 1px solid #1f1f23;
         border-radius: 12px;
         margin-bottom: 16px;
         padding: 12px 16px;
@@ -241,7 +278,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 10px 0;
-        border-bottom: 1px dashed #27272a;
+        border-bottom: 1px dashed #1f1f23;
         text-align: right;
     }
 
@@ -250,7 +287,7 @@
     /* Tạo nhãn tiêu đề động ở bên trái */
     .mvtab-data-table td::before {
         font-weight: 600;
-        color: #a1a1aa;
+        color: #8f8f9e;
         text-transform: uppercase;
         font-size: 11px;
     }

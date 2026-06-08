@@ -24,12 +24,12 @@ export const useVNPayPayment = () => {
             setProcessing(true);
             const finalAmount = parseInt(totalAmount, 10);
 
-            // 🚀 BÍ QUYẾT LÀ ĐÂY: Kéo dữ liệu đã lưu sẵn (có chứa pointsToUse và voucherCode) ra trước
+            // kéo dữ liệu đã lưu sẵn (có chứa pointstouse và vouchercode) ra trước
             const savedPendingBooking = JSON.parse(localStorage.getItem("pendingBooking")) || {};
 
             // DỮ LIỆU BOOKING CHUẨN ĐỒNG BỘ VỚI BACKEND
             const bookingData = {
-                ...savedPendingBooking, // 🚀 Trộn data cũ vào để không làm mất pointsToUse
+                ...savedPendingBooking, // trộn data cũ vào để không làm mất pointstouse
                 userId: user.userId || user.id, // Hỗ trợ cả 2 kiểu ID cho chắc cốp
                 showtimeId: showtimeId,
                 seatIds: selectedSeats.map((s) => s.seatId),

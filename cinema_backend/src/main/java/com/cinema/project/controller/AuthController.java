@@ -46,6 +46,12 @@ public class AuthController {
         String email = request.get("email");
         if (email == null || email.isEmpty()) return ResponseEntity.badRequest().body("Email không được trống!");
         if (userService.existsByEmail(email)) return ResponseEntity.badRequest().body("Email này đã được đăng ký!");
+
+        String phone = request.get("phone");
+        if (phone != null && !phone.isEmpty() && userService.existsByPhone(phone)) {
+            return ResponseEntity.badRequest().body("Số điện thoại này đã được đăng ký!");
+        }
+
         String otp = String.format("%06d", new Random().nextInt(999999));
         otpCache.put(email, otp);
         emailService.sendOtpEmail(email, otp);
@@ -54,20 +60,30 @@ public class AuthController {
 
     @PostMapping("/register-with-otp")
     public ResponseEntity<?> registerWithOtp(@RequestBody Map<String, Object> request) {
-        String email = String.valueOf(request.get("email"));
-        String otpInput = String.valueOf(request.get("otp"));
-        String savedOtp = otpCache.get(email);
-        if (savedOtp == null || !savedOtp.equals(otpInput)) return ResponseEntity.badRequest().body("Mã OTP không chính xác!");
+        try {
+            String email = String.valueOf(request.get("email"));
+            String otpInput = String.valueOf(request.get("otp"));
+            String savedOtp = otpCache.get(email);
+            if (savedOtp == null || !savedOtp.equals(otpInput)) return ResponseEntity.badRequest().body("Mã OTP không chính xác!");
 
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(String.valueOf(request.get("password")));
-        user.setUsername(String.valueOf(request.get("username")));
-        user.setPhone(String.valueOf(request.get("phone")));
-        user.setGender(String.valueOf(request.get("gender")));
-        userService.registerNewUser(user);
-        otpCache.remove(email);
-        return ResponseEntity.ok("Đăng ký tài khoản thành công!");
+            String phone = String.valueOf(request.get("phone"));
+            if (userService.existsByPhone(phone)) return ResponseEntity.badRequest().body("Số điện thoại này đã được đăng ký!");
+
+            String username = String.valueOf(request.get("username"));
+            if (userRepository.existsByUsername(username)) return ResponseEntity.badRequest().body("Tên tài khoản này đã tồn tại!");
+
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(String.valueOf(request.get("password")));
+            user.setUsername(username);
+            user.setPhone(phone);
+            user.setGender(String.valueOf(request.get("gender")));
+            userService.registerNewUser(user);
+            otpCache.remove(email);
+            return ResponseEntity.ok("Đăng ký tài khoản thành công!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi đăng ký: " + e.getMessage());
+        }
     }
 
     @PostMapping("/login")
@@ -93,7 +109,7 @@ public class AuthController {
         response.put("phone", user.getPhone());
         response.put("gender", user.getGender());
         response.put("role", user.getRole());
-        // 🚀 ĐÃ BỔ SUNG TRẢ VỀ AVATAR
+        // đã bổ sung trả về avatar
         response.put("avatarUrl", user.getAvatarUrl());
 
         return ResponseEntity.ok(response);

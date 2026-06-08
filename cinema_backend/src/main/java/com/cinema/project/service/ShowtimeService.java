@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays; // bổ sung thư viện này để xử lý dấu phẩy
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,22 +26,29 @@ public class ShowtimeService {
     private final TicketRepository ticketRepository;
     private final MovieRepository movieRepository;
     private final RoomRepository roomRepository;
+    private final MovieFavoriteRepository movieFavoriteRepository;
+    private final NotificationService notificationService;
 
-    // 1. Logic lọc suất chiếu theo cụm rạp và ngày cho Client
+    // ==============================================================================
+    // 1. dạy backend cách hiểu nhiều id rạp cùng lúc (vd: "r01,r02,r03")
+    // ==============================================================================
     public List<Showtime> getShowtimesByFilter(String theaterId, LocalDate date) {
-        List<Showtime> allShowtimes = showtimeRepository.findAll();
+        // Trường hợp 1: Chọn Tất cả, không phân biệt tỉnh
+        if (theaterId == null || theaterId.trim().isEmpty() || "all".equalsIgnoreCase(theaterId.trim())) {
+            return showtimeRepository.findByShowDate(date);
+        }
 
-        if ("all".equalsIgnoreCase(theaterId)) {
-            return allShowtimes.stream()
-                    .filter(st -> st.getShowDate() != null && st.getShowDate().equals(date))
-                    .collect(Collectors.toList());
-        } else {
-            return allShowtimes.stream()
-                    .filter(st -> st.getShowDate() != null && st.getShowDate().equals(date)
-                            && st.getRoom() != null && st.getRoom().getTheater() != null
-                            && theaterId.equalsIgnoreCase(st.getRoom().getTheater().getTheaterId()))
+        // Trường hợp 2: Gửi danh sách các rạp thuộc 1 tỉnh (Có chứa dấu phẩy)
+        if (theaterId.contains(",")) {
+            List<String> ids = Arrays.asList(theaterId.split(","));
+            return showtimeRepository.findByShowDate(date).stream()
+                    .filter(st -> st.getRoom() != null && st.getRoom().getTheater() != null
+                            && ids.contains(st.getRoom().getTheater().getTheaterId()))
                     .collect(Collectors.toList());
         }
+
+        // Trường hợp 3: Chọn đúng 1 rạp cụ thể
+        return showtimeRepository.findByRoom_Theater_TheaterIdAndShowDate(theaterId, date);
     }
 
     // 2. Logic lấy sơ đồ ghế và ánh xạ sang SeatResponse cho Client
@@ -62,7 +70,7 @@ public class ShowtimeService {
         return showtimeRepository.findAll();
     }
 
-    // 4. Admin tạo mới suất chiếu (Xử lý bóc tách payload)
+    // 4. Admin tạo mới suất chiếu
     @Transactional
     public Showtime createShowtime(Map<String, Object> payload) {
         Showtime showtime = new Showtime();
@@ -77,16 +85,40 @@ public class ShowtimeService {
         showtime.setStartTime(LocalTime.parse(payload.get("startTime").toString()));
         showtime.setTicketPrice(Double.parseDouble(payload.get("ticketPrice").toString()));
 
-        return showtimeRepository.save(showtime);
+        Showtime savedShowtime = showtimeRepository.save(showtime);
+
+        // Gửi thông báo đến những người dùng yêu thích phim này
+        try {
+            var movie = savedShowtime.getMovie();
+
+            // Gửi thông báo chung cho toàn hệ thống
+            String globalTitle = "Lịch chiếu mới: " + movie.getTitle() + " 🍿";
+            String globalMessage = "Phim \"" + movie.getTitle() + "\" đã có suất chiếu mới vào ngày " 
+                + savedShowtime.getShowDate() + " lúc " + savedShowtime.getStartTime() + ". Đặt vé ngay!";
+            notificationService.createNotification(globalTitle, globalMessage, "MOVIE");
+
+            var favorites = movieFavoriteRepository.findByMovie_MovieId(movieId);
+            for (var fav : favorites) {
+                String title = "Suất chiếu mới cho phim: " + movie.getTitle() + " 🍿";
+                String message = "Phim \"" + movie.getTitle() + "\" bạn yêu thích đã có suất chiếu mới vào ngày " 
+                    + savedShowtime.getShowDate() + " lúc " + savedShowtime.getStartTime() 
+                    + " tại " + (savedShowtime.getRoom() != null && savedShowtime.getRoom().getTheater() != null ? savedShowtime.getRoom().getTheater().getName() : "rạp") 
+                    + " (Phòng " + (savedShowtime.getRoom() != null ? savedShowtime.getRoom().getRoomNumber() : "") + ").";
+                notificationService.createNotificationForUser(title, message, "MOVIE", fav.getUser().getUserId());
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tạo thông báo cho người dùng yêu thích phim: " + e.getMessage());
+        }
+
+        return savedShowtime;
     }
 
-    // 5. Admin lấy báo cáo thống kê doanh thu & biểu đồ tổng quan
+    // 5. Admin lấy báo cáo thống kê doanh thu & biểu đồ
     public Map<String, Object> getAdminAnalyticsSummary() {
         Map<String, Object> stats = new HashMap<>();
         stats.put("totalRevenue", ticketRepository.calculateTotalRevenue());
         stats.put("totalTickets", ticketRepository.countAllTickets());
 
-        // Lấy dữ liệu doanh thu theo từng tháng của năm hiện tại
         int currentYear = LocalDate.now().getYear();
         List<Object[]> rawMonthlyData = ticketRepository.findMonthlyRevenue(currentYear);
         List<Map<String, Object>> formattedMonthlyList = new ArrayList<>();
@@ -100,18 +132,12 @@ public class ShowtimeService {
         }
         stats.put("monthlyData", formattedMonthlyList);
 
-        // Lấy dữ liệu danh sách phim ăn khách nhất
         List<Object[]> rawTopMovies = ticketRepository.findTopMovies();
         List<Map<String, Object>> topMoviesList = rawTopMovies.stream().map(row -> {
             Map<String, Object> movieMap = new HashMap<>();
             movieMap.put("title", row[0] != null ? row[0].toString() : "Phim ẩn danh");
-
-            long ticketsSold = row[1] != null ? ((Number) row[1]).longValue() : 0L;
-            movieMap.put("ticketsSold", ticketsSold);
-
-            double revenue = row[2] != null ? ((Number) row[2]).doubleValue() : 0.0;
-            movieMap.put("revenue", revenue);
-
+            movieMap.put("ticketsSold", row[1] != null ? ((Number) row[1]).longValue() : 0L);
+            movieMap.put("revenue", row[2] != null ? ((Number) row[2]).doubleValue() : 0.0);
             return movieMap;
         }).collect(Collectors.toList());
         stats.put("topMovies", topMoviesList);

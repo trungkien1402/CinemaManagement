@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import cinemaAddressIcon from '../../assets/cinema address.png';
-import calendarIcon from '../../assets/calendar.png';
 import '../style/MovieSchedule.css';
 import { useTranslation } from 'react-i18next';
+import PageHero from '../shared/PageHero';
 
 const MovieSchedule = () => {
   const { t } = useTranslation();
@@ -48,7 +47,7 @@ const MovieSchedule = () => {
   const [showtimes, setShowtimes] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 💡 STATE MỚI: Chọn Tỉnh/Thành phố
+  // state mới: chọn tỉnh/thành phố
   const [selectedCity, setSelectedCity] = useState('all');
 
   useEffect(() => {
@@ -89,7 +88,7 @@ const MovieSchedule = () => {
     if (showtimeId) navigate(`/dat-ve/${showtimeId}`);
   };
 
-  // 💡 LỌC DỮ LIỆU ĐỊA ĐIỂM
+  // lọc dữ liệu địa điểm
   const cities = ['all', ...new Set(theaters.map(t => t.city).filter(Boolean))];
   const filteredTheaters = selectedCity === 'all'
     ? theaters
@@ -106,7 +105,13 @@ const MovieSchedule = () => {
   const safeShowtimes = Array.isArray(showtimes) ? showtimes : [];
   const groupSchedules = {};
 
-  safeShowtimes.forEach(st => {
+  // Lọc danh sách suất chiếu theo tỉnh/thành đã chọn
+  const filteredShowtimes = safeShowtimes.filter(st => {
+    if (selectedCity === 'all') return true;
+    return st.room?.theater?.city === selectedCity;
+  });
+
+  filteredShowtimes.forEach(st => {
     if (!st || !st.movie || st.movie.status !== 1) return;
 
     const mId = st.movie.movieId || st.movie.id;
@@ -134,18 +139,19 @@ const MovieSchedule = () => {
   const processedMoviesList = Object.values(groupSchedules);
 
   return (
-    <div className="figma-booking-wrapper">
+    <div className="figma-booking-wrapper" style={{ padding: '0 0 60px 0' }}>
+      <PageHero 
+        title={t('home.schedule.title') || "Lịch Chiếu Phim"}
+        subtitle={t('home.schedule.subtitle') || "Xem lịch chiếu phim nhanh nhất, đặt vé dễ dàng nhất"}
+      />
       <div className="figma-container">
 
-        <h1 className="figma-main-title">{t('home.schedule.title')}</h1>
-        <p className="figma-sub-title">{t('home.schedule.subtitle')}</p>
-
-        {/* 💡 BỘ LỌC TỈNH/THÀNH VÀ RẠP KẾT HỢP (ĐÃ FIX CÚ PHÁP) */}
+        {/* bộ lọc tỉnh/thành và rạp kết hợp (đã fix cú pháp) */}
         <div className="figma-filter-group" style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
           
           {/* Chọn Tỉnh/Thành */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <span className="figma-filter-label"> {t('home.schedule.filters.cityLabel')}</span>
+            <label className="figma-filter-label"> {t('home.schedule.filters.cityLabel')}</label>
             <select
               value={selectedCity}
               onChange={handleCityChange}
@@ -160,10 +166,11 @@ const MovieSchedule = () => {
 
           {/* Chọn Rạp theo Tỉnh/Thành đã lọc */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
-            <span className="figma-filter-label">
-              <img src={cinemaAddressIcon} alt="Cinema Icon" className="figma-label-icon" style={{ width: '16px', marginRight: '6px' }} /> 
+            <label className="figma-filter-label">
+              <i className="fa-solid fa-location-dot" style={{ color: '#ff2c1f', marginRight: '12px' }}></i> 
+              <span>&nbsp;&nbsp;</span>
               {t('home.schedule.filters.theaterLabel')}
-            </span>
+            </label>
             <div className="figma-cinema-row">
               {filteredTheaters.map((theater) => {
                 const tId = theater.theaterId || theater.theater_id || 'all';
@@ -184,10 +191,11 @@ const MovieSchedule = () => {
 
         {/* Chọn Ngày */}
         <div className="figma-filter-group" style={{ marginTop: '24px' }}>
-          <span className="figma-filter-label">
-            <img src={calendarIcon} alt="Calendar Icon" className="figma-label-icon" style={{ width: '16px', marginRight: '6px' }} /> 
+          <label className="figma-filter-label">
+            <i className="fa-regular fa-calendar-days" style={{ color: '#ff2c1f', marginRight: '12px' }}></i> 
+            <span>&nbsp;&nbsp;</span>
             {t('home.schedule.filters.dateLabel')}
-          </span>
+          </label>
 
           <div className="figma-date-row">
             {datesData.map((dateItem) => (
@@ -217,9 +225,9 @@ const MovieSchedule = () => {
                   <h2 className="figma-movie-title">{movie.title}</h2>
 
                   <div className="figma-movie-meta">
-                    <span className="figma-star">⭐ 8.5</span>
+                    <span className="figma-star"><i className="fa-solid fa-star" style={{ color: '#ffc107', marginRight: '4px' }}></i>8.5</span>
                     <span>{movie.duration} {t('home.schedule.movieMeta.minutes')}</span>
-                    <span>{movie.genre}</span>
+                    <span>{movie.genre?.split(',').map(g => t(`genres.${g.trim()}`) || g.trim()).join(', ')}</span>
                   </div>
 
                   {Object.values(theaters).map((tData, idx) => (
@@ -235,13 +243,11 @@ const MovieSchedule = () => {
                           gap: '6px'            
                         }}
                       >
-                        <img 
-                          src={cinemaAddressIcon} 
-                          alt="Cinema Address" 
+                        <i 
+                          className="fa-solid fa-location-dot" 
                           style={{ 
-                            width: '16px',      
-                            height: '16px', 
-                            objectFit: 'contain' 
+                            color: '#ff2c1f',      
+                            marginRight: '4px' 
                           }} 
                         />
                         <span>

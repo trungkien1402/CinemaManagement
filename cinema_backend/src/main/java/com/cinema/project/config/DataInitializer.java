@@ -18,7 +18,7 @@ public class DataInitializer implements CommandLineRunner {
         try {
             String adminEmail = "admin@gmail.com";
 
-            // 💡 SỬA LỖI: Chỉ kiểm tra xem admin đã tồn tại hay chưa, TUYỆT ĐỐI KHÔNG XÓA
+            // kiem tra admin
             boolean adminExists = userRepository.findAll().stream()
                     .anyMatch(u -> adminEmail.equalsIgnoreCase(u.getEmail()));
 

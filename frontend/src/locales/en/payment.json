@@ -6,7 +6,10 @@
       "failed": "Transaction failed! System error code: VNP_{{code}}",
       "noPendingData": "Temporary ticket data not found (The transaction might have already been processed).",
       "success": "Payment successful! Your movie ticket has been initialized in the system.",
-      "systemError": "System error occurred during data initialization!"
+      "systemError": "System error occurred during data initialization!",
+      "processing": "Processing",
+      "successTitle": "Success",
+      "failedTitle": "Failed"
     },
     "buttons": {
       "viewTicket": "Go to My Tickets",

@@ -31,13 +31,13 @@ public class User {
     @Column(name = "phone", nullable = false, unique = true, length = 12)
     private String phone;
 
-    @Column(name = "gender", length = 10)
+    @Column(name = "gender", columnDefinition = "NVARCHAR(10)")
     private String gender;
 
     @Column(name = "role", nullable = false, length = 20)
     private String role;
 
-    @Column(name = "full_name", length = 100)
+    @Column(name = "full_name", columnDefinition = "NVARCHAR(100)")
     private String fullName;
 
     @Column(name = "date_of_birth")
@@ -53,7 +53,7 @@ public class User {
     @Column(name = "avatar_url", columnDefinition = "NVARCHAR(MAX)")
     private String avatarUrl;
 
-    // 🚀 CỘT LƯU TRỮ ĐIỂM THƯỞNG
+    // cột lưu trữ điểm thưởng
     @Column(name = "points", columnDefinition = "int default 0")
     private Integer points = 0;
 }

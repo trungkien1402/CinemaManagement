@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-
-import cinemaAddressIcon from '../../assets/cinema address.png';
-import phoneIcon from '../../assets/phone-call.png';
-import clockIcon from '../../assets/clock.png';
+import PageHero from '../shared/PageHero';
 
 import '../style/Theaters.css';
 
@@ -42,13 +39,14 @@ const Theaters = () => {
     : theaters.filter(t => (t.city === selectedCity || t.location === selectedCity));
 
   return (
-    <div className="theaters-wrapper">
-      <div className="theaters-header">
-        <h1>{t('theaters.header.title') || "Hệ Thống Rạp"}</h1>
-        <p>{t('theaters.header.subtitle') || "Hệ thống rạp chiếu phim hiện đại trên toàn quốc"}</p>
-
-        <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-start' }}>
-          {/* 💡 ĐÃ SỬA: Bỏ sạch style rác, chỉ dùng đúng className này */}
+    <div className="theaters-page-container">
+      <PageHero 
+        title={t('theaters.header.title') || "Hệ Thống Rạp"}
+        subtitle={t('theaters.header.subtitle') || "Hệ thống rạp chiếu phim hiện đại trên toàn quốc"}
+      />
+      <div className="theaters-wrapper" style={{ paddingTop: '0' }}>
+        <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'flex-start' }}>
+          {/* bỏ sạch style rác, chỉ dùng đúng classname này */}
           <select
             className="city-filter-select"
             value={selectedCity}
@@ -60,7 +58,6 @@ const Theaters = () => {
             ))}
           </select>
         </div>
-      </div>
 
       <div className="theaters-grid" style={{ marginTop: '30px' }}>
         {filteredTheaters.length > 0 ? filteredTheaters.map((theater, index) => {
@@ -90,31 +87,19 @@ const Theaters = () => {
                 <h2 className="theater-name">{theater.name.startsWith('CinemaX') ? theater.name : `CinemaX ${theater.name}`}</h2>
 
                 <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '12px' }}>
-                  <img
-                    src={cinemaAddressIcon}
-                    alt="Address"
-                    style={{ width: '18px', height: '18px', objectFit: 'contain', marginTop: '2px' }}
-                  />
+                  <i className="fa-solid fa-location-dot" style={{ color: '#ff2c1f', fontSize: '16px', marginTop: '4px', width: '18px', textAlign: 'center' }}></i>
                   <span style={{ whiteSpace: 'pre-line', flex: 1 }}>
                     {fullAddress}
                   </span>
                 </div>
 
                 <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                  <img
-                    src={phoneIcon}
-                    alt="Phone"
-                    style={{ width: '18px', height: '18px', objectFit: 'contain' }}
-                  />
+                  <i className="fa-solid fa-phone" style={{ color: '#ff2c1f', fontSize: '15px', width: '18px', textAlign: 'center' }}></i>
                   <span>{theater.phone || t('theaters.card.fallbackPhone') || "1900 xxxx"}</span>
                 </div>
 
                 <div className="theater-detail-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <img 
-                    src={clockIcon} 
-                    alt="Clock" 
-                    style={{ width: '18px', height: '18px', objectFit: 'contain' }} 
-                  />
+                  <i className="fa-regular fa-clock" style={{ color: '#ff2c1f', fontSize: '15px', width: '18px', textAlign: 'center' }}></i>
                   <span>{theater.operatingHours || t('theaters.card.fallbackHours') || "8:00 - 23:30 hàng ngày"}</span>
                 </div>
 
@@ -123,7 +108,7 @@ const Theaters = () => {
                   <div className="amenities-tags">
                     {displayAmenities.map((amenity, idx) => (
                       <span className="amenity-tag" key={idx}>
-                        <span className="star">⭐</span> {amenity}
+                        <i className="fa-solid fa-star star" style={{ color: '#ffc107', marginRight: '4px' }}></i> {amenity}
                       </span>
                     ))}
                   </div>
@@ -133,7 +118,7 @@ const Theaters = () => {
                   <button className="btn-primary-theater" onClick={() => handleViewSchedule(theater.theaterId)}>
                     {t('theaters.buttons.viewSchedule') || "Xem Lịch Chiếu"}
                   </button>
-                  <button className="btn-secondary-theater" onClick={() => window.open(theater.mapLink || 'https://maps.google.com', '_blank')}>
+                  <button className="btn-secondary-theater" onClick={() => window.open(theater.mapLink || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((theater.name.startsWith('CinemaX') ? theater.name : 'CinemaX ' + theater.name) + ' ' + fullAddress)}`, '_blank')}>
                     {t('theaters.buttons.directions') || "Chỉ Đường"}
                   </button>
                 </div>
@@ -147,7 +132,8 @@ const Theaters = () => {
         )}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Theaters;

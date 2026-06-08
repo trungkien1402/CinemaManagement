@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import calendarIcon from '../../assets/calendar.png';
-import suatChieu from '../../assets/popcorn.png';
-import filmIcon from '../../assets/film.png';
-import seatIcon from '../../assets/cinema seat.png';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -87,11 +83,7 @@ const BookingHistory = () => {
                     gap: '10px',
                     fontSize: '24px'
                 }}>
-                    <img 
-                        src={filmIcon} 
-                        alt="Film Icon" 
-                        style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
-                    />
+                    <i className="fa-solid fa-receipt" style={{ color: '#ff3333', fontSize: '24px' }}></i>
                     {t('auth.history.title') || "LỊCH SỬ ĐẶT VÉ CỦA BẠN"}
                 </h2>
 
@@ -142,27 +134,27 @@ const BookingHistory = () => {
 
                                     {/* 1. NGÀY ĐẶT */}
                                     <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
-                                        <img src={calendarIcon} alt="Calendar" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                        <i className="fa-regular fa-calendar-days" style={{ color: '#ffcc00', fontSize: '14px', width: '16px', textAlign: 'center' }}></i>
                                         <span>{t('auth.history.card.bookingDate') || "Ngày đặt:"} <strong>{formatDateTime(ticket.bookingDate)}</strong></span>
                                     </p>
 
                                     {/* 2. SUẤT CHIẾU */}
                                     <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
-                                        <img src={suatChieu} alt="Showtime" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                        <i className="fa-regular fa-clock" style={{ color: '#ffcc00', fontSize: '14px', width: '16px', textAlign: 'center' }}></i>
                                         <span>{t('auth.history.card.showtimeId') || "Suất chiếu:"} <strong>{ticket.showtime?.startTime || `ID: ${ticket.showtime?.showtimeId}`}</strong></span>
                                     </p>
 
                                     {/* 3. PHIM */}
                                     {ticket.showtime?.movie && (
                                         <p style={{ margin: '8px 0', color: '#ffcc00', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
-                                            <img src={filmIcon} alt="Movie" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                            <i className="fa-solid fa-clapperboard" style={{ color: '#ffcc00', fontSize: '14px', width: '16px', textAlign: 'center' }}></i>
                                             <span>{t('auth.history.card.movie') || "Phim:"} <strong style={{ color: '#fff' }}>{ticket.showtime.movie.title}</strong></span>
                                         </p>
                                     )}
 
                                     {/* 4. GHẾ */}
                                     <p style={{ margin: '8px 0', color: '#ccc', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
-                                        <img src={seatIcon} alt="Seat" className="figma-label-icon" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                        <i className="fa-solid fa-chair" style={{ color: '#ffcc00', fontSize: '14px', width: '16px', textAlign: 'center' }}></i>
                                         <span>{t('auth.history.card.seat') || "Ghế số:"} <span style={{ color: '#fff', fontWeight: 'bold', background: '#333', padding: '2px 6px', borderRadius: '4px', marginLeft: '4px' }}>{ticket.seat?.seatNumber || ticket.seat?.seatId || 'Chưa rõ'}</span></span>
                                     </p>
                                 </div>

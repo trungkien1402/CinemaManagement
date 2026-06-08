@@ -13,6 +13,17 @@
       "myProfile": "Hồ sơ của tôi",
       "bookingHistory": "Lịch sử đặt vé",
       "logout": "Đăng xuất"
+    },
+    "notifications": {
+      "title": "Thông báo mới",
+      "readAll": "Đọc tất cả",
+      "empty": "Không có thông báo nào"
+    },
+    "search": {
+      "placeholder": "Tìm tên phim...",
+      "noResult": "Không tìm thấy phim nào 😢",
+      "movieDefault": "Phim",
+      "minutes": "phút"
     }
   },
   "footer": {

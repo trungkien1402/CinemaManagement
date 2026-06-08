@@ -34,7 +34,7 @@ const PaymentSuccess = () => {
             const responseCode = query.get("vnp_ResponseCode");
             const orderInfo = query.get("vnp_OrderInfo");
             
-            // 🔍 ĐỌC DỮ LIỆU ĐỒNG BỘ TỪ LOCAL STORAGE
+            // đọc dữ liệu đồng bộ từ local storage
             const localData = localStorage.getItem("pendingBooking");
             console.log("=== MÃ PHẢN HỒI VNPAY ===", responseCode);
             console.log("=== DỮ LIỆU LOCAL STORAGE THÔ ===", localData);
@@ -64,7 +64,7 @@ const PaymentSuccess = () => {
                 let seatIds = [];
                 let showtimeId = "";
 
-                // 👉 Hướng xử lý ưu tiên 1: Lấy từ Local Storage (Sửa đổi tên trường khớp 100% với dữ liệu thô)
+                // hướng xử lý ưu tiên 1: lấy từ local storage (sửa đổi tên trường khớp 100% với dữ liệu thô)
                 if (bookingData) {
                     showtimeId = bookingData.showtimeId || "";
                     if (bookingData.seatIds && Array.isArray(bookingData.seatIds)) {
@@ -74,7 +74,7 @@ const PaymentSuccess = () => {
                     }
                 } 
                 
-                // 👉 Hướng xử lý ưu tiên 2 (Dự phòng cực kỳ an toàn): Bóc tách chuỗi từ vnp_OrderInfo trên URL
+                // hướng xử lý ưu tiên 2 (dự phòng cực kỳ an toàn): bóc tách chuỗi từ vnp_orderinfo trên url
                 if (seatIds.length === 0 && orderInfo) {
                     console.log("Thử thách bóc tách thông tin từ vnp_OrderInfo URL:", orderInfo);
                     try {
@@ -89,7 +89,7 @@ const PaymentSuccess = () => {
                     }
                 }
 
-                // 🛠️ THỰC THI GỌI API NHẢ GHẾ KHẨN CẤP
+                // ️ thực thi gọi api nhả ghế khẩn cấp
                 if (seatIds.length > 0 && showtimeId) {
                     console.log("💥 [KÍCH HOẠT] Tiến hành nhả các ghế dưới DB lập tức:", seatIds);
                     try {
@@ -209,7 +209,7 @@ const PaymentSuccess = () => {
                     fontSize: '18px', fontWeight: '600', margin: 0, lineHeight: '1.5',
                     color: processing ? '#ffc107' : isSuccess ? '#28a745' : '#dc3545'
                 }}>
-                    {processing ? "Đang xử lý" : isSuccess ? "Thành công" : "Thất bại"}
+                    {processing ? (t('payment.status.processing') || "Đang xử lý") : isSuccess ? (t('payment.status.successTitle') || "Thành công") : (t('payment.status.failedTitle') || "Thất bại")}
                 </h3>
                 
                 <p style={{ fontSize: '14px', color: '#aaa', marginTop: '10px', marginBottom: 0, lineHeight: '1.4' }}>

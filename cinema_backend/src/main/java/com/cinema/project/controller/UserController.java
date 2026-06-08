@@ -50,7 +50,13 @@ public class UserController {
                 user.setFullName(updates.get("fullName").toString());
             }
             if (updates.containsKey("phone") && updates.get("phone") != null) {
-                user.setPhone(updates.get("phone").toString());
+                String newPhone = updates.get("phone").toString().trim();
+                if (!newPhone.equals(user.getPhone())) {
+                    if (userRepository.existsByPhone(newPhone)) {
+                        return ResponseEntity.badRequest().body("Số điện thoại này đã được đăng ký bởi tài khoản khác!");
+                    }
+                }
+                user.setPhone(newPhone);
             }
             if (updates.containsKey("dateOfBirth") && updates.get("dateOfBirth") != null) {
                 user.setDateOfBirth(updates.get("dateOfBirth").toString());
@@ -112,7 +118,7 @@ public class UserController {
         }
     }
 
-    // 🚀 API UPDATE AVATAR DÙNG JSON BASE64
+    // api update avatar dùng json base64
     @PutMapping("/users/update-avatar/{id}")
     public ResponseEntity<?> updateAvatar(@PathVariable Long id, @RequestBody Map<String, String> request) {
         try {

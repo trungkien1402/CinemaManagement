@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (user.role !== 'ROLE_ADMIN') {
-    // 💡 BỌC ĐA NGÔN NGỮ CHO KHỐI THÔNG BÁO QUYỀN HẠN TẠI ĐÂY
+    // bọc đa ngôn ngữ cho khối thông báo quyền hạn tại đây
     alert(t('admin.adminDashboard.alerts.accessDenied'));
     return <Navigate to="/" replace />;
   }

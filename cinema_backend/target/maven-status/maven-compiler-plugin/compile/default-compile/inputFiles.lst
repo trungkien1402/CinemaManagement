@@ -1,75 +1,79 @@
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Room.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\AppConstants.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminCinemaService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\services\UserDetailsServiceImpl.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\ShowtimeController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\ReviewController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\TheaterController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\LoginRequest.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MovieController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\UserService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\NotificationController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminCinemaController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Showtime.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\NewsRequest.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\TheaterService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Theater.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\NewsController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\VnpayController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\BookingController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ShowtimeRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ReportRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\UserController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NewsService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NotificationService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminMovieService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Report.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MovieResponse.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminBookingController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ReviewRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\SeatRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\VoucherController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Review.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\MovieService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\MovieRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\jwt\AuthTokenFilter.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\RoomService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\VoucherService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Movie.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\exceptions\GlobalExceptionHendler.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Payment.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\BookingRequest.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\BookingService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\JwtResponse.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ShowtimeService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MoviePublicController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\SeatResponse.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\RoomCreationRequest.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\EmailService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Ticket.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminBookingService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\UserRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\SeatService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Notification.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\NotificationRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\VnpayConfig.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\AppConfig.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\SecurityConfig.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AuthController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminMovieController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\User.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Seat.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\TicketRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\TheaterRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\TicketService.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Booking.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MessageResponse.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Voucher.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\DateUtils.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\DataInitializer.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\VoucherRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\CinemaBackendApplication.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\RoomRepository.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\SeatController.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\jwt\JwtUtils.java
-D:\BTL_JAVA\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ReportService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\FileController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Report.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\ReviewController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\ShowtimeController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\SeatService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\TheaterRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminBookingController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Room.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\SecurityConfig.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\RoomCreationRequest.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NewsService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\User.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ReviewRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\VoucherRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Ticket.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\MovieFavoriteRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\CinemaBackendApplication.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\NotificationRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminMovieController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ShowtimeService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MessageResponse.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MoviePublicController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminMovieService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\VnpayConfig.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\services\UserDetailsServiceImpl.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ReportRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\LoginRequest.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\NewsController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\AppConfig.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\exceptions\GlobalExceptionHendler.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\BookingController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\MovieRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\MovieFavorite.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminBookingService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\VnpayController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\UserRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\TicketService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\SeatController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\ShowtimeRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\UserService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\BookingRequest.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Notification.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Theater.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\config\DataInitializer.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Payment.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Seat.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\RoomRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\RoomService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MovieController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\SeatResponse.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\TheaterController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\TheaterService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\SeatRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\AppConstants.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\EmailService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\UserController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\repositories\TicketRepository.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\util\DateUtils.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\VoucherController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Movie.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\jwt\AuthTokenFilter.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\NotificationService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\NotificationController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\JwtResponse.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\AdminCinemaService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\BookingService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\VoucherService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AuthController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Showtime.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\request\NewsRequest.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Booking.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\security\jwt\JwtUtils.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\MovieFavoriteController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Voucher.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\MovieService.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\model\Review.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\payload\response\MovieResponse.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\controller\AdminCinemaController.java
+C:\Users\MINH TRIEN\OneDrive\Desktop\CinemaManagement\cinema_backend\src\main\java\com\cinema\project\service\ReportService.java

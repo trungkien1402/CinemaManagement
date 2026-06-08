@@ -35,7 +35,7 @@ const MovieCard = ({ movie }) => {
           <span>{year}</span>
         </div>
 
-        {/* 💡 LỚP PHỦ KÍNH MỜ THANH LỊCH */}
+        {/* lớp phủ kính mờ thanh lịch */}
         <div className="poster-overlay">
           <span className="overlay-text">{t('home.shared.movieCard.viewDetail')}</span>
         </div>
@@ -43,7 +43,7 @@ const MovieCard = ({ movie }) => {
 
       <div className="movie-info">
         <h3 className="title" onClick={handleGoToDetail}>{title}</h3>
-        <p className="genre">{genre}</p>
+        <p className="genre">{genre?.split(',').map(g => t(`genres.${g.trim()}`) || g.trim()).join(', ')}</p>
 
         {movie.status !== 2 && (
           <button className="btn-book" onClick={handleOpenModal}>

@@ -1,20 +1,18 @@
 /* ==========================================================================
-   Booking Tab Stylesheet (Prefix: bktab-)
+   Booking Tab Stylesheet - Cinematic Dark-Tech / Minimalist-UI
    ========================================================================== */
 
-/* Khung bọc vùng tab đặt vé */
 .bktab-container {
     padding: 30px;
-    background-color: #0d0d0c; /* Nền đen sâu chuẩn Cinema */
+    background-color: #050505;
     min-height: 100vh;
     color: #e5e5e5;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     box-sizing: border-box;
 }
 
-/* Tiêu đề chính */
 .bktab-main-title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 24px;
@@ -29,18 +27,18 @@
     left: 0;
     top: 20%;
     height: 60%;
-    width: 4px;
-    background-color: #26dc78; /* Vệt màu xanh lục làm điểm nhấn */
-    border-radius: 2px;
+    width: 3px;
+    background-color: #e50914;
+    border-radius: 1px;
 }
 
 /* Khung bọc ngoài của bảng */
 .bktab-table-responsive {
     width: 100%;
-    background-color: #141416;
-    border: 1px solid #27272a;
+    background-color: #0c0c0e;
+    border: 1px solid #1f1f23;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* Bảng dữ liệu chính */
@@ -51,38 +49,35 @@
     font-size: 14px;
 }
 
-/* Cấu trúc Header bảng */
 .bktab-data-table th {
-    background-color: #18181b;
-    color: #a1a1aa;
+    background-color: #121214;
+    color: #8f8f9e;
     font-weight: 600;
     padding: 16px 20px;
-    border-bottom: 2px solid #27272a;
+    border-bottom: 2px solid #1f1f23;
     text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
 }
 
-/* Dòng dữ liệu body */
 .bktab-data-table td {
     padding: 16px 20px;
-    border-bottom: 1px solid #27272a;
+    border-bottom: 1px solid #1f1f23;
     color: #e4e4e7;
     vertical-align: middle;
 }
 
-/* Hiệu ứng hover highlight từng dòng */
 .bktab-data-table tbody tr {
     transition: background-color 0.2s ease;
 }
 
 .bktab-data-table tbody tr:hover {
-    background-color: #1f1f23;
+    background-color: #161619;
 }
 
 /* Mã hóa đơn dạng code */
 .bktab-invoice-code {
-    font-family: 'Fira Code', Consolas, Monaco, monospace;
+    font-family: monospace;
     color: #38bdf8;
     background-color: rgba(56, 189, 248, 0.1);
     padding: 4px 8px;
@@ -90,7 +85,6 @@
     font-size: 13px;
 }
 
-/* Tên tài khoản & phim */
 .bktab-username {
     font-weight: 500;
 }
@@ -105,8 +99,8 @@
 
 /* Badge số ghế */
 .bktab-seat-badge {
-    background-color: #27272a;
-    border: 1px solid #3f3f46;
+    background-color: #222226;
+    border: 1px solid #2e2e33;
     color: #f4f4f5;
     padding: 4px 10px;
     border-radius: 6px;
@@ -117,15 +111,16 @@
 /* Giá tiền & Ngày tháng */
 .bktab-price {
     color: #ffffff;
+    font-weight: 600;
 }
 
 .bktab-date {
-    color: #71717a;
+    color: #8f8f9e;
     font-size: 13px;
 }
 
 /* ==========================================================================
-   Status Badges (Nhãn trạng thái màu sắc)
+   Status Badges
    ========================================================================== */
 .bktab-status {
     display: inline-flex;
@@ -140,15 +135,15 @@
 }
 
 .bktab-status.success {
-    background-color: rgba(38, 220, 120, 0.15);
-    color: #26dc78;
-    border: 1px solid rgba(38, 220, 120, 0.25);
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .bktab-status.warning {
-    background-color: rgba(251, 191, 36, 0.15);
-    color: #fbbf24;
-    border: 1px solid rgba(251, 191, 36, 0.25);
+    background-color: rgba(226, 183, 20, 0.15);
+    color: #e2b714;
+    border: 1px solid rgba(226, 183, 20, 0.25);
 }
 
 .bktab-status.danger {
@@ -158,9 +153,9 @@
 }
 
 .bktab-status.default {
-    background-color: #27272a;
-    color: #a1a1aa;
-    border: 1px solid #3f3f46;
+    background-color: #222226;
+    color: #8f8f9e;
+    border: 1px solid #2e2e33;
 }
 
 .bktab-empty-row {
@@ -168,15 +163,15 @@
     padding: 40px !important;
     color: #71717a !important;
     font-style: italic;
-    background-color: #18181b;
+    background-color: #0c0c0e;
 }
 
 /* ==========================================================================
-   RESPONSIVE LAYOUT (Tối ưu Mobile dưới 768px)
+   RESPONSIVE LAYOUT
    ========================================================================== */
 @media (max-width: 768px) {
     .bktab-container {
-        padding: 15px; /* Giảm padding viền ngoài */
+        padding: 15px;
     }
 
     .bktab-main-title {
@@ -190,49 +185,43 @@
         box-shadow: none;
     }
 
-    /* Ẩn hoàn toàn thẻ thead (tiêu đề cột của bảng) */
     .bktab-data-table th {
         display: none;
     }
 
-    /* Biến các hàng (tr) thành các thẻ card độc lập */
     .bktab-data-table tbody tr {
         display: block;
-        background-color: #141416;
-        border: 1px solid #27272a;
+        background-color: #0c0c0e;
+        border: 1px solid #1f1f23;
         border-radius: 12px;
         margin-bottom: 15px;
         padding: 10px 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* Biến các ô dữ liệu (td) thành dạng dòng text có nhãn đi kèm */
     .bktab-data-table td {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 10px 0;
-        border-bottom: 1px dashed #27272a;
+        border-bottom: 1px dashed #1f1f23;
         text-align: right;
     }
 
-    /* Ô cuối cùng (Trạng thái) không cần gạch chân nét đứt */
     .bktab-data-table td:last-child {
         border-bottom: none;
     }
 
-    /* Tự động chèn tiêu đề cột vào trước nội dung bằng hàm attr() của CSS hoặc text cứng */
     .bktab-data-table td::before {
         content: '';
         font-weight: 600;
-        color: #a1a1aa;
+        color: #8f8f9e;
         text-transform: uppercase;
         font-size: 11px;
         text-align: left;
         padding-right: 10px;
     }
 
-    /* Định danh nhãn thủ công cho từng ô trên Mobile */
     .bktab-data-table td:nth-of-type(1)::before { content: "Mã Hoá Đơn"; }
     .bktab-data-table td:nth-of-type(2)::before { content: "Tài khoản"; }
     .bktab-data-table td:nth-of-type(3)::before { content: "Tên Phim"; }
@@ -241,7 +230,6 @@
     .bktab-data-table td:nth-of-type(6)::before { content: "Ngày Đặt"; }
     .bktab-data-table td:nth-of-type(7)::before { content: "Trạng Thái"; }
 
-    /* Fix độ rộng tên phim không bị che khuất trên mobile */
     .bktab-movie-title {
         max-width: 180px;
     }

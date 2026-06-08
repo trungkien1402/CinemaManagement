@@ -13,7 +13,7 @@ const LanguageSwitcher = () => {
 
   const currentLng = i18n.language || 'vi';
 
-  // 💡 MẢNG NGÔN NGỮ: Ông muốn thêm bao nhiêu nước thì cứ ném vào đây
+  // mảng ngôn ngữ: ông muốn thêm bao nhiêu nước thì cứ ném vào đây
   const languages = [
     { code: 'vi', flag: '🇻🇳', name: 'Tiếng Việt' },
     { code: 'en', flag: 'en', name: 'English' },
@@ -64,7 +64,7 @@ const LanguageSwitcher = () => {
       padding: '8px 0',
       minWidth: '150px',
       boxShadow: '0 8px 20px rgba(0,0,0,0.5)',
-      // 💡 ĐÂY LÀ CHỖ TẠO SCROLL
+      // đây là chỗ tạo scroll
       maxHeight: '160px', 
       overflowY: 'auto',
       zIndex: 1000,
@@ -114,7 +114,7 @@ const LanguageSwitcher = () => {
         ))}
       </div>
       
-      {/* 💡 CSS Tùy chỉnh làm đẹp thanh cuộn */}
+      {/* css tùy chỉnh làm đẹp thanh cuộn */}
       <style>{`
         .lang-scroll-menu::-webkit-scrollbar {
           width: 5px;

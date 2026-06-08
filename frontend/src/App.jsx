@@ -29,7 +29,7 @@ import UserProfile from './components/user/UserProfile';
 
 
 
-// 💡 IMPORT TRANG CHI TIẾT PHIM MỚI VÀO ĐÂY
+// import trang chi tiết phim mới vào đây
 import MovieDetail from './components/movie/MovieDetail';
 
 
@@ -168,14 +168,14 @@ function App() {
             element={<Navigate to="/" replace />}
           />
 
-          {/* 💡 TUYẾN ĐƯỜNG XEM CHI TIẾT PHIM THEO ID PHIM */}
+          {/* tuyến đường xem chi tiết phim theo id phim */}
           <Route path="/phim/:id" element={<MovieDetail />} />
 
           <Route path="/dat-ve/:showtimeId" element={<SeatSelection />} />
 
           <Route path="/tin-tuc" element={<NewsPage />} />
 
-          {/* 💡 THÊM ĐƯỜNG DẪN ĐẾN TRANG RẠP TẠI ĐÂY */}
+          {/* thêm đường dẫn đến trang rạp tại đây */}
           <Route path="/rap" element={<Theaters />} />
 
           {/* --- TRANG QUẢN TRỊ ADMIN --- */}

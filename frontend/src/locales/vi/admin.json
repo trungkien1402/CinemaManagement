@@ -40,7 +40,25 @@
     "shared": { "cinemaFilter": { "label": "Chọn Rạp" }, "dateFilter": { "label": "Chọn Ngày" }, "movieCard": { "viewDetail": "Xem chi tiết", "bookBtn": "Đặt vé" }, "sectionHeader": { "viewAll": "Xem Tất Cả" } }
   },
   "genres": {
-    "Hành động": "Hành động", "Viễn tưởng": "Viễn tưởng", "Action": "Hành động", "Sci-Fi": "Viễn tưởng", "Hành động, Viễn tưởng": "Hành động, Viễn tưởng", "Action, Sci-Fi": "Hành động, Viễn tưởng"
+    "Hành động": "Hành động",
+    "Viễn tưởng": "Viễn tưởng",
+    "Tình cảm": "Tình cảm",
+    "Kinh dị": "Kinh dị",
+    "Hài hước": "Hài hước",
+    "Hoạt hình": "Hoạt hình",
+    "Tâm lý": "Tâm lý",
+    "Phiêu lưu": "Phiêu lưu",
+    "Hình sự": "Hình sự",
+    "Cổ trang": "Cổ trang",
+    "Gia đình": "Gia đình",
+    "Action": "Hành động",
+    "Sci-Fi": "Viễn tưởng",
+    "Romance": "Tình cảm",
+    "Horror": "Kinh dị",
+    "Comedy": "Hài hước",
+    "Animation": "Hoạt hình",
+    "Drama": "Tâm lý",
+    "Adventure": "Phiêu lưu"
   },
   "admin": {
     "adminDashboard": {
@@ -57,7 +75,7 @@
       "moviesTab": {
         "title": "Kho lưu trữ phim chiếu rạp",
         "form": {
-          "placeholders": { "title": "Tên bộ phim", "genre": "Thể loại (Hành động, Tình cảm...)", "duration": "Thời lượng (Phút)", "author": "Đạo diễn / Tác giả", "image": "URL Ảnh Poster Phim", "trailerUrl": "URL Video Trailer YouTube", "description": "Tóm tắt nội dung phim...", "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)" },
+          "placeholders": { "title": "Tên bộ phim", "genre": "Thể loại (Hành động, Tình cảm...)", "duration": "Thời lượng (Phút)", "author": "Đạo diễn / Tác giả", "releaseDate": "Ngày khởi chiếu", "image": "Ảnh Poster Phim", "trailerUrl": "Video Trailer Phim", "description": "Tóm tắt nội dung phim...", "maxUses": "Nhập số lượng phát hành (Ví dụ: 100)" },
           "options": {
             "formats": { "2d": "Định dạng 2D", "3d": "Định dạng 3D", "imax": "Định dạng IMAX" },
             "age": { "p": "P - Mọi lứa tuổi", "t13": "T13 - Trên 13 tuổi", "t16": "T16 - Trên 16 tuổi", "t18": "T18 - Giới hạn 18+" },
@@ -94,7 +112,7 @@
           "selectTheaterPlaceholder": "-- Click chọn rạp chiếu --",
           "formTitle": "Thêm phòng chiếu mới & Tự động sinh ghế",
           "placeholders": { "roomId": "Mã phòng độc lập (VD: P1, P2):", "roomIdPlaceholder": "Tối đa 3 chữ", "roomNumber": "Tên hiển thị phòng:", "roomNumberPlaceholder": "VD: Phòng Chiếu IMAX 01" },
-          "labels": { "rowsCount": "Số hàng dọc (A-Z):", "colsCount": "Số cột ngang (1-30):" },
+          "labels": { "rowsCount": "Số hàng dọc (A-Z):", "colsCount": "Số cột ngang (1-10):" },
           "buttons": { "loading": "Đang tạo...", "submit": "Tạo Sơ Đồ Phòng Cho Rạp" }
         },
         "rightPanel": {
