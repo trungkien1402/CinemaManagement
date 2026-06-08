@@ -11,11 +11,42 @@ const getBaseURL = () => {
   return "http://localhost:8080/api";
 };
 
+const replaceLocalhost = (obj) => {
+  if (typeof obj === 'string') {
+    if (obj.startsWith('http://localhost:8080')) {
+      if (!window.location.hostname.includes('localhost') && window.location.hostname !== '127.0.0.1') {
+        return obj.replace('http://localhost:8080', window.location.origin);
+      }
+    }
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(replaceLocalhost);
+  }
+  if (obj !== null && typeof obj === 'object') {
+    const newObj = {};
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        newObj[key] = replaceLocalhost(obj[key]);
+      }
+    }
+    return newObj;
+  }
+  return obj;
+};
+
 const api = axios.create({
     baseURL: getBaseURL(),
     headers: {
         "Content-Type": "application/json",
     },
+});
+
+api.interceptors.response.use((response) => {
+    response.data = replaceLocalhost(response.data);
+    return response;
+}, (error) => {
+    return Promise.reject(error);
 });
 
 export default api;
