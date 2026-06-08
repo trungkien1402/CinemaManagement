@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cinema-database
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD:-StrongPassword123!}
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    restart: always
+
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cinema-db-init
+    depends_on:
+      - database
+    environment:
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD:-StrongPassword123!}
+    entrypoint: >
+      /bin/bash -c "
+      echo 'Waiting for SQL Server to start...';
+      sleep 15;
+      /opt/mssql-tools18/bin/sqlcmd -S database -U sa -P \"$${MSSQL_SA_PASSWORD}\" -C -Q \"IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'DATABASECNM') CREATE DATABASE DATABASECNM;\"
+      echo 'Database initialization check complete.'
+      "
+    restart: on-failure
+
+  backend:
+    build:
+      context: ./cinema_backend
+      dockerfile: Dockerfile
+    container_name: cinema-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://database:1433;databaseName=DATABASECNM;encrypt=true;trustServerCertificate=true;characterEncoding=UTF-8;
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=${MSSQL_SA_PASSWORD:-StrongPassword123!}
+      - SPRING_MAIL_HOST=${SPRING_MAIL_HOST:-smtp.gmail.com}
+      - SPRING_MAIL_PORT=${SPRING_MAIL_PORT:-587}
+      - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME:-example@gmail.com}
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD:-abcdefghijklmnop}
+      - NEWS_API_KEY=${NEWS_API_KEY:-your_news_api_key_here}
+      - VNPAY_TMNCODE=${VNPAY_TMNCODE:-FAGMI56M}
+      - VNPAY_HASHSECRET=${VNPAY_HASHSECRET:-090VO9PDCB7OO5W12BKW98UV2RLFG92N}
+      - VNPAY_PAYURL=${VNPAY_PAYURL:-https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
+      - VNPAY_RETURNURL=${VNPAY_RETURNURL:-http://localhost/payment-success}
+    depends_on:
+      database:
+        condition: service_started
+      db-init:
+        condition: service_completed_successfully
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cinema-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  mssql-data:

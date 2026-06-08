@@ -25,3 +25,4 @@ dist-ssr
 
 # Bỏ qua thư mục tải lên chứa file nặng
 uploads/
+cinema_backend/uploads/
