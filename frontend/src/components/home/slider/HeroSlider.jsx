@@ -45,12 +45,46 @@ const HeroSlider = ({ movies }) => {
     }
   };
 
+  // Lắng nghe thao tác vuốt màn hình (Swipe Gestures) trên Mobile
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  // Khoảng cách tối thiểu được tính là 1 lượt vuốt
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
   if (!movies || movies.length === 0) return null;
 
   const movie = movies[currentIndex];
 
   return (
-    <div className="hero-slider-main">
+    <div 
+      className="hero-slider-main"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
 
       <div
         key={movie.movieId}
