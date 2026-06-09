@@ -756,20 +756,70 @@ input:checked + .slider:before { transform: translateX(24px); }
 
   /* Modals */
   .ticket-modal-content {
-    width: 90% !important;
-    padding: 20px 15px;
+    width: 92% !important;
+    max-width: 380px !important;
+    padding: 20px 15px !important;
+    margin: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .ticket-modal-qr-container {
+    padding: 10px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .ticket-modal-qr-image {
+    width: 140px !important;
+    height: 140px !important;
+  }
+
+  .ticket-modal-code {
+    font-size: 0.95rem !important;
+    margin-bottom: 15px !important;
+    word-break: break-all !important;
+  }
+
+  .ticket-modal-details {
+    padding-top: 10px !important;
   }
 
   .ticket-modal-row {
-    flex-direction: column;
-    gap: 2px;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    margin-bottom: 10px !important;
   }
 
   .ticket-modal-label {
-    width: 100%;
+    width: 100% !important;
+    font-size: 0.85rem !important;
   }
 
   .ticket-modal-value {
-    padding-left: 28px;
+    padding-left: 28px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    font-size: 0.9rem !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .ticket-modal-status-section {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    border-top: 1px solid #333 !important;
+    padding-top: 12px !important;
+    margin-top: 12px !important;
+  }
+
+  .ticket-modal-status-section .ticket-modal-label {
+    margin-bottom: 2px !important;
+  }
+
+  .status-badge-checked, .status-badge-pending {
+    align-self: flex-start !important;
+    padding: 5px 12px !important;
+    font-size: 0.85rem !important;
   }
 }
