@@ -40,15 +40,32 @@
 }
 
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .movie-grid {
   display: grid;
-  
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
   gap: 35px; 
   row-gap: 50px; 
 }
 
-/* --- RESPONSIVE (Tương thích thiết bị) --- */
+/* Hiệu ứng chuyển động mượt mà cho danh sách phim */
+.movie-grid > div {
+  animation: fadeIn 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+
+/* Tạo độ trễ chuyển động cho từng thẻ phim kế tiếp (Reveal effect) */
+.movie-grid > div:nth-child(1) { animation-delay: 0.05s; }
+.movie-grid > div:nth-child(2) { animation-delay: 0.1s; }
+.movie-grid > div:nth-child(3) { animation-delay: 0.15s; }
+.movie-grid > div:nth-child(4) { animation-delay: 0.2s; }
+.movie-grid > div:nth-child(5) { animation-delay: 0.25s; }
+.movie-grid > div:nth-child(6) { animation-delay: 0.3s; }
+.movie-grid > div:nth-child(7) { animation-delay: 0.35s; }
+.movie-grid > div:nth-child(8) { animation-delay: 0.4s; }
 
 
 @media (max-width: 1024px) {
@@ -108,7 +125,7 @@
   background: #ff3d00;
 }
 
-/* --- HOMEPAGE TABS SWITCHER (PREMIUM PILL TOGGLE) --- */
+
 .home-tabs-header {
   display: flex;
   justify-content: space-between;
@@ -116,6 +133,7 @@
   margin-bottom: 35px;
   padding: 0 10px;
   margin-top: 60px;
+  animation: fadeIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) both;
 }
 
 .tabs-left {
