@@ -162,3 +162,23 @@
   color: #666;
   font-size: 13px;
 }
+
+/* responsive - đáp ứng các loại màn hình */
+@media (max-width: 480px) {
+  .notification-dropdown {
+    width: 290px !important;
+    right: -25px !important;
+  }
+  .dropdown-header h3 {
+    font-size: 13px !important;
+  }
+  .dropdown-header button {
+    font-size: 11px !important;
+  }
+  .noti-title {
+    font-size: 12px !important;
+  }
+  .noti-message {
+    font-size: 11px !important;
+  }
+}
