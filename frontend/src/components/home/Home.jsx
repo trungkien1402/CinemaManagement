@@ -1,8 +1,8 @@
 import '../style/Home.css';
 import React, { memo, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import HeroSlider from './slider/HeroSlider';
 import MovieCard from '../shared/MovieCard';
-import SectionHeader from '../shared/SectionHeader';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovie } from '../../store/movieSlice';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,9 @@ const Home = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const { listMovies, loading } = useSelector((state) => state.movies);
+
+    // State quản lý tab đang chọn (phim đang chiếu / phim sắp chiếu)
+    const [activeTab, setActiveTab] = useState('nowShowing');
 
     // State quản lý vị trí xoay tua cho riêng cụm Phim Đang Chiếu
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,7 +28,7 @@ const Home = () => {
 
     // Tự động lướt đổi cụm 4 phim Đang Chiếu sau mỗi 5 giây
     useEffect(() => {
-        if (nowShowingMovies.length <= 4) return;
+        if (nowShowingMovies.length <= 4 || activeTab !== 'nowShowing') return;
 
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => {
@@ -37,7 +40,7 @@ const Home = () => {
         }, 5000); // 5000ms = 5 giây
 
         return () => clearInterval(interval);
-    }, [nowShowingMovies]);
+    }, [nowShowingMovies, activeTab]);
 
     if (loading) return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>{t('home.nowShowing.status.loading')}</div>;
 
@@ -52,38 +55,55 @@ const Home = () => {
             <HeroSlider movies={listMovies} />
 
             <div className="content-container">
-
-                {/* ================= PHẦN 1: PHIM ĐANG CHIẾU (CÓ HIỆU ỨNG LƯỚT 5 GIÂY) ================= */}
-                <SectionHeader
-                    title={t('home.nowShowing.title')}
-                    subtitle={t('home.nowShowing.subtitle') || "Những bộ phim đang hot nhất hiện nay"}
-                    linkTo="/dang-chieu"
-                />
-
-                <div className="movie-grid" key={`now-${currentIndex}`} style={{ animation: 'fadeIn 0.5s ease-in-out', marginBottom: '50px' }}>
-                    {visibleNowShowing.map((movie) => (
-                        <MovieCard key={movie.movieId} movie={movie} />
-                    ))}
+                <div className="home-tabs-header">
+                    <div className="tabs-left">
+                        <div className="tabs-buttons">
+                            <button 
+                                className={`tab-btn ${activeTab === 'nowShowing' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('nowShowing')}
+                            >
+                                {t('home.nowShowing.title')}
+                            </button>
+                            <span className="tab-separator">|</span>
+                            <button 
+                                className={`tab-btn ${activeTab === 'comingSoon' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('comingSoon')}
+                            >
+                                {t('home.comingSoon.title')}
+                            </button>
+                        </div>
+                        <p className="tab-subtitle">
+                            {activeTab === 'nowShowing' 
+                                ? (t('home.nowShowing.subtitle') || "Những bộ phim đang hot nhất hiện nay")
+                                : (t('home.comingSoon.subtitle') || "Những bộ phim sắp đổ bộ phòng vé")
+                            }
+                        </p>
+                    </div>
+                    
+                    <Link to={activeTab === 'nowShowing' ? "/dang-chieu" : "/sap-chieu"} className="view-all-link">
+                        {t('home.shared.sectionHeader.viewAll') || "Xem tất cả"} <span className="arrow-icon">&#10095;</span>
+                    </Link>
                 </div>
 
-
-                {/* ================= PHẦN 2: PHIM SẮP CHIẾU (ĐÃ BỔ SUNG KHUNG HIỂN THỊ) ================= */}
-                <SectionHeader
-                    title={t('home.comingSoon.title')}
-                    subtitle={t('home.comingSoon.subtitle') || "Những bộ phim sắp đổ bộ phòng vé"}
-                    linkTo="/sap-chieu"
-                />
-
-                <div className="movie-grid" style={{ animation: 'fadeIn 0.5s ease-in-out' }}>
-                    {visibleComingSoon.length === 0 ? (
-                        <div style={{ color: '#aaa', padding: '20px' }}>{t('home.comingSoon.status.empty')}</div>
-                    ) : (
-                        visibleComingSoon.map((movie) => (
+                {activeTab === 'nowShowing' ? (
+                    <div className="movie-grid" key={`now-${currentIndex}`} style={{ animation: 'fadeIn 0.5s ease-in-out', marginBottom: '50px' }}>
+                        {visibleNowShowing.map((movie) => (
                             <MovieCard key={movie.movieId} movie={movie} />
-                        ))
-                    )}
-                </div>
-
+                        ))}
+                    </div>
+                ) : (
+                    <div className="movie-grid" style={{ animation: 'fadeIn 0.5s ease-in-out', marginBottom: '50px' }}>
+                        {visibleComingSoon.length === 0 ? (
+                            <div style={{ color: '#aaa', padding: '20px', textAlign: 'center', gridColumn: '1 / -1' }}>
+                                {t('home.comingSoon.status.empty') || "Không có phim nào sắp chiếu"}
+                            </div>
+                        ) : (
+                            visibleComingSoon.map((movie) => (
+                                <MovieCard key={movie.movieId} movie={movie} />
+                            ))
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -630,3 +630,146 @@ input:checked + .slider:before { transform: translateX(24px); }
   color: #777;
   font-size: 0.85rem;
 }
+
+/* ========================================================================= */
+/* CSS Đáp Ứng Responsive (Màn hình thiết bị di động & Tablet) */
+/* ========================================================================= */
+@media (max-width: 768px) {
+  .profile-page-wrapper {
+    padding: 20px 10px;
+  }
+  
+  .profile-header-top h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    padding-left: 10px;
+  }
+
+  .profile-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 0 10px;
+  }
+  
+  .profile-sidebar {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 15px;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+  }
+
+  .nav-item {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    flex: 1 1 calc(50% - 10px);
+    justify-content: center;
+  }
+
+  .points-card-container {
+    margin-bottom: 15px;
+    padding: 15px;
+  }
+
+  .points-value {
+    font-size: 2rem;
+  }
+  
+  .form-card {
+    padding: 20px 15px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .btn-save-primary {
+    width: 100%;
+    padding: 14px;
+  }
+  
+  .ticket-card {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 15px;
+  }
+  
+  .ticket-poster {
+    width: 100%;
+    max-height: 250px;
+    border-radius: 12px;
+  }
+  
+  .ticket-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .status-badge-checked, .status-badge-pending {
+    align-self: flex-start;
+  }
+  
+  .ticket-details-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .ticket-action-right {
+    justify-content: stretch;
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .btn-detail {
+    width: 100%;
+  }
+
+  .settings-card {
+    padding: 5px 15px;
+  }
+
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px 0;
+  }
+
+  .setting-info {
+    margin-bottom: 5px;
+  }
+  
+  .language-select, .btn-outline, .btn-danger-outline {
+    width: 100% !important;
+  }
+
+  /* Modals */
+  .ticket-modal-content {
+    width: 90% !important;
+    padding: 20px 15px;
+  }
+
+  .ticket-modal-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ticket-modal-label {
+    width: 100%;
+  }
+
+  .ticket-modal-value {
+    padding-left: 28px;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
+import axiosClient from '../../api/axiosClient';
 import '../style/UserProfile.css';
 import { useTranslation } from 'react-i18next';
 
@@ -41,12 +41,10 @@ const UserProfile = () => {
     if (!userId) { setLoading(false); return; }
 
     setLoading(true);
-    const token = localStorage.getItem('token');
-    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
     Promise.all([
-      axios.get(`http://localhost:8080/api/users/${userId}`, config),
-      axios.get(`http://localhost:8080/api/bookings/history/${userId}`, config).catch(() => ({ data: [] }))
+      axiosClient.get(`/users/${userId}`),
+      axiosClient.get(`/bookings/history/${userId}`).catch(() => ({ data: [] }))
     ])
     .then(([userRes, ticketsRes]) => {
       setProfileData(userRes.data);
@@ -108,13 +106,10 @@ const UserProfile = () => {
         setAvatarPreview(base64Image);
 
         const userId = authUser?.id || authUser?.userId;
-        const token = localStorage.getItem('token');
-        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-        const response = await axios.put(
-          `http://localhost:8080/api/users/update-avatar/${userId}`,
-          { avatarUrl: base64Image },
-          config
+        const response = await axiosClient.put(
+          `/users/update-avatar/${userId}`,
+          { avatarUrl: base64Image }
         );
 
         alert(t('avatar.alerts.success') || "Cập nhật ảnh đại diện thành công!");
@@ -154,10 +149,8 @@ const UserProfile = () => {
 
     try {
       const userId = Number(authUser?.id || authUser?.userId);
-      const token = localStorage.getItem('token');
-      const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-      await axios.put(`http://localhost:8080/api/users/update/${userId}`, editForm, config);
+      await axiosClient.put(`/users/update/${userId}`, editForm);
       alert(t('info.alerts.success') || "Cập nhật thông tin thành công!");
       setProfileData({ ...profileData, ...editForm });
 
@@ -179,9 +172,7 @@ const UserProfile = () => {
     setEmailNotify(checked);
     try {
       const userId = authUser?.id || authUser?.userId;
-      const token = localStorage.getItem('token');
-      const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-      await axios.put(`http://localhost:8080/api/users/settings/notification/${userId}`, { emailNotify: checked }, config);
+      await axiosClient.put(`/users/settings/notification/${userId}`, { emailNotify: checked });
     } catch (error) {
       console.log(t('settings.notifications.alertTemp') || "Đã cập nhật cấu hình thông báo tạm thời.");
     }
@@ -201,13 +192,11 @@ const UserProfile = () => {
 
     try {
       const userId = authUser?.id || authUser?.userId;
-      const token = localStorage.getItem('token');
-      const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-      await axios.put(`http://localhost:8080/api/users/change-password/${userId}`, {
+      await axiosClient.put(`/users/change-password/${userId}`, {
         oldPassword: pwdForm.oldPassword,
         newPassword: pwdForm.newPassword
-      }, config);
+      });
 
       alert(t('pwdModal.alerts.success') || "Đổi mật khẩu thành công!");
       setShowPwdModal(false);
@@ -227,10 +216,8 @@ const UserProfile = () => {
     if (secondConfirm) {
       try {
         const userId = authUser?.id || authUser?.userId;
-        const token = localStorage.getItem('token');
-        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
-        await axios.delete(`http://localhost:8080/api/users/delete/${userId}`, config);
+        await axiosClient.delete(`/users/delete/${userId}`);
         alert(t('settings.deleteAccount.success') || "Xóa tài khoản thành công!");
         localStorage.removeItem("user");
         localStorage.removeItem("token");
