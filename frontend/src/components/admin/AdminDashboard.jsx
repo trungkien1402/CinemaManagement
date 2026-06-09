@@ -19,6 +19,7 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('analytics');
     const [loading, setLoading] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     
     const [movies, setMovies] = useState([]);
     const [theaters, setTheaters] = useState([]);
@@ -304,33 +305,42 @@ const AdminDashboard = () => {
 
     return (
         <div className="admin-layout">
-            <aside className="admin-navigation-panel">
+            <div className="admin-mobile-header">
+                <button className="admin-hamburger" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                    <i className={isMobileMenuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars"}></i>
+                </button>
+                <div className="admin-mobile-title">
+                    CINEMA<span>X</span> ADMIN
+                </div>
+            </div>
+
+            <aside className={`admin-navigation-panel ${isMobileMenuOpen ? 'open' : ''}`}>
                 <div className="admin-brand">CINEMA<span>X</span></div>
 
                 <nav className="nav-menu-list">
-                    <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => setActiveTab('analytics')}>
+                    <button className={activeTab === 'analytics' ? 'active' : ''} onClick={() => { setActiveTab('analytics'); setIsMobileMenuOpen(false); }}>
                         <i className="fa-solid fa-chart-pie"></i> {t('admin.adminDashboard.tabs.analytics')}
                     </button>
-                    <button className={activeTab === 'movies' ? 'active' : ''} onClick={() => setActiveTab('movies')}>
+                    <button className={activeTab === 'movies' ? 'active' : ''} onClick={() => { setActiveTab('movies'); setIsMobileMenuOpen(false); }}>
                         <i className="fa-solid fa-clapperboard"></i> {t('admin.adminDashboard.tabs.movies')}
                     </button>
-                    <button className={activeTab === 'theaters' ? 'active' : ''} onClick={() => setActiveTab('theaters')}>
+                    <button className={activeTab === 'theaters' ? 'active' : ''} onClick={() => { setActiveTab('theaters'); setIsMobileMenuOpen(false); }}>
                         <i className="fa-solid fa-couch"></i> {t('admin.adminDashboard.tabs.theaters')}
                     </button>
-                    <button className={activeTab === 'showtimes' ? 'active' : ''} onClick={() => setActiveTab('showtimes')}>
+                    <button className={activeTab === 'showtimes' ? 'active' : ''} onClick={() => { setActiveTab('showtimes'); setIsMobileMenuOpen(false); }}>
                         <i className="fa-solid fa-calendar-days"></i> {t('admin.adminDashboard.tabs.showtimes')}
                     </button>
-                    <button className={activeTab === 'bookings' ? 'active' : ''} onClick={() => setActiveTab('bookings')}>
+                    <button className={activeTab === 'bookings' ? 'active' : ''} onClick={() => { setActiveTab('bookings'); setIsMobileMenuOpen(false); }}>
                         <i className="fa-solid fa-receipt"></i> {t('admin.adminDashboard.tabs.bookings')}
                     </button>
-                    <button className={activeTab === 'vouchers' ? 'active' : ''} onClick={() => setActiveTab('vouchers')}>
+                    <button className={activeTab === 'vouchers' ? 'active' : ''} onClick={() => { setActiveTab('vouchers'); setIsMobileMenuOpen(false); }}>
                         <i className="fa-solid fa-tags"></i> {t('admin.adminDashboard.tabs.vouchers')}
                     </button>
-                    <button className={activeTab === 'qrcode-checkin' ? 'active' : ''} onClick={() => setActiveTab('qrcode-checkin')}>
+                    <button className={activeTab === 'qrcode-checkin' ? 'active' : ''} onClick={() => { setActiveTab('qrcode-checkin'); setIsMobileMenuOpen(false); }}>
                         <i className="fa-solid fa-qrcode"></i> {t('admin.adminDashboard.tabs.qrcodeCheckin')}
                     </button>
                     <div className="nav-divider"></div>
-                    <button onClick={() => navigate('/')} className="exit-panel-btn">
+                    <button onClick={() => { navigate('/'); setIsMobileMenuOpen(false); }} className="exit-panel-btn">
                         <i className="fa-solid fa-house"></i> {t('admin.adminDashboard.tabs.backToHome')}
                     </button>
                 </nav>

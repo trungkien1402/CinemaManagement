@@ -277,6 +277,43 @@
 }
 
 /* responsive - đáp ứng các loại màn hình */
+/* Admin Mobile Header Styles */
+.admin-mobile-header {
+    display: none;
+    background-color: #0a0a0a;
+    border-bottom: 1px solid #1f1f1f;
+    padding: 12px 20px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.admin-hamburger {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-mobile-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.admin-mobile-title span {
+    color: #e50914;
+}
+
 @media (max-width: 768px) {
     .admin-layout {
         flex-direction: column !important;
@@ -284,46 +321,65 @@
         min-height: 100vh !important;
         overflow-y: auto !important;
     }
+
+    .admin-mobile-header {
+        display: flex;
+    }
+
     .admin-navigation-panel {
+        display: none !important; /* Ẩn mặc định trên mobile */
+        position: fixed;
+        top: 55px; /* Chiều cao header */
+        left: 0;
         width: 100% !important;
         min-width: 100% !important;
         max-width: 100% !important;
-        height: auto !important;
-        padding: 15px !important;
+        height: calc(100vh - 55px) !important;
+        z-index: 99;
+        background-color: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(10px);
+        padding: 24px 20px !important;
         border-right: none !important;
-        border-bottom: 1px solid #1f1f1f !important;
+        border-bottom: none !important;
+        flex-direction: column;
+        overflow-y: auto;
     }
+
+    .admin-navigation-panel.open {
+        display: flex !important; /* Hiện khi click hamburger */
+    }
+
     .admin-brand {
-        margin-bottom: 15px !important;
-        padding-bottom: 10px !important;
+        display: none; /* Ẩn tên logo trong thanh sidebar vì đã có ở header mobile */
     }
+
     .nav-menu-list {
-        flex-direction: row !important;
-        overflow-x: auto !important;
-        white-space: nowrap !important;
-        gap: 8px !important;
-        padding-bottom: 8px !important;
-        scrollbar-width: none;
+        flex-direction: column !important;
+        overflow-x: visible !important;
+        white-space: normal !important;
+        gap: 12px !important;
+        padding-bottom: 0 !important;
     }
-    .nav-menu-list::-webkit-scrollbar {
-        display: none;
-    }
+
     .nav-menu-list button {
-        padding: 8px 16px !important;
-        font-size: 13px !important;
-        border-left: none !important;
-        border-bottom: 3px solid transparent !important;
+        padding: 14px 20px !important;
+        font-size: 14px !important;
+        border-left: 3px solid transparent !important;
+        border-bottom: none !important;
         border-radius: 6px !important;
-        width: auto !important;
+        width: 100% !important;
         flex-shrink: 0 !important;
+        justify-content: flex-start !important;
     }
+
     .nav-menu-list button.active {
-        border-left: none !important;
-        border-bottom: 3px solid #e50914 !important;
+        border-left: 3px solid #e50914 !important;
+        border-bottom: none !important;
     }
+
     .admin-main-viewport {
         width: 100% !important;
         height: auto !important;
-        padding: 20px 15px !important;
+        padding: 25px 15px !important;
     }
 }
