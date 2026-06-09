@@ -35,5 +35,18 @@
 @media (max-width: 768px) {
     .movie-grid-layout {
         grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+}
+@media (max-width: 480px) {
+    .movie-grid-layout {
+        grid-template-columns: repeat(1, 1fr) !important;
+        gap: 20px !important;
+    }
+    .section-header-nowshowing {
+        padding: 20px 4% !important;
+    }
+    .title-nowshowing {
+        font-size: 1.4rem !important;
     }
 }

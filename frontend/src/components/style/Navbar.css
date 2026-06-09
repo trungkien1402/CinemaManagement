@@ -289,16 +289,42 @@
 @media (max-width: 992px) {
   /* Màn hình tablet: Ẩn bớt chữ tên user, chỉ giữ lại avatar tròn cho đỡ chật */
   .username-text, .profile-toggle .arrow-icon {
-    display: none;
+    display: none !important;
   }
   .profile-toggle {
-    padding: 5px;
+    padding: 5px !important;
   }
 }
 
 @media (max-width: 768px) {
-  /* Màn hình điện thoại di động: Ẩn menu chữ */
   .nav-menu {
-    display: none; 
+    display: none !important;
+  }
+  .navbar-main {
+    padding: 0 15px !important;
+    height: 60px !important;
+  }
+  .nav-brand {
+    font-size: 1.3rem !important;
+  }
+  .nav-right {
+    gap: 10px !important;
   }
 }
+
+@media (max-width: 480px) {
+  .navbar-search-container {
+    width: 130px !important;
+  }
+  .search-input-wrapper {
+    padding: 4px 10px !important;
+  }
+  .search-input-wrapper input {
+    font-size: 0.75rem !important;
+  }
+  .search-icon {
+    right: 10px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
