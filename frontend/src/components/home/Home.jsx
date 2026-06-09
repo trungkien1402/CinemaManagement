@@ -18,6 +18,24 @@ const Home = () => {
     // State quản lý vị trí xoay tua cho cụm Phim Đang Chiếu và Phim Sắp Chiếu
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentComingSoonIndex, setCurrentComingSoonIndex] = useState(0);
+    const [visibleCount, setVisibleCount] = useState(8);
+
+    // Tính toán số lượng phim hiển thị theo chiều rộng màn hình để lấp đầy khoảng trống
+    useEffect(() => {
+        const updateCount = () => {
+            const width = window.innerWidth;
+            if (width > 1200) {
+                setVisibleCount(8); // Desktop (4 cột -> hiển thị 8 phim để đầy 2 hàng)
+            } else if (width > 768) {
+                setVisibleCount(6); // Tablet (3 cột -> hiển thị 6 phim để đầy 2 hàng)
+            } else {
+                setVisibleCount(4); // Mobile (2 cột -> hiển thị 4 phim để đầy 2 hàng)
+            }
+        };
+        updateCount();
+        window.addEventListener('resize', updateCount);
+        return () => window.removeEventListener('resize', updateCount);
+    }, []);
 
     useEffect(() => {
         dispatch(fetchMovie());
@@ -27,45 +45,45 @@ const Home = () => {
     const nowShowingMovies = listMovies ? listMovies.filter(movie => movie.status === 1) : [];
     const comingSoonMovies = listMovies ? listMovies.filter(movie => movie.status === 2) : [];
 
-    // Tự động lướt đổi cụm 4 phim Đang Chiếu sau mỗi 5 giây
+    // Tự động lướt đổi cụm phim Đang Chiếu sau mỗi 5 giây
     useEffect(() => {
-        if (nowShowingMovies.length <= 4 || activeTab !== 'nowShowing') return;
+        if (nowShowingMovies.length <= visibleCount || activeTab !== 'nowShowing') return;
 
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => {
-                if (prevIndex + 4 >= nowShowingMovies.length) {
+                if (prevIndex + visibleCount >= nowShowingMovies.length) {
                     return 0;
                 }
-                return prevIndex + 4;
+                return prevIndex + visibleCount;
             });
         }, 5000); // 5000ms = 5 giây
 
         return () => clearInterval(interval);
-    }, [nowShowingMovies, activeTab]);
+    }, [nowShowingMovies, activeTab, visibleCount]);
 
-    // Tự động lướt đổi cụm 4 phim Sắp Chiếu sau mỗi 5 giây
+    // Tự động lướt đổi cụm phim Sắp Chiếu sau mỗi 5 giây
     useEffect(() => {
-        if (comingSoonMovies.length <= 4 || activeTab !== 'comingSoon') return;
+        if (comingSoonMovies.length <= visibleCount || activeTab !== 'comingSoon') return;
 
         const interval = setInterval(() => {
             setCurrentComingSoonIndex((prevIndex) => {
-                if (prevIndex + 4 >= comingSoonMovies.length) {
+                if (prevIndex + visibleCount >= comingSoonMovies.length) {
                     return 0;
                 }
-                return prevIndex + 4;
+                return prevIndex + visibleCount;
             });
         }, 5000); // 5000ms = 5 giây
 
         return () => clearInterval(interval);
-    }, [comingSoonMovies, activeTab]);
+    }, [comingSoonMovies, activeTab, visibleCount]);
 
     if (loading) return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>{t('home.nowShowing.status.loading')}</div>;
 
-    // Lấy đúng cụm 4 phim Đang Chiếu theo index chạy tự động
-    const visibleNowShowing = nowShowingMovies.slice(currentIndex, currentIndex + 4);
+    // Lấy cụm phim Đang Chiếu theo index và số lượng hiển thị tự động
+    const visibleNowShowing = nowShowingMovies.slice(currentIndex, currentIndex + visibleCount);
 
-    // Lấy đúng cụm 4 phim Sắp Chiếu theo index chạy tự động
-    const visibleComingSoon = comingSoonMovies.slice(currentComingSoonIndex, currentComingSoonIndex + 4);
+    // Lấy cụm phim Sắp Chiếu theo index và số lượng hiển thị tự động
+    const visibleComingSoon = comingSoonMovies.slice(currentComingSoonIndex, currentComingSoonIndex + visibleCount);
 
     return (
         <div className="home-page">

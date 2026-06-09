@@ -372,7 +372,7 @@
 
 @media (max-width: 480px) {
   .navbar-search-container {
-    width: 130px !important;
+    width: 100px !important;
   }
   .search-input-wrapper {
     padding: 4px 10px !important;
@@ -383,6 +383,20 @@
   .search-icon {
     right: 10px !important;
     font-size: 0.8rem !important;
+  }
+  .login-button {
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+  .login-button span {
+    display: none !important;
+  }
+  .login-button i {
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+  }
+  .nav-right {
+    gap: 8px !important;
   }
 }
 

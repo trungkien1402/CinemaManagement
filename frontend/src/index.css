@@ -21,3 +21,17 @@ a {
 iframe[title="chat widget"] {
     z-index: 999999 !important;
 }
+
+@media (max-width: 480px) {
+  /* Khống chế kích thước widget chat Tawk.to trên di động để không chiếm toàn màn hình */
+  #tawkchat-container,
+  iframe[title="chat widget"] {
+    max-height: 75vh !important;
+    max-width: 350px !important;
+    bottom: 80px !important;
+    right: 10px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5) !important;
+    overflow: hidden !important;
+  }
+}
