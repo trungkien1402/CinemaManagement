@@ -583,12 +583,15 @@
     height: auto;
     padding-top: 100px;
     padding-bottom: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
   .detail-hero-content-wrapper {
     flex-direction: column;
     text-align: center;
     gap: 20px;
+    align-items: center;
   }
 
   .detail-hero-poster {
@@ -600,10 +603,21 @@
   .detail-quick-meta {
     justify-content: center;
     gap: 12px;
+    flex-direction: column;
+    align-items: center;
   }
 
   .detail-movie-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .detail-movie-sub {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .detail-top-actions {
