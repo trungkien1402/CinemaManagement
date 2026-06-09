@@ -64,7 +64,6 @@ const Home = () => {
                             >
                                 {t('home.nowShowing.title')}
                             </button>
-                            <span className="tab-separator">|</span>
                             <button 
                                 className={`tab-btn ${activeTab === 'comingSoon' ? 'active' : ''}`}
                                 onClick={() => setActiveTab('comingSoon')}

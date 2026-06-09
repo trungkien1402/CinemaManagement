@@ -109,11 +109,11 @@
   background: #ff3d00;
 }
 
-/* --- HOMEPAGE TABS SWITCHER --- */
+/* --- HOMEPAGE TABS SWITCHER (PREMIUM PILL TOGGLE) --- */
 .home-tabs-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   margin-bottom: 35px;
   padding: 0 10px;
   margin-top: 60px;
@@ -122,59 +122,49 @@
 .tabs-left {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
 }
 
 .tabs-buttons {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 15px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px;
+  border-radius: 50px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .tab-btn {
-  background: none;
+  background: transparent;
   border: none;
-  font-size: 26px;
+  font-size: 14px;
   font-weight: 700;
-  color: #555;
+  color: #888;
   cursor: pointer;
-  padding: 0;
+  padding: 10px 26px;
+  border-radius: 50px;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: all 0.3s ease;
-  position: relative;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .tab-btn:hover {
-  color: #bbb;
+  color: #fff;
 }
 
 .tab-btn.active {
   color: #fff;
-  text-shadow: 0 0 15px rgba(255, 61, 0, 0.3);
-}
-
-.tab-btn.active::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  width: 100%;
-  height: 3px;
   background: #ff3d00;
-  border-radius: 2px;
-  box-shadow: 0 0 8px #ff3d00;
-}
-
-.tab-separator {
-  font-size: 24px;
-  color: #333;
-  font-weight: 300;
+  box-shadow: 0 4px 15px rgba(255, 61, 0, 0.4);
 }
 
 .tab-subtitle {
   color: #888;
   font-size: 14px;
-  margin: 8px 0 0 0;
+  margin: 0;
+  opacity: 0.9;
 }
 
 .view-all-link {
@@ -185,27 +175,38 @@
   align-items: center;
   gap: 5px;
   transition: 0.3s;
+  font-weight: 600;
 }
 
 .view-all-link:hover {
   transform: translateX(5px);
+  color: #ff5722;
 }
 
 @media (max-width: 600px) {
   .home-tabs-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 15px;
     margin-top: 40px;
     margin-bottom: 25px;
   }
   
-  .tab-btn {
-    font-size: 18px;
+  .tabs-left {
+    width: 100%;
+  }
+
+  .tabs-buttons {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
   }
   
-  .tab-separator {
-    font-size: 16px;
+  .tab-btn {
+    flex: 1;
+    font-size: 12px;
+    padding: 10px 10px;
+    text-align: center;
   }
   
   .view-all-link {
