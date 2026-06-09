@@ -83,7 +83,7 @@ const BookingsTab = ({ bookings }) => {
                             bookings.map(b => (
                                 <tr key={b.ticketId}>
                                     <td><code className="bktab-invoice-code invoice-code">#{b.ticketId}</code></td>
-                                    <td className="bktab-username">{b.user?.username || t('admin.adminDashboard.bookingsTab.anonymous') || "Ẩn danh"}</td>
+                                    <td className="bktab-username">{b.user?.fullName || b.user?.username || t('admin.adminDashboard.bookingsTab.anonymous') || "Ẩn danh"}</td>
                                     <td className="bktab-movie-title">{b.showtime?.movie?.title || "N/A"}</td>
                                     <td><span className="bktab-seat-badge seat-badge">{b.seat?.seatNumber || "N/A"}</span></td>
                                     <td><strong className="bktab-price">{b.totalPrice?.toLocaleString('vi-VN')}đ</strong></td>

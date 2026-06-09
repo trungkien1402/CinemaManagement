@@ -12,6 +12,7 @@ import java.util.List;
 public class VoucherService {
 
     private final VoucherRepository voucherRepository;
+    private final NotificationService notificationService;
 
     // Lấy toàn bộ mã voucher hiển thị lên bảng admin
     public List<Voucher> getAllVouchers() {
@@ -29,6 +30,20 @@ public class VoucherService {
             boolean isExists = voucherRepository.existsById(cleanCode);
             if (!isExists) {
                 voucher.setUsedCount(0);
+                
+                // TẠO THÔNG BÁO CHO TẤT CẢ NGƯỜI DÙNG KHI CÓ VOUCHER MỚI
+                try {
+                    String discountText = voucher.getDiscountType().equals("PERCENT") 
+                        ? (voucher.getDiscountValue() + "%") 
+                        : (String.format("%,.0fđ", (double) voucher.getDiscountValue()));
+                    String notificationTitle = "Mã giảm giá mới: " + cleanCode;
+                    String notificationMessage = "CinemaX tung mã giảm giá " + cleanCode + " cực hot: giảm ngay " 
+                        + discountText + " cho tất cả các giao dịch đặt vé nhanh tay áp dụng ngay! Hạn dùng đến: " + voucher.getExpiryDate();
+                    
+                    notificationService.createNotification(notificationTitle, notificationMessage, "VOUCHER");
+                } catch (Exception e) {
+                    System.err.println("Lỗi khi tạo thông báo phát hành voucher: " + e.getMessage());
+                }
             } else {
                 // Giữ lại số lượt dùng hiện tại trong DB thay vì reset về 0
                 voucherRepository.findById(cleanCode).ifPresent(oldVoucher -> {
