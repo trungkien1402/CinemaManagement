@@ -161,3 +161,18 @@
     border-radius: 8px;
     background-color: #0c0c0e;
 }
+
+@media (max-width: 768px) {
+  .antab-chart-wrapper {
+    padding: 15px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .antab-chart-render-box {
+    height: 250px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
