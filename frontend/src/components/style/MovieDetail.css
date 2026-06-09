@@ -391,6 +391,40 @@
   border: 1px solid #1d1d25;
 }
 
+.theaters-filter-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+  background: #1c1c24;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid #2a2a35;
+  flex-wrap: wrap;
+}
+
+.theaters-filter-bar .filter-label {
+  color: #fff;
+  font-weight: bold;
+}
+
+.theaters-filter-bar .filter-select {
+  padding: 8px 12px;
+  background: #222228;
+  color: #fff;
+  border: 1px solid #33333d;
+  borderRadius: 8px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 8px;
+}
+
+.theaters-filter-bar .filter-select.select-theater:disabled {
+  background: #111115;
+  color: #666;
+  cursor: not-allowed;
+}
+
 .detail-date-row {
   display: flex;
   gap: 14px;
@@ -585,5 +619,21 @@
 
   .detail-schedule-wrapper {
     padding: 24px;
+  }
+
+  .theaters-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .theaters-filter-bar .filter-label {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .theaters-filter-bar .filter-select {
+    width: 100%;
   }
 }

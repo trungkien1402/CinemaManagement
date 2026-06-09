@@ -14,6 +14,7 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const userDropdownRef = useRef(null);
 
     const isEn = i18n.language?.startsWith('en');
@@ -57,9 +58,14 @@ const Navbar = () => {
     return (
         <nav className={`navbar-main ${scrolled ? 'scrolled' : ''}`}>
             <div className="nav-container">
-                <Link to="/" className="nav-brand">
-                    CINEMA<span>X</span>
-                </Link>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <i className={isMobileMenuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars"}></i>
+                    </button>
+                    <Link to="/" className="nav-brand" onClick={() => setIsMobileMenuOpen(false)}>
+                        CINEMA<span>X</span>
+                    </Link>
+                </div>
 
                 <div className="nav-menu">
                     <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
@@ -94,17 +100,18 @@ const Navbar = () => {
                         <div className="user-profile" ref={userDropdownRef}>
                             <button
                                 className={`profile-toggle ${showDropdown ? 'active' : ''}`}
-                                onClick={() => setShowDropdown(!showDropdown)}
+                                onClick={() => {
+                                    setShowDropdown(!showDropdown);
+                                    setIsMobileMenuOpen(false);
+                                }}
                             >
                                 <div className="avatar-wrapper">
-                                    {/* ưu tiên lấy avatar hoặc avatarurl, nếu không có thì lấy chữ cái đầu của tên (fullname hoặc username) */}
                                     {(user.avatar || user.avatarUrl) ? (
                                         <img src={user.avatar || user.avatarUrl} alt="avatar" style={{width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover'}} />
                                     ) : (
                                         (user.fullName || user.username) ? (user.fullName || user.username).charAt(0).toUpperCase() : 'U'
                                     )}
                                 </div>
-                                {/* ưu tiên hiển thị fullname (họ và tên), nếu chưa có mới hiển thị username */}
                                 <span className="username-text">{user.fullName || user.username}</span>
                                 <i className="fa-solid fa-chevron-down arrow-icon"></i>
                             </button>
@@ -161,6 +168,30 @@ const Navbar = () => {
                     )}
                 </div>
             </div>
+
+            {/* Mobile Navigation Menu Dropdown */}
+            {isMobileMenuOpen && (
+                <div className="mobile-nav-menu">
+                    <NavLink to="/" className={({ isActive }) => isActive ? "mobile-nav-link active" : "mobile-nav-link"} onClick={() => setIsMobileMenuOpen(false)}>
+                        {t('nav.home') || "Trang Chủ"}
+                    </NavLink>
+                    <NavLink to="/dang-chieu" className={({ isActive }) => isActive ? "mobile-nav-link active" : "mobile-nav-link"} onClick={() => setIsMobileMenuOpen(false)}>
+                        {t('nav.nowShowing') || "Đang Chiếu"}
+                    </NavLink>
+                    <NavLink to="/sap-chieu" className={({ isActive }) => isActive ? "mobile-nav-link active" : "mobile-nav-link"} onClick={() => setIsMobileMenuOpen(false)}>
+                        {t('nav.comingSoon') || "Sắp Chiếu"}
+                    </NavLink>
+                    <NavLink to="/lich-chieu" className={({ isActive }) => isActive ? "mobile-nav-link active" : "mobile-nav-link"} onClick={() => setIsMobileMenuOpen(false)}>
+                        {t('nav.schedule') || "Lịch Chiếu"}
+                    </NavLink>
+                    <NavLink to="/rap" className={({ isActive }) => isActive ? "mobile-nav-link active" : "mobile-nav-link"} onClick={() => setIsMobileMenuOpen(false)}>
+                        {t('nav.theaters') || "Rạp"}
+                    </NavLink>
+                    <NavLink to="/tin-tuc" className={({ isActive }) => isActive ? "mobile-nav-link active" : "mobile-nav-link"} onClick={() => setIsMobileMenuOpen(false)}>
+                        {t('nav.news') || "Tin Tức"}
+                    </NavLink>
+                </div>
+            )}
 
             <AuthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </nav>
