@@ -563,22 +563,6 @@
 ========================= */
 @media (max-width: 992px) {
 
-  .detail-main-layout {
-    flex-direction: column;
-  }
-
-  .detail-right-box {
-    width: 100%;
-    position: static;
-  }
-
-  .detail-movie-title {
-    font-size: 2.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-
   .detail-hero {
     height: auto;
     padding-top: 100px;
@@ -629,6 +613,15 @@
   .detail-btn-dark {
     width: 100%;
     justify-content: center;
+  }
+
+  .detail-main-layout {
+    flex-direction: column;
+  }
+
+  .detail-right-box {
+    width: 100%;
+    position: static;
   }
 
   .detail-body-container {

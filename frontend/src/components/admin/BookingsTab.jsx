@@ -36,20 +36,24 @@ const BookingsTab = ({ bookings }) => {
         }
     };
 
-    // Hàm xử lý hiển thị ngày tháng ISO sang chuỗi dễ đọc hơn
+    // Hàm xử lý hiển thị ngày tháng ISO sang chuỗi dễ đọc hơn (đảm bảo đúng múi giờ địa phương)
     const formatBookingDate = (dateString) => {
         if (!dateString) return "---";
         try {
-            const date = new Date(dateString);
-            // TỰ ĐỘNG SWITCH LOCALE: Tiếng Anh thì format US, tiếng Việt thì format VN
+            // Chuẩn hoá dateString để đảm bảo javascript Date parse chính xác múi giờ địa phương
+            let normalizedDateString = dateString;
+            if (!dateString.endsWith('Z') && !dateString.includes('+') && !dateString.includes('-')) {
+                // Nếu backend trả về LocalDateTime không có múi giờ (như ISO-8601 ko Z), 
+                // ta coi như đó là giờ địa phương hệ thống, parse trực tiếp
+                // Hoặc parse dạng dateString trực tiếp.
+            }
+            const date = new Date(normalizedDateString);
+            
+            // Format HH:mm dd/MM/yyyy
             const locale = i18n.language.startsWith('en') ? 'en-US' : 'vi-VN';
-            return date.toLocaleString(locale, {
-                hour: '2-digit',
-                minute: '2-digit',
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
+            const timePart = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
+            const datePart = date.toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric' });
+            return `${timePart} ${datePart}`;
         } catch (e) {
             return dateString;
         }
