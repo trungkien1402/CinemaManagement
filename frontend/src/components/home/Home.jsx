@@ -15,8 +15,9 @@ const Home = () => {
     // State quản lý tab đang chọn (phim đang chiếu / phim sắp chiếu)
     const [activeTab, setActiveTab] = useState('nowShowing');
 
-    // State quản lý vị trí xoay tua cho riêng cụm Phim Đang Chiếu
+    // State quản lý vị trí xoay tua cho cụm Phim Đang Chiếu và Phim Sắp Chiếu
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentComingSoonIndex, setCurrentComingSoonIndex] = useState(0);
 
     useEffect(() => {
         dispatch(fetchMovie());
@@ -42,13 +43,29 @@ const Home = () => {
         return () => clearInterval(interval);
     }, [nowShowingMovies, activeTab]);
 
+    // Tự động lướt đổi cụm 4 phim Sắp Chiếu sau mỗi 5 giây
+    useEffect(() => {
+        if (comingSoonMovies.length <= 4 || activeTab !== 'comingSoon') return;
+
+        const interval = setInterval(() => {
+            setCurrentComingSoonIndex((prevIndex) => {
+                if (prevIndex + 4 >= comingSoonMovies.length) {
+                    return 0;
+                }
+                return prevIndex + 4;
+            });
+        }, 5000); // 5000ms = 5 giây
+
+        return () => clearInterval(interval);
+    }, [comingSoonMovies, activeTab]);
+
     if (loading) return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>{t('home.nowShowing.status.loading')}</div>;
 
     // Lấy đúng cụm 4 phim Đang Chiếu theo index chạy tự động
     const visibleNowShowing = nowShowingMovies.slice(currentIndex, currentIndex + 4);
 
-    // Lấy tối đa 4 phim Sắp Chiếu hiển thị ở hàng dưới
-    const visibleComingSoon = comingSoonMovies.slice(0, 4);
+    // Lấy đúng cụm 4 phim Sắp Chiếu theo index chạy tự động
+    const visibleComingSoon = comingSoonMovies.slice(currentComingSoonIndex, currentComingSoonIndex + 4);
 
     return (
         <div className="home-page">
@@ -91,7 +108,7 @@ const Home = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="movie-grid" style={{ animation: 'fadeIn 0.5s ease-in-out', marginBottom: '50px' }}>
+                    <div className="movie-grid" key={`coming-${currentComingSoonIndex}`} style={{ animation: 'fadeIn 0.5s ease-in-out', marginBottom: '50px' }}>
                         {visibleComingSoon.length === 0 ? (
                             <div style={{ color: '#aaa', padding: '20px', textAlign: 'center', gridColumn: '1 / -1' }}>
                                 {t('home.comingSoon.status.empty') || "Không có phim nào sắp chiếu"}
